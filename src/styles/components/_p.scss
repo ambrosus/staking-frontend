@@ -1,0 +1,95 @@
+// "xs-400" | "xs-500" | "s-400" | "s-500" | "m-500" | "l-400"
+// | "l-500" | "l-700" | "xl-400" | "xxl-500" | "xxxl-500"
+p {
+  margin: 0;
+  font-family: Rubik;
+}
+
+.xs-400 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.xs-500 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.s-400 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  font-feature-settings: 'liga' off;
+  color: $black;
+}
+
+.s-400-gray {
+  font-feature-settings: 'liga' off;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration-line: underline;
+  font-feature-settings: 'liga' off;
+  color: $gray;
+
+}
+
+.s-500-gray {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: $gray;
+}
+
+.m-500 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: $white;
+}
+
+.l-400 {
+}
+
+.l-500 {
+}
+
+.l-700 {
+}
+
+.xl-400 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 21px;
+  line-height: 25px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-feature-settings: 'liga' off;
+
+  color: $white;
+}
+
+.xxl-500 {
+}
+
+.xxxl-500 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 54px;
+  line-height: 64px;
+  font-feature-settings: 'liga' off;
+  color: $white;
+}

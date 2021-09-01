@@ -1,0 +1,6 @@
+{
+  "extends": "@inc4/react",
+  "rules": {
+    "jsx-a11y/anchor-has-content": "off"
+  }
+}

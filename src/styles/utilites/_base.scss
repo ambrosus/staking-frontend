@@ -1,0 +1,46 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+html {
+  font-size: 14px;
+  font-family: 'Rubik', sans-serif;
+}
+
+li {
+  list-style-type: none;
+}
+
+h2 {
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+a {
+  &:link {
+    text-decoration: none;
+  }
+
+  &:visited {
+    text-decoration: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.white{
+  color: $white;
+}
+
+.gray{
+  color: $gray;
+}
