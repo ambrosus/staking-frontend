@@ -8,6 +8,8 @@ const P = ({ size, className, children, ...props }) => (
       'xxxl-500': size === 'xxxl-500',
       'xl-400': size === 'xl-400',
       'm-500': size === 'm-500',
+      'xs-400': size === 'xs-400',
+      'xs-500': size === 'xs-500',
     })}
     {...props}
   >
