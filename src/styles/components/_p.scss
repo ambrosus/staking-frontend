@@ -36,7 +36,7 @@ p {
   line-height: 17px;
   text-decoration-line: underline;
   font-feature-settings: 'liga' off;
-  color: $gray;
+  color: $color-gray;
 
 }
 
@@ -45,7 +45,7 @@ p {
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  color: $gray;
+  color: $color-gray;
 }
 
 .m-500 {
@@ -53,20 +53,41 @@ p {
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  display: flex;
-  align-items: center;
   text-align: center;
 
   color: $white;
 }
 
 .l-400 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+
+  color: $black;
 }
 
 .l-500 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  color: $black;
 }
 
 .l-700 {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+
+  color: $black;
 }
 
 .xl-400 {

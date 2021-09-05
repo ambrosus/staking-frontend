@@ -1,0 +1,12 @@
+.button-group {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+
+  &.compact {
+    justify-content: flex-start;
+  }
+}

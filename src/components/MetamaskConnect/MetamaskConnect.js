@@ -1,67 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import MetaMaskOnboarding from '@metamask/onboarding';
-import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import Web3 from 'web3';
 
 import walletIcon from '../../assets/svg/wallet.svg';
 import P from '../P';
+import { CONNECT_TEXT } from '../../utils/constants';
 
-const ONBOARD_TEXT = 'Click here to install MetaMask!';
-const CONNECT_TEXT = 'Connect Your Wallet';
-const CONNECTED_TEXT = 'Go to stacking';
-
-const MetamaskConnect = () => {
-  const [buttonText, setButtonText] = React.useState(ONBOARD_TEXT);
-  const [accounts, setAccounts] = React.useState([]);
-  const onboarding = React.useRef();
+export const MetamaskConnect = () => {
+  const [isConnected, setIsConnected] = useState(true);
   const history = useHistory();
-  React.useEffect(() => {
-    if (!onboarding.current) {
-      onboarding.current = new MetaMaskOnboarding();
-    }
-    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-      window.ethereum
-        .request({ method: 'eth_requestAccounts' })
-        .then((newAccounts) => {
-          setAccounts(newAccounts);
-        });
-      window.ethereum.on('accountsChanged', (newAccounts) => {
-        setAccounts(newAccounts);
-      });
-    }
-    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-      if (accounts.length > 0) {
-        setButtonText(CONNECTED_TEXT);
-        history.push('/stacking');
-        onboarding.current.stopOnboarding();
-      } else {
-        setButtonText(CONNECT_TEXT);
-      }
-    }
-  }, [accounts]);
-
-  const onClick = () => {
-    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-      window.ethereum
-        .request({ method: 'eth_requestAccounts' })
-        .then((newAccounts) => setAccounts(newAccounts));
+  useEffect(async () => {
+    if (typeof window.web3 !== 'undefined') {
+      window.web3 = new Web3(window.web3.currentProvider);
     } else {
-      onboarding.current.startOnboarding();
+      window.alert('Please connect to Metamask.');
     }
-  };
+    if (window.web3 && !window.web3?.currentProvider?.selectedAddress) {
+      setIsConnected(false);
+    }
+  }, [window.web3, isConnected]);
+
   return (
     <div
       role="presentation"
       className="connect-btn"
       style={{ display: 'flex' }}
+      onClick={async () => {
+        if (isConnected) {
+          history.push('/stacking');
+        }
+        if (window.ethereum) {
+          window.web3 = new Web3(window.ethereum);
+          try {
+            await window.ethereum.enable();
+            setIsConnected(true);
+          } catch (error) {
+            setIsConnected(false);
+          }
+        } else if (window.web3) {
+          window.web3 = new Web3(window.web3.currentProvider);
+          setIsConnected(true);
+        } else {
+          console.log(
+            'Non-Ethereum browser detected. You should consider trying MetaMask!',
+          );
+        }
+      }}
     >
-      <Link to="/stacking" onClick={() => onClick()}>
-        <ReactSVG src={walletIcon} wrapper="span" />
-        <P style={{ paddingLeft: 30, paddingRight: 30 }} size="m-500">
-          {buttonText}
-        </P>
-      </Link>
+      <ReactSVG src={walletIcon} wrapper="span" />
+      <P style={{ paddingLeft: 30, paddingRight: 30 }} size="m-500">
+        {isConnected ? 'Go to stacking' : CONNECT_TEXT}
+      </P>
     </div>
   );
 };

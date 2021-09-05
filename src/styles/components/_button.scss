@@ -1,0 +1,33 @@
+
+.btn {
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background: $color-primary;
+  color: $white;
+  padding: 10px;
+  min-width: 4rem;
+  width: 100%;
+  overflow: hidden;
+  min-height: 40px;
+  max-height: 48px;
+  border-radius: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.secondary {
+    background-color: $color-gray;
+  }
+
+  &.outline {
+    border: 1px solid $color-gray;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background-color: $white;
+    color: $color-gray;
+  }
+}
+button:disabled,
+button[disabled]{
+  opacity: 0.8;
+}
