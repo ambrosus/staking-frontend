@@ -6,6 +6,7 @@ const P = ({ size, className, children, ...props }) => (
   <p
     className={cn(className, {
       'xxxl-500': size === 'xxxl-500',
+      'xxl-500': size === 'xxl-500',
       'xl-400': size === 'xl-400',
       'l-400': size === 'l-400',
       'l-500': size === 'l-500',
@@ -13,6 +14,8 @@ const P = ({ size, className, children, ...props }) => (
       'm-500': size === 'm-500',
       'xs-400': size === 'xs-400',
       'xs-500': size === 'xs-500',
+      's-400': size === 's-400',
+      's-500': size === 's-500',
     })}
     {...props}
   >

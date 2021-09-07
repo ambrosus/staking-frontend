@@ -1,0 +1,65 @@
+
+.input {
+  position: relative;
+  width: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: -10px; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.input input[type="number"],
+.input input[type="email"],
+.input input[type="password"] {
+  background: #F7F7FD;
+  appearance: none;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 2px solid $whiteToGray;
+  border-radius: 12px;
+  font-size: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  color: $color-gray-light;
+  transition-property: border, color;
+  transition-duration: 400ms;
+}
+
+.input input[type="number"]:focus,
+.input input[type="email"]:focus,
+.input input[type="password"]:focus {
+  border: 2px solid rgba(55, 53, 214, 1);
+  color: rgba(55, 53, 214, 1);
+}
+
+.input input[type="number"]:focus + .iconLeft,
+.input input[type="email"]:focus + .iconLeft,
+.input input[type="password"]:focus + .iconLeft {
+  opacity: 1;
+}
+
+.input .iconLeft,
+.input .iconRight {
+  position: absolute;
+  opacity: 0.5;
+  transition: opacity 300ms;
+}
+
+.input .iconLeft {
+  top: 17px;
+  left: 12px;
+}
+
+.input .iconRight {
+  top: 13px;
+  right: 8px;
+}

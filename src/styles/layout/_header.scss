@@ -36,7 +36,29 @@
     align-items: center;
     justify-content: space-around;
   }
+
 }
 
 @media (max-width: 480px) {
+  .header {
+    padding: 0 40px 0 40px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    &__logo {
+      margin-top: 10px;
+    }
+
+    .amb-curse {
+      margin-top: 10px;
+    }
+
+    .wallet-connect {
+      margin-top: 10px;
+    }
+
+    .header__btn {
+      margin-top: 10px;
+    }
+  }
 }

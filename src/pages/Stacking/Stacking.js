@@ -1,15 +1,21 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { ReactSVG } from 'react-svg';
+import ReactTooltip from 'react-tooltip';
+
 import Button from '../../components/Button';
-import ButtonGroup from '../../components/ButtonGroup';
 import P from '../../components/P';
+
+import infoIcon from '../../assets/svg/info.svg';
+import ButtonGroup from '../../components/ButtonGroup';
+import Deposit from './components/Deposit/Deposit';
 
 export const StackItem = ({
   children,
   instant,
   lazy,
   transitionDuration = '200ms',
-  transitionTimingFunction = 'ease-out',
+  transitionTimingFunction = 'ease-in',
   onComplete,
   ...restProps
 }) => {
@@ -23,6 +29,7 @@ export const StackItem = ({
     const node = ref.current;
     requestAnimationFrame(() => {
       node.style.height = `${node.scrollHeight}px`;
+      node.style.paddingBottom = 0;
     });
   }
 
@@ -30,9 +37,11 @@ export const StackItem = ({
     const node = ref.current;
     requestAnimationFrame(() => {
       node.style.height = `${node.style.height}px`;
+      node.style.paddingBottom = 0;
       node.style.overflow = 'hidden';
       requestAnimationFrame(() => {
         node.style.height = 0;
+        node.style.paddingBottom = 0;
       });
     });
   }
@@ -63,17 +72,26 @@ export const StackItem = ({
       node.style.overflow = open ? 'initial' : 'hidden';
       if (open) {
         node.style.height = 'auto';
+        node.style.paddingBottom = '30px';
+      }
+      if (!open) {
+        node.style.paddingBottom = '0px';
       }
       if (!open && lazy) {
         setRenderChildren(false);
       }
-      if (onComplete) {
-        onComplete();
+      if (open && onComplete) {
+        (() => {
+          onComplete();
+        })();
       }
     }
 
     function handleTransitionEnd(event) {
-      if (event.target === node && event.propertyName === 'height') {
+      if (
+        (event.target === node && event.propertyName === 'height') ||
+        'padding-bottom'
+      ) {
         handleComplete();
       }
     }
@@ -127,7 +145,36 @@ export const StackItem = ({
         {...restProps}
       >
         <div className="line" />
-        <div className="collapsed-content">Collapsed content 🎉</div>
+        <div className="collapsed-content">
+          <div className="collapsed-content__header">
+            <P size="xxl-500">
+              Deposit AMB&nbsp;
+              <ReactSVG
+                data-tip
+                data-for="deposit"
+                src={infoIcon}
+                wrapper="span"
+              />
+              <ReactTooltip id="deposit" place="top" effect="solid">
+                Ну тут какая-то поdсказка которая сообщает о том о сём. И
+                человек себе сразу понимает что к чему.
+              </ReactTooltip>
+            </P>
+            <P size="s-400">You staked: 264.000 AMB</P>
+            <P size="s-400">Available for stake: 788.899 AMB</P>
+            <Button
+              disabled
+              priority="secondary"
+              type="outline"
+              onclick={() => alert('Reward')}
+            >
+              <P size="s-500">Reward: 0.000</P>
+            </Button>
+          </div>
+          <div className="collapsed-content__body">
+            <Deposit />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -149,17 +196,29 @@ const Stacking = () => (
       <div>Net APY</div>
       <div style={{ maxWidth: 160 }}></div>
     </div>
-    <StackItem lazy />
+    <StackItem
+      lazy
+      onComplete={() => {
+        alert('Функция при открытии колапса');
+      }}
+    />
     <StackItem lazy />
     <StackItem lazy />
     <ButtonGroup>
       <Button />
       <Button priority="secondary" />
       <Button disabled priority="secondary" />
-      <Button disabled priority="secondary" type="outline" />
       <Button priority="secondary" type="outline" />
+      <Button disabled priority="secondary" type="outline" />
     </ButtonGroup>
-    <ButtonGroup compact></ButtonGroup>
+    <br />
+    <ButtonGroup compact>
+      <Button />
+      <Button priority="secondary" />
+      <Button disabled priority="secondary" />
+      <Button priority="secondary" type="outline" />
+      <Button disabled priority="secondary" type="outline" />
+    </ButtonGroup>
   </div>
 );
 

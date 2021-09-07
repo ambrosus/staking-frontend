@@ -1,0 +1,55 @@
+.checkbox {
+  display: grid;
+  grid-template-columns: min-content auto;
+  grid-gap: 0.5em;
+  font-style: normal;
+  align-items: center;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  font-feature-settings: 'liga' off;
+  color: $black;
+
+  &--disabled {
+    color: $color-gray-light;
+  }
+}
+
+.checkbox__control {
+  background-color: #F7F7FD;
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+
+  svg {
+    transition: transform 0.1s ease-in 25ms;
+    transform: scale(0);
+    transform-origin: bottom left;
+    color: #4A38AE;
+  }
+}
+
+.checkbox__input {
+  display: grid;
+  grid-template-areas: "checkbox";
+
+  > * {
+    grid-area: checkbox;
+  }
+
+  input {
+    opacity: 0;
+    width: 1em;
+    height: 1em;
+
+    &:checked + .checkbox__control svg {
+      transform: scale(1);
+    }
+
+    &:disabled + .checkbox__control {
+      color: var(--disabled);
+    }
+  }
+}
+
