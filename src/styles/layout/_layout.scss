@@ -1,0 +1,15 @@
+.page {
+  background-color: whitesmoke;
+}
+
+.wrapper {
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1140px;
+  height: auto;
+  @media (max-width: 480px) {
+    width: 95%;
+    flex-direction: column;
+  }
+}

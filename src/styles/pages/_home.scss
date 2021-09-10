@@ -1,62 +1,92 @@
 .home {
-  width: 100%;
-  height: 100vh;
-  background: url("./../../assets/images/home-background-1440x900.png") no-repeat center center;
-  background-size: cover;
-  padding: 10px;
+  margin: 0 auto;
+  &__top {
+    width: 100%;
+    height: 360px;
+    padding: 10px;
+    background: linear-gradient(160.67deg, #4A38AE 12.99%, #6850E8 107.47%);
 
-  &__header {
-    height: 10%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px 30px 0 30px;
+    &--header {
+      height: 10%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 30px 0 30px;
 
+      .menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        max-width: 230px;
+        align-items: center;
 
-    .connect-btn {
-      cursor: pointer;
-      border: 1px solid #FFFFFF;
-      box-sizing: border-box;
-      border-radius: 12px;
-      padding: 15px;
+        > a {
+          padding-right: 20px;
+        }
+      }
+
+      .connect-btn {
+        cursor: pointer;
+        border: 1px solid #FFFFFF;
+        box-sizing: border-box;
+        border-radius: 12px;
+        padding: 15px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+      }
     }
+
+    &--info {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      width: 70%;
+      margin: 0 auto;
+
+      .info-image {
+        padding-right: 50px;
+      }
+
+      .info-text {
+        text-align: left;
+        height: 90%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
   }
 
 
-  &__content {
-    text-align: center;
-    height: 90%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
 }
 
 @media (max-width: 480px) {
   .home {
-    &__header {
-      flex-direction: column;
-      padding: 30px 30px 0 30px;
+    &__top {
+      &--header {
+        flex-direction: column;
+        padding: 30px 30px 0 30px;
 
-      .connect-btn {
-        margin-top: 35px;
+        .connect-btn {
+          margin-top: 35px;
+        }
+      }
+
+      &--info {
+        .info-text {
+          p:first-of-type {
+            font-size: 24px;
+          }
+
+          p {
+            font-size: 19px;
+          }
+        }
       }
     }
 
-    &__content {
-      p:first-of-type {
-        font-size: 24px;
-      }
-
-      p {
-        font-size: 19px;
-      }
-    }
   }
 }
