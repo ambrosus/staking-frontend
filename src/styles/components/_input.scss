@@ -37,8 +37,8 @@ input[type=number] {
 .input input[type="number"]:focus,
 .input input[type="email"]:focus,
 .input input[type="password"]:focus {
-  border: 2px solid rgba(55, 53, 214, 1);
-  color: rgba(55, 53, 214, 1);
+  border: 2px solid $color-primary;
+  color: $color-primary;
 }
 
 .input input[type="number"]:focus + .iconLeft,

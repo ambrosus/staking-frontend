@@ -96,49 +96,50 @@
       }
 
       &__body {
-        .deposit {
-          display: flex;
-          flex-direction: column;
-
-          &--heading {
-            width: 100%;
-            padding: 10px 0;
-          }
-
-          &--actions {
-            display: flex;
-            flex-direction: row;
-
-            > div {
-              margin-left: 20px;
-            }
-
-            > button {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 64px;
-              height: 48px !important;
-            }
-
-          }
-
-          &--stake-btn {
-          }
-
-          &--stake-options {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            div {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-            }
-          }
-        }
       }
+    }
+  }
+
+}
+.deposit {
+  display: flex;
+  flex-direction: column;
+
+  .deposit-heading {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .deposit-actions {
+    display: flex;
+    flex-direction: row !important;
+
+    > div {
+      margin-left: 20px;
+    }
+
+    > button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 48px !important;
+    }
+
+  }
+
+  .deposit-stake-btn {
+  }
+
+  .deposit-stake-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }

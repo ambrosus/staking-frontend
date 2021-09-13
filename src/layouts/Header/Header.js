@@ -1,24 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useEthers } from '@usedapp/core';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import { observer } from 'mobx-react-lite';
 
 import headerLogoSvg from '../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../assets/svg/login.svg';
 import greenLightIcon from '../../assets/svg/green-light-icon.svg';
 import P from '../../components/P';
+import storageService from '../../services/storage.service';
+import appStore from '../../store/app.store';
 
-export const Header = () => {
-  const { activateBrowserWallet, account, deactivate } = useEthers();
+export const Header = observer(() => {
+  const { account, activateBrowserWallet, deactivate, activate } = useEthers();
   const history = useHistory();
+  useEffect(async () => {
+    await activateBrowserWallet();
+  }, [account]);
+
   const logOut = async () => {
     deactivate();
-    history.push('/');
+    storageService.clear();
+    appStore.setAuth(false);
+    if (!storageService.get('auth')) {
+      history.push('/');
+    }
   };
   const logIn = async () => {
     activateBrowserWallet();
+    await activate();
+    if (account) {
+      storageService.set('auth', true);
+      appStore.setAuth(true);
+    }
   };
+
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -40,7 +57,7 @@ export const Header = () => {
   return (
     <div className="header">
       <div className="header__logo">
-        <Link to="/">
+        <Link to="/stacking">
           <ReactSVG src={headerLogoSvg} wrapper="span" />
         </Link>
       </div>
@@ -80,5 +97,5 @@ export const Header = () => {
       )}
     </div>
   );
-};
+});
 export default Header;

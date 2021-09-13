@@ -7,6 +7,9 @@
   color: $white;
   padding: 10px;
   min-width: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   overflow: hidden;
   min-height: 40px;
@@ -18,17 +21,23 @@
   &.secondary {
     background-color: $color-gray;
   }
+  &.green {
+    background-color: $green;
+  }
 
   &.outline {
     border: 1px solid $color-gray;
     box-sizing: border-box;
     border-radius: 12px;
-    background-color: $white;
+    background-color: $white !important;
     color: $color-gray;
   }
 }
+  button[disabled=disabled], button:disabled {
+    background: $color-gray !important;
+    opacity: 0.8;
+    pointer-events:none;
+    cursor: not-allowed;
+  }
 
-button:disabled,
-button[disabled] {
-  opacity: 0.8;
-}
+

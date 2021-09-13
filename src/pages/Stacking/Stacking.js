@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useEthers } from '@usedapp/core';
@@ -7,21 +8,20 @@ import { useHistory } from 'react-router';
 import StackItem from './StackingItem';
 import P from '../../components/P';
 import copyIcon from '../../assets/svg/copy.svg';
+import useCopyToClipboard from '../../utils/useCopyToClipboard';
+import ReactTooltip from 'react-tooltip';
+import appStore from '../../store/app.store';
 
 const Stacking = observer(() => {
-  const [loading, setLoading] = useState(false);
-  const { account, activateBrowserWallet } = useEthers();
+  const { account, activate, activateBrowserWallet } = useEthers();
+  const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   const history = useHistory();
+
   useEffect(async () => {
-    activateBrowserWallet();
-    setTimeout(() => {
-      if (!account) {
-        history.push('/');
-      } else {
-        setLoading(true);
-      }
-    }, 1000);
-  }, [loading, account]);
+    if (await account) {
+      appStore.setAuth(true);
+    }
+  }, [appStore.auth, account]);
 
   const infoBlock = (
     <div className="info-block ">
@@ -31,12 +31,22 @@ const Stacking = observer(() => {
             My Address
           </P>
           <P size="xl-400" style={{ color: '#333333' }}>
-            0x50dd86c4cfb3c...86458c3af16fceb7c{' '}
+            {account
+              ? ` ${account.substr(0, 15)}...${account.substr(-15, 15)}`
+              : '...'}
             <ReactSVG
+              data-tip
+              data-for="copy-state"
+              onClick={onCopy}
               src={copyIcon}
               wrapper="span"
-              style={{ paddingLeft: 20 }}
+              style={{ marginLeft: 20, cursor: 'pointer' }}
             />
+            {isCopied ? (
+              <ReactTooltip id="copy-state" place="top" effect="solid">
+                Copied
+              </ReactTooltip>
+            ) : null}
           </P>
         </div>
         <div className="info-block__stacked">
@@ -60,7 +70,7 @@ const Stacking = observer(() => {
       </div>
     </div>
   );
-  return loading ? (
+  return appStore.auth ? (
     <>
       {account && infoBlock}
       <div className="stacking wrapper">

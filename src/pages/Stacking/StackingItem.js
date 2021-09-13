@@ -12,6 +12,7 @@ import Deposit from './components/Deposit';
 import infoIcon from '../../assets/svg/info.svg';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import appStore from '../../store/app.store';
+import storageService from '../../services/storage.service';
 
 export const StackItem = ({
   expand,
@@ -118,58 +119,64 @@ export const StackItem = ({
       openCollapse();
     }
   }, [renderChildren]);
-
+  const stackHeader = (
+    <div className="item--header">
+      <div className="item--header__pool">
+        <ReactSVG src={avatarIcon} wrapper="span" />
+        <P
+          style={{
+            textTransform: 'uppercase',
+            color: comingSoon && '#BFC9E0',
+          }}
+          size="l-500"
+        >
+          Alpha
+        </P>
+      </div>
+      <div className="item--header__vault-assets">
+        <P style={{ textTransform: 'uppercase' }} size="l-400">
+          {comingSoon ? '' : '     3.5m AMB '}
+        </P>
+      </div>
+      <div className="item--header__apy">
+        <P style={{ textTransform: 'uppercase' }} size="l-700">
+          {comingSoon ? '' : '32.87%'}
+        </P>
+      </div>
+      {comingSoon ? (
+        <Button disabled priority="secondary">
+          <P style={{ textTransform: 'uppercase' }} size="m-500">
+            COMING SOON
+          </P>
+        </Button>
+      ) : (
+        <Button
+          onclick={() => {
+            if (expand) {
+              setOpen((openContent) => !openContent);
+            } else {
+              activateBrowserWallet();
+              setTimeout(() => {
+                if (account) {
+                  appStore.setAuth(true);
+                  storageService.set('auth', true);
+                  history.push('/stacking');
+                }
+              }, 500);
+            }
+          }}
+        >
+          <P style={{ textTransform: 'uppercase' }} size="m-500">
+            {expand && (open ? 'HIDE' : 'SHOW')}
+            {!expand && 'STAKE'}
+          </P>
+        </Button>
+      )}
+    </div>
+  );
   return (
     <div className="stack-item">
-      <div className="item--header">
-        <div className="item--header__pool">
-          <ReactSVG src={avatarIcon} wrapper="span" />
-          <P
-            style={{
-              textTransform: 'uppercase',
-              color: comingSoon && '#BFC9E0',
-            }}
-            size="l-500"
-          >
-            Alpha
-          </P>
-        </div>
-        <div className="item--header__vault-assets">
-          <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? '' : '     3.5m AMB '}
-          </P>
-        </div>
-        <div className="item--header__apy">
-          <P style={{ textTransform: 'uppercase' }} size="l-700">
-            {comingSoon ? '' : '32.87%'}
-          </P>
-        </div>
-        {comingSoon ? (
-          <Button disabled priority="secondary">
-            <P style={{ textTransform: 'uppercase' }} size="m-500">
-              COMING SOON
-            </P>
-          </Button>
-        ) : (
-          <Button
-            disabled={!account}
-            onclick={() => {
-              if (expand) {
-                setOpen((openContent) => !openContent);
-              } else {
-                activateBrowserWallet();
-                appStore.setAuth(true);
-                history.push('/stacking');
-              }
-            }}
-          >
-            <P style={{ textTransform: 'uppercase' }} size="m-500">
-              {expand && (open ? 'HIDE' : 'SHOW')}
-              {!expand && 'STAKE'}
-            </P>
-          </Button>
-        )}
-      </div>
+      {stackHeader}
       <div
         ref={ref}
         className="item--content"
@@ -195,7 +202,9 @@ export const StackItem = ({
               </ReactTooltip>
             </P>
             <P size="s-400">You staked: 264.000 AMB</P>
-            <P size="s-400">Available for stake: 788.899 AMB</P>
+            <P size="s-400" style={{ fontWeight: 500 }}>
+              Available for stake: 2.2m AMB
+            </P>
             <div style={{ flexBasis: '90%' }} />
           </div>
           <div className="collapsed-content__body">

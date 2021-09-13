@@ -1,24 +1,41 @@
-import React from 'react';
-import { Route, Switch } from 'react-router';
-import PropTypes from 'prop-types';
-import RouteWithSubRoutes from './RouteWithSubRoutes';
+import React, { useEffect } from 'react';
+import { Redirect, Route, Switch } from 'react-router';
+import { observer } from 'mobx-react-lite';
 
-const RenderRoutes = (props) => {
-  const { routes } = props;
-  return (
-    <>
-      <Switch>
-        {routes.map((route) => (
-          <RouteWithSubRoutes key={route.key} {...route} />
-        ))}
-        <Route component={() => <h1>Page not found!</h1>} />
-      </Switch>
-    </>
+import storageService from '../../services/storage.service';
+import Home from '../../pages/Home';
+import Layout from '../../layouts/Layout';
+import Stacking from '../../pages/Stacking';
+import appStore from '../../store/app.store';
+
+const RenderRoutes = observer(() => {
+  useEffect(() => {
+    if (!storageService.get('auth')) {
+      appStore.setAuth(false);
+    } else {
+      appStore.setAuth(true);
+    }
+    return <div>Loading...</div>;
+  }, [appStore.auth, storageService.get('auth')]);
+  return !appStore.auth ? (
+    <Switch>
+      <Route path="/" exact render={() => <Home />} />
+      <Redirect to="/" />
+    </Switch>
+  ) : (
+    <Switch>
+      <Route
+        path="/stacking"
+        exact
+        render={() => (
+          <Layout>
+            <Stacking />
+          </Layout>
+        )}
+      />
+      <Redirect to="/stacking" />
+    </Switch>
   );
-};
-
-RenderRoutes.propTypes = {
-  routes: PropTypes.array,
-};
+});
 
 export default RenderRoutes;

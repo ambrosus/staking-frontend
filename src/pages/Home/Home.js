@@ -1,16 +1,16 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import P from '../../components/P';
-import headerLogoSvg from '../../assets/svg/header-logo.svg';
-import headerImage from '../../assets/images/header-image.svg';
 import MetamaskConnect from '../../components/MetamaskConnect';
 import StackItem from '../Stacking/StackingItem';
-import ButtonGroup from '../../components/ButtonGroup';
-import Button from '../../components/Button';
 
-const Home = () => {
+import headerLogoSvg from '../../assets/svg/header-logo.svg';
+import headerImage from '../../assets/images/header-image.svg';
+
+const Home = observer(() => {
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -65,24 +65,9 @@ const Home = () => {
         <StackItem lazy />
         <StackItem lazy />
         <StackItem comingSoon lazy />
-        <ButtonGroup>
-          <Button />
-          <Button priority="secondary" />
-          <Button disabled priority="secondary" />
-          <Button priority="secondary" type="outline" />
-          <Button disabled priority="secondary" type="outline" />
-        </ButtonGroup>
-        <br />
-        <ButtonGroup compact>
-          <Button />
-          <Button priority="secondary" />
-          <Button disabled priority="secondary" />
-          <Button priority="secondary" type="outline" />
-          <Button disabled priority="secondary" type="outline" />
-        </ButtonGroup>
       </div>
     </div>
   );
-};
+});
 
 export default Home;
