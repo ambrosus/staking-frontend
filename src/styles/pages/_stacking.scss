@@ -58,6 +58,15 @@
           margin-left: 20px;
         }
       }
+      &__my-stake {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        p {
+          margin-left: 20px;
+        }
+      }
 
       button {
         max-width: 160px;

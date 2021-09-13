@@ -133,6 +133,11 @@ export const StackItem = ({
           Alpha
         </P>
       </div>
+      <div className="item--header__my-stake">
+        <P style={{ textTransform: 'uppercase' }} size="l-400">
+          {comingSoon ? '' : '     3.5m AMB '}
+        </P>
+      </div>
       <div className="item--header__vault-assets">
         <P style={{ textTransform: 'uppercase' }} size="l-400">
           {comingSoon ? '' : '     3.5m AMB '}

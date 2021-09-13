@@ -75,10 +75,11 @@ const Stacking = observer(() => {
       {account && infoBlock}
       <div className="stacking wrapper">
         <div className="stacking__header">
-          <div>Pool</div>
-          <div>Vault Assets</div>
-          <div>Net APY</div>
-          <div style={{ maxWidth: 160 }}></div>
+          <div style={{ flexBasis: 68 }}>Pool</div>
+          <div style={{ flexBasis: 16 }}>My Stake</div>
+          <div style={{ flexBasis: 45 }}>Vault Assets</div>
+          <div style={{ flexBasis: 19 }}>Net APY</div>
+          <div style={{ minWidth: 17 }} />
         </div>
         <StackItem expand lazy />
         <StackItem expand lazy />
