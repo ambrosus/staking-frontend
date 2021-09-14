@@ -1,7 +1,10 @@
-.page {
+.content{
+  min-height: 89vh;
   background-color: whitesmoke;
-}
+  .page {
 
+  }
+}
 .wrapper {
   display: flex;
   margin: 0 auto;
