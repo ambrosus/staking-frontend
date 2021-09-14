@@ -8,7 +8,6 @@ export class AppStore {
   }
 
   setAuth(bool) {
-    console.log(this.auth);
     runInAction(() => {
       this.auth = bool;
     });
