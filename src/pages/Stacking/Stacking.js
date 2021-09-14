@@ -40,11 +40,15 @@ const Stacking = observer(() => {
               wrapper="span"
               style={{ marginLeft: 20, cursor: 'pointer' }}
             />
-            {isCopied ? (
+            {!isCopied ? (
+              <ReactTooltip id="copy-state" place="top" effect="solid">
+                Copy to clipboard
+              </ReactTooltip>
+            ) : (
               <ReactTooltip id="copy-state" place="top" effect="solid">
                 Copied
               </ReactTooltip>
-            ) : null}
+            )}
           </P>
         </div>
         <div className="info-block__stacked">
