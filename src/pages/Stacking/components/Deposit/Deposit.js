@@ -29,20 +29,11 @@ const Deposit = () => {
           <div>Total staked</div>
           <div>Net APY</div>
         </div>
-        <div className="space" />
-        <div className="space" />
+        <div className="space" style={{ marginBottom: 5 }} />
         <div className="modal--modal-body__header">
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <ReactSVG src={avatarIcon} wrapper="span" />
-            <P
-              style={{
-                textTransform: 'uppercase',
-                color: '#BFC9E0',
-              }}
-              size="l-500"
-            >
-              &nbsp;&nbsp;&nbsp;&nbsp;Bravo
-            </P>
+            <P size="l-500">&nbsp;&nbsp;&nbsp;&nbsp;Bravo</P>
           </div>
           <div>
             <P style={{ textTransform: 'uppercase' }} size="l-400">
@@ -82,7 +73,10 @@ const Deposit = () => {
   );
   return (
     <div className="deposit">
-      <div className="deposit-heading">Amount</div>
+      <div className="deposit-heading">
+        {' '}
+        <P size="s-400">Amount</P>
+      </div>
       <div className="deposit-actions">
         <Input
           onchange={setInputValue}
@@ -136,8 +130,7 @@ const Deposit = () => {
           </Button>
         </div>
       </div>
-      <div className="space" />
-      <div className="space" />
+      <div className="space" style={{ marginBottom: 5 }} />
       <div className="deposit-stake-btn">
         <Button
           type="green"
@@ -147,8 +140,7 @@ const Deposit = () => {
           <P size="m-500">Stake</P>
         </Button>
       </div>
-      <div className="space" />
-      <div className="space" />
+      <div className="space" style={{ marginBottom: 5 }} />
       <div className="deposit-stake-options">
         <div>
           <div>
@@ -164,7 +156,8 @@ const Deposit = () => {
               role="presentation"
               onClick={toggleWithdrawForm}
             >
-              &nbsp;&nbsp; <u style={{ cursor: 'pointer' }}>Unstake</u>
+              &nbsp;&nbsp;{' '}
+              <u style={{ cursor: 'pointer', color: '#4A38AE' }}>Unstake</u>
             </P>
           </div>
 

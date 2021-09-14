@@ -5,7 +5,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 1040;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color:rgba(247, 247, 253, 0.9)
 }
 
 .modal-wrapper {
@@ -30,10 +30,10 @@
   position: absolute;
   top: 50%;
   right: 50%;
-  transform: translate(50%, -50%);
+  transform: translate(49%, -50%);
   margin: 0 auto;
-  max-width: 1145px;
-  width: 96%;
+  max-width: 1040px;
+  width: 100%;
   height: auto;
   padding: 20px;
 

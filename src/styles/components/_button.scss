@@ -19,14 +19,14 @@
   white-space: nowrap;
 
   &.secondary {
-    background-color: $color-gray;
+    background-color: $color-blue;
   }
   &.green {
     background-color: $green;
   }
 
   &.outline {
-    border: 1px solid $color-gray;
+    border: 1px solid $color-blue;
     box-sizing: border-box;
     border-radius: 12px;
     background-color: $white !important;
@@ -34,7 +34,7 @@
   }
 }
   button[disabled=disabled], button:disabled {
-    background: $color-gray !important;
+    background: $color-blue !important;
     opacity: 0.8;
     pointer-events:none;
     cursor: not-allowed;

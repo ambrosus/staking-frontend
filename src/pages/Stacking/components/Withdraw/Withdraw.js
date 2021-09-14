@@ -10,7 +10,9 @@ const Withdraw = ({ hideModal }) => {
   const [inputValue, setInputValue] = useState();
   return (
     <div className="deposit">
-      <div className="deposit-heading">Amount</div>
+      <div className="deposit-heading">
+        <P size="s-400s">Amount</P>
+      </div>
       <div className="deposit-actions">
         <Input
           onchange={setInputValue}
@@ -65,29 +67,31 @@ const Withdraw = ({ hideModal }) => {
         </div>
       </div>
       <div className="space" />
-      <div className="space" />
       <ButtonGroup>
-        <Button
-          buttonStyles={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            flexBasis: '257%',
-            marginRight: 20,
-          }}
-          type="green"
-          disabled={!inputValue}
-          onclick={() => alert(`Withdraw ${inputValue}`)}
-        >
-          <P size="m-500">Withdraw</P>
-        </Button>
-        <Button type="secondary" onclick={hideModal}>
-          <P size="m-500">Close</P>
-        </Button>
+        <div style={{ width: 665 }}>
+          <Button
+            buttonStyles={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              flexBasis: '257%',
+              marginRight: 20,
+            }}
+            type="green"
+            disabled={!inputValue}
+            onclick={() => alert(`Withdraw ${inputValue}`)}
+          >
+            <P size="m-500">Withdraw</P>
+          </Button>
+        </div>
+        <div style={{ minWidth: 319, width: 319 }}>
+          <Button type="secondary" onclick={hideModal}>
+            <P size="m-500">Close</P>
+          </Button>
+        </div>
       </ButtonGroup>
-      <div className="space" />
-      <div className="space" />
+      <div className="space" style={{ marginBottom: 5 }} />
       <div className="deposit-stake-options">
         <div>
           <P size="s-400" style={{ color: '#9198BB' }}>
