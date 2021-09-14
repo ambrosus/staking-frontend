@@ -31,9 +31,7 @@ const Stacking = observer(() => {
             My Address
           </P>
           <P size="xl-400" style={{ color: '#333333' }}>
-            {account
-              ? ` ${account.substr(0, 15)}...${account.substr(-15, 15)}`
-              : '...'}
+            {account && account}
             <ReactSVG
               data-tip
               data-for="copy-state"

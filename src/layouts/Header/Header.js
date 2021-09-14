@@ -21,7 +21,8 @@ export const Header = observer(() => {
 
   const logOut = async () => {
     deactivate();
-    storageService.clear();
+
+    storageService.set('auth', false);
     appStore.setAuth(false);
     if (!storageService.get('auth')) {
       history.push('/');
@@ -67,34 +68,36 @@ export const Header = observer(() => {
         </P>
       </div>
       {menu}
-      {account && (
-        <div className="wallet-connect">
-          {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
-          {account && (
-            <P size="xs-400">
-              {account
-                ? ` ${account.substr(0, 9)}...${account.substr(0, 9)}`
-                : '...'}
-            </P>
-          )}
-        </div>
-      )}
+      <div className="login">
+        {account && (
+          <div className="wallet-connect">
+            {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
+            {account && (
+              <P size="xs-400">
+                {account
+                  ? ` ${account.substr(0, 9)}...${account.substr(0, 9)}`
+                  : '...'}
+              </P>
+            )}
+          </div>
+        )}
 
-      {account ? (
-        <div role="presentation" className="header__btn" onClick={logOut}>
-          <ReactSVG src={loginIcon} wrapper="span" />
-          <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
-            Log Out
-          </P>
-        </div>
-      ) : (
-        <div role="presentation" className="header__btn" onClick={logIn}>
-          <ReactSVG src={loginIcon} wrapper="span" />
-          <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
-            Log in
-          </P>
-        </div>
-      )}
+        {account ? (
+          <div role="presentation" className="header__btn" onClick={logOut}>
+            <ReactSVG src={loginIcon} wrapper="span" />
+            <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
+              Log Out
+            </P>
+          </div>
+        ) : (
+          <div role="presentation" className="header__btn" onClick={logIn}>
+            <ReactSVG src={loginIcon} wrapper="span" />
+            <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
+              Log in
+            </P>
+          </div>
+        )}
+      </div>
     </div>
   );
 });

@@ -58,7 +58,7 @@ const Home = observer(() => {
       <div className="stacking">
         <div className="stacking__header">
           <div>Pool</div>
-          <div>Vault Assets</div>
+          <div>Total staked</div>
           <div>Net APY</div>
           <div style={{ maxWidth: 160 }}></div>
         </div>

@@ -2,7 +2,6 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { useEthers } from '@usedapp/core';
 import ReactTooltip from 'react-tooltip';
 
 import Button from '../../components/Button';
@@ -30,9 +29,45 @@ export const StackItem = ({
   const firstRender = useRef(true);
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
-  const { activateBrowserWallet, account } = useEthers();
   const history = useHistory();
+  const logIn = async () => {
+    if (
+      typeof window.ethereum !== 'undefined' ||
+      typeof window.web3 !== 'undefined'
+    ) {
+      await window.ethereum.request({
+        method: 'eth_requestAccounts',
+        params: [
+          {
+            eth_accounts: {},
+          },
+        ],
+      });
 
+      await window.ethereum
+        .request({
+          method: 'wallet_requestPermissions',
+          params: [
+            {
+              eth_accounts: {},
+            },
+          ],
+        })
+        .then((e) => {
+          if (e) {
+            history.push('/stacking');
+            storageService.set('auth', true);
+            appStore.setAuth(true);
+          }
+        })
+        .catch((e) => {
+          if (e) {
+            storageService.set('auth', false);
+            appStore.setAuth(false);
+          }
+        });
+    }
+  };
   function openCollapse() {
     const node = ref.current;
     requestAnimationFrame(() => {
@@ -133,11 +168,14 @@ export const StackItem = ({
           Alpha
         </P>
       </div>
-      <div className="item--header__my-stake">
-        <P style={{ textTransform: 'uppercase' }} size="l-400">
-          {comingSoon ? '' : '     3.5m AMB '}
-        </P>
-      </div>
+      {history.location.pathname === '/stacking' && (
+        <div className="item--header__my-stake">
+          <P style={{ textTransform: 'uppercase' }} size="l-400">
+            {comingSoon ? '' : '     3m AMB '}
+          </P>
+        </div>
+      )}
+
       <div className="item--header__vault-assets">
         <P style={{ textTransform: 'uppercase' }} size="l-400">
           {comingSoon ? '' : '     3.5m AMB '}
@@ -156,18 +194,11 @@ export const StackItem = ({
         </Button>
       ) : (
         <Button
-          onclick={() => {
+          onclick={async () => {
             if (expand) {
               setOpen((openContent) => !openContent);
             } else {
-              activateBrowserWallet();
-              setTimeout(() => {
-                if (account) {
-                  appStore.setAuth(true);
-                  storageService.set('auth', true);
-                  history.push('/stacking');
-                }
-              }, 500);
+              await logIn();
             }
           }}
         >

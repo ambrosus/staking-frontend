@@ -12,32 +12,53 @@ import walletIcon from '../../assets/svg/wallet.svg';
 import appStore from '../../store/app.store';
 
 export const MetamaskConnect = observer(() => {
-  const { activateBrowserWallet, activate, account } = useEthers();
+  const { account } = useEthers();
   const [auth, setAuth] = useState(false);
   const history = useHistory();
   const logIn = async () => {
-    activateBrowserWallet();
-  };
+    if (
+      typeof window.ethereum !== 'undefined' ||
+      typeof window.web3 !== 'undefined'
+    ) {
+      await window.ethereum.request({
+        method: 'eth_requestAccounts',
+        params: [
+          {
+            eth_accounts: {},
+          },
+        ],
+      });
 
+      await window.ethereum
+        .request({
+          method: 'wallet_requestPermissions',
+          params: [
+            {
+              eth_accounts: {},
+            },
+          ],
+        })
+        .then((e) => {
+          if (e) {
+            history.push('/stacking');
+            storageService.set('auth', true);
+            appStore.setAuth(true);
+            setAuth(account);
+          }
+        })
+        .catch((e) => {
+          if (e) {
+            storageService.set('auth', false);
+            appStore.setAuth(false);
+            setAuth(null);
+          }
+        });
+    }
+  };
   useEffect(() => {
-    setTimeout(async () => {
-      if (account) {
-        history.push('/');
-        storageService.set('auth', true);
-        appStore.setAuth(true);
-        setAuth(account);
-      } else {
-        storageService.set('auth', false);
-        if (!account) {
-          await activate();
-        } else {
-          setAuth(account);
-          history.push('/');
-          appStore.setAuth(true);
-          storageService.set('auth', true);
-        }
-      }
-    }, 500);
+    if (storageService.get('auth') === true) {
+      history.push('/stacking');
+    }
   }, [sessionStorage, account, auth, appStore.auth]);
   return auth ? (
     <div
