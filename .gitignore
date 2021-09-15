@@ -6,6 +6,8 @@
 .pnp.js
 .vscode
 .idea
+.env
+package-lock.json
 # testing
 /coverage
 
