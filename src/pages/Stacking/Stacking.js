@@ -1,9 +1,7 @@
-/*eslint-disable*/
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useEthers } from '@usedapp/core';
 import { observer } from 'mobx-react-lite';
-import { useHistory } from 'react-router';
 
 import StackItem from './StackingItem';
 import P from '../../components/P';
@@ -13,9 +11,8 @@ import ReactTooltip from 'react-tooltip';
 import appStore from '../../store/app.store';
 
 const Stacking = observer(() => {
-  const { account, activate, activateBrowserWallet } = useEthers();
+  const { account } = useEthers();
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const history = useHistory();
 
   useEffect(async () => {
     if (await account) {
@@ -65,7 +62,7 @@ const Stacking = observer(() => {
               Last 24 Hours
             </P>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              <span style={{ color: '#1ACD8C' }}> +3663 AMB </span>/ 34$
+              <span style={{ color: '#1ACD8C' }}> +3663 AMB </span> / 34$
             </P>
           </div>
         </div>

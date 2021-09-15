@@ -26,7 +26,6 @@ export const Header = observer(() => {
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          console.log(data);
           setUsdPrice(data[0]);
         }
       });
@@ -81,18 +80,23 @@ export const Header = observer(() => {
           <b>
             {' '}
             {usdPrice ? (
-              <Currency
-                symbol="$"
-                value={ambMounthUSD(1, usdPrice.current_price)}
-                fixed={5}
-              />
+              <span>
+                {' '}
+                $&nbsp;
+                <Currency
+                  style={{ color: '#333333' }}
+                  symbol=" "
+                  value={ambMounthUSD(1, usdPrice.current_price)}
+                  fixed={4}
+                />
+              </span>
             ) : (
               <span>...</span>
             )}
           </b>
           &nbsp;&nbsp;
           <span style={{ color: '#1ACD8C' }}>
-            {usdPrice && usdPrice?.market_cap_change_percentage_24h.toFixed(3)}%
+            {usdPrice && usdPrice?.price_change_percentage_24h.toFixed(3)}%
           </span>
         </P>
       </div>
