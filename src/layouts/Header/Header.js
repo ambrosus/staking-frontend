@@ -75,34 +75,42 @@ export const Header = observer(() => {
           <ReactSVG src={headerLogoSvg} wrapper="span" />
         </Link>
       </div>
-      <div className="amb-curse">
-        <P size="xs-400" style={{ color: '#333333' }}>
-          AMB Price{' '}
-          <b>
-            {' '}
-            {usdPrice ? (
-              <span>
-                {' '}
-                $&nbsp;
-                <Currency
-                  style={{ color: '#333333' }}
-                  symbol=" "
-                  value={ambMounthUSD(1, usdPrice)}
-                  fixed={4}
-                />
-              </span>
-            ) : (
-              <span>...</span>
-            )}
-          </b>
-          &nbsp;&nbsp;
-          <span style={{ color: '#1ACD8C' }}>
-            {percentChange24h && percentChange24h}%
-          </span>
-        </P>
-      </div>
-      {menu}
-      <div className="login">
+      <div
+        style={{
+          minWidth: 1040,
+          maxWidth: 1040,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div className="amb-curse">
+          <P size="xs-400" style={{ color: '#333333' }}>
+            AMB Price{' '}
+            <b>
+              {' '}
+              {usdPrice ? (
+                <span>
+                  {' '}
+                  $&nbsp;
+                  <Currency
+                    style={{ color: '#333333' }}
+                    symbol=" "
+                    value={ambMounthUSD(1, usdPrice)}
+                    fixed={4}
+                  />
+                </span>
+              ) : (
+                <span>...</span>
+              )}
+            </b>
+            &nbsp;&nbsp;
+            <span style={{ color: '#1ACD8C' }}>
+              {percentChange24h && percentChange24h}%
+            </span>
+          </P>
+        </div>
+        {menu}
         {account && (
           <div className="wallet-connect">
             {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
@@ -115,7 +123,8 @@ export const Header = observer(() => {
             )}
           </div>
         )}
-
+      </div>
+      <div className="login">
         {account ? (
           <div role="presentation" className="header__btn" onClick={logOut}>
             <ReactSVG src={loginIcon} wrapper="span" />

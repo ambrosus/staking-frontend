@@ -70,9 +70,7 @@ export const MetamaskConnect = observer(() => {
       }}
     >
       <ReactSVG src={walletIcon} wrapper="span" />
-      <P style={{ paddingLeft: 30, paddingRight: 30 }} size="m-500">
-        Go to stacking
-      </P>
+      <P size="m-500">&nbsp;&nbsp;Go to stacking</P>
     </div>
   ) : (
     <div
@@ -82,7 +80,7 @@ export const MetamaskConnect = observer(() => {
       onClick={logIn}
     >
       <ReactSVG src={walletIcon} wrapper="span" />
-      <P style={{ paddingLeft: 30, paddingRight: 30 }} size="m-500">
+      <P style={{ paddingLeft: 20 }} size="m-500">
         {CONNECT_TEXT}
       </P>
     </div>

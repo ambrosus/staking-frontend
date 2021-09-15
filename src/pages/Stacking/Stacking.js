@@ -6,9 +6,13 @@ import ReactTooltip from 'react-tooltip';
 
 import StackItem from './StackingItem';
 import P from '../../components/P';
-import copyIcon from '../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
 import appStore from '../../store/app.store';
+
+import errorOutlineIcon from '../../assets/svg/error_outline.svg';
+import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
+import last24hIcon from '../../assets/svg/last24h.svg';
+import copyIcon from '../../assets/svg/copy.svg';
 
 const Stacking = observer(() => {
   const { account } = useEthers();
@@ -51,7 +55,28 @@ const Stacking = observer(() => {
         <div className="info-block__stacked">
           <div className="info-block__stacked--total">
             <P size="m-400" style={{ paddingBottom: 5 }}>
-              Total Staked
+              <ReactTooltip id="total-staked" place="top" effect="solid">
+                Total Staked info
+              </ReactTooltip>
+              <ReactSVG
+                style={{
+                  paddingTop: 1,
+                }}
+                src={pieChartOutlineIcon}
+                wrapper="span"
+              />
+              &nbsp;Total Staked&nbsp;
+              <span>
+                <ReactSVG
+                  data-tip
+                  data-for="total-staked"
+                  style={{
+                    paddingTop: 3,
+                  }}
+                  src={errorOutlineIcon}
+                  wrapper="span"
+                />
+              </span>
             </P>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
               13.5 m AMB
@@ -59,10 +84,24 @@ const Stacking = observer(() => {
           </div>
           <div className="info-block__stacked--course">
             <P size="m-400" style={{ paddingBottom: 5 }}>
-              Last 24 Hours
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ReactSVG
+                  style={{
+                    paddingTop: 3,
+                  }}
+                  src={last24hIcon}
+                />{' '}
+                &nbsp;Last 24 Hours
+              </span>
             </P>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              <span style={{ color: '#1ACD8C' }}> +3663 AMB </span> / 34$
+              <span style={{ color: '#1ACD8C' }}> +3663 AMB </span>&nbsp; / 34$
             </P>
           </div>
         </div>

@@ -6,6 +6,7 @@
   display: flex;
   align-items: center;
   z-index: 100;
+  justify-content: space-between;
   padding: 0 40px 0 40px;
   .menu {
     display: flex;
@@ -22,18 +23,10 @@
   }
 
   &__logo {
-    flex-basis: 13%;
   }
 
   .amb-curse {
-    flex-basis: 21%;
   }
-.login{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  flex-basis: 35%;
   .wallet-connect {
     display: flex;
     flex-direction: row;
@@ -42,11 +35,16 @@
     padding: 10px;
     background: $whiteToGray;
     border-radius: 12px;
-    margin-right: 80px;
     p {
       padding-left: 10px;
     }
   }
+
+  .login{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
   .header__btn {
     display: flex;
     flex-direction: row;

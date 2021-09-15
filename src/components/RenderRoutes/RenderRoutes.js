@@ -7,6 +7,7 @@ import Home from '../../pages/Home';
 import Layout from '../../layouts/Layout';
 import Stacking from '../../pages/Stacking';
 import appStore from '../../store/app.store';
+import Footer from '../../layouts/Footer';
 
 const RenderRoutes = observer(() => {
   useEffect(() => {
@@ -19,7 +20,16 @@ const RenderRoutes = observer(() => {
   }, [appStore.auth, storageService.get('auth')]);
   return !appStore.auth ? (
     <Switch>
-      <Route path="/" exact render={() => <Home />} />
+      <Route
+        path="/"
+        exact
+        render={() => (
+          <>
+            <Home />
+            <Footer />
+          </>
+        )}
+      />
       <Redirect to="/" />
     </Switch>
   ) : (

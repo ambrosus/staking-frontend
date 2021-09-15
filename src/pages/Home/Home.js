@@ -8,9 +8,15 @@ import MetamaskConnect from '../../components/MetamaskConnect';
 import StackItem from '../Stacking/StackingItem';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
-import headerImage from '../../assets/images/header-image.svg';
+import CollapsedList from '../../components/CollapsedList';
 
 const Home = observer(() => {
+  const rows = {
+    a: 'Row 1',
+    b: 'Row 2',
+    c: 'Row 3',
+    d: 'Row 4',
+  };
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -41,9 +47,7 @@ const Home = observer(() => {
           <MetamaskConnect />
         </div>
         <div className="home__top--info">
-          <div className="info-image">
-            <ReactSVG src={headerImage} wrapper="span" />
-          </div>
+          <div className="info-image"></div>
           <div className="info-text">
             <P size="xxxl-500" style={{ paddingBottom: 10 }}>
               Maximize your AMB Rewards.
@@ -58,13 +62,16 @@ const Home = observer(() => {
       <div className="stacking">
         <div className="stacking__header">
           <div style={{ marginRight: 70 }}>Pool</div>
-          <div style={{ marginLeft: -42 }}>Total staked</div>
-          <div style={{ paddingLeft: 10 }}>Net APY</div>
+          <div style={{ marginLeft: -36 }}>Total staked</div>
+          <div style={{ paddingLeft: 7 }}>Net APY</div>
           <div style={{ maxWidth: 157 }}></div>
         </div>
         <StackItem lazy />
         <StackItem lazy />
         <StackItem comingSoon lazy />
+      </div>
+      <div className="faq">
+        <CollapsedList rows={rows} />
       </div>
     </div>
   );

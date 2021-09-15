@@ -17,7 +17,8 @@
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
-    padding: 20px 28px;;
+    padding: 20px 18px;;
+    height: 40px;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -53,7 +54,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin-right: 16px;
+        margin-right: 18px;
 
         p {
           margin-left: 20px;
@@ -63,15 +64,16 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-
         p {
-          margin-left: 20px;
+          margin-left: 18px;
         }
       }
       &__vault-assets{
-        margin-left: 10px;
+        margin-left: 16px;
       }
-
+&__apy{
+  margin-right: -7px;
+}
       button {
         max-width: 160px;
       }
@@ -166,7 +168,6 @@
   opacity: 0.5;
   border-radius: 2px;
 }
-
 .space {
   width: 100%;
   height: 15px;
@@ -212,7 +213,7 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-
+      min-width: 224px;
       padding: 17px 20px;
       margin-left: 40px;
 
