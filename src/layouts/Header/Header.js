@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { useEthers } from '@usedapp/core';
 import { ReactSVG } from 'react-svg';
@@ -17,16 +18,16 @@ import { ambMounthUSD } from '../../utils/constants';
 export const Header = observer(() => {
   const { account, activateBrowserWallet, deactivate, activate } = useEthers();
   const [usdPrice, setUsdPrice] = useState(0);
+  const [percentChange24h, setPercentChange24h] = useState(0);
   const history = useHistory();
   useEffect(async () => {
     await activateBrowserWallet();
-    fetch(
-      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=amber',
-    )
+    fetch('https://token.ambrosus.io')
       .then((response) => response.json())
       .then((data) => {
-        if (data) {
-          setUsdPrice(data[0]);
+        if (data?.data) {
+          setUsdPrice(data.data.price_usd);
+          setPercentChange24h(data.data.percent_change_24h);
         }
       });
   }, []);
@@ -86,7 +87,7 @@ export const Header = observer(() => {
                 <Currency
                   style={{ color: '#333333' }}
                   symbol=" "
-                  value={ambMounthUSD(1, usdPrice.current_price)}
+                  value={ambMounthUSD(1, usdPrice)}
                   fixed={4}
                 />
               </span>
@@ -96,7 +97,7 @@ export const Header = observer(() => {
           </b>
           &nbsp;&nbsp;
           <span style={{ color: '#1ACD8C' }}>
-            {usdPrice && usdPrice?.price_change_percentage_24h.toFixed(3)}%
+            {percentChange24h && percentChange24h}%
           </span>
         </P>
       </div>

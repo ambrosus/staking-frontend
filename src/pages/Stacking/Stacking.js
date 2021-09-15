@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useEthers } from '@usedapp/core';
 import { observer } from 'mobx-react-lite';
+import ReactTooltip from 'react-tooltip';
 
 import StackItem from './StackingItem';
 import P from '../../components/P';
 import copyIcon from '../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
-import ReactTooltip from 'react-tooltip';
 import appStore from '../../store/app.store';
 
 const Stacking = observer(() => {
@@ -78,7 +78,7 @@ const Stacking = observer(() => {
           <div style={{ flexBasis: 26 }}>My Stake</div>
           <div style={{ flexBasis: 29 }}>Total staked</div>
           <div style={{ flexBasis: 26 }}>Net APY</div>
-          <div style={{ maxWidth: 167 }} />
+          <div style={{ maxWidth: 167, marginRight: -6 }} />
         </div>
         <StackItem expand lazy />
         <StackItem expand lazy />
