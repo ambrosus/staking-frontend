@@ -79,7 +79,7 @@ const Stacking = observer(() => {
         <div className="stacking__header">
           <div style={{ flexBasis: 64 }}>Pool</div>
           <div style={{ flexBasis: 26 }}>My Stake</div>
-          <div style={{ flexBasis: 29 }}>Vault Assets</div>
+          <div style={{ flexBasis: 29 }}>Total staked</div>
           <div style={{ flexBasis: 26 }}>Net APY</div>
           <div style={{ maxWidth: 167 }} />
         </div>

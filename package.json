@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@ambrosus/react": "^0.16.4",
     "@usedapp/core": "^0.4.7",
     "classnames": "^2.3.1",
     "ethers": "^5.4.6",

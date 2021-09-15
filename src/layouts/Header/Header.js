@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useEthers } from '@usedapp/core';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
+import { Currency } from '@ambrosus/react';
 
 import headerLogoSvg from '../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../assets/svg/login.svg';
@@ -11,13 +12,25 @@ import greenLightIcon from '../../assets/svg/green-light-icon.svg';
 import P from '../../components/P';
 import storageService from '../../services/storage.service';
 import appStore from '../../store/app.store';
+import { ambMounthUSD } from '../../utils/constants';
 
 export const Header = observer(() => {
   const { account, activateBrowserWallet, deactivate, activate } = useEthers();
+  const [usdPrice, setUsdPrice] = useState(0);
   const history = useHistory();
   useEffect(async () => {
     await activateBrowserWallet();
-  }, [account]);
+    fetch(
+      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=amber',
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          console.log(data);
+          setUsdPrice(data[0]);
+        }
+      });
+  }, []);
 
   const logOut = async () => {
     deactivate();
@@ -63,8 +76,24 @@ export const Header = observer(() => {
         </Link>
       </div>
       <div className="amb-curse">
-        <P size="xs-400" style={{ color: '#9198BB' }}>
-          AMB Price <b>$ 0.0402 </b>-8.30%
+        <P size="xs-400" style={{ color: '#333333' }}>
+          AMB Price{' '}
+          <b>
+            {' '}
+            {usdPrice ? (
+              <Currency
+                symbol="$"
+                value={ambMounthUSD(1, usdPrice.current_price)}
+                fixed={5}
+              />
+            ) : (
+              <span>...</span>
+            )}
+          </b>
+          &nbsp;&nbsp;
+          <span style={{ color: '#1ACD8C' }}>
+            {usdPrice && usdPrice?.market_cap_change_percentage_24h.toFixed(3)}%
+          </span>
         </P>
       </div>
       {menu}
