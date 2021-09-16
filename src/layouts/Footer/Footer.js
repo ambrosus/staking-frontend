@@ -68,7 +68,7 @@ const Footer = observer(() => {
         </div>
 
         <div className="contact">
-          <a href="mailto:info@ambrosus.com">info@ambrosus.com</a>
+          <a href="mailto:info@ambrosus.com">info@ambrosus.io</a>
         </div>
       </div>
     </footer>
