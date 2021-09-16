@@ -18,6 +18,7 @@
 
       .menu {
         display: flex;
+        z-index: 3;
         flex-direction: row;
         justify-content: space-between;
         max-width: 230px;

@@ -51,21 +51,6 @@ function CollapsedList() {
         </div>
       </Block>
       <Block
-        title="Can I trade while staking?"
-        isOpen={state[2]}
-        onToggle={() => dispatch({ type: 'toggle', index: 2 })}
-      >
-        <div className="collapsed-content">
-          <P size="m-400">
-            Yes, you can trade your Proof of Stake coins. Your reward will be
-            calculated as long as these coins sit in your CEX.IO account, even
-            if you place an order. However, once your order is fulfilled, the
-            amount of staked coins will change, and your rewards will change
-            accordingly.
-          </P>
-        </div>
-      </Block>
-      <Block
         title="Where does it come from?
 "
         isOpen={state[3]}
