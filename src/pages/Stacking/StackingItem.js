@@ -116,7 +116,6 @@ export const StackItem = ({
       node.style.overflow = open ? 'initial' : 'hidden';
       if (open) {
         node.style.height = 'auto';
-        node.style.paddingBottom = '30px';
       }
       if (!open) {
         node.style.paddingBottom = '0px';
