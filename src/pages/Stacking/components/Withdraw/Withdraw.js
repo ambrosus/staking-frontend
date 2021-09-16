@@ -103,6 +103,6 @@ const Withdraw = ({ hideModal }) => {
   );
 };
 Withdraw.propTypes = {
-  hideModal: PropTypes.bool,
+  hideModal: PropTypes.func,
 };
 export default Withdraw;

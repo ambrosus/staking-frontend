@@ -35,6 +35,7 @@ export const StackItem = ({
       typeof window.ethereum !== 'undefined' ||
       typeof window.web3 !== 'undefined'
     ) {
+      await window.ethereum.enable();
       await window.ethereum.request({
         method: 'eth_requestAccounts',
         params: [
@@ -194,6 +195,7 @@ export const StackItem = ({
         </Button>
       ) : (
         <Button
+          type="primary"
           onclick={async () => {
             if (expand) {
               setOpen((openContent) => !openContent);
@@ -253,7 +255,10 @@ export const StackItem = ({
 };
 StackItem.propTypes = {
   expand: PropTypes.bool,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   transitionDuration: PropTypes.string,
   transitionTimingFunction: PropTypes.string,
   open: PropTypes.bool,

@@ -50,7 +50,10 @@
       max-width: 976px;
       margin: 0 auto;
       position: absolute;
-      right: 15%;
+      right: 50%;
+      left: 50%;
+      width: 100%;
+      transform: translate(-50%,0%);
       top: 26px;
       .info-image {
         width: 332px;

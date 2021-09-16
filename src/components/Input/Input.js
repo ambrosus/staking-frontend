@@ -22,7 +22,7 @@ const Input = ({ type = 'number', onchange, iconLeft, placeholder, value }) => (
 
 Input.propTypes = {
   type: PropTypes.string,
-  iconLeft: PropTypes.string,
+  iconLeft: PropTypes.bool,
   onchange: PropTypes.func,
   placeholder: PropTypes.string,
   value: PropTypes.number,

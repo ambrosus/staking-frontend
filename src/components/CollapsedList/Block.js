@@ -10,16 +10,17 @@ export default function Block({ isOpen, title, onToggle, children }) {
         <span>{title}</span>
         <Down isOpen={isOpen} />
       </button>
-      <Collapse layoutEffect isOpen={isOpen}>
-        {children}
-      </Collapse>
+      <Collapse isOpen={isOpen}>{children}</Collapse>
       <div className="bottom-line" />
     </div>
   );
 }
 Block.propTypes = {
   isOpen: PropTypes.bool,
-  onToggle: PropTypes.bool,
+  onToggle: PropTypes.func,
   title: PropTypes.string,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };

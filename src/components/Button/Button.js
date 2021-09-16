@@ -29,7 +29,10 @@ Button.propTypes = {
   buttonStyles: PropTypes.object,
   priority: PropTypes.string,
   type: PropTypes.string,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default Button;

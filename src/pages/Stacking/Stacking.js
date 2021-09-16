@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useEthers } from '@usedapp/core';
 import { observer } from 'mobx-react-lite';
 import ReactTooltip from 'react-tooltip';
+import Web3 from 'web3';
 
 import StackItem from './StackingItem';
 import P from '../../components/P';
@@ -15,12 +16,27 @@ import last24hIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
 
 const Stacking = observer(() => {
-  const { account } = useEthers();
+  const [account, setAccount] = useState(null);
+  const { account: acc } = useEthers();
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
+  const web3 = new Web3(window.web3.currentProvider);
+  console.log(web3);
 
   useEffect(async () => {
-    if (await account) {
-      appStore.setAuth(true);
+    if (
+      typeof window.ethereum !== 'undefined' ||
+      typeof window.web3 !== 'undefined'
+    ) {
+      await window.ethereum.enable();
+      web3.eth.getAccounts().then((accounts) => {
+        if (accounts) {
+          setAccount(accounts[0]);
+          appStore.setAuth(true);
+        } else {
+          setAccount(acc);
+          appStore.setAuth(true);
+        }
+      });
     }
   }, [appStore.auth, account]);
 
