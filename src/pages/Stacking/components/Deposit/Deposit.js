@@ -17,11 +17,7 @@ const Deposit = () => {
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   const withdrawForm = (
-    <Modal
-      isShowing={isWithdrawShowForm}
-      hide={toggleWithdrawForm}
-      title="Login"
-    >
+    <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
       <>
         <div className="modal--modal-body__header">
           <div>Pool</div>

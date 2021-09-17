@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import ReactNotifications from 'react-notifications-component';
 
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
@@ -38,6 +39,7 @@ const Home = observer(() => {
 
   return (
     <div className="home">
+      <ReactNotifications />
       <div className="home__top">
         <div className="home__top--header">
           <div className="home__top--logo">
