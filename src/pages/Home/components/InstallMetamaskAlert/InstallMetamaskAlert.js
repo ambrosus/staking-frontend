@@ -15,7 +15,11 @@ export default function InstallMetamaskAlert() {
           flexDirection: 'column',
         }}
       >
-        <img width="50%" alt="MetaMast extension" src={mmLogoIcon} />
+        <img
+          alt="MetaMast extension"
+          className="download-block__img"
+          src={mmLogoIcon}
+        />
         <div className="download-block">
           <a
             id="downloadButtonPage"
