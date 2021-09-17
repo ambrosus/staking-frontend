@@ -3,56 +3,79 @@ import { ReactSVG } from 'react-svg';
 import { useEthers } from '@usedapp/core';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router';
+import { store as alertStore } from 'react-notifications-component';
 
 import P from '../P';
 import storageService from '../../services/storage.service';
 import { CONNECT_TEXT } from '../../utils/constants';
+import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert/InstallMetamaskAlert';
+import appStore from '../../store/app.store';
 
 import walletIcon from '../../assets/svg/wallet.svg';
-import appStore from '../../store/app.store';
 
 export const MetamaskConnect = observer(() => {
   const { account } = useEthers();
   const [auth, setAuth] = useState(false);
   const history = useHistory();
   const logIn = async () => {
-    if (
-      typeof window.ethereum !== 'undefined' ||
-      typeof window.web3 !== 'undefined'
-    ) {
-      await window.ethereum.request({
-        method: 'eth_requestAccounts',
-        params: [
-          {
-            eth_accounts: {},
-          },
-        ],
+    if (window.ethereum) {
+      handleEthereum();
+    } else {
+      window.addEventListener('ethereum#initialized', handleEthereum, {
+        once: true,
       });
+      setTimeout(handleEthereum, 1000);
+    }
 
-      await window.ethereum
-        .request({
-          method: 'wallet_requestPermissions',
-          params: [
-            {
-              eth_accounts: {},
-            },
-          ],
-        })
-        .then((e) => {
-          if (e) {
-            history.push('/stacking');
-            storageService.set('auth', true);
-            appStore.setAuth(true);
-            setAuth(account);
-          }
-        })
-        .catch((e) => {
-          if (e) {
-            storageService.set('auth', false);
-            appStore.setAuth(false);
-            setAuth(null);
-          }
+    async function handleEthereum() {
+      const { ethereum } = window;
+      if (ethereum && ethereum.isMetaMask) {
+        if (
+          typeof window.ethereum !== 'undefined' ||
+          typeof window.web3 !== 'undefined'
+        ) {
+          await window.ethereum.request({
+            method: 'eth_requestAccounts',
+            params: [
+              {
+                eth_accounts: {},
+              },
+            ],
+          });
+
+          await window.ethereum
+            .request({
+              method: 'wallet_requestPermissions',
+              params: [
+                {
+                  eth_accounts: {},
+                },
+              ],
+            })
+            .then((e) => {
+              if (e) {
+                history.push('/stacking');
+                storageService.set('auth', true);
+                appStore.setAuth(true);
+                setAuth(account);
+              }
+            })
+            .catch((e) => {
+              if (e) {
+                storageService.set('auth', false);
+                appStore.setAuth(false);
+                setAuth(null);
+              }
+            });
+        }
+      } else {
+        alertStore.addNotification({
+          content: InstallMetamaskAlert,
+          container: 'bottom-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
         });
+      }
     }
   };
   useEffect(() => {

@@ -20,8 +20,6 @@ const Stacking = observer(() => {
   const { account: acc } = useEthers();
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   const web3 = new Web3(window.web3.currentProvider);
-  console.log(web3);
-
   useEffect(async () => {
     if (
       typeof window.ethereum !== 'undefined' ||
