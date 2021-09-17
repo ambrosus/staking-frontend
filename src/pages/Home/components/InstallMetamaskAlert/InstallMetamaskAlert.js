@@ -25,7 +25,7 @@ export default function InstallMetamaskAlert() {
             target="_blank"
             className="blue-button-solid large-button w-button"
           >
-            Install MetaMask for Chrome
+            Install MetaMask
           </a>
         </div>
       </div>
