@@ -12,12 +12,6 @@ import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import CollapsedList from '../../components/CollapsedList';
 
 const Home = observer(() => {
-  const rows = {
-    a: 'Row 1',
-    b: 'Row 2',
-    c: 'Row 3',
-    d: 'Row 4',
-  };
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -73,7 +67,7 @@ const Home = observer(() => {
         <StackItem comingSoon lazy />
       </div>
       <div className="faq">
-        <CollapsedList rows={rows} />
+        <CollapsedList />
       </div>
     </div>
   );
