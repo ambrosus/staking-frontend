@@ -38,7 +38,7 @@
     width: 100%;
     height: auto;
     background: #FFFFFF;
-    box-shadow: 0px 4px 24px rgba(55, 29, 199, 0.1);
+    box-shadow: 0 4px 24px rgba(55, 29, 199, 0.1);
     border-radius: 12px;
 
     .item--header {
@@ -145,11 +145,36 @@
   .deposit-actions {
     display: flex;
     flex-direction: row !important;
-
-    > div {
-      width: 64px;
-      margin-left: 20px;
+    @media (max-width: 480px) {
+      flex-direction: column !important;
     }
+
+    &__buttons {
+      flex-direction: row;
+      display: flex;
+
+      > div {
+        width: 64px;
+        margin-left: 20px;
+      }
+
+      > div {
+        margin-top: 0;
+      }
+
+      @media (max-width: 480px) {
+        flex-direction: row !important;
+        justify-content: space-between;
+        > div:not(:first-child) {
+          margin-left: 5px !important;
+        }
+        > div {
+          margin-left: 0px !important;
+          margin-top: 15px;
+        }
+      }
+    }
+
 
     > button {
       display: flex;
@@ -167,8 +192,11 @@
   .deposit-stake-options {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
+    justify-content: flex-start;
+    @media (max-width: 480px) {
+      align-items: flex-start;
+      flex-direction: column;
+    }
     div {
       display: flex;
       align-items: center;
@@ -199,6 +227,9 @@
   flex-direction: row;
   background-color: white;
   width: 100%;
+  @media (max-width: 480px) {
+    height: auto;
+  }
 
   &__address {
     width: 100%;
@@ -206,6 +237,9 @@
     align-items: flex-start;
     flex-direction: column;
     justify-content: center;
+    @media (max-width: 480px) {
+      align-items: center;
+    }
   }
 
   &__stacked {
@@ -239,5 +273,29 @@
       box-sizing: border-box;
       border-radius: 12px;
     }
+
+    @media (max-width: 480px) {
+      height: auto;
+      flex-direction: column;
+      justify-content: center;
+      &--total {
+        margin-top: 20px;
+      }
+
+      &--course {
+        margin-left: 0;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.close-btn {
+  min-width: 319px;
+  width: 319px;
+  @media (max-width: 480px) {
+    min-width: 100px;
+    width: auto;
   }
 }

@@ -21,49 +21,51 @@ const Withdraw = ({ hideModal }) => {
           value={inputValue}
           type="number"
         />
-        <div>
-          <Button
-            buttonStyles={{ height: 48 }}
-            priority="secondary"
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`25% ${inputValue}`)}
-          >
-            <P size="xs-500">25%</P>
-          </Button>
-        </div>
-        <div>
-          <Button
-            buttonStyles={{ height: 48 }}
-            priority="secondary"
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`50% ${inputValue}`)}
-          >
-            <P size="xs-500">50%</P>
-          </Button>
-        </div>
-        <div>
-          <Button
-            buttonStyles={{ height: 48 }}
-            priority="secondary"
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`75% ${inputValue}`)}
-          >
-            <P size="xs-500">75%</P>
-          </Button>
-        </div>
-        <div>
-          <Button
-            priority="secondary"
-            buttonStyles={{ height: 48 }}
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`100% ${inputValue}`)}
-          >
-            <P size="xs-500">100%</P>
-          </Button>
+        <div className="deposit-actions__buttons">
+          <div>
+            <Button
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`25% ${inputValue}`)}
+            >
+              <P size="xs-500">25%</P>
+            </Button>
+          </div>
+          <div>
+            <Button
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`50% ${inputValue}`)}
+            >
+              <P size="xs-500">50%</P>
+            </Button>
+          </div>
+          <div>
+            <Button
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`75% ${inputValue}`)}
+            >
+              <P size="xs-500">75%</P>
+            </Button>
+          </div>
+          <div>
+            <Button
+              priority="secondary"
+              buttonStyles={{ height: 48 }}
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`100% ${inputValue}`)}
+            >
+              <P size="xs-500">100%</P>
+            </Button>
+          </div>
         </div>
       </div>
       <div className="space" />
@@ -85,7 +87,7 @@ const Withdraw = ({ hideModal }) => {
             <P size="m-500">Withdraw</P>
           </Button>
         </div>
-        <div style={{ minWidth: 319, width: 319 }}>
+        <div className="close-btn">
           <Button type="secondary" onclick={hideModal}>
             <P size="m-500">Close</P>
           </Button>

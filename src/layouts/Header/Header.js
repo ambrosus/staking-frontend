@@ -110,15 +110,7 @@ export const Header = observer(() => {
           <ReactSVG src={headerLogoSvg} wrapper="span" />
         </Link>
       </div>
-      <div
-        style={{
-          minWidth: 1040,
-          maxWidth: 1040,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <div className="header__items">
         <div className="amb-curse">
           <P size="xs-400" style={{ color: '#333333' }}>
             AMB Price{' '}

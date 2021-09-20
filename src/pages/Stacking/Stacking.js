@@ -45,7 +45,7 @@ const Stacking = observer(() => {
           <P size="m-400" style={{ paddingBottom: 5 }}>
             My Address
           </P>
-          <P size="xl-400" style={{ color: '#333333' }}>
+          <P size="xl-400" style={{ color: '#333333', wordBreak: 'break-all' }}>
             {account && account}
             <ReactSVG
               data-tip
@@ -68,30 +68,32 @@ const Stacking = observer(() => {
         </div>
         <div className="info-block__stacked">
           <div className="info-block__stacked--total">
-            <P size="m-400" style={{ paddingBottom: 5 }}>
+            <div>
               <ReactTooltip id="total-staked" place="top" effect="solid">
                 Total Staked info
               </ReactTooltip>
-              <ReactSVG
-                style={{
-                  paddingTop: 1,
-                }}
-                src={pieChartOutlineIcon}
-                wrapper="span"
-              />
-              &nbsp;Total Staked&nbsp;
-              <span>
+              <P size="m-400" style={{ paddingBottom: 5 }}>
                 <ReactSVG
-                  data-tip
-                  data-for="total-staked"
                   style={{
-                    paddingTop: 3,
+                    paddingTop: 1,
                   }}
-                  src={errorOutlineIcon}
+                  src={pieChartOutlineIcon}
                   wrapper="span"
                 />
-              </span>
-            </P>
+                &nbsp;Total Staked&nbsp;
+                <span>
+                  <ReactSVG
+                    data-tip
+                    data-for="total-staked"
+                    style={{
+                      paddingTop: 3,
+                    }}
+                    src={errorOutlineIcon}
+                    wrapper="span"
+                  />
+                </span>
+              </P>
+            </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
               13.5 m AMB
             </P>

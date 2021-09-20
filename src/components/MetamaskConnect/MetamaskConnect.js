@@ -12,6 +12,7 @@ import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAle
 import appStore from '../../store/app.store';
 
 import walletIcon from '../../assets/svg/wallet.svg';
+import FromPhoneDeviseEnter from '../../pages/Home/components/FromPhoneDeviseEnter';
 
 export const MetamaskConnect = observer(() => {
   const { account } = useEthers();
@@ -30,44 +31,43 @@ export const MetamaskConnect = observer(() => {
     async function handleEthereum() {
       const { ethereum } = window;
       if (ethereum && ethereum.isMetaMask) {
-        if (
-          typeof window.ethereum !== 'undefined' ||
-          typeof window.web3 !== 'undefined'
-        ) {
-          await window.ethereum.request({
-            method: 'eth_requestAccounts',
+        await window.ethereum.enable();
+
+        await window.ethereum
+          .request({
+            method: 'wallet_requestPermissions',
             params: [
               {
                 eth_accounts: {},
               },
             ],
+          })
+          .then((e) => {
+            if (e) {
+              history.push('/stacking');
+              storageService.set('auth', true);
+              appStore.setAuth(true);
+              setAuth(account);
+            }
+          })
+          .catch((e) => {
+            if (e) {
+              storageService.set('auth', false);
+              appStore.setAuth(false);
+              setAuth(null);
+            }
           });
-
-          await window.ethereum
-            .request({
-              method: 'wallet_requestPermissions',
-              params: [
-                {
-                  eth_accounts: {},
-                },
-              ],
-            })
-            .then((e) => {
-              if (e) {
-                history.push('/stacking');
-                storageService.set('auth', true);
-                appStore.setAuth(true);
-                setAuth(account);
-              }
-            })
-            .catch((e) => {
-              if (e) {
-                storageService.set('auth', false);
-                appStore.setAuth(false);
-                setAuth(null);
-              }
-            });
-        }
+      }
+      if (
+        navigator.userAgent.includes('iPhone') ||
+        navigator.userAgent.includes('Android')
+      ) {
+        alertStore.addNotification({
+          content: FromPhoneDeviseEnter,
+          container: 'bottom-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
+        });
       } else {
         alertStore.addNotification({
           content: InstallMetamaskAlert,

@@ -81,49 +81,51 @@ const Deposit = () => {
           value={inputValue}
           type="number"
         />
-        <div>
-          <Button
-            buttonStyles={{ height: 48 }}
-            priority="secondary"
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`25% ${inputValue}`)}
-          >
-            <P size="xs-500">25%</P>
-          </Button>
-        </div>
-        <div>
-          <Button
-            buttonStyles={{ height: 48 }}
-            priority="secondary"
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`50% ${inputValue}`)}
-          >
-            <P size="xs-500">50%</P>
-          </Button>
-        </div>
-        <div>
-          <Button
-            priority="secondary"
-            buttonStyles={{ height: 48 }}
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`75% ${inputValue}`)}
-          >
-            <P size="xs-500">75%</P>
-          </Button>
-        </div>
-        <div>
-          <Button
-            priority="secondary"
-            buttonStyles={{ height: 48 }}
-            type="outline"
-            disabled={!inputValue}
-            onclick={() => alert(`100% ${inputValue}`)}
-          >
-            <P size="xs-500">100%</P>
-          </Button>
+        <div className="deposit-actions__buttons">
+          <div>
+            <Button
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`25% ${inputValue}`)}
+            >
+              <P size="xs-500">25%</P>
+            </Button>
+          </div>
+          <div>
+            <Button
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`50% ${inputValue}`)}
+            >
+              <P size="xs-500">50%</P>
+            </Button>
+          </div>
+          <div>
+            <Button
+              priority="secondary"
+              buttonStyles={{ height: 48 }}
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`75% ${inputValue}`)}
+            >
+              <P size="xs-500">75%</P>
+            </Button>
+          </div>
+          <div>
+            <Button
+              priority="secondary"
+              buttonStyles={{ height: 48 }}
+              type="outline"
+              disabled={!inputValue}
+              onclick={() => alert(`100% ${inputValue}`)}
+            >
+              <P size="xs-500">100%</P>
+            </Button>
+          </div>
         </div>
       </div>
       <div className="space" style={{ marginBottom: 5 }} />
@@ -138,27 +140,28 @@ const Deposit = () => {
       </div>
       <div className="space" style={{ marginBottom: 5 }} />
       <div className="deposit-stake-options">
-        <div>
-          <div>
-            <ReactSVG
-              data-tip
-              data-for="unstake"
-              src={infoIcon}
-              wrapper="span"
-            />
-            <P
-              size="s-400"
-              style={{ color: '#9198BB' }}
-              role="presentation"
-              onClick={toggleWithdrawForm}
-            >
-              &nbsp;&nbsp;{' '}
-              <u style={{ cursor: 'pointer', color: '#4A38AE' }}>Unstake</u>
-            </P>
-          </div>
-
-          <P size="s-400-gray" style={{ color: '#9198BB' }}>
-            &nbsp;&nbsp;&nbsp; Available for withdraw: 788.899 AMB
+        <div className="flex" style={{ marginBottom: 5 }}>
+          <ReactSVG
+            style={{ marginTop: 3 }}
+            data-tip
+            data-for="unstake"
+            src={infoIcon}
+            wrapper="span"
+          />
+          <P
+            size="s-400"
+            style={{ color: '#9198BB' }}
+            role="presentation"
+            onClick={toggleWithdrawForm}
+          >
+            &nbsp;{' '}
+            <u style={{ cursor: 'pointer', color: '#4A38AE' }}>Unstake</u>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          </P>
+        </div>
+        <div style={{ marginBottom: 5 }}>
+          <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
+            Available for withdraw: 788.899 AMB
           </P>
 
           <ReactTooltip id="unstake" place="top" effect="solid">

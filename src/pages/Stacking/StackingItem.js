@@ -155,7 +155,18 @@ export const StackItem = ({
     }
   }, [renderChildren]);
   const stackHeader = (
-    <div className="item--header">
+    <div
+      className="item--header"
+      role="presentation"
+      onClick={async (e) => {
+        e.stopPropagation();
+        if (expand) {
+          setOpen((openContent) => !openContent);
+        } else {
+          await logIn();
+        }
+      }}
+    >
       <div className="item--header__pool">
         <ReactSVG src={avatarIcon} wrapper="span" />
         <P
@@ -186,33 +197,35 @@ export const StackItem = ({
           {comingSoon ? '' : '32.87%'}
         </P>
       </div>
-      {comingSoon ? (
-        <Button disabled priority="secondary">
-          <P style={{ textTransform: 'uppercase' }} size="m-500">
-            COMING SOON
-          </P>
-        </Button>
-      ) : (
-        <Button
-          type="primary"
-          onclick={async () => {
-            if (expand) {
-              setOpen((openContent) => !openContent);
-            } else {
-              await logIn();
-            }
-          }}
-        >
-          <P style={{ textTransform: 'uppercase' }} size="m-500">
-            {expand && (open ? 'HIDE' : 'SHOW')}
-            {!expand && 'STAKE'}
-          </P>
-        </Button>
-      )}
+      <div className="mobile-display-none">
+        {comingSoon ? (
+          <Button disabled priority="secondary">
+            <P style={{ textTransform: 'uppercase' }} size="m-500">
+              COMING SOON
+            </P>
+          </Button>
+        ) : (
+          <Button
+            type="primary"
+            onclick={async () => {
+              if (expand) {
+                setOpen((openContent) => !openContent);
+              } else {
+                await logIn();
+              }
+            }}
+          >
+            <P style={{ textTransform: 'uppercase' }} size="m-500">
+              {expand && (open ? 'HIDE' : 'SHOW')}
+              {!expand && 'STAKE'}
+            </P>
+          </Button>
+        )}
+      </div>
     </div>
   );
   return (
-    <div className="stack-item">
+    <div role="presentation" className="stack-item">
       {stackHeader}
       <div
         ref={ref}
@@ -225,19 +238,21 @@ export const StackItem = ({
         <div className="line" />
         <div className="collapsed-content">
           <div className="collapsed-content__header">
-            <P size="xxl-500">
-              Deposit AMB&nbsp;
-              <ReactSVG
-                data-tip
-                data-for="deposit"
-                src={infoIcon}
-                wrapper="span"
-              />
+            <>
+              <P size="xxl-500">
+                Deposit AMB&nbsp;
+                <ReactSVG
+                  data-tip
+                  data-for="deposit"
+                  src={infoIcon}
+                  wrapper="span"
+                />
+              </P>
               <ReactTooltip id="deposit" place="top" effect="solid">
                 Ну тут какая-то поdсказка которая сообщает о том о сём. И
                 человек себе сразу понимает что к чему.
               </ReactTooltip>
-            </P>
+            </>
             <P size="s-400">You staked: 264.000 AMB</P>
             <P size="s-400" style={{ fontWeight: 500 }}>
               Available for stake: 2.2m AMB
