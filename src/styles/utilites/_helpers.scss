@@ -1,4 +1,5 @@
 .mobile-display-none {
+  max-width: 160px;
   @media (max-width: 480px) {
     display: none;
   }
