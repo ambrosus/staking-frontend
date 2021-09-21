@@ -57,6 +57,13 @@ export const MetamaskConnect = observer(() => {
               setAuth(null);
             }
           });
+      } else {
+        alertStore.addNotification({
+          content: InstallMetamaskAlert,
+          container: 'bottom-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
+        });
       }
       if (
         navigator.userAgent.includes('iPhone') ||
@@ -64,13 +71,6 @@ export const MetamaskConnect = observer(() => {
       ) {
         alertStore.addNotification({
           content: FromPhoneDeviseEnter,
-          container: 'bottom-right',
-          animationIn: ['animated', 'fadeIn'],
-          animationOut: ['animated', 'fadeOut'],
-        });
-      } else {
-        alertStore.addNotification({
-          content: InstallMetamaskAlert,
           container: 'bottom-right',
           animationIn: ['animated', 'fadeIn'],
           animationOut: ['animated', 'fadeOut'],

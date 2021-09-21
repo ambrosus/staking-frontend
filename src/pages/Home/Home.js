@@ -57,9 +57,9 @@ const Home = observer(() => {
       </div>
       <div className="stacking">
         <div className="stacking__header">
-          <div style={{ marginRight: 70 }}>Pool</div>
+          <div className="stacking__header__clearfix-pool">Pool</div>
           <div style={{ marginLeft: -36 }}>Total staked</div>
-          <div style={{ paddingLeft: 7 }}>Net APY</div>
+          <div className="stacking__header__clearfix-apy">Net APY</div>
           <div style={{ maxWidth: 157 }}></div>
         </div>
         <StackItem lazy />

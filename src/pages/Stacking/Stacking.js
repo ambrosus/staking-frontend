@@ -45,7 +45,7 @@ const Stacking = observer(() => {
           <P size="m-400" style={{ paddingBottom: 5 }}>
             My Address
           </P>
-          <P size="xl-400" style={{ color: '#333333', wordBreak: 'break-all' }}>
+          <P size="xl-400" style={{ color: '#333333' }}>
             {account && account}
             <ReactSVG
               data-tip

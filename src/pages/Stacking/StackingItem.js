@@ -155,18 +155,7 @@ export const StackItem = ({
     }
   }, [renderChildren]);
   const stackHeader = (
-    <div
-      className="item--header"
-      role="presentation"
-      onClick={async (e) => {
-        e.stopPropagation();
-        if (expand) {
-          setOpen((openContent) => !openContent);
-        } else {
-          await logIn();
-        }
-      }}
-    >
+    <div className="item--header" role="presentation">
       <div className="item--header__pool">
         <ReactSVG src={avatarIcon} wrapper="span" />
         <P
@@ -197,31 +186,31 @@ export const StackItem = ({
           {comingSoon ? '' : '32.87%'}
         </P>
       </div>
-      <div className="mobile-display-none">
-        {comingSoon ? (
+      {comingSoon ? (
+        <div style={{ minWidth: 160, maxWidth: 160 }}>
           <Button disabled priority="secondary">
             <P style={{ textTransform: 'uppercase' }} size="m-500">
               COMING SOON
             </P>
           </Button>
-        ) : (
-          <Button
-            type="primary"
-            onclick={async () => {
-              if (expand) {
-                setOpen((openContent) => !openContent);
-              } else {
-                await logIn();
-              }
-            }}
-          >
-            <P style={{ textTransform: 'uppercase' }} size="m-500">
-              {expand && (open ? 'HIDE' : 'SHOW')}
-              {!expand && 'STAKE'}
-            </P>
-          </Button>
-        )}
-      </div>
+        </div>
+      ) : (
+        <Button
+          type="primary"
+          onclick={async () => {
+            if (expand) {
+              setOpen((openContent) => !openContent);
+            } else {
+              await logIn();
+            }
+          }}
+        >
+          <P style={{ textTransform: 'uppercase' }} size="m-500">
+            {expand && (open ? 'HIDE' : 'SHOW')}
+            {!expand && 'STAKE'}
+          </P>
+        </Button>
+      )}
     </div>
   );
   return (

@@ -25,6 +25,19 @@
     line-height: 17px;
     color: #9198BB;
 
+    &__clearfix-pool {
+      margin-right: 70px;
+      @media (max-width: 480px) {
+        margin-right: 108px;
+      }
+    }
+    &__clearfix-apy {
+      padding-left: 7px;
+      @media (max-width: 480px) {
+        padding-left: 0px;
+      }
+    }
+
     > div {
       flex: 1;
     }
@@ -197,6 +210,7 @@
       align-items: flex-start;
       flex-direction: column;
     }
+
     div {
       display: flex;
       align-items: center;
