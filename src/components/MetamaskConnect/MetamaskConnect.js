@@ -49,19 +49,37 @@ export const MetamaskConnect = observer(() => {
           })
           .then((e) => {
             if (e) {
+              history.push('/stacking');
               storageService.set('auth', true);
               appStore.setAuth(true);
-              const provider = new ethers.providers.Web3Provider(ethereum);
-              provider.listAccounts().then((accounts) => {
-                const defaultAccount = accounts[0];
-                if (defaultAccount) {
-                  setAccount(defaultAccount);
-                  appStore.setAuth(true);
-                } else {
-                  storageService.set('auth', false);
-                }
-              });
+              const provider = new ethers.providers.Web3Provider(
+                window.ethereum,
+              );
+              // const signer = provider.getSigner();
+              provider
+                .listAccounts()
+                .then((accounts) => {
+                  const defaultAccount = accounts[0];
+                  if (defaultAccount) {
+                    setAccount(defaultAccount);
+                    appStore.setAuth(true);
+                  } else {
+                    storageService.set('auth', false);
+                  }
+                })
+                .catch((error) => {
+                  if (error) {
+                    storageService.set('auth', false);
+                  }
+                });
               setAuth(account);
+            }
+          })
+          .catch((e) => {
+            if (e) {
+              storageService.set('auth', false);
+              appStore.setAuth(false);
+              setAuth(null);
             }
           });
       } else {

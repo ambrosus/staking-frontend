@@ -4,16 +4,19 @@ import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
+import { store as alertStore } from 'react-notifications-component';
 
 import Button from '../../components/Button';
 import P from '../../components/P';
 import Deposit from './components/Deposit';
 
-import infoIcon from '../../assets/svg/info.svg';
-import avatarIcon from '../../assets/svg/avatar.svg';
 import appStore from '../../store/app.store';
 import storageService from '../../services/storage.service';
+import InstallMetamaskAlert from '../Home/components/InstallMetamaskAlert';
+import FromPhoneDeviseEnter from '../Home/components/FromPhoneDeviseEnter';
 
+import infoIcon from '../../assets/svg/info.svg';
+import avatarIcon from '../../assets/svg/avatar.svg';
 export const StackItem = ({
   expand,
   comingSoon,
@@ -23,8 +26,10 @@ export const StackItem = ({
   transitionDuration = '200ms',
   transitionTimingFunction = 'ease-in',
   onComplete,
-  poolInfo,
-  availableForStake,
+  poolInfo = {
+    abi: [],
+  },
+  availableForStake = 0,
   ...restProps
 }) => {
   const [open, setOpen] = useState(false);
@@ -32,44 +37,12 @@ export const StackItem = ({
   const firstRender = useRef(true);
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
-  const [myStake, setMyStake] = useState({});
-  const history = useHistory();
+  const [totalStake, setTotalStake] = useState(0);
   const { ethereum } = window.ethereum;
-  useEffect(() => {
-    if (!open) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const poolContract = new ethers.Contract(
-        '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
-        poolInfo.abi,
-        signer,
-      );
-
-      if (poolContract) {
-        const iStaking = poolContract.getTotalStake().then((e) => {
-          setMyStake(ethers.utils.formatEther(e));
-        });
-        console.log(iStaking);
-      }
-    }
-  }, []);
-
+  const history = useHistory();
   const logIn = async () => {
-    if (
-      typeof window.ethereum !== 'undefined' ||
-      typeof window.web3 !== 'undefined'
-    ) {
-      await window.ethereum.enable();
-      await window.ethereum.request({
-        method: 'eth_requestAccounts',
-        params: [
-          {
-            eth_accounts: {},
-          },
-        ],
-      });
-
-      await window.ethereum
+    if (ethereum && ethereum.isMetaMask) {
+      await ethereum
         .request({
           method: 'wallet_requestPermissions',
           params: [
@@ -83,6 +56,13 @@ export const StackItem = ({
             history.push('/stacking');
             storageService.set('auth', true);
             appStore.setAuth(true);
+            const provider = new ethers.providers.Web3Provider(ethereum);
+            provider.listAccounts().then((accounts) => {
+              const defaultAccount = accounts[0];
+              if (defaultAccount) {
+                appStore.setAuth(true);
+              }
+            });
           }
         })
         .catch((e) => {
@@ -91,8 +71,41 @@ export const StackItem = ({
             appStore.setAuth(false);
           }
         });
+    } else if (window.ethereum === undefined) {
+      alertStore.addNotification({
+        content: InstallMetamaskAlert,
+        container: 'bottom-right',
+        animationIn: ['animated', 'fadeIn'],
+        animationOut: ['animated', 'fadeOut'],
+      });
+    } else if (
+      navigator.userAgent.includes('iPhone') ||
+      navigator.userAgent.includes('Android')
+    ) {
+      alertStore.addNotification({
+        content: FromPhoneDeviseEnter,
+        container: 'bottom-right',
+        animationIn: ['animated', 'fadeIn'],
+        animationOut: ['animated', 'fadeOut'],
+      });
     }
   };
+
+  useEffect(() => {
+    if (ethereum && ethereum.isMetaMask) {
+      ethereum.enable();
+      const poolContract = new ethers.Contract(
+        '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+        poolInfo?.abi,
+        window.ethereum,
+      );
+
+      if (poolContract) {
+        const total = poolContract.getTotalStake();
+        setTotalStake(ethers.utils.formatEther(total));
+      }
+    }
+  }, []);
 
   function openCollapse() {
     const node = ref.current;
@@ -196,14 +209,14 @@ export const StackItem = ({
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
           <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? '' : `     ${myStake} AMB`}
+            {comingSoon ? '' : `     0 AMB`}
           </P>
         </div>
       )}
 
       <div className="item--header__vault-assets">
         <P style={{ textTransform: 'uppercase' }} size="l-400">
-          {comingSoon ? '' : '     3.5m AMB '}
+          {comingSoon ? '' : `${totalStake} AMB`}
         </P>
       </div>
       <div className="item--header__apy">
@@ -222,11 +235,11 @@ export const StackItem = ({
       ) : (
         <Button
           type="primary"
-          onclick={async () => {
+          onclick={() => {
             if (expand) {
               setOpen((openContent) => !openContent);
             } else {
-              await logIn();
+              logIn();
             }
           }}
         >

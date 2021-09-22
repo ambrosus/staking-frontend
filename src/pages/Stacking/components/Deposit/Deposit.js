@@ -13,6 +13,7 @@ import Modal from '../../../../components/Modal/Modal';
 import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 import { ethers } from 'ethers';
+import appStore from '../../../../store/app.store';
 
 const Deposit = ({ availableForDeposit, depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
@@ -93,16 +94,18 @@ const Deposit = ({ availableForDeposit, depositInfo }) => {
     return false;
   };
   useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const viewWithdrawContract = new ethers.Contract(
-      '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
-      depositInfo.abi,
-      provider,
-    );
-    if (viewWithdrawContract) {
-      viewWithdrawContract.viewStake().then((e) => {
-        setAvailableForWithdraw(ethers.utils.formatEther(e));
-      });
+    if (appStore.auth) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const viewWithdrawContract = new ethers.Contract(
+        '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+        depositInfo.abi,
+        provider,
+      );
+      if (viewWithdrawContract) {
+        viewWithdrawContract?.viewStake().then((e) => {
+          setAvailableForWithdraw(ethers.utils.formatEther(e));
+        });
+      }
     }
   }, []);
   return (
