@@ -1,8 +1,9 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
+import { ethers } from 'ethers';
 
 import Button from '../../components/Button';
 import P from '../../components/P';
@@ -31,7 +32,28 @@ export const StackItem = ({
   const firstRender = useRef(true);
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
+  const [myStake, setMyStake] = useState({});
   const history = useHistory();
+  const { ethereum } = window.ethereum;
+  useEffect(() => {
+    if (!open) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const poolContract = new ethers.Contract(
+        '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+        poolInfo.abi,
+        signer,
+      );
+
+      if (poolContract) {
+        const iStaking = poolContract.getTotalStake().then((e) => {
+          setMyStake(ethers.utils.formatEther(e));
+        });
+        console.log(iStaking);
+      }
+    }
+  }, []);
+
   const logIn = async () => {
     if (
       typeof window.ethereum !== 'undefined' ||
@@ -71,6 +93,7 @@ export const StackItem = ({
         });
     }
   };
+
   function openCollapse() {
     const node = ref.current;
     requestAnimationFrame(() => {
@@ -173,7 +196,7 @@ export const StackItem = ({
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
           <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? '' : '     3m AMB '}
+            {comingSoon ? '' : `     ${myStake} AMB`}
           </P>
         </div>
       )}
@@ -245,10 +268,8 @@ export const StackItem = ({
                 человек себе сразу понимает что к чему.
               </ReactTooltip>
             </>
-            <P size="s-400">You staked: 264.000 AMB</P>
             <P size="s-400" style={{ fontWeight: 500 }}>
-              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Available for stake:{' '}
-              {availableForStake} AMB
+              &nbsp; Available for stake: {availableForStake} AMB
             </P>
             <div style={{ flexBasis: '90%' }} />
           </div>
