@@ -3,8 +3,14 @@ import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
 
-const Input = ({ type = 'number', onchange, iconLeft, placeholder, value }) => (
-  <span className="input">
+const Input = ({
+  type = 'number',
+  onchange,
+  iconLeft,
+  placeholder,
+  value = '',
+}) => (
+  <div className="input">
     <input
       type={type}
       placeholder={placeholder}
@@ -17,7 +23,7 @@ const Input = ({ type = 'number', onchange, iconLeft, placeholder, value }) => (
         <ReactSVG src={AMBsmallIcon} wrapper="span" />
       </span>
     )}
-  </span>
+  </div>
 );
 
 Input.propTypes = {

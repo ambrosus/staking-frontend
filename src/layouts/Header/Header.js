@@ -1,12 +1,9 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from 'react';
-import { useEthers } from '@usedapp/core';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
-import { Currency } from '@ambrosus/react';
-import Web3 from 'web3';
 
 import headerLogoSvg from '../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../assets/svg/login.svg';
@@ -15,76 +12,79 @@ import P from '../../components/P';
 import storageService from '../../services/storage.service';
 import appStore from '../../store/app.store';
 import { ambMounthUSD } from '../../utils/constants';
+import { ethers } from 'ethers';
 
 export const Header = observer(() => {
   const [usdPrice, setUsdPrice] = useState(0);
   const [percentChange24h, setPercentChange24h] = useState(0);
   const [account, setAccount] = useState(null);
-  const {
-    account: acc,
-    activateBrowserWallet,
-    deactivate,
-    activate,
-  } = useEthers();
   const history = useHistory();
-  const web3 = new Web3(window.web3.currentProvider);
-  useEffect(async () => {
-    await activateBrowserWallet();
-    if (
-      typeof window.ethereum !== 'undefined' ||
-      typeof window.web3 !== 'undefined'
-    ) {
-      await window.ethereum.enable();
-      web3.eth.getAccounts().then((accounts) => {
-        if (accounts) {
-          setAccount(accounts[0]);
-          appStore.setAuth(true);
-        } else {
-          setAccount(acc);
-          appStore.setAuth(true);
-        }
-      });
-    }
-    fetch('https://token.ambrosus.io')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data?.data) {
-          const priceInUsd = ambMounthUSD(1, data?.data?.price_usd);
-          if (priceInUsd) {
-            setUsdPrice(priceInUsd);
+  const { ethereum } = window;
+
+  useEffect(() => {
+    if (storageService.get('auth') === true) {
+      if (typeof ethereum !== 'undefined') {
+        ethereum.enable();
+        ethereum.on('disconnect', () => {
+          storageService.set('auth', false);
+          appStore.setAuth(false);
+          if (!storageService.get('auth')) {
+            history.push('/');
           }
-          setPercentChange24h(data.data.percent_change_24h);
-        }
-      });
-  }, []);
+        });
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        provider
+          .listAccounts()
+          .then((accounts) => {
+            const defaultAccount = accounts[0];
+            if (defaultAccount) {
+              setAccount(defaultAccount);
+              storageService.set('auth', true);
+            } else {
+              storageService.set('auth', false);
+              appStore.setAuth(false);
+              if (!storageService.get('auth')) {
+                history.push('/');
+              }
+            }
+          })
+          .catch((e) => {
+            if (e) {
+              storageService.set('auth', false);
+              appStore.setAuth(false);
+              if (!storageService.get('auth')) {
+                history.push('/');
+              }
+            }
+          });
+      }
+      fetch('https://token.ambrosus.io')
+        .then((response) => response.json())
+        .then((data) => {
+          if (data?.data) {
+            const priceInUsd = ambMounthUSD(1, data?.data?.price_usd);
+            if (priceInUsd) {
+              setUsdPrice(priceInUsd);
+            }
+            setPercentChange24h(data.data.percent_change_24h);
+          }
+        });
+    } else {
+      storageService.set('auth', false);
+      appStore.setAuth(false);
+      if (!storageService.get('auth')) {
+        history.push('/');
+      }
+    }
+  }, [ethereum]);
 
   const logOut = async () => {
-    deactivate();
-
     storageService.set('auth', false);
     appStore.setAuth(false);
     if (!storageService.get('auth')) {
       history.push('/');
     }
   };
-  const logIn = async () => {
-    activateBrowserWallet();
-    await activate();
-    await window.ethereum.request({
-      method: 'eth_requestAccounts',
-      params: [
-        {
-          eth_accounts: {},
-        },
-      ],
-    });
-
-    if (account) {
-      storageService.set('auth', true);
-      appStore.setAuth(true);
-    }
-  };
-
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -148,18 +148,11 @@ export const Header = observer(() => {
         )}
       </div>
       <div className="login">
-        {account ? (
+        {account && (
           <div role="presentation" className="header__btn" onClick={logOut}>
             <ReactSVG src={loginIcon} wrapper="span" />
             <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
               Log Out
-            </P>
-          </div>
-        ) : (
-          <div role="presentation" className="header__btn" onClick={logIn}>
-            <ReactSVG src={loginIcon} wrapper="span" />
-            <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
-              Log in
             </P>
           </div>
         )}

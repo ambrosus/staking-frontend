@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { useEthers } from '@usedapp/core';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router';
 import { store as alertStore } from 'react-notifications-component';
+import { ethers } from 'ethers';
 
 import P from '../P';
 import storageService from '../../services/storage.service';
@@ -15,11 +15,18 @@ import walletIcon from '../../assets/svg/wallet.svg';
 import FromPhoneDeviseEnter from '../../pages/Home/components/FromPhoneDeviseEnter';
 
 export const MetamaskConnect = observer(() => {
-  const { account } = useEthers();
   const [auth, setAuth] = useState(false);
+  const [account, setAccount] = useState(null);
   const history = useHistory();
+  const { ethereum } = window;
+
+  useEffect(() => {
+    if (storageService.get('auth') === true) {
+      history.push('/stacking');
+    }
+  }, [sessionStorage, account, auth, appStore.auth]);
   const logIn = async () => {
-    if (window.ethereum) {
+    if (ethereum) {
       handleEthereum();
     } else {
       window.addEventListener('ethereum#initialized', handleEthereum, {
@@ -29,11 +36,9 @@ export const MetamaskConnect = observer(() => {
     }
 
     async function handleEthereum() {
-      const { ethereum } = window;
       if (ethereum && ethereum.isMetaMask) {
-        await window.ethereum.enable();
-
-        await window.ethereum
+        await ethereum.enable();
+        await ethereum
           .request({
             method: 'wallet_requestPermissions',
             params: [
@@ -44,17 +49,19 @@ export const MetamaskConnect = observer(() => {
           })
           .then((e) => {
             if (e) {
-              history.push('/stacking');
               storageService.set('auth', true);
               appStore.setAuth(true);
+              const provider = new ethers.providers.Web3Provider(ethereum);
+              provider.listAccounts().then((accounts) => {
+                const defaultAccount = accounts[0];
+                if (defaultAccount) {
+                  setAccount(defaultAccount);
+                  appStore.setAuth(true);
+                } else {
+                  storageService.set('auth', false);
+                }
+              });
               setAuth(account);
-            }
-          })
-          .catch((e) => {
-            if (e) {
-              storageService.set('auth', false);
-              appStore.setAuth(false);
-              setAuth(null);
             }
           });
       } else {
@@ -78,11 +85,7 @@ export const MetamaskConnect = observer(() => {
       }
     }
   };
-  useEffect(() => {
-    if (storageService.get('auth') === true) {
-      history.push('/stacking');
-    }
-  }, [sessionStorage, account, auth, appStore.auth]);
+
   return auth ? (
     <div
       role="presentation"

@@ -1,7 +1,6 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import ReactNotifications from 'react-notifications-component';
 
 import P from '../../components/P';
@@ -11,7 +10,7 @@ import StackItem from '../Stacking/StackingItem';
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import CollapsedList from '../../components/CollapsedList';
 
-const Home = observer(() => {
+const Home = () => {
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -71,6 +70,6 @@ const Home = observer(() => {
       </div>
     </div>
   );
-});
+};
 
 export default Home;

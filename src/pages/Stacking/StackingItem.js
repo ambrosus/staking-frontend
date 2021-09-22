@@ -22,6 +22,8 @@ export const StackItem = ({
   transitionDuration = '200ms',
   transitionTimingFunction = 'ease-in',
   onComplete,
+  poolInfo,
+  availableForStake,
   ...restProps
 }) => {
   const [open, setOpen] = useState(false);
@@ -165,7 +167,7 @@ export const StackItem = ({
           }}
           size="l-500"
         >
-          Alpha
+          {poolInfo?.contractName}
         </P>
       </div>
       {history.location.pathname === '/stacking' && (
@@ -236,6 +238,7 @@ export const StackItem = ({
                   src={infoIcon}
                   wrapper="span"
                 />
+                &nbsp;&nbsp;&nbsp;
               </P>
               <ReactTooltip id="deposit" place="top" effect="solid">
                 Ну тут какая-то поdсказка которая сообщает о том о сём. И
@@ -244,12 +247,16 @@ export const StackItem = ({
             </>
             <P size="s-400">You staked: 264.000 AMB</P>
             <P size="s-400" style={{ fontWeight: 500 }}>
-              Available for stake: 2.2m AMB
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Available for stake:{' '}
+              {availableForStake} AMB
             </P>
             <div style={{ flexBasis: '90%' }} />
           </div>
           <div className="collapsed-content__body">
-            <Deposit />
+            <Deposit
+              depositInfo={poolInfo}
+              availableForDeposit={availableForStake}
+            />
           </div>
         </div>
       </div>
@@ -257,6 +264,7 @@ export const StackItem = ({
   );
 };
 StackItem.propTypes = {
+  poolInfo: PropTypes.object,
   expand: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
@@ -269,5 +277,6 @@ StackItem.propTypes = {
   lazy: PropTypes.bool,
   instant: PropTypes.bool,
   onComplete: PropTypes.func,
+  availableForStake: PropTypes.string,
 };
 export default StackItem;
