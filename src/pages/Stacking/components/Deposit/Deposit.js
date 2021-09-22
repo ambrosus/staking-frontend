@@ -15,9 +15,10 @@ import avatarIcon from '../../../../assets/svg/avatar.svg';
 import { ethers } from 'ethers';
 
 const Deposit = ({ availableForDeposit, depositInfo }) => {
-  const [inputValue, setInputValue] = useState(null);
-  const [contract, setContract] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const [availableForWithdraw, setAvailableForWithdraw] = useState(null);
   const ethereum = window.ethereum;
+
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   const withdrawForm = (
@@ -64,45 +65,46 @@ const Deposit = ({ availableForDeposit, depositInfo }) => {
         >
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
-            Available for withdraw: 3.5m AMB
+            Available for withdraw: {availableForWithdraw} AMB
           </P>
         </div>
         <Withdraw hideModal={toggleWithdrawForm} />
       </>
     </Modal>
   );
-  useEffect(() => {
-    console.log(inputValue);
-  });
   const checkoutPayment = async () => {
     const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
+    if (provider) {
+      const signer = provider.getSigner();
+      const poolContract = new ethers.Contract(
+        '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+        depositInfo.abi,
+        signer,
+      );
 
-    const poolContract = new ethers.Contract(
+      if (inputValue && poolContract) {
+        const tx = signer.sendTransaction({
+          to: '0xb017DcCC473499C83f1b553bE564f3CeAf002254',
+          value: ethers.utils.parseEther(`${inputValue}`),
+        });
+        poolContract.stake(tx);
+      }
+    }
+    return false;
+  };
+  useEffect(() => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const viewWithdrawContract = new ethers.Contract(
       '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
       depositInfo.abi,
       provider,
     );
-    if (poolContract) {
-      setContract(poolContract);
-    }
-    if (inputValue && contract) {
-      const tx = signer.sendTransaction({
-        to: '0x56FacFcA56e1CD4b49c04587eC8D4BC29AD2b3E3',
-        value: ethers.utils.parseEther(`${inputValue}`),
+    if (viewWithdrawContract) {
+      viewWithdrawContract.viewStake().then((e) => {
+        setAvailableForWithdraw(ethers.utils.formatEther(e));
       });
-      contract
-        .stake(tx)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log('err', err);
-        });
     }
-    return false;
-  };
-
+  }, []);
   return (
     <div className="deposit">
       <div className="deposit-heading">
@@ -189,7 +191,7 @@ const Deposit = ({ availableForDeposit, depositInfo }) => {
         </div>
         <div style={{ marginBottom: 5 }}>
           <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
-            Available for withdraw: 788.899 AMB
+            Available for withdraw: {availableForWithdraw} AMB
           </P>
 
           <ReactTooltip id="unstake" place="top" effect="solid">

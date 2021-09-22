@@ -642,7 +642,6 @@ const Stacking = observer(() => {
             provider.getBalance(defaultAccount).then((balanceObj) => {
               const balanceInEth = ethers.utils.formatEther(balanceObj);
               setBalance(balanceInEth);
-              console.log(balance);
             });
           }
         });
