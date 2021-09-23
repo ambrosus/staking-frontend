@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
@@ -29,7 +30,6 @@ export const StackItem = ({
   poolInfo = {
     abi: [],
   },
-  availableForStake = 0,
   ...restProps
 }) => {
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ export const StackItem = ({
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
   const [totalStake, setTotalStake] = useState(0);
-  const { ethereum } = window.ethereum;
+  const { ethereum } = window;
   const history = useHistory();
   const logIn = async () => {
     if (ethereum && ethereum.isMetaMask) {
@@ -92,17 +92,29 @@ export const StackItem = ({
   };
 
   useEffect(() => {
-    if (ethereum && ethereum.isMetaMask) {
-      ethereum.enable();
-      const poolContract = new ethers.Contract(
-        '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
-        poolInfo?.abi,
-        window.ethereum,
-      );
-
-      if (poolContract) {
-        const total = poolContract.getTotalStake();
-        setTotalStake(ethers.utils.formatEther(total));
+    if (ethereum && ethereum.isMetaMask && appStore.auth) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      if (provider) {
+        const singer = provider.getSigner();
+        if (singer) {
+          const poolContract = new ethers.Contract(
+            '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+            poolInfo?.abi,
+            provider,
+          );
+          if (poolContract) {
+            poolContract.getTotalStake().then((total) => {
+              if (total) {
+                const formatEther = ethers.utils.formatEther(total);
+                if (formatEther) {
+                  setTotalStake(formatEther);
+                }
+              } else {
+                setTotalStake('-');
+              }
+            });
+          }
+        }
       }
     }
   }, []);
@@ -209,7 +221,7 @@ export const StackItem = ({
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
           <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? '' : `     0 AMB`}
+            {comingSoon ? '' : `     {myStake} AMB`}
           </P>
         </div>
       )}
@@ -264,34 +276,11 @@ export const StackItem = ({
       >
         <div className="line" />
         <div className="collapsed-content">
-          <div className="collapsed-content__header">
-            <>
-              <P size="xxl-500">
-                Deposit AMB&nbsp;
-                <ReactSVG
-                  data-tip
-                  data-for="deposit"
-                  src={infoIcon}
-                  wrapper="span"
-                />
-                &nbsp;&nbsp;&nbsp;
-              </P>
-              <ReactTooltip id="deposit" place="top" effect="solid">
-                Ну тут какая-то поdсказка которая сообщает о том о сём. И
-                человек себе сразу понимает что к чему.
-              </ReactTooltip>
-            </>
-            <P size="s-400" style={{ fontWeight: 500 }}>
-              &nbsp; Available for stake: {availableForStake} AMB
-            </P>
-            <div style={{ flexBasis: '90%' }} />
-          </div>
-          <div className="collapsed-content__body">
-            <Deposit
-              depositInfo={poolInfo}
-              availableForDeposit={availableForStake}
-            />
-          </div>
+          {appStore.auth && (
+            <div className="collapsed-content__body">
+              <Deposit depositInfo={poolInfo} />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -311,6 +300,5 @@ StackItem.propTypes = {
   lazy: PropTypes.bool,
   instant: PropTypes.bool,
   onComplete: PropTypes.func,
-  availableForStake: PropTypes.string,
 };
 export default StackItem;

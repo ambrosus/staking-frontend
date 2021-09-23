@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Input from '../../../../components/Input';
@@ -6,8 +6,19 @@ import Button from '../../../../components/Button';
 import P from '../../../../components/P';
 import ButtonGroup from '../../../../components/ButtonGroup';
 
-const Withdraw = ({ hideModal }) => {
+const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
   const [inputValue, setInputValue] = useState();
+  const [afterWithdraw, setAfterWithdraw] = useState(0);
+  const calculateSumAfterWithdraw = () => {
+    setAfterWithdraw(availableSumForWithdraw - inputValue);
+  };
+  useEffect(() => {
+    calculateSumAfterWithdraw();
+    return () => {
+      calculateSumAfterWithdraw();
+    };
+  }, [inputValue]);
+
   return (
     <div className="deposit">
       <div className="deposit-heading">
@@ -81,7 +92,7 @@ const Withdraw = ({ hideModal }) => {
               marginRight: 20,
             }}
             type="green"
-            disabled={!inputValue}
+            disabled={afterWithdraw <= 0}
             onclick={() => alert(`Withdraw ${inputValue}`)}
           >
             <P size="m-500">Withdraw</P>
@@ -97,7 +108,8 @@ const Withdraw = ({ hideModal }) => {
       <div className="deposit-stake-options">
         <div>
           <P size="s-400" style={{ color: '#9198BB' }}>
-            Estimated stake after withdraw: 0 AMB
+            Estimated stake after withdraw:{' '}
+            {afterWithdraw <= 0 ? 0 : afterWithdraw} AMB
           </P>
         </div>
       </div>
@@ -106,5 +118,6 @@ const Withdraw = ({ hideModal }) => {
 };
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
+  availableSumForWithdraw: PropTypes.number,
 };
 export default Withdraw;
