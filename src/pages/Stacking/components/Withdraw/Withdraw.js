@@ -118,6 +118,6 @@ const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
 };
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
-  availableSumForWithdraw: PropTypes.number,
+  availableSumForWithdraw: PropTypes.any,
 };
 export default Withdraw;

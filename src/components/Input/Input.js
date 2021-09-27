@@ -31,6 +31,6 @@ Input.propTypes = {
   iconLeft: PropTypes.bool,
   onchange: PropTypes.func,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.any,
 };
 export default Input;

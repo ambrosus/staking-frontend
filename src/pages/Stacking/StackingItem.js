@@ -15,6 +15,7 @@ import appStore from '../../store/app.store';
 import storageService from '../../services/storage.service';
 import InstallMetamaskAlert from '../Home/components/InstallMetamaskAlert';
 import FromPhoneDeviseEnter from '../Home/components/FromPhoneDeviseEnter';
+import { getBalance } from '../../utils/constants';
 
 import infoIcon from '../../assets/svg/info.svg';
 import avatarIcon from '../../assets/svg/avatar.svg';
@@ -40,6 +41,35 @@ export const StackItem = ({
   const [totalStake, setTotalStake] = useState(0);
   const { ethereum } = window;
   const history = useHistory();
+  useEffect(() => {
+    if (ethereum && ethereum.isMetaMask && appStore.auth) {
+      ethereum.enable().then(() => {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        if (provider) {
+          const singer = provider.getSigner();
+          if (singer) {
+            const poolContract = new ethers.Contract(
+              '0x39a499cd81C494E8EBC226D416B245978820414e',
+              poolInfo?.abi,
+              provider,
+            );
+            if (poolContract) {
+              poolContract.getTotalStake().then((total) => {
+                if (total) {
+                  const formatEther = ethers.utils.formatEther(total);
+                  if (formatEther) {
+                    setTotalStake(formatEther);
+                  }
+                } else {
+                  setTotalStake(0);
+                }
+              });
+            }
+          }
+        }
+      });
+    }
+  }, []);
   const logIn = async () => {
     if (ethereum && ethereum.isMetaMask) {
       await ethereum
@@ -91,34 +121,6 @@ export const StackItem = ({
     }
   };
 
-  useEffect(() => {
-    if (ethereum && ethereum.isMetaMask && appStore.auth) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      if (provider) {
-        const singer = provider.getSigner();
-        if (singer) {
-          const poolContract = new ethers.Contract(
-            '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
-            poolInfo?.abi,
-            provider,
-          );
-          if (poolContract) {
-            poolContract.getTotalStake().then((total) => {
-              if (total) {
-                const formatEther = ethers.utils.formatEther(total);
-                if (formatEther) {
-                  setTotalStake(formatEther);
-                }
-              } else {
-                setTotalStake('-');
-              }
-            });
-          }
-        }
-      }
-    }
-  }, []);
-
   function openCollapse() {
     const node = ref.current;
     requestAnimationFrame(() => {
@@ -143,6 +145,7 @@ export const StackItem = ({
   useLayoutEffect(() => {
     if (lazy) {
       if (open) {
+        getBalance();
         if (renderChildren) {
           openCollapse();
         } else {

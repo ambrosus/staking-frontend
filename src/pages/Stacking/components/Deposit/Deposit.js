@@ -13,13 +13,11 @@ import Modal from '../../../../components/Modal/Modal';
 import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 import { ethers } from 'ethers';
-import appStore from '../../../../store/app.store';
-import storageService from '../../../../services/storage.service';
 
 const Deposit = ({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
-  const [availableForWithdraw, setAvailableForWithdraw] = useState(null);
-  const [balance, setBalance] = useState(null);
+  const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
+  const [balance, setBalance] = useState(0);
   const [totalStake, setTotalStake] = useState(0);
 
   const { ethereum } = window;
@@ -27,21 +25,23 @@ const Deposit = ({ depositInfo }) => {
     useModal();
   const checkoutPayment = async () => {
     try {
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new ethers.providers.Web3Provider(ethereum, 'any');
       if (provider) {
-        const signer = new ethers.Wallet(
-          '9f064b91351730450ac3ff2bfa397c33f24d6248a1476454d50c86ec018c927a',
-          provider,
-        );
+        // const signer = new ethers.Wallet(
+        //   '9f064b91351730450ac3ff2bfa397c33f24d6248a1476454d50c86ec018c927a',
+        //   provider,
+        // );
+        const signer = provider.getSigner();
         if (signer) {
           const poolContract = new ethers.Contract(
-            '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+            '0x39a499cd81C494E8EBC226D416B245978820414e',
             depositInfo.abi,
-            provider,
+            signer,
           );
-          const contractWithSigner = poolContract.connect(provider.getSigner());
+          const contractWithSigner = poolContract.connect(signer);
           const overrides = {
             value: ethers.utils.parseEther(`${inputValue}`),
+            gasPrice: ethers.utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
           if (contractWithSigner) {
@@ -49,8 +49,9 @@ const Deposit = ({ depositInfo }) => {
               .stake(overrides)
               .then(console.log)
               .catch((e) => console.log(e, 'error'));
-
-            await tx.wait().then(console.log).catch(console.log);
+            if (tx) {
+              tx.wait();
+            }
           }
         }
       }
@@ -68,19 +69,27 @@ const Deposit = ({ depositInfo }) => {
         if (defaultAccount) {
           provider.getBalance(defaultAccount).then((balanceObj) => {
             const balanceInEth = ethers.utils.formatEther(balanceObj);
-            setBalance(balanceInEth);
+            if (balanceInEth) {
+              setBalance(balanceInEth);
+            } else {
+              setBalance('-');
+            }
           });
         }
       });
       if (signer) {
         const poolContract = new ethers.Contract(
-          '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+          '0x39a499cd81C494E8EBC226D416B245978820414e',
           depositInfo.abi,
           signer,
         );
         if (poolContract) {
-          poolContract?.viewStake().then((e) => {
-            setAvailableForWithdraw(ethers.utils.formatEther(e));
+          poolContract.viewStake().then((withdrawSum) => {
+            if (withdrawSum) {
+              setAvailableForWithdraw(ethers.utils.formatEther(withdrawSum));
+            } else {
+              setAvailableForWithdraw(0);
+            }
           });
         }
         poolContract.getTotalStake().then((total) => {
@@ -89,6 +98,8 @@ const Deposit = ({ depositInfo }) => {
             if (formatEther) {
               setTotalStake(formatEther);
             }
+          } else {
+            setTotalStake(0);
           }
         });
       }
