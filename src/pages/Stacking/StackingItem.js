@@ -52,7 +52,7 @@ export const StackItem = ({
             const poolContract = new ethers.Contract(
               '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
               poolInfo?.abi,
-              provider,
+              singer,
             );
             if (poolContract) {
               poolContract.getTotalStake().then((total) => {
@@ -61,10 +61,13 @@ export const StackItem = ({
                   if (formatEther) {
                     setTotalStake(formatEther);
                   }
+                } else {
+                  setTotalStake(0);
                 }
               });
               poolContract.viewStake().then((withdrawSum) => {
                 if (withdrawSum) {
+                  console.log(withdrawSum);
                   setMyStake(ethers.utils.formatEther(withdrawSum));
                 }
               });

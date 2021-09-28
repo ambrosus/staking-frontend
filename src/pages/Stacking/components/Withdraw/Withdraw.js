@@ -30,9 +30,12 @@ const Withdraw = ({
             withdrawContractInfo.abi,
             signer,
           );
+          const bigN = ethers.BigNumber.from(`${inputValue}`);
+          const val = ethers.utils.formatEther(bigN);
+          console.log(val);
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
-            value: `${ethers.utils.formatUnits(inputValue)}`,
+            value: val,
             gasPrice: ethers.utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
