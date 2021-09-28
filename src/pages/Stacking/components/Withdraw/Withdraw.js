@@ -1,14 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { ethers } from 'ethers';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
 import ButtonGroup from '../../../../components/ButtonGroup';
 
-const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
+const Withdraw = ({
+  withdrawContractInfo = {
+    abi: [],
+  },
+  hideModal,
+  availableSumForWithdraw,
+}) => {
   const [inputValue, setInputValue] = useState();
-  const [afterWithdraw, setAfterWithdraw] = useState(0);
+  const { ethereum } = window;
+  const [afterWithdraw, setAfterWithdraw] = useState(
+    availableSumForWithdraw - inputValue,
+  );
+  const withdrawPayment = async () => {
+    try {
+      const provider = new ethers.providers.Web3Provider(ethereum, 'any');
+      if (provider) {
+        const signer = provider.getSigner();
+        if (signer) {
+          const poolContract = new ethers.Contract(
+            '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
+            withdrawContractInfo.abi,
+            signer,
+          );
+          const contractWithSigner = poolContract.connect(signer);
+          const overrides = {
+            value: `${ethers.utils.formatUnits(inputValue)}`,
+            gasPrice: ethers.utils.parseUnits('20', 'gwei'),
+            gasLimit: 1000000,
+          };
+          if (contractWithSigner) {
+            const tx = await contractWithSigner
+              .unstake(overrides)
+              .then(console.log)
+              .catch((e) => console.log(e, 'error'));
+            if (tx) {
+              tx.wait();
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return false;
+  };
+
   const calculateSumAfterWithdraw = () => {
     setAfterWithdraw(availableSumForWithdraw - inputValue);
   };
@@ -38,8 +82,10 @@ const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
               buttonStyles={{ height: 48 }}
               priority="secondary"
               type="outline"
-              disabled={!inputValue}
-              onclick={() => alert(`25% ${inputValue}`)}
+              disabled={
+                !availableSumForWithdraw || availableSumForWithdraw === 0
+              }
+              onclick={() => setInputValue(availableSumForWithdraw * 0.25)}
             >
               <P size="xs-500">25%</P>
             </Button>
@@ -49,8 +95,10 @@ const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
               buttonStyles={{ height: 48 }}
               priority="secondary"
               type="outline"
-              disabled={!inputValue}
-              onclick={() => alert(`50% ${inputValue}`)}
+              disabled={
+                !availableSumForWithdraw || availableSumForWithdraw === 0
+              }
+              onclick={() => setInputValue(availableSumForWithdraw * 0.5)}
             >
               <P size="xs-500">50%</P>
             </Button>
@@ -60,8 +108,10 @@ const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
               buttonStyles={{ height: 48 }}
               priority="secondary"
               type="outline"
-              disabled={!inputValue}
-              onclick={() => alert(`75% ${inputValue}`)}
+              disabled={
+                !availableSumForWithdraw || availableSumForWithdraw === 0
+              }
+              onclick={() => setInputValue(availableSumForWithdraw * 0.75)}
             >
               <P size="xs-500">75%</P>
             </Button>
@@ -71,8 +121,10 @@ const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
               priority="secondary"
               buttonStyles={{ height: 48 }}
               type="outline"
-              disabled={!inputValue}
-              onclick={() => alert(`100% ${inputValue}`)}
+              disabled={
+                !availableSumForWithdraw || availableSumForWithdraw === 0
+              }
+              onclick={() => setInputValue(availableSumForWithdraw)}
             >
               <P size="xs-500">100%</P>
             </Button>
@@ -93,7 +145,7 @@ const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
             }}
             type="green"
             disabled={afterWithdraw <= 0}
-            onclick={() => alert(`Withdraw ${inputValue}`)}
+            onclick={withdrawPayment}
           >
             <P size="m-500">Withdraw</P>
           </Button>
@@ -119,5 +171,6 @@ const Withdraw = ({ hideModal, availableSumForWithdraw }) => {
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
   availableSumForWithdraw: PropTypes.any,
+  withdrawContractInfo: PropTypes.any,
 };
 export default Withdraw;

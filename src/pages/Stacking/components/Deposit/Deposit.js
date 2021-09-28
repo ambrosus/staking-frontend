@@ -17,6 +17,7 @@ import { ethers } from 'ethers';
 const Deposit = ({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
   const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
+  const [myStake, setMyStake] = useState(0);
   const [balance, setBalance] = useState(0);
   const [totalStake, setTotalStake] = useState(0);
 
@@ -34,7 +35,7 @@ const Deposit = ({ depositInfo }) => {
         const signer = provider.getSigner();
         if (signer) {
           const poolContract = new ethers.Contract(
-            '0x39a499cd81C494E8EBC226D416B245978820414e',
+            '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
             depositInfo.abi,
             signer,
           );
@@ -79,7 +80,7 @@ const Deposit = ({ depositInfo }) => {
       });
       if (signer) {
         const poolContract = new ethers.Contract(
-          '0x39a499cd81C494E8EBC226D416B245978820414e',
+          '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
           depositInfo.abi,
           signer,
         );
@@ -87,6 +88,7 @@ const Deposit = ({ depositInfo }) => {
           poolContract.viewStake().then((withdrawSum) => {
             if (withdrawSum) {
               setAvailableForWithdraw(ethers.utils.formatEther(withdrawSum));
+              setMyStake(ethers.utils.formatEther(withdrawSum));
             } else {
               setAvailableForWithdraw(0);
             }
@@ -122,7 +124,7 @@ const Deposit = ({ depositInfo }) => {
           </div>
           <div>
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {`{myStake}`} AMB
+              {myStake} AMB
             </P>
           </div>
           <div>
@@ -153,6 +155,7 @@ const Deposit = ({ depositInfo }) => {
           </P>
         </div>
         <Withdraw
+          withdrawContractInfo={depositInfo}
           availableSumForWithdraw={availableForWithdraw}
           hideModal={toggleWithdrawForm}
         />

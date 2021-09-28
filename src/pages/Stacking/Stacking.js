@@ -94,7 +94,7 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              13.5 m AMB
+              dasdasd m AMB
             </P>
           </div>
           <div className="info-block__stacked--course">

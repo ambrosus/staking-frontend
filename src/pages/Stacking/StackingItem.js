@@ -38,6 +38,7 @@ export const StackItem = ({
   const firstRender = useRef(true);
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
+  const [myStake, setMyStake] = useState(0);
   const [totalStake, setTotalStake] = useState(0);
   const { ethereum } = window;
   const history = useHistory();
@@ -49,7 +50,7 @@ export const StackItem = ({
           const singer = provider.getSigner();
           if (singer) {
             const poolContract = new ethers.Contract(
-              '0x39a499cd81C494E8EBC226D416B245978820414e',
+              '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
               poolInfo?.abi,
               provider,
             );
@@ -60,8 +61,11 @@ export const StackItem = ({
                   if (formatEther) {
                     setTotalStake(formatEther);
                   }
-                } else {
-                  setTotalStake(0);
+                }
+              });
+              poolContract.viewStake().then((withdrawSum) => {
+                if (withdrawSum) {
+                  setMyStake(ethers.utils.formatEther(withdrawSum));
                 }
               });
             }
@@ -224,7 +228,7 @@ export const StackItem = ({
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
           <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? '' : `     {myStake} AMB`}
+            {comingSoon ? '' : `${myStake} AMB`}
           </P>
         </div>
       )}
