@@ -32,7 +32,7 @@ export const MetamaskConnect = observer(() => {
       window.addEventListener('ethereum#initialized', handleEthereum, {
         once: true,
       });
-      setTimeout(handleEthereum, 1000);
+      setTimeout(handleEthereum, 0);
     }
 
     async function handleEthereum() {

@@ -20,7 +20,7 @@ const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
   const [openIndexStakeItem, setOpenIndexStakeItem] = useState(20);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const [totalStaked, setTotalStaked] = useState(0);
+  const [totalStaked, setTotalStaked] = useState(null);
   const { ethereum } = window;
 
   useEffect(async () => {
@@ -42,12 +42,14 @@ const Stacking = observer(() => {
           pools[0].abi,
           signer,
         );
-        await contract.getTotalStake().then(async (total) => {
-          const formatEther = ethers.utils.formatEther(total);
-          if (formatEther) {
-            setTotalStaked(Number(formatEther));
-          }
-        });
+        if (!totalStaked) {
+          await contract.getTotalStake().then(async (total) => {
+            const formatEther = ethers.utils.formatEther(total);
+            if (formatEther) {
+              setTotalStaked(Number(formatEther));
+            }
+          });
+        }
       }
     }
   }, [appStore, account]);
@@ -111,7 +113,7 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              {Number(totalStaked).toFixed(2)} AMB
+              {Number(totalStaked).toFixed(2) || 0} AMB
             </P>
           </div>
           <div className="info-block__stacked--course">

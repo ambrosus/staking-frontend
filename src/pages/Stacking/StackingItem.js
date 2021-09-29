@@ -44,40 +44,70 @@ export const StackItem = ({
   const [totalStake, setTotalStake] = useState(0);
   const { ethereum } = window;
   const history = useHistory();
+
   useEffect(() => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
-      ethereum.enable().then(() => {
-        setInterval(() => {
-          const provider = new ethers.providers.Web3Provider(ethereum);
-          if (provider) {
-            const singer = provider.getSigner();
-            if (singer) {
-              const poolContract = new ethers.Contract(
-                '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
-                poolInfo?.abi,
-                singer,
-              );
-              if (poolContract) {
-                poolContract.getTotalStake().then((total) => {
-                  if (total) {
-                    const formatEther = ethers.utils.formatEther(total);
-                    if (formatEther) {
-                      setTotalStake(formatEther);
-                    }
-                  } else {
-                    setTotalStake(0);
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      setInterval(() => {
+        if (provider) {
+          const singer = provider.getSigner();
+          if (singer) {
+            const poolContract = new ethers.Contract(
+              '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+              poolInfo?.abi,
+              singer,
+            );
+
+            if (poolContract) {
+              poolContract.getTotalStake().then((total) => {
+                if (total) {
+                  const formatEther = ethers.utils.formatEther(total);
+                  if (formatEther) {
+                    setTotalStake(formatEther);
                   }
-                });
-                poolContract.viewStake().then((withdrawSum) => {
-                  if (withdrawSum) {
-                    setMyStake(ethers.utils.formatEther(withdrawSum));
-                  }
-                });
-              }
+                } else {
+                  setTotalStake(0);
+                }
+              });
+              poolContract.viewStake().then((withdrawSum) => {
+                if (withdrawSum) {
+                  setMyStake(ethers.utils.formatEther(withdrawSum));
+                }
+              });
             }
           }
+        }
+      }, 3000);
+    } else {
+      if (ethereum && ethereum.isMetaMask) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signerRoot = new ethers.Wallet(
+          '9f064b91351730450ac3ff2bfa397c33f24d6248a1476454d50c86ec018c927a',
+          provider,
+        );
+        const poolContractForWiew = new ethers.Contract(
+          '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+          poolInfo?.abi,
+          signerRoot,
+        );
+        poolContractForWiew.getTotalStake().then((total) => {
+          if (total) {
+            const formatEther = ethers.utils.formatEther(total);
+            if (formatEther) {
+              setTotalStake(formatEther);
+            }
+          } else {
+            setTotalStake(0);
+          }
         });
-      }, 5000);
+      } else {
+        alertStore.addNotification({
+          content: InstallMetamaskAlert,
+          container: 'bottom-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
+        });
+      }
     }
   }, []);
   useEffect(() => {
@@ -87,8 +117,75 @@ export const StackItem = ({
       } else {
         setOpen(false);
       }
+    } else {
     }
   }, [openIndex, index]);
+  useLayoutEffect(() => {
+    if (lazy) {
+      if (open) {
+        getBalance();
+        if (renderChildren) {
+          openCollapse();
+        } else {
+          setRenderChildren(true);
+        }
+      } else {
+        closeCollapse();
+      }
+    } else {
+      if (open) {
+        openCollapse();
+      }
+      closeCollapse();
+    }
+  }, [open]);
+
+  useLayoutEffect(() => {
+    const node = ref.current;
+
+    function handleComplete() {
+      node.style.overflow = open ? 'initial' : 'hidden';
+      if (open) {
+        node.style.height = 'auto';
+      }
+      if (!open) {
+        node.style.paddingBottom = '0px';
+      }
+      if (!open && lazy) {
+        setRenderChildren(false);
+      }
+      if (open && onComplete) {
+        (() => {
+          onComplete();
+        })();
+      }
+    }
+
+    function handleTransitionEnd(event) {
+      if (
+        (event.target === node && event.propertyName === 'height') ||
+        'padding-bottom'
+      ) {
+        handleComplete();
+      }
+    }
+
+    if (instant || firstRender.current) {
+      handleComplete();
+      firstRender.current = false;
+    }
+    node.addEventListener('transitionend', handleTransitionEnd);
+    return () => {
+      node.removeEventListener('transitionend', handleTransitionEnd);
+    };
+  }, [open]);
+
+  useLayoutEffect(() => {
+    if (open) {
+      openCollapse();
+    }
+  }, [renderChildren]);
+
   const logIn = async () => {
     if (ethereum && ethereum.isMetaMask) {
       await ethereum
@@ -160,72 +257,6 @@ export const StackItem = ({
       });
     });
   }
-
-  useLayoutEffect(() => {
-    if (lazy) {
-      if (open) {
-        getBalance();
-        if (renderChildren) {
-          openCollapse();
-        } else {
-          setRenderChildren(true);
-        }
-      } else {
-        closeCollapse();
-      }
-    } else {
-      if (open) {
-        openCollapse();
-      }
-      closeCollapse();
-    }
-  }, [open]);
-
-  useLayoutEffect(() => {
-    const node = ref.current;
-
-    function handleComplete() {
-      node.style.overflow = open ? 'initial' : 'hidden';
-      if (open) {
-        node.style.height = 'auto';
-      }
-      if (!open) {
-        node.style.paddingBottom = '0px';
-      }
-      if (!open && lazy) {
-        setRenderChildren(false);
-      }
-      if (open && onComplete) {
-        (() => {
-          onComplete();
-        })();
-      }
-    }
-
-    function handleTransitionEnd(event) {
-      if (
-        (event.target === node && event.propertyName === 'height') ||
-        'padding-bottom'
-      ) {
-        handleComplete();
-      }
-    }
-
-    if (instant || firstRender.current) {
-      handleComplete();
-      firstRender.current = false;
-    }
-    node.addEventListener('transitionend', handleTransitionEnd);
-    return () => {
-      node.removeEventListener('transitionend', handleTransitionEnd);
-    };
-  }, [open]);
-
-  useLayoutEffect(() => {
-    if (open) {
-      openCollapse();
-    }
-  }, [renderChildren]);
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div className="item--header__pool">
