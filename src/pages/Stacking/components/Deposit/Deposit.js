@@ -35,13 +35,13 @@ const Deposit = ({ depositInfo }) => {
         const signer = provider.getSigner();
         if (signer) {
           const poolContract = new ethers.Contract(
-            '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
+            '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
             depositInfo.abi,
             signer,
           );
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
-            value: ethers.utils.parseEther(`${inputValue}`),
+            value: ethers.utils.parseEther(`${inputValue}`), // todo
             gasPrice: ethers.utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
@@ -51,7 +51,7 @@ const Deposit = ({ depositInfo }) => {
               .then(console.log)
               .catch((e) => console.log(e, 'error'));
             if (tx) {
-              tx.wait();
+              tx.wait().then(window.location.reload());
             }
           }
         }
@@ -65,45 +65,54 @@ const Deposit = ({ depositInfo }) => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
       const signer = provider.getSigner();
-      provider.listAccounts().then((accounts) => {
-        const defaultAccount = accounts[0];
-        if (defaultAccount) {
-          provider.getBalance(defaultAccount).then((balanceObj) => {
-            const balanceInEth = ethers.utils.formatEther(balanceObj);
-            if (balanceInEth) {
-              setBalance(balanceInEth);
-            } else {
-              setBalance('-');
-            }
-          });
-        }
-      });
+      setInterval(() => {
+        provider.listAccounts().then((accounts) => {
+          const defaultAccount = accounts[0];
+          if (defaultAccount) {
+            provider.getBalance(defaultAccount).then((balanceObj) => {
+              const balanceInEth = ethers.utils.formatEther(balanceObj);
+              if (balanceInEth) {
+                setBalance(balanceInEth);
+              } else {
+                setBalance('-');
+              }
+            });
+          }
+        });
+      }, 5000);
       if (signer) {
         const poolContract = new ethers.Contract(
-          '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
+          '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
           depositInfo.abi,
           signer,
         );
         if (poolContract) {
-          poolContract.viewStake().then((withdrawSum) => {
-            if (withdrawSum) {
-              setAvailableForWithdraw(ethers.utils.formatEther(withdrawSum));
-              setMyStake(ethers.utils.formatEther(withdrawSum));
-            } else {
-              setAvailableForWithdraw(0);
-            }
-          });
+          setInterval(() => {
+            poolContract.viewStake().then((withdrawSum) => {
+              if (withdrawSum) {
+                poolContract.getTokenPrice().then((tokenPrice) => {
+                  setAvailableForWithdraw(
+                    parseFloat(ethers.utils.formatEther(withdrawSum)) *
+                      parseFloat(ethers.utils.formatEther(tokenPrice)),
+                  );
+                });
+                setMyStake(ethers.utils.formatEther(withdrawSum));
+              } else {
+                setMyStake(0);
+              }
+            });
+            poolContract.getTotalStake().then((total) => {
+              if (total) {
+                const formatEther = ethers.utils.formatEther(total);
+                if (formatEther) {
+                  setTotalStake(formatEther);
+                }
+              } else {
+                setTotalStake(0);
+              }
+            });
+          }, 5000);
         }
-        poolContract.getTotalStake().then((total) => {
-          if (total) {
-            const formatEther = ethers.utils.formatEther(total);
-            if (formatEther) {
-              setTotalStake(formatEther);
-            }
-          } else {
-            setTotalStake(0);
-          }
-        });
       }
     }
   }, []);
@@ -124,13 +133,13 @@ const Deposit = ({ depositInfo }) => {
           </div>
           <div>
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {myStake} AMB
+              {Number(myStake).toFixed(2)} AMB
             </P>
           </div>
           <div>
             {' '}
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {totalStake} AMB
+              {Number(totalStake).toFixed(2)} AMB
             </P>
           </div>
           <div>
@@ -151,7 +160,8 @@ const Deposit = ({ depositInfo }) => {
         >
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
-            Available for withdraw: {availableForWithdraw} AMB
+            Available for withdraw: {Number(availableForWithdraw).toFixed(2)}{' '}
+            AMB
           </P>
         </div>
         <Withdraw
@@ -182,7 +192,7 @@ const Deposit = ({ depositInfo }) => {
           </ReactTooltip>
         </>
         <P size="s-400" style={{ fontWeight: 500 }}>
-          &nbsp; Available for stake: {balance} AMB
+          &nbsp; Available for stake: {Number(balance).toFixed(2)} AMB
         </P>
         <div style={{ flexBasis: '90%' }} />
       </div>
@@ -195,7 +205,7 @@ const Deposit = ({ depositInfo }) => {
           <Input
             onchange={setInputValue}
             iconLeft
-            placeholder="0.000"
+            placeholder="0.00"
             value={inputValue}
             type="number"
           />
@@ -244,7 +254,15 @@ const Deposit = ({ depositInfo }) => {
         </div>
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-btn">
-          <Button type="green" disabled={!inputValue} onclick={checkoutPayment}>
+          <Button
+            type="green"
+            disabled={
+              !inputValue ||
+              inputValue <= 0 ||
+              Number(inputValue) > Number(balance)
+            }
+            onclick={checkoutPayment}
+          >
             <P size="m-500">Stake</P>
           </Button>
         </div>
@@ -271,7 +289,8 @@ const Deposit = ({ depositInfo }) => {
           </div>
           <div style={{ marginBottom: 5 }}>
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
-              Available for withdraw: {availableForWithdraw} AMB
+              Available for withdraw: {Number(availableForWithdraw).toFixed(2)}{' '}
+              AMB
             </P>
 
             <ReactTooltip id="unstake" place="top" effect="solid">

@@ -16,34 +16,27 @@ const Withdraw = ({
 }) => {
   const [inputValue, setInputValue] = useState();
   const { ethereum } = window;
-  const [afterWithdraw, setAfterWithdraw] = useState(
-    availableSumForWithdraw - inputValue,
-  );
+  const [afterWithdraw, setAfterWithdraw] = useState(0);
   const withdrawPayment = async () => {
+    /* eslint-disable-next-line */
     try {
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');
       if (provider) {
         const signer = provider.getSigner();
         if (signer) {
           const poolContract = new ethers.Contract(
-            '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
+            '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
             withdrawContractInfo.abi,
             signer,
           );
-          const bigN = ethers.BigNumber.from(`${inputValue}`);
-          const val = ethers.utils.formatEther(bigN);
-          console.log(val);
+          const decimal = ethers.utils.parseUnits(`${inputValue}`, 'ether');
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
-            value: val,
             gasPrice: ethers.utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
           if (contractWithSigner) {
-            const tx = await contractWithSigner
-              .unstake(overrides)
-              .then(console.log)
-              .catch((e) => console.log(e, 'error'));
+            const tx = await contractWithSigner.unstake(decimal, overrides);
             if (tx) {
               tx.wait();
             }
@@ -51,20 +44,24 @@ const Withdraw = ({
         }
       }
     } catch (e) {
-      console.log(e);
+      throw e;
     }
     return false;
   };
 
   const calculateSumAfterWithdraw = () => {
-    setAfterWithdraw(availableSumForWithdraw - inputValue);
+    if (!Number.isNaN(availableSumForWithdraw - inputValue)) {
+      setAfterWithdraw(availableSumForWithdraw - inputValue);
+    } else {
+      setAfterWithdraw(Number(availableSumForWithdraw));
+    }
   };
   useEffect(() => {
     calculateSumAfterWithdraw();
     return () => {
       calculateSumAfterWithdraw();
     };
-  }, [inputValue]);
+  }, [inputValue, availableSumForWithdraw]);
 
   return (
     <div className="deposit">
@@ -147,8 +144,8 @@ const Withdraw = ({
               marginRight: 20,
             }}
             type="green"
-            disabled={afterWithdraw <= 0}
-            onclick={withdrawPayment}
+            disabled={afterWithdraw < 0}
+            onclick={() => withdrawPayment()}
           >
             <P size="m-500">Withdraw</P>
           </Button>
@@ -164,7 +161,7 @@ const Withdraw = ({
         <div>
           <P size="s-400" style={{ color: '#9198BB' }}>
             Estimated stake after withdraw:{' '}
-            {afterWithdraw <= 0 ? 0 : afterWithdraw} AMB
+            {afterWithdraw <= 0 ? 0 : Number(afterWithdraw).toFixed(3)} AMB
           </P>
         </div>
       </div>

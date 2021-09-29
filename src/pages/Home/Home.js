@@ -63,7 +63,7 @@ const Home = () => {
           <div style={{ maxWidth: 157 }}></div>
         </div>
         {pools.map((pool) => (
-          <StackItem key="test" poolInfo={pool} lazy />
+          <StackItem key={pool.contractName} poolInfo={pool} lazy />
         ))}
       </div>
       <div className="faq">

@@ -28,14 +28,17 @@ export const StackItem = ({
   transitionDuration = '200ms',
   transitionTimingFunction = 'ease-in',
   onComplete,
+  index,
+  openIndex,
+  setOpenIndex,
   poolInfo = {
     abi: [],
   },
   ...restProps
 }) => {
-  const [open, setOpen] = useState(false);
   const ref = useRef();
   const firstRender = useRef(true);
+  const [open, setOpen] = useState(false);
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
   const [myStake, setMyStake] = useState(0);
@@ -45,38 +48,52 @@ export const StackItem = ({
   useEffect(() => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
       ethereum.enable().then(() => {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        if (provider) {
-          const singer = provider.getSigner();
-          if (singer) {
-            const poolContract = new ethers.Contract(
-              '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
-              poolInfo?.abi,
-              singer,
-            );
-            if (poolContract) {
-              poolContract.getTotalStake().then((total) => {
-                if (total) {
-                  const formatEther = ethers.utils.formatEther(total);
-                  if (formatEther) {
-                    setTotalStake(formatEther);
+        setInterval(() => {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          if (provider) {
+            const singer = provider.getSigner();
+            if (singer) {
+              const poolContract = new ethers.Contract(
+                '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+                poolInfo?.abi,
+                singer,
+              );
+              if (poolContract) {
+                poolContract.getTotalStake().then((total) => {
+                  if (total) {
+                    const formatEther = ethers.utils.formatEther(total);
+                    if (formatEther) {
+                      setTotalStake(formatEther);
+                    }
+                  } else {
+                    setTotalStake(0);
                   }
-                } else {
-                  setTotalStake(0);
-                }
-              });
-              poolContract.viewStake().then((withdrawSum) => {
-                if (withdrawSum) {
-                  console.log(withdrawSum);
-                  setMyStake(ethers.utils.formatEther(withdrawSum));
-                }
-              });
+                });
+                poolContract.viewStake().then((withdrawSum) => {
+                  if (withdrawSum) {
+                    setMyStake(ethers.utils.formatEther(withdrawSum));
+                  }
+                });
+              }
             }
           }
-        }
-      });
+        });
+      }, 5000);
     }
   }, []);
+  useEffect(() => {
+    if (expand) {
+      if (index === openIndex) {
+        if (open) {
+          setOpen(false);
+        } else {
+        }
+        setOpen(true);
+      } else {
+        setOpen(false);
+      }
+    }
+  }, [openIndex, index]);
   const logIn = async () => {
     if (ethereum && ethereum.isMetaMask) {
       await ethereum
@@ -231,14 +248,14 @@ export const StackItem = ({
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
           <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? '' : `${myStake} AMB`}
+            {comingSoon ? '' : `${Number(myStake).toFixed(2)} AMB`}
           </P>
         </div>
       )}
 
       <div className="item--header__vault-assets">
         <P style={{ textTransform: 'uppercase' }} size="l-400">
-          {comingSoon ? '' : `${totalStake} AMB`}
+          {comingSoon ? '' : `${Number(totalStake).toFixed(2)} AMB`}
         </P>
       </div>
       <div className="item--header__apy">
@@ -259,7 +276,10 @@ export const StackItem = ({
           type="primary"
           onclick={() => {
             if (expand) {
-              setOpen((openContent) => !openContent);
+              setOpenIndex(index);
+              if (openIndex === index && open === true) {
+                setOpen(false);
+              }
             } else {
               logIn();
             }

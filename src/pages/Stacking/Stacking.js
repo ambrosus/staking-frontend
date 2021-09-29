@@ -8,21 +8,25 @@ import StackItem from './StackingItem';
 import P from '../../components/P';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
 import appStore from '../../store/app.store';
+import storageService from '../../services/storage.service';
 
 import errorOutlineIcon from '../../assets/svg/error_outline.svg';
 import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
 import last24hIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
-import storageService from '../../services/storage.service';
 import { pools } from '../../utils/constants';
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
+  const [openIndexStakeItem, setOpenIndexStakeItem] = useState(20);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   const { ethereum } = window;
 
   useEffect(async () => {
     if (storageService.get('auth') === true) {
       if (ethereum && ethereum.isMetaMask) {
+        window.ethereum.on('accountsChanged', function () {
+          window.location.reload();
+        });
         const provider = new ethers.providers.Web3Provider(ethereum);
         // const signer = provider.getSigner();
         provider.listAccounts().then((accounts) => {
@@ -94,7 +98,7 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              dasdasd m AMB
+              allPools AMB
             </P>
           </div>
           <div className="info-block__stacked--course">
@@ -135,9 +139,12 @@ const Stacking = observer(() => {
           <div style={{ flexBasis: 26 }}>Net APY</div>
           <div style={{ maxWidth: 167, marginRight: -6 }} />
         </div>
-        {pools.map((pool) => (
+        {pools.map((pool, index) => (
           <StackItem
-            key="test"
+            key={pool.contractName}
+            index={index}
+            openIndex={openIndexStakeItem}
+            setOpenIndex={setOpenIndexStakeItem}
             expand
             comingSoon={!pool?.abi}
             lazy
