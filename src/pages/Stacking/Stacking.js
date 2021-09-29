@@ -9,16 +9,18 @@ import P from '../../components/P';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
 import appStore from '../../store/app.store';
 import storageService from '../../services/storage.service';
+import { pools } from '../../utils/constants';
 
 import errorOutlineIcon from '../../assets/svg/error_outline.svg';
 import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
 import last24hIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
-import { pools } from '../../utils/constants';
+
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
   const [openIndexStakeItem, setOpenIndexStakeItem] = useState(20);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
+  const [totalStaked, setTotalStaked] = useState(0);
   const { ethereum } = window;
 
   useEffect(async () => {
@@ -28,11 +30,22 @@ const Stacking = observer(() => {
           window.location.reload();
         });
         const provider = new ethers.providers.Web3Provider(ethereum);
-        // const signer = provider.getSigner();
+        const signer = provider.getSigner();
         provider.listAccounts().then((accounts) => {
           const defaultAccount = accounts[0];
           if (defaultAccount) {
             setAccount(defaultAccount);
+          }
+        });
+        const contract = new ethers.Contract(
+          '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+          pools[0].abi,
+          signer,
+        );
+        await contract.getTotalStake().then(async (total) => {
+          const formatEther = ethers.utils.formatEther(total);
+          if (formatEther) {
+            setTotalStaked(Number(formatEther));
           }
         });
       }
@@ -98,7 +111,7 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              allPools AMB
+              {Number(totalStaked).toFixed(2)} AMB
             </P>
           </div>
           <div className="info-block__stacked--course">

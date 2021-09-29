@@ -17,7 +17,6 @@ import InstallMetamaskAlert from '../Home/components/InstallMetamaskAlert';
 import FromPhoneDeviseEnter from '../Home/components/FromPhoneDeviseEnter';
 import { getBalance } from '../../utils/constants';
 
-import infoIcon from '../../assets/svg/info.svg';
 import avatarIcon from '../../assets/svg/avatar.svg';
 export const StackItem = ({
   expand,
@@ -84,11 +83,7 @@ export const StackItem = ({
   useEffect(() => {
     if (expand) {
       if (index === openIndex) {
-        if (open) {
-          setOpen(false);
-        } else {
-        }
-        setOpen(true);
+        setOpen(!open);
       } else {
         setOpen(false);
       }
@@ -277,8 +272,8 @@ export const StackItem = ({
           onclick={() => {
             if (expand) {
               setOpenIndex(index);
-              if (openIndex === index && open === true) {
-                setOpen(false);
+              if (openIndex === index) {
+                setOpen(!open);
               }
             } else {
               logIn();
