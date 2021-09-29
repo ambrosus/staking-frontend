@@ -25,13 +25,10 @@ const Deposit = ({ depositInfo }) => {
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   const checkoutPayment = async () => {
+    /* eslint-disable-next-line */
     try {
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');
       if (provider) {
-        // const signer = new ethers.Wallet(
-        //   '9f064b91351730450ac3ff2bfa397c33f24d6248a1476454d50c86ec018c927a',
-        //   provider,
-        // );
         const signer = provider.getSigner();
         if (signer) {
           const poolContract = new ethers.Contract(
@@ -46,18 +43,15 @@ const Deposit = ({ depositInfo }) => {
             gasLimit: 1000000,
           };
           if (contractWithSigner) {
-            const tx = await contractWithSigner
-              .stake(overrides)
-              .then(console.log)
-              .catch((e) => console.log(e, 'error'));
+            const tx = await contractWithSigner.stake(overrides);
             if (tx) {
-              tx.wait().then(window.location.reload());
+              tx.wait();
             }
           }
         }
       }
     } catch (e) {
-      console.log(e);
+      throw e;
     }
     return false;
   };
