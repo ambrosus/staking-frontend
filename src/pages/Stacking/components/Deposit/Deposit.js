@@ -36,11 +36,6 @@ const Deposit = ({ depositInfo }) => {
             depositInfo.abi,
             signer,
           );
-          // console.log('poolContract', poolContract);
-          // poolContract.filters.PoolReward(
-          //   '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
-          //   'uint reward',
-          // );
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
             value: ethers.utils.parseEther(`${inputValue}`), // todo
@@ -181,6 +176,7 @@ const Deposit = ({ depositInfo }) => {
           <P size="xxl-500">
             Deposit AMB&nbsp;
             <ReactSVG
+              style={{ paddingTop: 3 }}
               data-tip
               data-for="deposit"
               src={infoIcon}

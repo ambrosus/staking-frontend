@@ -14,12 +14,12 @@ p {
 
 .xs-500 {
   font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: 500 !important;
+  font-size: 12px !important;
   line-height: 14px;
   display: flex;
   align-items: center;
-  color: $color-gray;
+  color: $color-gray !important;
 }
 
 .s-400 {
@@ -52,12 +52,12 @@ p {
 
 .m-500 {
   font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
   text-align: center;
 
-  color: $white;
+  color: $white !important;
 }
 
 .m-400 {
@@ -70,6 +70,7 @@ p {
 
   color: $color-gray;
 }
+
 .l-400 {
   font-style: normal;
   font-weight: normal;
@@ -127,19 +128,19 @@ p {
 
 .xxl-500 {
   font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 28px;
+  font-weight: 500 !important;
+  font-size: 24px !important;
+  line-height: 28px !important;
   display: flex;
   align-items: center;
-  color: $black;
+  color: $black !important;
 }
 
 .xxxl-500 {
   font-style: normal;
-  font-weight: 500;
-  font-size: 36px;
-  line-height: 64px;
+  font-weight: 500 !important;
+  font-size: 36px !important;
+  line-height: 64px !important;
   font-feature-settings: 'liga' off;
-  color: $white;
+  color: $white !important;
 }

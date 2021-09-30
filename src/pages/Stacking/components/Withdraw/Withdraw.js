@@ -14,7 +14,7 @@ const Withdraw = ({
   hideModal,
   availableSumForWithdraw,
 }) => {
-  const [inputValue, setInputValue] = useState();
+  const [inputValue, setInputValue] = useState('');
   const { ethereum } = window;
   const [afterWithdraw, setAfterWithdraw] = useState(0);
   const withdrawPayment = async () => {
@@ -72,7 +72,7 @@ const Withdraw = ({
         <Input
           onchange={setInputValue}
           iconLeft
-          placeholder="0.000"
+          placeholder="0.00"
           value={inputValue}
           type="number"
         />
@@ -144,7 +144,7 @@ const Withdraw = ({
               marginRight: 20,
             }}
             type="green"
-            disabled={afterWithdraw < 0}
+            disabled={afterWithdraw < 0 || Number(inputValue) === 0}
             onclick={() => withdrawPayment()}
           >
             <P size="m-500">Withdraw</P>

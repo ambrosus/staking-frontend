@@ -3,6 +3,7 @@ import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
+import EthDater from 'ethereum-block-by-date';
 
 import StackItem from './StackingItem';
 import P from '../../components/P';
@@ -16,11 +17,14 @@ import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
 import last24hIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
 
+/* eslint-disable */
+
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
   const [openIndexStakeItem, setOpenIndexStakeItem] = useState(20);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   const [totalStaked, setTotalStaked] = useState(null);
+  const [totalReward, setTotalReward] = useState(null);
   const { ethereum } = window;
 
   useEffect(async () => {
@@ -30,6 +34,12 @@ const Stacking = observer(() => {
           window.location.reload();
         });
         const provider = new ethers.providers.Web3Provider(ethereum);
+        const dater = new EthDater(provider);
+        const block = await dater.getDate(
+          new Date(Date.now() - 24 * 60 * 60 * 1000),
+        );
+        console.log('block', block);
+
         const signer = provider.getSigner();
         provider.listAccounts().then((accounts) => {
           const defaultAccount = accounts[0];
@@ -37,22 +47,65 @@ const Stacking = observer(() => {
             setAccount(defaultAccount);
           }
         });
-        const contract = new ethers.Contract(
-          '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
-          pools[0].abi,
-          signer,
-        );
-        if (!totalStaked) {
-          await contract.getTotalStake().then(async (total) => {
-            const formatEther = ethers.utils.formatEther(total);
-            if (formatEther) {
-              setTotalStaked(Number(formatEther));
+        if (provider) {
+          setInterval(async () => {
+            const contract = new ethers.Contract(
+              '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+              pools[0].abi,
+              signer,
+            );
+            // const { node } = await contract.nodes(0);
+            // console.log('node address:', node);
+            const iface = contract.interface;
+            // const event = iface.events['PoolReward(address,uint256)'];
+            // console.log('event:', event);
+            const rewardsLogs = await provider.getLogs({
+              fromBlock: block.block,
+              toBlock: 'latest',
+              topics: [ethers.utils.id('PoolReward(address,uint256)')],
+            });
+            if (rewardsLogs) {
+              const rewards = rewardsLogs.map(
+                (log) => iface.parseLog(log).args.reward,
+              );
+              if (rewards) {
+                const totalReward = rewards.reduce(
+                  (acc, reward) => acc.add(reward),
+                  ethers.BigNumber.from('0'),
+                );
+                if (totalReward) {
+                  setTotalReward(ethers.utils.formatEther(totalReward));
+                }
+              }
             }
-          });
+            const stakedLogs = await provider.getLogs({
+              fromBlock: block.block,
+              toBlock: 'latest',
+              topics: [
+                ethers.utils.id(
+                  'PoolStakeChanged(address,address,int256,int256)',
+                ),
+              ],
+            });
+            if (stakedLogs) {
+              const staked = stakedLogs.map(
+                (log) => iface.parseLog(log).args.stake,
+              );
+              if (staked) {
+                const totalStaked = staked.reduce(
+                  (acc, reward) => acc.add(reward),
+                  ethers.BigNumber.from('0'),
+                );
+                if (totalStaked) {
+                  setTotalStaked(ethers.utils.formatEther(totalStaked));
+                }
+              }
+            }
+          }, 5000);
         }
       }
     }
-  }, [appStore, account]);
+  }, []);
 
   const infoBlock = (
     <div className="info-block ">
@@ -98,22 +151,19 @@ const Stacking = observer(() => {
                     wrapper="span"
                   />
                   <P size="m-400" style={{ paddingBottom: 5 }}>
-                    &nbsp;Total Staked&nbsp;
+                    &nbsp;&nbsp;Total Staked&nbsp;&nbsp;
                   </P>
                 </div>
                 <ReactSVG
                   data-tip
                   data-for="total-staked"
-                  style={{
-                    paddingTop: 3,
-                  }}
                   src={errorOutlineIcon}
                   wrapper="span"
                 />
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              {Number(totalStaked).toFixed(2) || 0} AMB
+              {totalStaked ? Number(totalStaked).toFixed(2) : 0} AMB
             </P>
           </div>
           <div className="info-block__stacked--course">
@@ -126,17 +176,23 @@ const Stacking = observer(() => {
             >
               <ReactSVG
                 style={{
-                  paddingTop: 3,
+                  paddingTop: 0,
                 }}
                 src={last24hIcon}
               />
               <P size="m-400" style={{ paddingBottom: 5 }}>
-                &nbsp;Last 24 Hours
+                &nbsp;&nbsp;Last 24 Hours
               </P>
             </div>
 
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              <span style={{ color: '#1ACD8C' }}> +3663 AMB </span>&nbsp; / 34$
+              <span style={{ color: '#1ACD8C' }}>
+                {' '}
+                {totalReward
+                  ? `+${Number(totalReward).toFixed(2)}`
+                  : 0} AMB{' '}
+              </span>
+              &nbsp; / 34$
             </P>
           </div>
         </div>

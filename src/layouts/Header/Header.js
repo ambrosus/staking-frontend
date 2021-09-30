@@ -140,7 +140,7 @@ export const Header = observer(() => {
             {account && (
               <P size="xs-400">
                 {account
-                  ? ` ${account.substr(0, 9)}...${account.substr(0, 9)}`
+                  ? ` ${account.substr(0, 9)}...${account.slice(32)}`
                   : '...'}
               </P>
             )}

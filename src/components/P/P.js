@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import cn from 'classnames';
+import cx from 'classnames';
 
 const P = ({ size, className, children, ...props }) => (
   <p
-    className={cn(className, {
+    className={cx(className, {
       'xxxl-500': size === 'xxxl-500',
       'xxl-500': size === 'xxl-500',
       'xl-400': size === 'xl-400',
