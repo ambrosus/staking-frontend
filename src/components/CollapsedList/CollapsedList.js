@@ -10,7 +10,12 @@ function CollapsedList() {
 
   return (
     <div className="collapsed-list">
-      <div className="collapsed-list__heading">FAQ</div>
+      <div
+        className="collapsed-list__heading"
+        style={{ paddingBottom: 60, paddingTop: 120 }}
+      >
+        FAQ
+      </div>
       <Block
         title="What is Lorem Ipsum?"
         isOpen={state[0]}
@@ -37,7 +42,7 @@ function CollapsedList() {
         onToggle={() => dispatch({ type: 'toggle', index: 1 })}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <p>
             It is a long established fact that a reader will be distracted by
             the readable content of a page when looking at its layout. The point
             of using Lorem Ipsum is that it has a more-or-less normal
@@ -47,12 +52,12 @@ function CollapsedList() {
             search for will uncover many web sites still in their infancy.
             Various versions have evolved over the years, sometimes by accident,
             sometimes on purpose (injected humour and the like).
-          </P>
+          </p>
         </div>
       </Block>
       <Block
-        title="Where does it come from?
-"
+        title="Where does it come from?"
+        lastElement
         isOpen={state[3]}
         onToggle={() => dispatch({ type: 'toggle', index: 3 })}
       >

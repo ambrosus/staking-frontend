@@ -36,6 +36,11 @@ const Deposit = ({ depositInfo }) => {
             depositInfo.abi,
             signer,
           );
+          console.log('poolContract', poolContract);
+          poolContract.filters.PoolReward(
+            '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+            'uint reward',
+          );
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
             value: ethers.utils.parseEther(`${inputValue}`), // todo
@@ -45,7 +50,10 @@ const Deposit = ({ depositInfo }) => {
           if (contractWithSigner) {
             const tx = await contractWithSigner.stake(overrides);
             if (tx) {
-              tx.wait();
+              tx.wait().then((e) => {
+                console.log('transaaaaaa ===>', e);
+                setInputValue('');
+              });
             }
           }
         }
@@ -209,6 +217,7 @@ const Deposit = ({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
+                disabled={!balance}
                 onclick={() => setInputValue(balance * 0.25)}
               >
                 <P size="xs-500">25%</P>
@@ -219,6 +228,7 @@ const Deposit = ({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
+                disabled={!balance}
                 onclick={() => setInputValue(balance * 0.5)}
               >
                 <P size="xs-500">50%</P>
@@ -229,6 +239,7 @@ const Deposit = ({ depositInfo }) => {
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
+                disabled={!balance}
                 onclick={() => setInputValue(balance * 0.75)}
               >
                 <P size="xs-500">75%</P>
@@ -239,6 +250,7 @@ const Deposit = ({ depositInfo }) => {
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
+                disabled={!balance}
                 onclick={() => setInputValue(balance)}
               >
                 <P size="xs-500">100%</P>
@@ -251,6 +263,7 @@ const Deposit = ({ depositInfo }) => {
           <Button
             type="green"
             disabled={
+              inputValue < 1000 ||
               !inputValue ||
               inputValue <= 0 ||
               Number(inputValue) > Number(balance)
