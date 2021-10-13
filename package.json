@@ -5,9 +5,11 @@
   "dependencies": {
     "@ambrosus/react": "^0.16.4",
     "@kunukn/react-collapse": "^2.2.9",
+    "ambrosus-node-contracts": "^0.0.85",
     "classnames": "^2.3.1",
     "ethereum-block-by-date": "^1.4.2",
     "ethers": "^5.4.6",
+    "ganache-core": "^2.13.2",
     "mobx": "^6.3.3",
     "mobx-react-lite": "^3.2.1",
     "prop-types": "^15.7.2",

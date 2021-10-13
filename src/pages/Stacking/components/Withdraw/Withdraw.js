@@ -25,7 +25,7 @@ const Withdraw = ({
         const signer = provider.getSigner();
         if (signer) {
           const poolContract = new ethers.Contract(
-            '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+            withdrawContractInfo.address,
             withdrawContractInfo.abi,
             signer,
           );

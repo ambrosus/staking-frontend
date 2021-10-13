@@ -3,7 +3,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 
@@ -16,7 +15,6 @@ import storageService from '../../services/storage.service';
 import InstallMetamaskAlert from '../Home/components/InstallMetamaskAlert';
 import FromPhoneDeviseEnter from '../Home/components/FromPhoneDeviseEnter';
 import { getBalance } from '../../utils/constants';
-
 import avatarIcon from '../../assets/svg/avatar.svg';
 export const StackItem = ({
   expand,
@@ -30,9 +28,7 @@ export const StackItem = ({
   index,
   openIndex,
   setOpenIndex,
-  poolInfo = {
-    abi: [],
-  },
+  poolInfo,
   ...restProps
 }) => {
   const ref = useRef();
@@ -53,8 +49,8 @@ export const StackItem = ({
           const singer = provider.getSigner();
           if (singer) {
             const poolContract = new ethers.Contract(
-              '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
-              poolInfo?.abi,
+              poolInfo.address,
+              poolInfo.abi,
               singer,
             );
 
@@ -86,7 +82,7 @@ export const StackItem = ({
           provider,
         );
         const poolContractForWiew = new ethers.Contract(
-          '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
+          poolInfo.address,
           poolInfo?.abi,
           signerRoot,
         );

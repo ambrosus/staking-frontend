@@ -5,26 +5,24 @@ import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
 import EthDater from 'ethereum-block-by-date';
 
+import { pools } from '../../utils/constants';
 import StackItem from './StackingItem';
 import P from '../../components/P';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
 import appStore from '../../store/app.store';
 import storageService from '../../services/storage.service';
-import { pools } from '../../utils/constants';
 
 import errorOutlineIcon from '../../assets/svg/error_outline.svg';
 import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
 import last24hIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
 
-/* eslint-disable */
-
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
   const [openIndexStakeItem, setOpenIndexStakeItem] = useState(20);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const [totalStaked, setTotalStaked] = useState(null);
-  const [totalReward, setTotalReward] = useState(null);
+  const [totalStaked, setTotalStaked] = useState(ethers.BigNumber.from('0'));
+  const [totalReward, setTotalReward] = useState(ethers.BigNumber.from('0'));
   const { ethereum } = window;
 
   useEffect(async () => {
@@ -38,8 +36,6 @@ const Stacking = observer(() => {
         const block = await dater.getDate(
           new Date(Date.now() - 24 * 60 * 60 * 1000),
         );
-        console.log('block', block);
-
         const signer = provider.getSigner();
         provider.listAccounts().then((accounts) => {
           const defaultAccount = accounts[0];
@@ -48,12 +44,17 @@ const Stacking = observer(() => {
           }
         });
         if (provider) {
-          setInterval(async () => {
-            const contract = new ethers.Contract(
-              '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f',
-              pools[0].abi,
-              signer,
-            );
+          // setInterval(async () => {
+          let contract;
+          pools.forEach((item) => {
+            contract = new ethers.Contract(item.address, item.abi, signer);
+          });
+          if (contract) {
+            await contract
+              .viewStake()
+              .then(async (res) =>
+                setTotalStaked(ethers.utils.formatEther(res)),
+              );
             // const { node } = await contract.nodes(0);
             // console.log('node address:', node);
             const iface = contract.interface;
@@ -69,39 +70,19 @@ const Stacking = observer(() => {
                 (log) => iface.parseLog(log).args.reward,
               );
               if (rewards) {
-                const totalReward = rewards.reduce(
+                const totalRewards = rewards.reduce(
                   (acc, reward) => acc.add(reward),
                   ethers.BigNumber.from('0'),
                 );
-                if (totalReward) {
-                  setTotalReward(ethers.utils.formatEther(totalReward));
+                if (totalRewards) {
+                  const formatTotalReward =
+                    ethers.utils.formatEther(totalRewards);
+                  setTotalReward(formatTotalReward);
                 }
               }
             }
-            const stakedLogs = await provider.getLogs({
-              fromBlock: block.block,
-              toBlock: 'latest',
-              topics: [
-                ethers.utils.id(
-                  'PoolStakeChanged(address,address,int256,int256)',
-                ),
-              ],
-            });
-            if (stakedLogs) {
-              const staked = stakedLogs.map(
-                (log) => iface.parseLog(log).args.stake,
-              );
-              if (staked) {
-                const totalStaked = staked.reduce(
-                  (acc, reward) => acc.add(reward),
-                  ethers.BigNumber.from('0'),
-                );
-                if (totalStaked) {
-                  setTotalStaked(ethers.utils.formatEther(totalStaked));
-                }
-              }
-            }
-          }, 5000);
+          }
+          // }, 5000);
         }
       }
     }
@@ -210,16 +191,16 @@ const Stacking = observer(() => {
           <div style={{ flexBasis: 26 }}>Net APY</div>
           <div style={{ maxWidth: 167, marginRight: -6 }} />
         </div>
-        {pools.map((pool, index) => (
+        {pools.map((item, index) => (
           <StackItem
-            key={pool.contractName}
+            key={item.contractName}
             index={index}
             openIndex={openIndexStakeItem}
             setOpenIndex={setOpenIndexStakeItem}
             expand
-            comingSoon={!pool?.abi}
+            comingSoon={!item?.abi}
             lazy
-            poolInfo={pool}
+            poolInfo={item}
           />
         ))}
       </div>
