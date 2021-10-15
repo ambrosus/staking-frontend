@@ -102,7 +102,7 @@ const Stacking = observer(() => {
               }
             }
           }
-        }, 10000);
+        }, 3000);
       }
     } catch (e) {
       console.log(e);
