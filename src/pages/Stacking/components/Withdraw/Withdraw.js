@@ -36,15 +36,21 @@ const Withdraw = ({
             gasLimit: 1000000,
           };
           if (contractWithSigner) {
-            const tx = await contractWithSigner.unstake(decimal, overrides);
-            if (tx) {
-              tx.wait();
-            }
+            await contractWithSigner
+              .unstake(decimal, overrides)
+              .then(async (tx) => {
+                try {
+                  await tx.wait().then((result) => console.log(result));
+                  setInputValue('');
+                } catch (e) {
+                  console.log(e);
+                }
+              });
           }
         }
       }
     } catch (e) {
-      throw e;
+      console.log(e);
     }
     return false;
   };

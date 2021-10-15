@@ -26,65 +26,73 @@ const Stacking = observer(() => {
   const { ethereum } = window;
 
   useEffect(async () => {
-    if (storageService.get('auth') === true) {
-      if (ethereum && ethereum.isMetaMask) {
-        window.ethereum.on('accountsChanged', function () {
-          window.location.reload();
-        });
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const dater = new EthDater(provider);
-        const block = await dater.getDate(
-          new Date(Date.now() - 24 * 60 * 60 * 1000),
-        );
-        const signer = provider.getSigner();
-        provider.listAccounts().then((accounts) => {
-          const defaultAccount = accounts[0];
-          if (defaultAccount) {
-            setAccount(defaultAccount);
-          }
-        });
-        if (provider) {
-          // setInterval(async () => {
-          let contract;
-          pools.forEach((item) => {
-            contract = new ethers.Contract(item.address, item.abi, signer);
+    try {
+      if (storageService.get('auth') === true) {
+        if (ethereum && ethereum.isMetaMask) {
+          window.ethereum.on('accountsChanged', function () {
+            window.location.reload();
           });
-          if (contract) {
-            await contract
-              .viewStake()
-              .then(async (res) =>
-                setTotalStaked(ethers.utils.formatEther(res)),
-              );
-            // const { node } = await contract.nodes(0);
-            // console.log('node address:', node);
-            const iface = contract.interface;
-            // const event = iface.events['PoolReward(address,uint256)'];
-            // console.log('event:', event);
-            const rewardsLogs = await provider.getLogs({
-              fromBlock: block.block,
-              toBlock: 'latest',
-              topics: [ethers.utils.id('PoolReward(address,uint256)')],
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const dater = new EthDater(provider);
+          const block = await dater.getDate(
+            new Date(Date.now() - 24 * 60 * 60 * 1000),
+          );
+          const signer = provider.getSigner();
+          provider.listAccounts().then((accounts) => {
+            const defaultAccount = accounts[0];
+            if (defaultAccount) {
+              setAccount(defaultAccount);
+            }
+          });
+          if (provider) {
+            // setInterval(async () => {
+            let contract;
+            pools.forEach((item) => {
+              contract = new ethers.Contract(item.address, item.abi, signer);
+              if (contract) {
+                contract.viewStake().then(async (res) => {
+                  console.log('[RES] :', ethers.utils.formatEther(res));
+                  setTotalStaked((prevState) => prevState.add(res));
+                });
+              }
             });
-            if (rewardsLogs) {
-              const rewards = rewardsLogs.map(
-                (log) => iface.parseLog(log).args.reward,
-              );
-              if (rewards) {
-                const totalRewards = rewards.reduce(
-                  (acc, reward) => acc.add(reward),
-                  ethers.BigNumber.from('0'),
+            if (contract) {
+              console.log('totalStaked', totalStaked);
+              // const { node } = await contract.nodes(0);
+              // console.log('node address:', node);
+              const iface = contract.interface;
+              // const event = iface.events['PoolReward(address,uint256)'];
+              // console.log('event:', event);
+              const rewardsLogs = provider.getLogs({
+                fromBlock: block.block,
+                toBlock: 'latest',
+                topics: [ethers.utils.id('PoolReward(address,uint256)')],
+              });
+              if (rewardsLogs) {
+                const rewards = rewardsLogs.map(
+                  (log) => iface.parseLog(log).args.reward,
                 );
-                if (totalRewards) {
-                  const formatTotalReward =
-                    ethers.utils.formatEther(totalRewards);
-                  setTotalReward(formatTotalReward);
+                if (rewards) {
+                  const totalRewards = rewards.reduce(
+                    (acc, reward) => acc.add(reward),
+                    ethers.BigNumber.from('0'),
+                  );
+                  console.log('totalRewards', totalRewards);
+                  if (totalRewards) {
+                    const formatTotalReward =
+                      ethers.utils.formatEther(totalRewards);
+                    setTotalReward(formatTotalReward);
+                  }
                 }
               }
             }
+
+            // }, 5000);
           }
-          // }, 5000);
         }
       }
+    } catch (e) {
+      console.log(e);
     }
   }, []);
 
@@ -144,7 +152,10 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              {totalStaked ? Number(totalStaked).toFixed(2) : 0} AMB
+              {totalStaked
+                ? Number(ethers.utils.formatEther(totalStaked)).toFixed(2)
+                : 0}{' '}
+              AMB
             </P>
           </div>
           <div className="info-block__stacked--course">

@@ -43,18 +43,19 @@ const Deposit = ({ depositInfo }) => {
             gasLimit: 1000000,
           };
           if (contractWithSigner) {
-            const tx = await contractWithSigner.stake(overrides);
-            if (tx) {
-              tx.wait().then((e) => {
-                console.log('transaaaaaa ===>', e);
+            await contractWithSigner.stake(overrides).then(async (tx) => {
+              try {
+                await tx.wait().then((result) => console.log(result));
                 setInputValue('');
-              });
-            }
+              } catch (e) {
+                console.log(e);
+              }
+            });
           }
         }
       }
     } catch (e) {
-      throw e;
+      console.error(e);
     }
     return false;
   };
