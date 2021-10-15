@@ -52,9 +52,7 @@ export const MetamaskConnect = observer(() => {
               history.push('/stacking');
               storageService.set('auth', true);
               appStore.setAuth(true);
-              const provider = new ethers.providers.Web3Provider(
-                window.ethereum,
-              );
+              const provider = new ethers.providers.Web3Provider(ethereum);
               // const signer = provider.getSigner();
               provider
                 .listAccounts()

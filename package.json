@@ -6,6 +6,7 @@
     "@ambrosus/react": "^0.16.4",
     "@kunukn/react-collapse": "^2.2.9",
     "ambrosus-node-contracts": "^0.0.85",
+    "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
     "ethereum-block-by-date": "^1.4.2",
     "ethers": "^5.4.6",
@@ -20,6 +21,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-svg": "^14.0.10",
+    "react-toastify": "^8.0.3",
     "react-tooltip": "^4.2.21",
     "sass": "^1.35.2",
     "web-vitals": "^1.0.1"

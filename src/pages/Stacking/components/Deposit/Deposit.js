@@ -2,6 +2,8 @@
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
@@ -12,9 +14,10 @@ import useModal from '../../../../utils/useModal';
 import Modal from '../../../../components/Modal/Modal';
 import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
-import { ethers } from 'ethers';
+import notificationMassage from '../../../../utils/notificationMassage';
+import appStore from '../../../../store/app.store';
 
-const Deposit = ({ depositInfo }) => {
+const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
   const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
   const [myStake, setMyStake] = useState(0);
@@ -24,6 +27,7 @@ const Deposit = ({ depositInfo }) => {
   const { ethereum } = window;
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
+
   const checkoutPayment = async () => {
     /* eslint-disable-next-line */
     try {
@@ -44,11 +48,37 @@ const Deposit = ({ depositInfo }) => {
           };
           if (contractWithSigner) {
             await contractWithSigner.stake(overrides).then(async (tx) => {
-              try {
-                await tx.wait().then((result) => console.log(result));
-                setInputValue('');
-              } catch (e) {
-                console.log(e);
+              if (tx) {
+                console.log('PENDING', tx);
+                notificationMassage(
+                  'PENDING',
+                  `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                    60,
+                  )} pending.`,
+                );
+                await tx
+                  .wait()
+                  .then((result) => {
+                    console.log('SUCCESS', result);
+                    notificationMassage(
+                      'SUCCESS',
+                      `Transaction ${result.transactionHash.substr(
+                        0,
+                        6,
+                      )}...${result.transactionHash.slice(60)} success!`,
+                    );
+                    appStore.setObserverValue(-2);
+                  })
+                  .catch((error) => {
+                    console.log('ERROR', error);
+                    notificationMassage(
+                      'ERROR',
+                      `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                        60,
+                      )} failed!`,
+                    );
+                    setInputValue('');
+                  });
               }
             });
           }
@@ -191,7 +221,8 @@ const Deposit = ({ depositInfo }) => {
           </ReactTooltip>
         </>
         <P size="s-400" style={{ fontWeight: 500 }}>
-          &nbsp; Available for stake: {Number(balance).toFixed(2)} AMB
+          &nbsp; Available for stake:{' '}
+          {Number(balance).toFixed(2) - Number(inputValue)} AMB
         </P>
         <div style={{ flexBasis: '90%' }} />
       </div>
@@ -307,5 +338,5 @@ const Deposit = ({ depositInfo }) => {
       </div>
     </>
   );
-};
+});
 export default Deposit;

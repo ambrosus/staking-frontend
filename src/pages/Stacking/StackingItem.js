@@ -213,7 +213,7 @@ export const StackItem = ({
             appStore.setAuth(false);
           }
         });
-    } else if (window.ethereum === undefined) {
+    } else if (ethereum === undefined) {
       alertStore.addNotification({
         content: InstallMetamaskAlert,
         container: 'bottom-right',
