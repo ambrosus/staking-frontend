@@ -51,13 +51,11 @@ const Stacking = observer(() => {
               contract = new ethers.Contract(item.address, item.abi, signer);
               if (contract) {
                 contract.viewStake().then(async (res) => {
-                  console.log('[RES] :', ethers.utils.formatEther(res));
                   setTotalStaked((prevState) => prevState.add(res));
                 });
               }
             });
             if (contract) {
-              console.log('totalStaked', totalStaked);
               // const { node } = await contract.nodes(0);
               // console.log('node address:', node);
               const iface = contract.interface;
@@ -77,11 +75,12 @@ const Stacking = observer(() => {
                     (acc, reward) => acc.add(reward),
                     ethers.BigNumber.from('0'),
                   );
-                  console.log('totalRewards', totalRewards);
                   if (totalRewards) {
                     const formatTotalReward =
                       ethers.utils.formatEther(totalRewards);
-                    setTotalReward(formatTotalReward);
+                    setTotalReward((prevState) =>
+                      prevState.add(formatTotalReward),
+                    );
                   }
                 }
               }
