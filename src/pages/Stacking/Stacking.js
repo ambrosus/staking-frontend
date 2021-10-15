@@ -3,7 +3,7 @@ import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
-import EthDater from 'ethereum-block-by-date';
+// import EthDater from 'ethereum-block-by-date';
 import { ToastContainer, cssTransition } from 'react-toastify';
 
 import { pools } from '../../utils/constants';
@@ -36,17 +36,16 @@ const Stacking = observer(() => {
       if (storageService.get('auth') === true) {
         setInterval(async () => {
           appStore.incrementObserver();
-          console.log(appStore.observer);
           if (ethereum && ethereum.isMetaMask) {
             window.ethereum.on('accountsChanged', function () {
               window.location.reload();
             });
             const provider = new ethers.providers.Web3Provider(ethereum);
-            const dater = new EthDater(provider);
-            const block = await dater.getDate(
-              new Date(Date.now() - 24 * 60 * 60 * 1000),
-            );
-            console.log('block', block);
+            // const dater = new EthDater(provider);
+            // const block = await dater.getDate(
+            //   new Date(Date.now() - 24 * 60 * 60 * 1000),
+            // );
+            // console.log('block', block);
             const signer = provider.getSigner();
             provider.listAccounts().then((accounts) => {
               const defaultAccount = accounts[0];
