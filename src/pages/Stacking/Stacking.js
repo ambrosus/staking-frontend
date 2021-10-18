@@ -18,6 +18,7 @@ import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
 import last24hIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
 import { Loader, SkeletonString } from '../../components/Loader';
+import ComingSoonPool from '../../components/ComingSoonPool';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
@@ -322,7 +323,7 @@ const Stacking = observer(() => {
         </div>
         {pools.map(
           (item, index) =>
-            item?.active === true && (
+            item.active && (
               <StackItem
                 key={item.contractName}
                 index={index}
@@ -333,6 +334,16 @@ const Stacking = observer(() => {
                 lazy
                 loading={!!account}
                 poolInfo={item}
+              />
+            ),
+        )}
+        {pools.map(
+          (coming) =>
+            !coming.active && (
+              <ComingSoonPool
+                key={coming.contractName}
+                poolInfo={coming}
+                lazy
               />
             ),
         )}
