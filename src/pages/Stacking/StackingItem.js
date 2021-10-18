@@ -263,12 +263,12 @@ export const StackItem = ({
             {comingSoon ? (
               ''
             ) : (
-              <div>
+              <span>
                 {myStake && Number(ethers.utils.formatEther(myStake)) > 1
                   ? `${Number(ethers.utils.formatEther(myStake)).toFixed(2)}`
                   : '-'}
                 &nbsp;&nbsp;AMB
-              </div>
+              </span>
             )}
           </P>
         </div>
@@ -279,12 +279,12 @@ export const StackItem = ({
           {comingSoon ? (
             ''
           ) : (
-            <div>
+            <span>
               {totalStake && Number(ethers.utils.formatEther(totalStake)) > 1
                 ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(2)} `
                 : '-'}
               &nbsp;&nbsp;AMB
-            </div>
+            </span>
           )}
         </P>
       </div>

@@ -140,6 +140,7 @@ const Stacking = observer(() => {
                     if (contract) {
                       contract.viewStake().then(async (res) => {
                         setTotalStaked((prevState) => prevState.add(res));
+                        console.log('totalStaked', totalStaked);
                       });
                     }
                   }
@@ -246,7 +247,7 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              {totalStaked && totalStaked > ethers.BigNumber.from('0')
+              {totalStaked && Number(ethers.utils.formatEther(totalStaked)) > 1
                 ? Number(ethers.utils.formatEther(totalStaked)).toFixed(2)
                 : '-'}
               &nbsp;&nbsp;AMB
