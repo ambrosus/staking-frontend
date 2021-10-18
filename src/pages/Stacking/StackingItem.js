@@ -22,7 +22,7 @@ export const StackItem = ({
   expand,
   comingSoon,
   children,
-  loading,
+  loading = true,
   instant,
   lazy,
   transitionDuration = '200ms',
