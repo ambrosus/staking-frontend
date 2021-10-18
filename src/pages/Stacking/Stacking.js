@@ -140,7 +140,6 @@ const Stacking = observer(() => {
                     if (contract) {
                       contract.viewStake().then(async (res) => {
                         setTotalStaked((prevState) => prevState.add(res));
-                        console.log('totalStaked', totalStaked);
                       });
                     }
                   }
