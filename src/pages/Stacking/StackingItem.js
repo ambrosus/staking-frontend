@@ -16,10 +16,13 @@ import InstallMetamaskAlert from '../Home/components/InstallMetamaskAlert';
 import FromPhoneDeviseEnter from '../Home/components/FromPhoneDeviseEnter';
 import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
+import { SkeletonString } from '../../components/Loader';
+
 export const StackItem = ({
   expand,
   comingSoon,
   children,
+  loading,
   instant,
   lazy,
   transitionDuration = '200ms',
@@ -69,23 +72,23 @@ export const StackItem = ({
         }
       }, 3000);
     } else {
-      if (ethereum && ethereum.isMetaMask) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signerRoot = new ethers.Wallet(
-          '9f064b91351730450ac3ff2bfa397c33f24d6248a1476454d50c86ec018c927a',
-          provider,
-        );
-        const poolContractForWiew = new ethers.Contract(
-          poolInfo.address,
-          poolInfo?.abi,
-          signerRoot,
-        );
-        poolContractForWiew.getTotalStake().then((total) => {
-          if (total) {
-            setTotalStake(total);
-          }
-        });
-      } else {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signerRoot = new ethers.Wallet(
+        '9f064b91351730450ac3ff2bfa397c33f24d6248a1476454d50c86ec018c927a',
+        provider,
+      );
+
+      const poolContractForView = new ethers.Contract(
+        poolInfo.address,
+        poolInfo?.abi,
+        signerRoot,
+      );
+      poolContractForView.getTotalStake().then((total) => {
+        if (total) {
+          setTotalStake(total);
+        }
+      });
+      if (!ethereum && !ethereum.isMetaMask) {
         alertStore.addNotification({
           content: InstallMetamaskAlert,
           container: 'bottom-right',
@@ -210,8 +213,8 @@ export const StackItem = ({
 
     function handleTransitionEnd(event) {
       if (
-          (event.target === node && event.propertyName === 'height') ||
-          'padding-bottom'
+        (event.target === node && event.propertyName === 'height') ||
+        'padding-bottom'
       ) {
         handleComplete();
       }
@@ -233,6 +236,7 @@ export const StackItem = ({
     }
     return () => openCollapse();
   }, [renderChildren]);
+
   useEffect(() => {
     start();
     return () => start();
@@ -263,36 +267,48 @@ export const StackItem = ({
       </div>
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
-          <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? (
-              ''
-            ) : (
-              <span>
-                {myStake && Number(ethers.utils.formatEther(myStake)) > 1
-                  ? `${Number(ethers.utils.formatEther(myStake)).toFixed(
-                      2,
-                    )}  AMB`
-                  : '-'}
-              </span>
-            )}
-          </P>
+          {!loading ? (
+            <SkeletonString />
+          ) : (
+            <P style={{ textTransform: 'uppercase' }} size="l-400">
+              {comingSoon ? (
+                ''
+              ) : (
+                <span>
+                  {myStake && Number(ethers.utils.formatEther(myStake)) > 1
+                    ? `${Number(ethers.utils.formatEther(myStake)).toFixed(
+                        2,
+                      )}  AMB`
+                    : '-'}
+                </span>
+              )}
+            </P>
+          )}
         </div>
       )}
 
       <div className="item--header__vault-assets">
-        <P style={{ textTransform: 'uppercase' }} size="l-400">
-          {comingSoon ? (
-            ''
-          ) : (
-            <span>
-              {totalStake && Number(ethers.utils.formatEther(totalStake)) > 1
-                ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(
-                    2,
-                  )}  AMB`
-                : '-'}
-            </span>
-          )}
-        </P>
+        {!loading ? (
+          <SkeletonString />
+        ) : (
+          <P style={{ textTransform: 'uppercase' }} size="l-400">
+            {comingSoon ? (
+              ''
+            ) : (
+              <>
+                {' '}
+                <span>
+                  {totalStake &&
+                  Number(ethers.utils.formatEther(totalStake)) > 1
+                    ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(
+                        2,
+                      )}  AMB`
+                    : '-'}
+                </span>
+              </>
+            )}
+          </P>
+        )}
       </div>
       <div className="item--header__apy">
         <P style={{ textTransform: 'uppercase' }} size="l-700">
@@ -366,5 +382,6 @@ StackItem.propTypes = {
   lazy: PropTypes.bool,
   instant: PropTypes.bool,
   onComplete: PropTypes.func,
+  loading: PropTypes.bool,
 };
 export default StackItem;
