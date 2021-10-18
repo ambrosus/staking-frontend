@@ -64,7 +64,7 @@ const Withdraw = observer(
                         appStore.setObserverValue(-1);
                         setInputValue('');
                       })
-                      .catch((error) => {
+                      .catch(() => {
                         notificationMassage(
                           'ERROR',
                           `Transaction ${tx.hash.substr(
