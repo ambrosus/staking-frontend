@@ -44,17 +44,16 @@ const Withdraw = observer(
                 .unstake(decimal, overrides)
                 .then(async (tx) => {
                   if (tx) {
-                    console.log('PENDING', tx);
                     notificationMassage(
                       'PENDING',
                       `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
                         60,
                       )} pending.`,
                     );
+                    setInputValue('');
                     await tx
                       .wait()
                       .then((result) => {
-                        console.log('SUCCESS', result);
                         notificationMassage(
                           'SUCCESS',
                           `Transaction ${result.transactionHash.substr(
@@ -63,9 +62,9 @@ const Withdraw = observer(
                           )}...${result.transactionHash.slice(60)} success!`,
                         );
                         appStore.setObserverValue(-1);
+                        setInputValue('');
                       })
                       .catch((error) => {
-                        console.log('ERROR', error);
                         notificationMassage(
                           'ERROR',
                           `Transaction ${tx.hash.substr(

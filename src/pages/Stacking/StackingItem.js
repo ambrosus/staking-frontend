@@ -36,8 +36,8 @@ export const StackItem = ({
   const [open, setOpen] = useState(false);
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
-  const [myStake, setMyStake] = useState(0);
-  const [totalStake, setTotalStake] = useState(0);
+  const [myStake, setMyStake] = useState(ethers.BigNumber.from('0'));
+  const [totalStake, setTotalStake] = useState(ethers.BigNumber.from('0'));
   const { ethereum } = window;
   const history = useHistory();
 
@@ -57,17 +57,12 @@ export const StackItem = ({
             if (poolContract) {
               poolContract.getTotalStake().then((total) => {
                 if (total) {
-                  const formatEther = ethers.utils.formatEther(total);
-                  if (formatEther) {
-                    setTotalStake(formatEther);
-                  }
-                } else {
-                  setTotalStake(0);
+                  setTotalStake(total);
                 }
               });
               poolContract.viewStake().then((withdrawSum) => {
                 if (withdrawSum) {
-                  setMyStake(ethers.utils.formatEther(withdrawSum));
+                  setMyStake(withdrawSum);
                 }
               });
             }
@@ -88,12 +83,7 @@ export const StackItem = ({
         );
         poolContractForWiew.getTotalStake().then((total) => {
           if (total) {
-            const formatEther = ethers.utils.formatEther(total);
-            if (formatEther) {
-              setTotalStake(formatEther);
-            }
-          } else {
-            setTotalStake(0);
+            setTotalStake(total);
           }
         });
       } else {
@@ -270,14 +260,32 @@ export const StackItem = ({
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
           <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? '' : `${Number(myStake).toFixed(2)} AMB`}
+            {comingSoon ? (
+              ''
+            ) : (
+              <div>
+                {myStake && Number(ethers.utils.formatEther(myStake)) > 1
+                  ? `${Number(ethers.utils.formatEther(myStake)).toFixed(2)}`
+                  : '-'}
+                &nbsp;&nbsp;AMB
+              </div>
+            )}
           </P>
         </div>
       )}
 
       <div className="item--header__vault-assets">
         <P style={{ textTransform: 'uppercase' }} size="l-400">
-          {comingSoon ? '' : `${Number(totalStake).toFixed(2)} AMB`}
+          {comingSoon ? (
+            ''
+          ) : (
+            <div>
+              {totalStake && Number(ethers.utils.formatEther(totalStake)) > 1
+                ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(2)} `
+                : '-'}
+              &nbsp;&nbsp;AMB
+            </div>
+          )}
         </P>
       </div>
       <div className="item--header__apy">

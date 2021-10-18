@@ -107,6 +107,87 @@ const Stacking = observer(() => {
     } catch (e) {
       console.log(e);
     }
+    return () => {
+      try {
+        if (storageService.get('auth') === true) {
+          setInterval(async () => {
+            appStore.incrementObserver();
+            if (ethereum && ethereum.isMetaMask) {
+              window.ethereum.on('accountsChanged', function () {
+                window.location.reload();
+              });
+              const provider = new ethers.providers.Web3Provider(ethereum);
+              // const dater = new EthDater(provider);
+              // const block = await dater.getDate(
+              //   new Date(Date.now() - 24 * 60 * 60 * 1000),
+              // );
+              // console.log('block', block);
+              const signer = provider.getSigner();
+              provider.listAccounts().then((accounts) => {
+                const defaultAccount = accounts[0];
+                if (defaultAccount) {
+                  setAccount(defaultAccount);
+                }
+              });
+              if (provider) {
+                pools.forEach((item) => {
+                  contract = new ethers.Contract(
+                    item.address,
+                    item.abi,
+                    signer,
+                  );
+                  if (appStore.observer === 1) {
+                    if (contract) {
+                      contract.viewStake().then(async (res) => {
+                        setTotalStaked((prevState) => prevState.add(res));
+                      });
+                    }
+                  }
+                  if (appStore.observer === 0) {
+                    setTotalStaked(ethers.BigNumber.from('0'));
+                  }
+                });
+
+                if (contract) {
+                  // await contract.nodes(0).then(console.log);
+                  // const iface = contract.interface;
+                  // console.log('iface', iface);
+                  // const event = iface.events['PoolReward(address,uint256)'];
+                  // console.log('event:', event);
+                  // TODO
+                  setTotalReward(ethers.BigNumber.from('0'));
+
+                  // const rewardsLogs = provider.getLogs({
+                  //   fromBlock: block.block,
+                  //   toBlock: 'latest',
+                  //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
+                  // });
+                  // if (rewardsLogs !== undefined) {
+                  //   const rewards =
+                  //     rewardsLogs &&
+                  //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
+                  //   if (rewards) {
+                  //     const totalRewards = rewards.reduce(
+                  //       (acc, reward) => acc.add(reward),
+                  //       ethers.BigNumber.from('0'),
+                  //     );
+                  //     if (totalRewards) {
+                  //       const formatTotalReward =
+                  //         ethers.utils.formatEther(totalRewards);
+                  //         prevState.add(formatTotalReward),
+                  //       );
+                  //     }
+                  //   }
+                  // }
+                }
+              }
+            }
+          }, 3000);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
   }, []);
 
   const infoBlock = (
@@ -141,7 +222,7 @@ const Stacking = observer(() => {
           <div className="info-block__stacked--total">
             <div>
               <ReactTooltip id="total-staked" place="top" effect="solid">
-                Total Staked info
+                The amount of staked coins in all pools
               </ReactTooltip>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -165,9 +246,9 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              {totalStaked
+              {totalStaked && totalStaked > ethers.BigNumber.from('0')
                 ? Number(ethers.utils.formatEther(totalStaked)).toFixed(2)
-                : 0}
+                : '-'}
               &nbsp;&nbsp;AMB
             </P>
           </div>
@@ -193,9 +274,10 @@ const Stacking = observer(() => {
             <P size="xl-400" style={{ color: '#4A38AE' }}>
               <span style={{ color: '#1ACD8C' }}>
                 {' '}
-                {totalReward
+                {totalReward && totalReward > ethers.BigNumber.from('0')
                   ? `+${Number(totalReward).toFixed(2)}`
-                  : 0} AMB{' '}
+                  : '-'}{' '}
+                AMB{' '}
               </span>
               &nbsp; / 34$
             </P>

@@ -49,7 +49,6 @@ const Deposit = observer(({ depositInfo }) => {
           if (contractWithSigner) {
             await contractWithSigner.stake(overrides).then(async (tx) => {
               if (tx) {
-                console.log('PENDING', tx);
                 notificationMassage(
                   'PENDING',
                   `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
@@ -59,7 +58,6 @@ const Deposit = observer(({ depositInfo }) => {
                 await tx
                   .wait()
                   .then((result) => {
-                    console.log('SUCCESS', result);
                     notificationMassage(
                       'SUCCESS',
                       `Transaction ${result.transactionHash.substr(
@@ -67,10 +65,10 @@ const Deposit = observer(({ depositInfo }) => {
                         6,
                       )}...${result.transactionHash.slice(60)} success!`,
                     );
+                    setInputValue('');
                     appStore.setObserverValue(-2);
                   })
                   .catch((error) => {
-                    console.log('ERROR', error);
                     notificationMassage(
                       'ERROR',
                       `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
@@ -222,7 +220,10 @@ const Deposit = observer(({ depositInfo }) => {
         </>
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
-          {Number(balance).toFixed(2) - Number(inputValue)} AMB
+          {Number(balance).toFixed(2) - Number(inputValue) > 0
+            ? Number(balance).toFixed(2) - Number(inputValue)
+            : 0}{' '}
+          AMB
         </P>
         <div style={{ flexBasis: '90%' }} />
       </div>
