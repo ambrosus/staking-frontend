@@ -17,7 +17,7 @@ import errorOutlineIcon from '../../assets/svg/error_outline.svg';
 import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
 import last24hIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
-import { Loader } from '../../components/Loader';
+import { Loader, SkeletonString } from '../../components/Loader';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
@@ -254,17 +254,23 @@ const Stacking = observer(() => {
                     />
                   </div>
                 </div>
-                <P size="xl-400" style={{ color: '#4A38AE' }}>
-                  {totalStaked &&
-                  Number(ethers.utils.formatEther(totalStaked)) > 1 ? (
-                    <span>
-                      {Number(ethers.utils.formatEther(totalStaked)).toFixed(2)}{' '}
-                      &nbsp;&nbsp;AMB
-                    </span>
-                  ) : (
-                    '-'
-                  )}
-                </P>
+                {appStore.observer < 1 ? (
+                  <SkeletonString />
+                ) : (
+                  <P size="xl-400" style={{ color: '#4A38AE' }}>
+                    {totalStaked &&
+                    Number(ethers.utils.formatEther(totalStaked)) > 1 ? (
+                      <span>
+                        {Number(ethers.utils.formatEther(totalStaked)).toFixed(
+                          2,
+                        )}{' '}
+                        &nbsp;&nbsp;AMB
+                      </span>
+                    ) : (
+                      '-'
+                    )}
+                  </P>
+                )}
               </div>
               <div className="info-block__stacked--course">
                 <div

@@ -73,15 +73,10 @@ export const StackItem = ({
       }, 3000);
     } else {
       const provider = new ethers.providers.Web3Provider(ethereum);
-      const signerRoot = new ethers.Wallet(
-        '9f064b91351730450ac3ff2bfa397c33f24d6248a1476454d50c86ec018c927a',
-        provider,
-      );
-
       const poolContractForView = new ethers.Contract(
         poolInfo.address,
         poolInfo?.abi,
-        signerRoot,
+        provider,
       );
       poolContractForView.getTotalStake().then((total) => {
         if (total) {
