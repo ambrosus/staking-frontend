@@ -46,7 +46,7 @@ function CollapsedList() {
       <Block
         title="How often are rewards distributed?"
         isOpen={state[2]}
-        onToggle={() => dispatch({ type: 'toggle', index: 3 })}
+        onToggle={() => dispatch({ type: 'toggle', index: 2 })}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -70,7 +70,7 @@ function CollapsedList() {
       <Block
         title="What is the minimum & maximum amount of AMB that can be staked? "
         isOpen={state[4]}
-        onToggle={() => dispatch({ type: 'toggle', index: 3 })}
+        onToggle={() => dispatch({ type: 'toggle', index: 4 })}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -84,7 +84,7 @@ function CollapsedList() {
         title="Are there any staking fees?"
         lastElement
         isOpen={state[5]}
-        onToggle={() => dispatch({ type: 'toggle', index: 3 })}
+        onToggle={() => dispatch({ type: 'toggle', index: 5 })}
       >
         <div className="collapsed-content">
           <P size="m-400">

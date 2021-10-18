@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 
@@ -19,6 +19,7 @@ export const Header = observer(() => {
   const [percentChange24h, setPercentChange24h] = useState(0);
   const [account, setAccount] = useState(null);
   const history = useHistory();
+  const location = useLocation();
   const { ethereum } = window;
 
   useEffect(() => {
@@ -94,7 +95,12 @@ export const Header = observer(() => {
         <P size="xs-500">Explorer</P>
       </a>
       <Link to="/stacking">
-        <P style={{ color: '#4A38AE' }} size="xs-500">
+        <P
+          style={{
+            color: location.pathname === '/stacking' ? '#4A38AE' : '#FFFFFF',
+          }}
+          size="xs-500"
+        >
           Staking
         </P>
       </Link>

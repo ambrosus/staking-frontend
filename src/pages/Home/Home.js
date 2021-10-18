@@ -10,6 +10,7 @@ import { pools } from '../../utils/constants';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import CollapsedList from '../../components/CollapsedList';
+import ComingSoonPool from '../../components/ComingSoonPool';
 
 const Home = () => {
   const menu = (
@@ -62,9 +63,14 @@ const Home = () => {
           <div className="stacking__header__clearfix-apy">Net APY</div>
           <div style={{ maxWidth: 157 }}></div>
         </div>
-        {pools.map((pool) => (
-          <StackItem key={pool.contractName} poolInfo={pool} lazy />
-        ))}
+        {pools.map((pool) => {
+          if (pool.active === true) {
+            return <StackItem key={pool.contractName} poolInfo={pool} lazy />;
+          }
+          return (
+            <ComingSoonPool key={pool.contractName} poolInfo={pool} lazy />
+          );
+        })}
       </div>
       <div className="faq">
         <CollapsedList />

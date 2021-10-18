@@ -31,20 +31,36 @@ export const pools = [
     contractName: 'Alpha',
     address: '0x39a499cd81C494E8EBC226D416B245978820414e',
     abi: pool.abi,
+    active: true,
   },
   {
     contractName: 'Beta',
     address: '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
     abi: pool.abi,
+    active: true,
   },
   {
     contractName: 'Gamma',
     address: '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
     abi: pool.abi,
+    active: true,
   },
   {
     contractName: 'Delta',
     address: '0x97d079Ff9D6c26481adDFa07cad058EdD1894D9a',
     abi: pool.abi,
+    active: true,
+  },
+  {
+    contractName: 'Charlie',
+    active: false,
+    address: '0x97d079Ff9D6c26481adDFa07cad058EdD1894D9a',
+    abi: [],
+  },
+  {
+    contractName: 'Echo',
+    active: false,
+    address: '0x97d079Ff9D6c26481adDFa07cad058EdD1894D9a',
+    abi: [],
   },
 ];

@@ -23,9 +23,12 @@ background-color: #F7F7FD;
         justify-content: space-between;
         max-width: 230px;
         align-items: center;
-
+        .active{
+          color: #FFFFFF;
+        }
         > a {
           padding-right: 20px;
+
         }
       }
 

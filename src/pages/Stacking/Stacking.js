@@ -55,16 +55,22 @@ const Stacking = observer(() => {
             });
             if (provider) {
               pools.forEach((item) => {
-                contract = new ethers.Contract(item.address, item.abi, signer);
-                if (appStore.observer === 1) {
-                  if (contract) {
-                    contract.viewStake().then(async (res) => {
-                      setTotalStaked((prevState) => prevState.add(res));
-                    });
+                if (item.active) {
+                  contract = new ethers.Contract(
+                    item.address,
+                    item.abi,
+                    signer,
+                  );
+                  if (appStore.observer === 1) {
+                    if (contract) {
+                      contract.viewStake().then(async (res) => {
+                        setTotalStaked((prevState) => prevState.add(res));
+                      });
+                    }
                   }
-                }
-                if (appStore.observer === 0) {
-                  setTotalStaked(ethers.BigNumber.from('0'));
+                  if (appStore.observer === 0) {
+                    setTotalStaked(ethers.BigNumber.from('0'));
+                  }
                 }
               });
 
@@ -246,10 +252,15 @@ const Stacking = observer(() => {
               </div>
             </div>
             <P size="xl-400" style={{ color: '#4A38AE' }}>
-              {totalStaked && Number(ethers.utils.formatEther(totalStaked)) > 1
-                ? Number(ethers.utils.formatEther(totalStaked)).toFixed(2)
-                : '-'}
-              &nbsp;&nbsp;AMB
+              {totalStaked &&
+              Number(ethers.utils.formatEther(totalStaked)) > 1 ? (
+                <span>
+                  {Number(ethers.utils.formatEther(totalStaked)).toFixed(2)}{' '}
+                  &nbsp;&nbsp;AMB
+                </span>
+              ) : (
+                '-'
+              )}
             </P>
           </div>
           <div className="info-block__stacked--course">
@@ -275,9 +286,8 @@ const Stacking = observer(() => {
               <span style={{ color: '#1ACD8C' }}>
                 {' '}
                 {totalReward && totalReward > ethers.BigNumber.from('0')
-                  ? `+${Number(totalReward).toFixed(2)}`
-                  : '-'}{' '}
-                AMB{' '}
+                  ? `+${Number(totalReward).toFixed(2)}  AMB`
+                  : '-'}
               </span>
               &nbsp; / 34$
             </P>
@@ -297,18 +307,21 @@ const Stacking = observer(() => {
           <div style={{ flexBasis: 26 }}>Net APY</div>
           <div style={{ maxWidth: 167, marginRight: -6 }} />
         </div>
-        {pools.map((item, index) => (
-          <StackItem
-            key={item.contractName}
-            index={index}
-            openIndex={openIndexStakeItem}
-            setOpenIndex={setOpenIndexStakeItem}
-            expand
-            comingSoon={!item?.abi}
-            lazy
-            poolInfo={item}
-          />
-        ))}
+        {pools.map(
+          (item, index) =>
+            item?.active === true && (
+              <StackItem
+                key={item.contractName}
+                index={index}
+                openIndex={openIndexStakeItem}
+                setOpenIndex={setOpenIndexStakeItem}
+                expand
+                comingSoon={!item?.abi}
+                lazy
+                poolInfo={item}
+              />
+            ),
+        )}
       </div>
       <ToastContainer transition={bounce} />
     </>

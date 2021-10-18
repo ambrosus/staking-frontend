@@ -40,8 +40,7 @@ export const StackItem = ({
   const [totalStake, setTotalStake] = useState(ethers.BigNumber.from('0'));
   const { ethereum } = window;
   const history = useHistory();
-
-  useEffect(() => {
+  const start = () => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
       const provider = new ethers.providers.Web3Provider(ethereum);
       setInterval(() => {
@@ -95,82 +94,7 @@ export const StackItem = ({
         });
       }
     }
-  }, []);
-  useEffect(() => {
-    if (expand) {
-      if (index === openIndex) {
-        setOpen(!open);
-      } else {
-        setOpen(false);
-      }
-    } else {
-    }
-  }, [openIndex, index]);
-  useLayoutEffect(() => {
-    if (lazy) {
-      if (open) {
-        getBalance();
-        if (renderChildren) {
-          openCollapse();
-        } else {
-          setRenderChildren(true);
-        }
-      } else {
-        closeCollapse();
-      }
-    } else {
-      if (open) {
-        openCollapse();
-      }
-      closeCollapse();
-    }
-  }, [open]);
-
-  useLayoutEffect(() => {
-    const node = ref.current;
-
-    function handleComplete() {
-      node.style.overflow = open ? 'initial' : 'hidden';
-      if (open) {
-        node.style.height = 'auto';
-      }
-      if (!open) {
-        node.style.paddingBottom = '0px';
-      }
-      if (!open && lazy) {
-        setRenderChildren(false);
-      }
-      if (open && onComplete) {
-        (() => {
-          onComplete();
-        })();
-      }
-    }
-
-    function handleTransitionEnd(event) {
-      if (
-        (event.target === node && event.propertyName === 'height') ||
-        'padding-bottom'
-      ) {
-        handleComplete();
-      }
-    }
-
-    if (instant || firstRender.current) {
-      handleComplete();
-      firstRender.current = false;
-    }
-    node.addEventListener('transitionend', handleTransitionEnd);
-    return () => {
-      node.removeEventListener('transitionend', handleTransitionEnd);
-    };
-  }, [open]);
-
-  useLayoutEffect(() => {
-    if (open) {
-      openCollapse();
-    }
-  }, [renderChildren]);
+  };
 
   const logIn = async () => {
     if (ethereum && ethereum.isMetaMask) {
@@ -243,6 +167,86 @@ export const StackItem = ({
       });
     });
   }
+  useLayoutEffect(() => {
+    if (lazy) {
+      if (open) {
+        getBalance();
+        if (renderChildren) {
+          openCollapse();
+        } else {
+          setRenderChildren(true);
+        }
+      } else {
+        closeCollapse();
+      }
+    } else {
+      if (open) {
+        openCollapse();
+      }
+      closeCollapse();
+    }
+  }, [open]);
+
+  useLayoutEffect(() => {
+    const node = ref.current;
+
+    function handleComplete() {
+      node.style.overflow = open ? 'initial' : 'hidden';
+      if (open) {
+        node.style.height = 'auto';
+      }
+      if (!open) {
+        node.style.paddingBottom = '0px';
+      }
+      if (!open && lazy) {
+        setRenderChildren(false);
+      }
+      if (open && onComplete) {
+        (() => {
+          onComplete();
+        })();
+      }
+    }
+
+    function handleTransitionEnd(event) {
+      if (
+          (event.target === node && event.propertyName === 'height') ||
+          'padding-bottom'
+      ) {
+        handleComplete();
+      }
+    }
+
+    if (instant || firstRender.current) {
+      handleComplete();
+      firstRender.current = false;
+    }
+    node.addEventListener('transitionend', handleTransitionEnd);
+    return () => {
+      node.removeEventListener('transitionend', handleTransitionEnd);
+    };
+  }, [open]);
+
+  useLayoutEffect(() => {
+    if (open) {
+      openCollapse();
+    }
+    return () => openCollapse();
+  }, [renderChildren]);
+  useEffect(() => {
+    start();
+    return () => start();
+  }, []);
+  useEffect(() => {
+    if (expand) {
+      if (index === openIndex) {
+        setOpen(!open);
+      } else {
+        setOpen(false);
+      }
+    } else {
+    }
+  }, [openIndex, index]);
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div className="item--header__pool">
@@ -265,9 +269,10 @@ export const StackItem = ({
             ) : (
               <span>
                 {myStake && Number(ethers.utils.formatEther(myStake)) > 1
-                  ? `${Number(ethers.utils.formatEther(myStake)).toFixed(2)}`
+                  ? `${Number(ethers.utils.formatEther(myStake)).toFixed(
+                      2,
+                    )}  AMB`
                   : '-'}
-                &nbsp;&nbsp;AMB
               </span>
             )}
           </P>
@@ -281,9 +286,10 @@ export const StackItem = ({
           ) : (
             <span>
               {totalStake && Number(ethers.utils.formatEther(totalStake)) > 1
-                ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(2)} `
+                ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(
+                    2,
+                  )}  AMB`
                 : '-'}
-              &nbsp;&nbsp;AMB
             </span>
           )}
         </P>
