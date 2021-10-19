@@ -26,7 +26,7 @@ const bounce = cssTransition({
 });
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
-  const [openIndexStakeItem, setOpenIndexStakeItem] = useState(20);
+  const [openIndexStakeItem, setOpenIndexStakeItem] = useState(-1);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   const [totalStaked, setTotalStaked] = useState(ethers.BigNumber.from('0'));
   const [totalReward, setTotalReward] = useState(ethers.BigNumber.from('0'));

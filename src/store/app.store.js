@@ -3,6 +3,8 @@ import { makeAutoObservable, runInAction } from 'mobx';
 export class AppStore {
   auth = false;
 
+  randomInteger = (1 + Math.random() * (50 + 1 - 1)).toFixed(2);
+
   observer = 0;
 
   constructor() {

@@ -28,8 +28,8 @@ export const StackItem = ({
   transitionDuration = '200ms',
   transitionTimingFunction = 'ease-in',
   onComplete,
-  index,
-  openIndex,
+  index = -1,
+  openIndex = -1,
   setOpenIndex,
   poolInfo,
   ...restProps
@@ -274,6 +274,7 @@ export const StackItem = ({
     }
     return () => start();
   }, []);
+
   useEffect(() => {
     if (expand) {
       if (index === openIndex) {
@@ -345,7 +346,7 @@ export const StackItem = ({
       </div>
       <div className="item--header__apy">
         <P style={{ textTransform: 'uppercase' }} size="l-700">
-          {comingSoon ? '' : '32.87%'}
+          {comingSoon ? '' : `${appStore.randomInteger}%`}
         </P>
       </div>
       {comingSoon ? (

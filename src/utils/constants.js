@@ -6,7 +6,10 @@ export const ambMounthUSD = (amb, usdPrice) => {
   const result = amb * parseFloat(usdPrice, 10);
   return result.toFixed(7);
 };
-
+export function randomInteger(min, max) {
+  const rand = min + Math.random() * (max + 1 - min);
+  return rand.toFixed(2);
+}
 export const getBalance = async () => {
   let balance;
   if (typeof window.ethereum !== 'undefined') {

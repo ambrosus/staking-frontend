@@ -16,6 +16,7 @@ import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
+import { randomInteger } from '../../../../utils/constants';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
@@ -171,7 +172,7 @@ const Deposit = observer(({ depositInfo }) => {
           <div>
             {' '}
             <P style={{ textTransform: 'uppercase' }} size="l-700">
-              15.13%
+              {appStore.randomInteger}%
             </P>
           </div>
         </div>
