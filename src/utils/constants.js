@@ -40,27 +40,11 @@ export const pools = [
     active: true,
   },
   {
-    contractName: 'Gamma_20211019_0.0.1',
-    address: '0x7fecce438b087a83E95C91DC168ad3D150225543',
-    abi: pool.abi,
-    active: true,
-  },
-  {
-    contractName: 'Delta_20211019_0.0.1',
-    address: '0xCB5ed3086DAD7F782Ee99D7Fa0dA2Db79937b0f0',
-    abi: pool.abi,
-    active: true,
-  },
-  {
     contractName: 'Charlie',
     active: false,
-    address: '0x97d079Ff9D6c26481adDFa07cad058EdD1894D9a',
-    abi: [],
   },
   {
     contractName: 'Echo',
     active: false,
-    address: '0x97d079Ff9D6c26481adDFa07cad058EdD1894D9a',
-    abi: [],
   },
 ];

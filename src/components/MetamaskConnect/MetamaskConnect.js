@@ -38,56 +38,6 @@ export const MetamaskConnect = observer(() => {
     async function handleEthereum() {
       if (ethereum && ethereum.isMetaMask) {
         await ethereum.enable();
-        // await ethereum
-        //   .request({
-        //     method: 'wallet_addEthereumChain',
-        //     params: [
-        //       {
-        //         chainId: '0x5611',
-        //         chainName: 'Ambrosus Test',
-        //         nativeCurrency: {
-        //           name: 'amber',
-        //           symbol: 'amb',
-        //           decimals: 18,
-        //         },
-        //         rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-        //         blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
-        //       },
-        //     ],
-        //   })
-        //   .then(console.log);
-        // await ethereum;
-        // .request({
-        //   method: 'wallet_switchEthereumChain',
-        //   params: [{ chainId: '0x5611' }],
-        // })
-        // .then(console.log);
-        // ethereum
-        //   .request({
-        //     method: 'wallet_addEthereumChain',
-        //     params: [
-        //       {
-        //         chainId: '0x5611',
-        //         chainName: 'Ambrosus Test',
-        //         nativeCurrency: {
-        //           name: 'amber',
-        //           symbol: 'amb',
-        //           decimals: 18,
-        //         },
-        //         rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-        //         blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
-        //       },
-        //     ],
-        //   })
-        //   .then((e) => {
-        //     console.log('[wallet_addEthereumChain]', e);
-        //     ethereum
-        //       .request({
-        //         method: 'wallet_switchEthereumChain',
-        //         params: [{ chainId: '0x5611' }],
-        //       })
-        //       .then(console.log);
-        //   });
         await ethereum
           .request({
             method: 'wallet_requestPermissions',
