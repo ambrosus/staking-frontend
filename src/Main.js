@@ -9,6 +9,12 @@ import './styles/Main.scss';
 
 const Main = observer(() => {
   useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', () => window.location.reload());
+      window.ethereum.on('chainChanged', () => window.location.reload());
+      window.ethereum.on('close', () => window.location.reload());
+      window.ethereum.on('networkChanged', () => window.location.reload());
+    }
     if (!storageService.get('auth')) {
       appStore.setAuth(false);
     } else {

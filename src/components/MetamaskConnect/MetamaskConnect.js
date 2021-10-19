@@ -38,6 +38,56 @@ export const MetamaskConnect = observer(() => {
     async function handleEthereum() {
       if (ethereum && ethereum.isMetaMask) {
         await ethereum.enable();
+        // await ethereum
+        //   .request({
+        //     method: 'wallet_addEthereumChain',
+        //     params: [
+        //       {
+        //         chainId: '0x5611',
+        //         chainName: 'Ambrosus Test',
+        //         nativeCurrency: {
+        //           name: 'amber',
+        //           symbol: 'amb',
+        //           decimals: 18,
+        //         },
+        //         rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+        //         blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
+        //       },
+        //     ],
+        //   })
+        //   .then(console.log);
+        // await ethereum;
+        // .request({
+        //   method: 'wallet_switchEthereumChain',
+        //   params: [{ chainId: '0x5611' }],
+        // })
+        // .then(console.log);
+        // ethereum
+        //   .request({
+        //     method: 'wallet_addEthereumChain',
+        //     params: [
+        //       {
+        //         chainId: '0x5611',
+        //         chainName: 'Ambrosus Test',
+        //         nativeCurrency: {
+        //           name: 'amber',
+        //           symbol: 'amb',
+        //           decimals: 18,
+        //         },
+        //         rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+        //         blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
+        //       },
+        //     ],
+        //   })
+        //   .then((e) => {
+        //     console.log('[wallet_addEthereumChain]', e);
+        //     ethereum
+        //       .request({
+        //         method: 'wallet_switchEthereumChain',
+        //         params: [{ chainId: '0x5611' }],
+        //       })
+        //       .then(console.log);
+        //   });
         await ethereum
           .request({
             method: 'wallet_requestPermissions',
@@ -47,13 +97,59 @@ export const MetamaskConnect = observer(() => {
               },
             ],
           })
-          .then((e) => {
+          .then(async (e) => {
             if (e) {
               history.push('/stacking');
               storageService.set('auth', true);
               appStore.setAuth(true);
               const provider = new ethers.providers.Web3Provider(ethereum);
-              // const signer = provider.getSigner();
+              try {
+                await ethereum.request({
+                  method: 'wallet_switchEthereumChain',
+                  params: [
+                    {
+                      chainId: `${ethers.utils.hexlify(
+                        +process.env.REACT_APP_CHAIN_ID,
+                      )}`,
+                    },
+                  ],
+                });
+              } catch (switchError) {
+                if (switchError.code === 4902) {
+                  try {
+                    await ethereum.request({
+                      method: 'wallet_addEthereumChain',
+                      params: [
+                        {
+                          chainId: `${ethers.utils.hexlify(
+                            +process.env.REACT_APP_CHAIN_ID,
+                          )}`,
+                          chainName: 'Ambrosus Test',
+                          nativeCurrency: {
+                            name: 'AMB',
+                            symbol: 'AMB',
+                            decimals: 18,
+                          },
+                          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                          blockExplorerUrls: [
+                            `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+                          ],
+                        },
+                      ],
+                    });
+                  } catch (addError) {
+                    console.log(addError);
+                  }
+                }
+                console.log(switchError);
+              }
+              provider.on('network', (newNetwork, oldNetwork) => {
+                if (oldNetwork) {
+                  console.log('oldNetwork', oldNetwork);
+                  window.location.reload();
+                }
+              });
+
               provider
                 .listAccounts()
                 .then((accounts) => {

@@ -46,6 +46,7 @@ export const StackItem = ({
   const start = () => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
       const provider = new ethers.providers.Web3Provider(ethereum);
+
       setInterval(() => {
         if (provider) {
           const singer = provider.getSigner();
@@ -231,9 +232,46 @@ export const StackItem = ({
     }
     return () => openCollapse();
   }, [renderChildren]);
-
   useEffect(() => {
-    start();
+    try {
+      start();
+      ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [
+          {
+            chainId: `${ethers.utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+          },
+        ],
+      });
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: `${ethers.utils.hexlify(
+                  +process.env.REACT_APP_CHAIN_ID,
+                )}`,
+                chainName: 'Ambrosus Test',
+                nativeCurrency: {
+                  name: 'AMB',
+                  symbol: 'AMB',
+                  decimals: 18,
+                },
+                rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                blockExplorerUrls: [
+                  `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+                ],
+              },
+            ],
+          });
+        } catch (addError) {
+          console.log(addError);
+        }
+      }
+      console.log(switchError);
+    }
     return () => start();
   }, []);
   useEffect(() => {
@@ -257,7 +295,7 @@ export const StackItem = ({
           }}
           size="l-500"
         >
-          {poolInfo?.contractName}
+          {poolInfo?.contractName.substring(0, 8)}
         </P>
       </div>
       {history.location.pathname === '/stacking' && (

@@ -28,26 +28,26 @@ export const getBalance = async () => {
 
 export const pools = [
   {
-    contractName: 'Alpha',
-    address: '0x39a499cd81C494E8EBC226D416B245978820414e',
+    contractName: 'Alpha_20211019_0.0.1',
+    address: '0xcbeb3386AE31260640E757Ca56cc560241569E6c',
     abi: pool.abi,
     active: true,
   },
   {
-    contractName: 'Beta',
-    address: '0x349065aE4D828F6116D8964df28DBbE5A91220CF',
+    contractName: 'Beta_20211019_0.0.1',
+    address: '0x08EE4fF517D50765D6ba5538E33Fa77C9a511F06',
     abi: pool.abi,
     active: true,
   },
   {
-    contractName: 'Gamma',
-    address: '0xc2Bba6D7f38924a7cD8532BF15463340A7551516',
+    contractName: 'Gamma_20211019_0.0.1',
+    address: '0x7fecce438b087a83E95C91DC168ad3D150225543',
     abi: pool.abi,
     active: true,
   },
   {
-    contractName: 'Delta',
-    address: '0x97d079Ff9D6c26481adDFa07cad058EdD1894D9a',
+    contractName: 'Delta_20211019_0.0.1',
+    address: '0xCB5ed3086DAD7F782Ee99D7Fa0dA2Db79937b0f0',
     abi: pool.abi,
     active: true,
   },
