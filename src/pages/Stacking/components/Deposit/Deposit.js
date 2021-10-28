@@ -18,7 +18,7 @@ import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 import { randomInteger } from '../../../../utils/constants';
 
-import {StakingWrapper} from '../../../../services/staking.wrapper';
+import { StakingWrapper } from '../../../../services/staking.wrapper';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
@@ -90,7 +90,7 @@ const Deposit = observer(({ depositInfo }) => {
     }
     return false;
   };
-  useEffect(async() => {
+  useEffect(async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
       if (provider) {
@@ -112,7 +112,12 @@ const Deposit = observer(({ depositInfo }) => {
         const singer = provider.getSigner();
         if (singer) {
           const stakingWrapper = new StakingWrapper(singer, depositInfo);
-          const [totalStakeInAMB, tokenPriceAMB, myStakeInAMB, myStakeInTokens] = await stakingWrapper.getUserData();
+          const [
+            totalStakeInAMB,
+            tokenPriceAMB,
+            myStakeInAMB,
+            myStakeInTokens,
+          ] = await stakingWrapper.getUserData();
           setMyStake(myStakeInAMB);
           setAvailableForWithdraw(myStakeInAMB);
           setTotalStake(totalStakeInAMB);
