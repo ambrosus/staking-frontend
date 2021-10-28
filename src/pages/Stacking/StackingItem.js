@@ -18,7 +18,7 @@ import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import { SkeletonString } from '../../components/Loader';
 
-import {StakingWrapper, MINSHOWSTAKE} from '../../services/staking.wrapper';
+import { StakingWrapper, MINSHOWSTAKE } from '../../services/staking.wrapper';
 
 export const StackItem = ({
   expand,
@@ -54,12 +54,17 @@ export const StackItem = ({
       const provider = new ethers.providers.Web3Provider(ethereum);
 
       const interv = setInterval(async () => {
-        console.log('StackItem: setInterval',interv);
+        console.log('StackItem: setInterval', interv);
         if (provider) {
           const singer = provider.getSigner();
           if (singer) {
             const stakingWrapper = new StakingWrapper(singer, poolInfo);
-            const [totalStakeInAMB, tokenPriceAMB, myStakeInAMB, myStakeInTokens] = await stakingWrapper.getUserData();
+            const [
+              totalStakeInAMB,
+              tokenPriceAMB,
+              myStakeInAMB,
+              myStakeInTokens,
+            ] = await stakingWrapper.getUserData();
             setMyStake(myStakeInAMB);
             setTotalStake(totalStakeInAMB);
           }
@@ -273,7 +278,7 @@ export const StackItem = ({
     return () => {
       console.log('StackItem: useEffect return');
       start();
-    }
+    };
   }, []);
 
   useEffect(() => {

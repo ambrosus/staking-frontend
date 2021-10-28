@@ -18,22 +18,18 @@ class StakingWrapper {
   }
 
   async getUserData() {
-    const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens] = await Promise.all([
-      this.poolContract.totalStake(),
-      this.poolContract.getTokenPrice(),
-      this.poolContract.viewStake()
-    ]);
+    const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens] = await Promise.all(
+      [
+        this.poolContract.totalStake(),
+        this.poolContract.getTokenPrice(),
+        this.poolContract.viewStake(),
+      ],
+    );
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXEDPOINT);
     return [totalStakeInAMB, tokenPriceAMB, myStakeInAMB, myStakeInTokens];
   }
 
-  async getPoolData(provider) {
-
-  }
+  async getPoolData(provider) {}
 }
 
-export {
-  StakingWrapper,
-  FIXEDPOINT,
-  MINSHOWSTAKE
-};
+export { StakingWrapper, FIXEDPOINT, MINSHOWSTAKE };
