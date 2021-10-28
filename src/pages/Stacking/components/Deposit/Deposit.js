@@ -114,6 +114,7 @@ const Deposit = observer(({ depositInfo }) => {
           const stakingWrapper = new StakingWrapper(singer, depositInfo);
           const [totalStakeInAMB, tokenPriceAMB, myStakeInAMB, myStakeInTokens] = await stakingWrapper.getUserData();
           setMyStake(myStakeInAMB);
+          setAvailableForWithdraw(myStakeInAMB);
           setTotalStake(totalStakeInAMB);
         }
       }
