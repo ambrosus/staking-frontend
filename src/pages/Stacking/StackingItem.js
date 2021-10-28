@@ -18,6 +18,8 @@ import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import { SkeletonString } from '../../components/Loader';
 
+import {StakingWrapper, MINSHOWSTAKE} from '../../services/staking.wrapper';
+
 export const StackItem = ({
   expand,
   comingSoon,
@@ -43,47 +45,41 @@ export const StackItem = ({
   const [totalStake, setTotalStake] = useState(ethers.BigNumber.from('0'));
   const { ethereum } = window;
   const history = useHistory();
+
+  //console.log('StackItem: upper');
+
   const start = () => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
+      console.log('StackItem: start 1');
       const provider = new ethers.providers.Web3Provider(ethereum);
 
-      setInterval(() => {
+      const interv = setInterval(async () => {
+        console.log('StackItem: setInterval',interv);
         if (provider) {
           const singer = provider.getSigner();
           if (singer) {
-            const poolContract = new ethers.Contract(
-              poolInfo.address,
-              poolInfo.abi,
-              singer,
-            );
-
-            if (poolContract) {
-              poolContract.getTotalStake().then((total) => {
-                if (total) {
-                  setTotalStake(total);
-                }
-              });
-              poolContract.viewStake().then((withdrawSum) => {
-                if (withdrawSum) {
-                  setMyStake(withdrawSum);
-                }
-              });
-            }
+            const stakingWrapper = new StakingWrapper(singer, poolInfo);
+            const [totalStakeInAMB, tokenPriceAMB, myStakeInAMB, myStakeInTokens] = await stakingWrapper.getUserData();
+            setMyStake(myStakeInAMB);
+            setTotalStake(totalStakeInAMB);
           }
         }
       }, 3000);
     } else {
+      console.log('StackItem: start 2');
+      /*
       const provider = new ethers.providers.Web3Provider(ethereum);
       const poolContractForView = new ethers.Contract(
         poolInfo.address,
         poolInfo?.abi,
         provider,
       );
-      poolContractForView.getTotalStake().then((total) => {
+      /////poolContractForView.getTotalStake().then((total) => {
         if (total) {
           setTotalStake(total);
         }
       });
+      */
       if (!ethereum && !ethereum.isMetaMask) {
         alertStore.addNotification({
           content: InstallMetamaskAlert,
@@ -96,6 +92,7 @@ export const StackItem = ({
   };
 
   const logIn = async () => {
+    console.log('StackItem: logIn');
     if (ethereum && ethereum.isMetaMask) {
       await ethereum
         .request({
@@ -233,6 +230,7 @@ export const StackItem = ({
     return () => openCollapse();
   }, [renderChildren]);
   useEffect(() => {
+    console.log('StackItem: useEffect');
     try {
       start();
       ethereum.request({
@@ -272,7 +270,10 @@ export const StackItem = ({
       }
       console.log(switchError);
     }
-    return () => start();
+    return () => {
+      console.log('StackItem: useEffect return');
+      start();
+    }
   }, []);
 
   useEffect(() => {
@@ -309,7 +310,7 @@ export const StackItem = ({
                 ''
               ) : (
                 <span>
-                  {myStake && Number(ethers.utils.formatEther(myStake)) > 1
+                  {myStake && myStake.gte(MINSHOWSTAKE)
                     ? `${Number(ethers.utils.formatEther(myStake)).toFixed(
                         2,
                       )}  AMB`
@@ -332,8 +333,7 @@ export const StackItem = ({
               <>
                 {' '}
                 <span>
-                  {totalStake &&
-                  Number(ethers.utils.formatEther(totalStake)) > 1
+                  {totalStake && totalStake.gte(MINSHOWSTAKE)
                     ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(
                         2,
                       )}  AMB`

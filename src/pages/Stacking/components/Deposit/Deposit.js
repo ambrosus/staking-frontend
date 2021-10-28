@@ -18,6 +18,8 @@ import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 import { randomInteger } from '../../../../utils/constants';
 
+import {StakingWrapper} from '../../../../services/staking.wrapper';
+
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
   const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
@@ -88,57 +90,31 @@ const Deposit = observer(({ depositInfo }) => {
     }
     return false;
   };
-  useEffect(() => {
+  useEffect(async() => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      setInterval(() => {
-        provider.listAccounts().then((accounts) => {
-          const defaultAccount = accounts[0];
-          if (defaultAccount) {
-            provider.getBalance(defaultAccount).then((balanceObj) => {
-              const balanceInEth = ethers.utils.formatEther(balanceObj);
-              if (balanceInEth) {
-                setBalance(balanceInEth);
-              } else {
-                setBalance('-');
-              }
-            });
-          }
-        });
-      }, 5000);
-      if (signer) {
-        const poolContract = new ethers.Contract(
-          depositInfo.address,
-          depositInfo.abi,
-          signer,
-        );
-        if (poolContract) {
-          setInterval(() => {
-            poolContract.viewStake().then((withdrawSum) => {
-              if (withdrawSum) {
-                poolContract.getTokenPrice().then((tokenPrice) => {
-                  setAvailableForWithdraw(
-                    parseFloat(ethers.utils.formatEther(withdrawSum)) *
-                      parseFloat(ethers.utils.formatEther(tokenPrice)),
-                  );
-                });
-                setMyStake(ethers.utils.formatEther(withdrawSum));
-              } else {
-                setMyStake(0);
-              }
-            });
-            poolContract.getTotalStake().then((total) => {
-              if (total) {
-                const formatEther = ethers.utils.formatEther(total);
-                if (formatEther) {
-                  setTotalStake(formatEther);
+      if (provider) {
+        setInterval(() => {
+          provider.listAccounts().then((accounts) => {
+            const defaultAccount = accounts[0];
+            if (defaultAccount) {
+              provider.getBalance(defaultAccount).then((balanceObj) => {
+                const balanceInEth = ethers.utils.formatEther(balanceObj);
+                if (balanceInEth) {
+                  setBalance(balanceInEth);
+                } else {
+                  setBalance('-');
                 }
-              } else {
-                setTotalStake(0);
-              }
-            });
-          }, 5000);
+              });
+            }
+          });
+        }, 5000);
+        const singer = provider.getSigner();
+        if (singer) {
+          const stakingWrapper = new StakingWrapper(singer, depositInfo);
+          const [totalStakeInAMB, tokenPriceAMB, myStakeInAMB, myStakeInTokens] = await stakingWrapper.getUserData();
+          setMyStake(myStakeInAMB);
+          setTotalStake(totalStakeInAMB);
         }
       }
     }
