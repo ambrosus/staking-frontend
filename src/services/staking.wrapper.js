@@ -1,9 +1,27 @@
 /* eslint-disable */
 
-import { ethers } from 'ethers';
+import { ethers, BigNumber } from 'ethers';
 
-const FIXEDPOINT = ethers.utils.parseUnits('1.0', 'ether');
-const MINSHOWSTAKE = ethers.utils.parseUnits('0.01', 'ether');
+const ZERO = BigNumber.from(0);
+const ONE = BigNumber.from(1);
+const TEN = BigNumber.from(10);
+const FIXEDPOINT = TEN.pow(18);             // 1.0 ether
+const MINSHOWSTAKE = FIXEDPOINT.div(100);   // 0.01 ether
+
+function formatFixed(bigNumber, digits = 18) {
+  digits = Math.floor(digits);
+  if (digits < 0 || digits > 18) {
+    throw new Error('digits out of range');
+  }
+  const whole = bigNumber.div(FIXEDPOINT).toString();
+  if (!digits) {
+    return whole;
+  }
+  const pow10 = TEN.pow(digits);
+  const fract = bigNumber.mod(pow10).add(pow10).toString().slice(1);
+
+  return `${whole}.${fract}`;
+}
 
 class StakingWrapper {
   constructor(providerOrSigner, poolInfo) {
@@ -32,4 +50,4 @@ class StakingWrapper {
   async getPoolData(provider) {}
 }
 
-export { StakingWrapper, FIXEDPOINT, MINSHOWSTAKE };
+export { StakingWrapper, formatFixed, ZERO, ONE, TEN, FIXEDPOINT, MINSHOWSTAKE };

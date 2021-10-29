@@ -2,7 +2,7 @@
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import { ethers, utils, BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
@@ -18,14 +18,14 @@ import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 import { randomInteger } from '../../../../utils/constants';
 
-import { StakingWrapper } from '../../../../services/staking.wrapper';
+import { StakingWrapper, ZERO, formatFixed } from '../../../../services/staking.wrapper';
 
 const Deposit = observer(({ depositInfo }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('0');
   const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
-  const [myStake, setMyStake] = useState(0);
-  const [balance, setBalance] = useState(0);
-  const [totalStake, setTotalStake] = useState(0);
+  const [myStake, setMyStake] = useState(ZERO);
+  const [balance, setBalance] = useState(ZERO);
+  const [totalStake, setTotalStake] = useState(ZERO);
 
   const { ethereum } = window;
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
@@ -45,7 +45,7 @@ const Deposit = observer(({ depositInfo }) => {
           );
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
-            value: ethers.utils.parseEther(`${inputValue}`), // todo
+            value: ethers.utils.parseEther(inputValue), // todo
             gasPrice: ethers.utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
@@ -68,7 +68,7 @@ const Deposit = observer(({ depositInfo }) => {
                         6,
                       )}...${result.transactionHash.slice(60)} success!`,
                     );
-                    setInputValue('');
+                    setInputValue('0');
                     appStore.setObserverValue(-2);
                   })
                   .catch((error) => {
@@ -78,7 +78,7 @@ const Deposit = observer(({ depositInfo }) => {
                         60,
                       )} failed!`,
                     );
-                    setInputValue('');
+                    setInputValue('0');
                   });
               }
             });
@@ -99,12 +99,7 @@ const Deposit = observer(({ depositInfo }) => {
             const defaultAccount = accounts[0];
             if (defaultAccount) {
               provider.getBalance(defaultAccount).then((balanceObj) => {
-                const balanceInEth = ethers.utils.formatEther(balanceObj);
-                if (balanceInEth) {
-                  setBalance(balanceInEth);
-                } else {
-                  setBalance('-');
-                }
+                setBalance(balanceObj);
               });
             }
           });
@@ -142,13 +137,13 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
           <div>
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {Number(myStake).toFixed(2)} AMB
+              {formatFixed(myStake, 2)} AMB
             </P>
           </div>
           <div>
             {' '}
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {Number(totalStake).toFixed(2)} AMB
+              {formatFixed(totalStake, 2)} AMB
             </P>
           </div>
           <div>
@@ -169,7 +164,7 @@ const Deposit = observer(({ depositInfo }) => {
         >
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
-            Available for withdraw: {Number(availableForWithdraw).toFixed(2)}{' '}
+            Available for withdraw: {utils.formatEther(availableForWithdraw)}{' '}
             AMB
           </P>
         </div>
@@ -203,9 +198,9 @@ const Deposit = observer(({ depositInfo }) => {
         </>
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
-          {Number(balance).toFixed(2) - Number(inputValue) > 0
-            ? Number(balance).toFixed(2) - Number(inputValue)
-            : 0}{' '}
+          {balance.gte(utils.parseEther( !inputValue ? '0' : inputValue))
+            ? utils.formatEther(balance)
+            : utils.formatEther(0)}{' '}
           AMB
         </P>
         <div style={{ flexBasis: '90%' }} />
@@ -219,7 +214,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Input
             onchange={setInputValue}
             iconLeft
-            placeholder="0.00"
+            placeholder="0"
             value={inputValue}
             type="number"
           />
@@ -229,8 +224,12 @@ const Deposit = observer(({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={!balance}
-                onclick={() => setInputValue(balance * 0.25)}
+                disabled={balance.isZero()}
+                onclick={() =>
+                  setInputValue(
+                    formatFixed(balance.div(4), 0),
+                  )
+                }
               >
                 <P size="xs-500">25%</P>
               </Button>
@@ -240,8 +239,12 @@ const Deposit = observer(({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={!balance}
-                onclick={() => setInputValue(balance * 0.5)}
+                disabled={balance.isZero()}
+                onclick={() =>
+                  setInputValue(
+                    formatFixed(balance.div(2), 0),
+                  )
+                }
               >
                 <P size="xs-500">50%</P>
               </Button>
@@ -251,8 +254,12 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
-                disabled={!balance}
-                onclick={() => setInputValue(balance * 0.75)}
+                disabled={balance.isZero()}
+                onclick={() =>
+                  setInputValue(
+                    formatFixed(balance.mul(3).div(4), 0),
+                  )
+                }
               >
                 <P size="xs-500">75%</P>
               </Button>
@@ -262,8 +269,12 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
-                disabled={!balance}
-                onclick={() => setInputValue(balance)}
+                disabled={balance.isZero()}
+                onclick={() =>
+                  setInputValue(
+                    formatFixed(balance, 0),
+                  )
+                }
               >
                 <P size="xs-500">100%</P>
               </Button>
@@ -275,10 +286,11 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
-              inputValue < 1000 ||
               !inputValue ||
-              inputValue <= 0 ||
-              Number(inputValue) > Number(balance)
+              Number(inputValue) < 1000 ||
+              balance.lte(
+                utils.parseEther(!inputValue ? '0' : inputValue),
+              )
             }
             onclick={checkoutPayment}
           >
@@ -308,7 +320,7 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
           <div style={{ marginBottom: 5 }}>
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
-              Available for withdraw: {Number(availableForWithdraw).toFixed(2)}{' '}
+              Available for withdraw: {utils.formatEther(availableForWithdraw)}{' '}
               AMB
             </P>
 

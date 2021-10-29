@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { ethers } from 'ethers';
+import { ethers, BigNumber } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 
 import Button from '../../components/Button';
@@ -18,7 +18,7 @@ import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import { SkeletonString } from '../../components/Loader';
 
-import { StakingWrapper, MINSHOWSTAKE } from '../../services/staking.wrapper';
+import { StakingWrapper, MINSHOWSTAKE, ZERO, formatFixed } from '../../services/staking.wrapper';
 
 export const StackItem = ({
   expand,
@@ -41,8 +41,8 @@ export const StackItem = ({
   const [open, setOpen] = useState(false);
   const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
   const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
-  const [myStake, setMyStake] = useState(ethers.BigNumber.from('0'));
-  const [totalStake, setTotalStake] = useState(ethers.BigNumber.from('0'));
+  const [myStake, setMyStake] = useState(ZERO);
+  const [totalStake, setTotalStake] = useState(ZERO);
   const { ethereum } = window;
   const history = useHistory();
 
@@ -316,9 +316,7 @@ export const StackItem = ({
               ) : (
                 <span>
                   {myStake && myStake.gte(MINSHOWSTAKE)
-                    ? `${Number(ethers.utils.formatEther(myStake)).toFixed(
-                        2,
-                      )}  AMB`
+                    ? `${formatFixed(myStake, 2)}  AMB`
                     : '-'}
                 </span>
               )}
@@ -339,9 +337,7 @@ export const StackItem = ({
                 {' '}
                 <span>
                   {totalStake && totalStake.gte(MINSHOWSTAKE)
-                    ? `${Number(ethers.utils.formatEther(totalStake)).toFixed(
-                        2,
-                      )}  AMB`
+                    ? `${formatFixed(totalStake, 2)}  AMB`
                     : '-'}
                 </span>
               </>

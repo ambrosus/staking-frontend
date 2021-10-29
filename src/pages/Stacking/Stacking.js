@@ -20,6 +20,12 @@ import copyIcon from '../../assets/svg/copy.svg';
 import { Loader, SkeletonString } from '../../components/Loader';
 import ComingSoonPool from '../../components/ComingSoonPool';
 
+import {
+  formatFixed,
+  ZERO,
+  MINSHOWSTAKE,
+} from '../../services/staking.wrapper';
+
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
   exit: 'animate__animated animate__bounceOut',
@@ -28,8 +34,8 @@ const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
   const [openIndexStakeItem, setOpenIndexStakeItem] = useState(-1);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const [totalStaked, setTotalStaked] = useState(ethers.BigNumber.from('0'));
-  const [totalReward, setTotalReward] = useState(ethers.BigNumber.from('0'));
+  const [totalStaked, setTotalStaked] = useState(ZERO);
+  const [totalReward, setTotalReward] = useState(ZERO);
   const { ethereum } = window;
   let contract = null;
 
@@ -299,14 +305,8 @@ const Stacking = observer(() => {
                   <SkeletonString />
                 ) : (
                   <P size="xl-400" style={{ color: '#4A38AE' }}>
-                    {totalStaked &&
-                    Number(ethers.utils.formatEther(totalStaked)) > 1 ? (
-                      <span>
-                        {Number(ethers.utils.formatEther(totalStaked)).toFixed(
-                          2,
-                        )}{' '}
-                        &nbsp;&nbsp;AMB
-                      </span>
+                    {totalStaked && totalStaked.gte(MINSHOWSTAKE) ? (
+                      <span>{formatFixed(totalStaked, 2)} &nbsp;&nbsp;AMB</span>
                     ) : (
                       '-'
                     )}
@@ -336,7 +336,7 @@ const Stacking = observer(() => {
                   <span style={{ color: '#1ACD8C' }}>
                     {' '}
                     {totalReward && totalReward > ethers.BigNumber.from('0')
-                      ? `+${Number(totalReward).toFixed(2)}  AMB`
+                      ? `+${formatFixed(totalReward, 2)}  AMB`
                       : '-'}
                   </span>
                   &nbsp; / 34$

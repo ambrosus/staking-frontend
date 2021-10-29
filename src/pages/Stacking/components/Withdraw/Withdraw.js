@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { ethers } from 'ethers';
+import { ethers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
@@ -10,6 +10,8 @@ import ButtonGroup from '../../../../components/ButtonGroup';
 import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 
+import { formatFixed, ZERO } from '../../../../services/staking.wrapper';
+
 const Withdraw = observer(
   ({
     withdrawContractInfo = {
@@ -18,9 +20,9 @@ const Withdraw = observer(
     hideModal,
     availableSumForWithdraw,
   }) => {
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState('0');
     const { ethereum } = window;
-    const [afterWithdraw, setAfterWithdraw] = useState(0);
+    const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
     const withdrawPayment = async () => {
       /* eslint-disable-next-line */
       try {
@@ -33,7 +35,7 @@ const Withdraw = observer(
               withdrawContractInfo.abi,
               signer,
             );
-            const decimal = ethers.utils.parseUnits(`${inputValue}`, 'ether');
+            const decimal = ethers.utils.parseEther(inputValue);
             const contractWithSigner = poolContract.connect(signer);
             const overrides = {
               gasPrice: ethers.utils.parseUnits('20', 'gwei'),
@@ -50,7 +52,7 @@ const Withdraw = observer(
                         60,
                       )} pending.`,
                     );
-                    setInputValue('');
+                    setInputValue('0');
                     await tx
                       .wait()
                       .then((result) => {
@@ -62,7 +64,7 @@ const Withdraw = observer(
                           )}...${result.transactionHash.slice(60)} success!`,
                         );
                         appStore.setObserverValue(-1);
-                        setInputValue('');
+                        setInputValue('0');
                       })
                       .catch(() => {
                         notificationMassage(
@@ -86,10 +88,18 @@ const Withdraw = observer(
     };
 
     const calculateSumAfterWithdraw = () => {
-      if (!Number.isNaN(availableSumForWithdraw - inputValue)) {
-        setAfterWithdraw(availableSumForWithdraw - inputValue);
+      if (
+        availableSumForWithdraw.gte(
+          utils.parseEther(!inputValue ? '0' : inputValue),
+        )
+      ) {
+        setAfterWithdraw(
+          availableSumForWithdraw.sub(
+            utils.parseEther(!inputValue ? '0' : inputValue),
+          ),
+        );
       } else {
-        setAfterWithdraw(Number(availableSumForWithdraw));
+        setAfterWithdraw(availableSumForWithdraw);
       }
     };
     useEffect(() => {
@@ -108,7 +118,7 @@ const Withdraw = observer(
           <Input
             onchange={setInputValue}
             iconLeft
-            placeholder="0.00"
+            placeholder="0"
             value={inputValue}
             type="number"
           />
@@ -118,10 +128,10 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={
-                  !availableSumForWithdraw || availableSumForWithdraw === 0
+                disabled={availableSumForWithdraw.eq(0)}
+                onclick={() =>
+                  setInputValue(formatFixed(availableSumForWithdraw.div(4), 2))
                 }
-                onclick={() => setInputValue(availableSumForWithdraw * 0.25)}
               >
                 <P size="xs-500">25%</P>
               </Button>
@@ -131,10 +141,10 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={
-                  !availableSumForWithdraw || availableSumForWithdraw === 0
+                disabled={availableSumForWithdraw.eq(0)}
+                onclick={() =>
+                  setInputValue(formatFixed(availableSumForWithdraw.div(2), 2))
                 }
-                onclick={() => setInputValue(availableSumForWithdraw * 0.5)}
               >
                 <P size="xs-500">50%</P>
               </Button>
@@ -144,10 +154,12 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={
-                  !availableSumForWithdraw || availableSumForWithdraw === 0
+                disabled={availableSumForWithdraw.eq(0)}
+                onclick={() =>
+                  setInputValue(
+                    formatFixed(availableSumForWithdraw.mul(3).div(4), 2),
+                  )
                 }
-                onclick={() => setInputValue(availableSumForWithdraw * 0.75)}
               >
                 <P size="xs-500">75%</P>
               </Button>
@@ -157,10 +169,10 @@ const Withdraw = observer(
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
-                disabled={
-                  !availableSumForWithdraw || availableSumForWithdraw === 0
+                disabled={availableSumForWithdraw.eq(0)}
+                onclick={() =>
+                  setInputValue(formatFixed(availableSumForWithdraw, 2))
                 }
-                onclick={() => setInputValue(availableSumForWithdraw)}
               >
                 <P size="xs-500">100%</P>
               </Button>
@@ -180,7 +192,7 @@ const Withdraw = observer(
                 marginRight: 20,
               }}
               type="green"
-              disabled={afterWithdraw < 0 || Number(inputValue) < 0}
+              disabled={afterWithdraw.lt(0) || Number(inputValue) < 0}
               onclick={() => withdrawPayment()}
             >
               <P size="m-500">Withdraw</P>
@@ -197,7 +209,7 @@ const Withdraw = observer(
           <div>
             <P size="s-400" style={{ color: '#9198BB' }}>
               Estimated stake after withdraw:{' '}
-              {afterWithdraw < 0 ? 0 : Number(afterWithdraw).toFixed(3)} AMB
+              {afterWithdraw.lt(0) ? 0 : utils.formatEther(afterWithdraw)} AMB
             </P>
           </div>
         </div>
