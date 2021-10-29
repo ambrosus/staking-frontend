@@ -39,44 +39,153 @@ const Stacking = observer(() => {
   const { ethereum } = window;
   let contract = null;
 
-  useEffect(async () => {
-    try {
-      if (storageService.get('auth') === true) {
-        setInterval(async () => {
-          appStore.incrementObserver();
-          if (ethereum && ethereum.isMetaMask) {
+  useEffect(() => {
+    const asyncFn = async function () {
+      try {
+        if (storageService.get('auth') === true) {
+          setInterval(async () => {
+            appStore.incrementObserver();
+            if (ethereum && ethereum.isMetaMask) {
+              await ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [
+                  {
+                    chainId: `${ethers.utils.hexlify(
+                      +process.env.REACT_APP_CHAIN_ID,
+                    )}`,
+                  },
+                ],
+              });
+              window.ethereum.on('accountsChanged', function () {
+                window.location.reload();
+              });
+              const provider = new ethers.providers.Web3Provider(ethereum);
+
+              // const dater = new EthDater(provider);
+              // const block = await dater.getDate(
+              //   new Date(Date.now() - 24 * 60 * 60 * 1000),
+              // );
+              // console.log('block', block);
+
+              const signer = provider.getSigner();
+              provider.listAccounts().then((accounts) => {
+                const defaultAccount = accounts[0];
+                if (defaultAccount) {
+                  setAccount(defaultAccount);
+                }
+              });
+              if (provider) {
+                if (signer) {
+                  pools.forEach((item) => {
+                    if (item.active) {
+                      contract = new ethers.Contract(
+                        item.address,
+                        item.abi,
+                        signer,
+                      );
+                      if (appStore.observer === 1) {
+                        if (contract) {
+                          contract.viewStake().then(async (res) => {
+                            setTotalStaked((prevState) => prevState.add(res));
+                          });
+                        }
+                      }
+                      if (appStore.observer === 0) {
+                        setTotalStaked(ethers.BigNumber.from('0'));
+                      }
+                    }
+                  });
+
+                  if (contract) {
+                    // await contract.nodes(0).then(console.log);
+                    // const iface = contract.interface;
+                    // console.log('iface', iface);
+                    // const event = iface.events['PoolReward(address,uint256)'];
+                    // console.log('event:', event);
+                    // TODO
+                    setTotalReward(ethers.BigNumber.from('0'));
+
+                    // const rewardsLogs = provider.getLogs({
+                    //   fromBlock: block.block,
+                    //   toBlock: 'latest',
+                    //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
+                    // });
+                    // if (rewardsLogs !== undefined) {
+                    //   const rewards =
+                    //     rewardsLogs &&
+                    //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
+                    //   if (rewards) {
+                    //     const totalRewards = rewards.reduce(
+                    //       (acc, reward) => acc.add(reward),
+                    //       ethers.BigNumber.from('0'),
+                    //     );
+                    //     if (totalRewards) {
+                    //       const formatTotalReward =
+                    //         ethers.utils.formatEther(totalRewards);
+                    //         prevState.add(formatTotalReward),
+                    //       );
+                    //     }
+                    //   }
+                    // }
+                  }
+                }
+              }
+            }
+          }, 3000);
+        }
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          try {
             await ethereum.request({
-              method: 'wallet_switchEthereumChain',
+              method: 'wallet_addEthereumChain',
               params: [
                 {
                   chainId: `${ethers.utils.hexlify(
                     +process.env.REACT_APP_CHAIN_ID,
                   )}`,
+                  chainName: 'Ambrosus Test',
+                  nativeCurrency: {
+                    name: 'AMB',
+                    symbol: 'AMB',
+                    decimals: 18,
+                  },
+                  rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                  blockExplorerUrls: [
+                    `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+                  ],
                 },
               ],
             });
-            window.ethereum.on('accountsChanged', function () {
-              window.location.reload();
-            });
-            const provider = new ethers.providers.Web3Provider(ethereum);
-
-            // const dater = new EthDater(provider);
-            // const block = await dater.getDate(
-            //   new Date(Date.now() - 24 * 60 * 60 * 1000),
-            // );
-            // console.log('block', block);
-
-            const signer = provider.getSigner();
-            provider.listAccounts().then((accounts) => {
-              const defaultAccount = accounts[0];
-              if (defaultAccount) {
-                setAccount(defaultAccount);
-              }
-            });
-            if (provider) {
-              if (signer) {
-                pools.forEach((item) => {
-                  if (item.active) {
+          } catch (addError) {
+            console.log(addError);
+          }
+        }
+        console.log(switchError);
+      }
+      return () => {
+        try {
+          if (storageService.get('auth') === true) {
+            setInterval(async () => {
+              appStore.incrementObserver();
+              if (ethereum && ethereum.isMetaMask) {
+                window.ethereum.on('accountsChanged', function () {
+                  window.location.reload();
+                });
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                // const dater = new EthDater(provider);
+                // const block = await dater.getDate(
+                //   new Date(Date.now() - 24 * 60 * 60 * 1000),
+                // );
+                // console.log('block', block);
+                const signer = provider.getSigner();
+                provider.listAccounts().then((accounts) => {
+                  const defaultAccount = accounts[0];
+                  if (defaultAccount) {
+                    setAccount(defaultAccount);
+                  }
+                });
+                if (provider) {
+                  pools.forEach((item) => {
                     contract = new ethers.Contract(
                       item.address,
                       item.abi,
@@ -92,156 +201,50 @@ const Stacking = observer(() => {
                     if (appStore.observer === 0) {
                       setTotalStaked(ethers.BigNumber.from('0'));
                     }
+                  });
+
+                  if (contract) {
+                    // await contract.nodes(0).then(console.log);
+                    // const iface = contract.interface;
+                    // console.log('iface', iface);
+                    // const event = iface.events['PoolReward(address,uint256)'];
+                    // console.log('event:', event);
+                    // TODO
+                    setTotalReward(ethers.BigNumber.from('0'));
+
+                    // const rewardsLogs = provider.getLogs({
+                    //   fromBlock: block.block,
+                    //   toBlock: 'latest',
+                    //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
+                    // });
+                    // if (rewardsLogs !== undefined) {
+                    //   const rewards =
+                    //     rewardsLogs &&
+                    //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
+                    //   if (rewards) {
+                    //     const totalRewards = rewards.reduce(
+                    //       (acc, reward) => acc.add(reward),
+                    //       ethers.BigNumber.from('0'),
+                    //     );
+                    //     if (totalRewards) {
+                    //       const formatTotalReward =
+                    //         ethers.utils.formatEther(totalRewards);
+                    //         prevState.add(formatTotalReward),
+                    //       );
+                    //     }
+                    //   }
+                    // }
                   }
-                });
-
-                if (contract) {
-                  // await contract.nodes(0).then(console.log);
-                  // const iface = contract.interface;
-                  // console.log('iface', iface);
-                  // const event = iface.events['PoolReward(address,uint256)'];
-                  // console.log('event:', event);
-                  // TODO
-                  setTotalReward(ethers.BigNumber.from('0'));
-
-                  // const rewardsLogs = provider.getLogs({
-                  //   fromBlock: block.block,
-                  //   toBlock: 'latest',
-                  //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
-                  // });
-                  // if (rewardsLogs !== undefined) {
-                  //   const rewards =
-                  //     rewardsLogs &&
-                  //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
-                  //   if (rewards) {
-                  //     const totalRewards = rewards.reduce(
-                  //       (acc, reward) => acc.add(reward),
-                  //       ethers.BigNumber.from('0'),
-                  //     );
-                  //     if (totalRewards) {
-                  //       const formatTotalReward =
-                  //         ethers.utils.formatEther(totalRewards);
-                  //         prevState.add(formatTotalReward),
-                  //       );
-                  //     }
-                  //   }
-                  // }
                 }
               }
-            }
+            }, 3000);
           }
-        }, 3000);
-      }
-    } catch (switchError) {
-      if (switchError.code === 4902) {
-        try {
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: `${ethers.utils.hexlify(
-                  +process.env.REACT_APP_CHAIN_ID,
-                )}`,
-                chainName: 'Ambrosus Test',
-                nativeCurrency: {
-                  name: 'AMB',
-                  symbol: 'AMB',
-                  decimals: 18,
-                },
-                rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                blockExplorerUrls: [
-                  `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                ],
-              },
-            ],
-          });
-        } catch (addError) {
-          console.log(addError);
+        } catch (e) {
+          console.log(e);
         }
-      }
-      console.log(switchError);
-    }
-    return () => {
-      try {
-        if (storageService.get('auth') === true) {
-          setInterval(async () => {
-            appStore.incrementObserver();
-            if (ethereum && ethereum.isMetaMask) {
-              window.ethereum.on('accountsChanged', function () {
-                window.location.reload();
-              });
-              const provider = new ethers.providers.Web3Provider(ethereum);
-              // const dater = new EthDater(provider);
-              // const block = await dater.getDate(
-              //   new Date(Date.now() - 24 * 60 * 60 * 1000),
-              // );
-              // console.log('block', block);
-              const signer = provider.getSigner();
-              provider.listAccounts().then((accounts) => {
-                const defaultAccount = accounts[0];
-                if (defaultAccount) {
-                  setAccount(defaultAccount);
-                }
-              });
-              if (provider) {
-                pools.forEach((item) => {
-                  contract = new ethers.Contract(
-                    item.address,
-                    item.abi,
-                    signer,
-                  );
-                  if (appStore.observer === 1) {
-                    if (contract) {
-                      contract.viewStake().then(async (res) => {
-                        setTotalStaked((prevState) => prevState.add(res));
-                      });
-                    }
-                  }
-                  if (appStore.observer === 0) {
-                    setTotalStaked(ethers.BigNumber.from('0'));
-                  }
-                });
-
-                if (contract) {
-                  // await contract.nodes(0).then(console.log);
-                  // const iface = contract.interface;
-                  // console.log('iface', iface);
-                  // const event = iface.events['PoolReward(address,uint256)'];
-                  // console.log('event:', event);
-                  // TODO
-                  setTotalReward(ethers.BigNumber.from('0'));
-
-                  // const rewardsLogs = provider.getLogs({
-                  //   fromBlock: block.block,
-                  //   toBlock: 'latest',
-                  //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
-                  // });
-                  // if (rewardsLogs !== undefined) {
-                  //   const rewards =
-                  //     rewardsLogs &&
-                  //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
-                  //   if (rewards) {
-                  //     const totalRewards = rewards.reduce(
-                  //       (acc, reward) => acc.add(reward),
-                  //       ethers.BigNumber.from('0'),
-                  //     );
-                  //     if (totalRewards) {
-                  //       const formatTotalReward =
-                  //         ethers.utils.formatEther(totalRewards);
-                  //         prevState.add(formatTotalReward),
-                  //       );
-                  //     }
-                  //   }
-                  // }
-                }
-              }
-            }
-          }, 3000);
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      };
     };
+    asyncFn();
   }, []);
 
   const infoBlock = (

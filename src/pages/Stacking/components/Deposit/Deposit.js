@@ -2,7 +2,7 @@
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
-import { ethers, utils, BigNumber } from 'ethers';
+import { ethers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
@@ -16,9 +16,12 @@ import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
-import { randomInteger } from '../../../../utils/constants';
 
-import { StakingWrapper, ZERO, formatFixed } from '../../../../services/staking.wrapper';
+import {
+  StakingWrapper,
+  ZERO,
+  formatFixed,
+} from '../../../../services/staking.wrapper';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('0');
@@ -90,35 +93,33 @@ const Deposit = observer(({ depositInfo }) => {
     }
     return false;
   };
-  useEffect(async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      if (provider) {
-        setInterval(() => {
-          provider.listAccounts().then((accounts) => {
-            const defaultAccount = accounts[0];
-            if (defaultAccount) {
-              provider.getBalance(defaultAccount).then((balanceObj) => {
-                setBalance(balanceObj);
-              });
-            }
-          });
-        }, 5000);
-        const singer = provider.getSigner();
-        if (singer) {
-          const stakingWrapper = new StakingWrapper(singer, depositInfo);
-          const [
-            totalStakeInAMB,
-            tokenPriceAMB,
-            myStakeInAMB,
-            myStakeInTokens,
-          ] = await stakingWrapper.getUserData();
-          setMyStake(myStakeInAMB);
-          setAvailableForWithdraw(myStakeInAMB);
-          setTotalStake(totalStakeInAMB);
+  useEffect(() => {
+    const asyncFn = async function () {
+      if (ethereum && ethereum.isMetaMask) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        if (provider) {
+          setInterval(() => {
+            provider.listAccounts().then((accounts) => {
+              const defaultAccount = accounts[0];
+              if (defaultAccount) {
+                provider.getBalance(defaultAccount).then((balanceObj) => {
+                  setBalance(balanceObj);
+                });
+              }
+            });
+          }, 5000);
+          const singer = provider.getSigner();
+          if (singer) {
+            const stakingWrapper = new StakingWrapper(singer, depositInfo);
+            const [totalStakeInAMB, myStakeInAMB] = await stakingWrapper.getPoolData();
+            setMyStake(myStakeInAMB);
+            setAvailableForWithdraw(myStakeInAMB);
+            setTotalStake(totalStakeInAMB);
+          }
         }
       }
     }
+    asyncFn();
   }, []);
   const withdrawForm = (
     <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>

@@ -1,9 +1,9 @@
-/*eslint-disable*/
+/* eslint-disable */
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { ethers, BigNumber } from 'ethers';
+import { ethers } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 
 import Button from '../../components/Button';
@@ -18,7 +18,12 @@ import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import { SkeletonString } from '../../components/Loader';
 
-import { StakingWrapper, MINSHOWSTAKE, ZERO, formatFixed } from '../../services/staking.wrapper';
+import {
+  StakingWrapper,
+  MINSHOWSTAKE,
+  ZERO,
+  formatFixed,
+} from '../../services/staking.wrapper';
 
 export const StackItem = ({
   expand,
@@ -46,9 +51,7 @@ export const StackItem = ({
   const { ethereum } = window;
   const history = useHistory();
 
-  //console.log('StackItem: upper');
-
-  const start = () => {
+  const start = async () => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
       console.log('StackItem: start 1');
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -59,12 +62,8 @@ export const StackItem = ({
           const singer = provider.getSigner();
           if (singer) {
             const stakingWrapper = new StakingWrapper(singer, poolInfo);
-            const [
-              totalStakeInAMB,
-              tokenPriceAMB,
-              myStakeInAMB,
-              myStakeInTokens,
-            ] = await stakingWrapper.getUserData();
+            const [totalStakeInAMB, myStakeInAMB] =
+              await stakingWrapper.getPoolData();
             setMyStake(myStakeInAMB);
             setTotalStake(totalStakeInAMB);
           }
@@ -72,19 +71,12 @@ export const StackItem = ({
       }, 3000);
     } else {
       console.log('StackItem: start 2');
-      /*
+
       const provider = new ethers.providers.Web3Provider(ethereum);
-      const poolContractForView = new ethers.Contract(
-        poolInfo.address,
-        poolInfo?.abi,
-        provider,
-      );
-      /////poolContractForView.getTotalStake().then((total) => {
-        if (total) {
-          setTotalStake(total);
-        }
-      });
-      */
+      const stakingWrapper = new StakingWrapper(provider, poolInfo);
+      const [totalStakeInAMB] = await stakingWrapper.getPoolData();
+      setTotalStake(totalStakeInAMB);
+
       if (!ethereum && !ethereum.isMetaMask) {
         alertStore.addNotification({
           content: InstallMetamaskAlert,
@@ -288,7 +280,6 @@ export const StackItem = ({
       } else {
         setOpen(false);
       }
-    } else {
     }
   }, [openIndex, index]);
   const stackHeader = (
