@@ -37,7 +37,6 @@ export const MetamaskConnect = observer(() => {
 
     async function handleEthereum() {
       if (ethereum && ethereum.isMetaMask) {
-        await ethereum.enable();
         await ethereum
           .request({
             method: 'wallet_requestPermissions',

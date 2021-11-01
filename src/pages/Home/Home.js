@@ -12,60 +12,77 @@ import { pools } from '../../utils/constants';
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
+import NotSupported from '../../components/NotSupported';
 
 const Home = () => {
   const { ethereum } = window;
-  const [userChainId, setUserChainId] = useState(null);
-  const initEthereumNetwork = async () => {
-    try {
-      if (ethereum && ethereum.isMetaMask) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const { chainId } = await provider.getNetwork();
-        setUserChainId(chainId);
-        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-          ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [
-              {
-                chainId: `${ethers.utils.hexlify(
-                  +process.env.REACT_APP_CHAIN_ID,
-                )}`,
-              },
-            ],
-          });
+  const [userChainId, setUserChainId] = useState(false);
+  const [correctNetwork, setCorrectNetwork] = useState(true);
+  const changeNetwork = async () => {
+    if (ethereum && ethereum.isMetaMask) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        try {
+          ethereum
+            .request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: `${ethers.utils.hexlify(
+                    +process.env.REACT_APP_CHAIN_ID,
+                  )}`,
+                  chainName: 'Ambrosus Test',
+                  nativeCurrency: {
+                    name: 'AMB',
+                    symbol: 'AMB',
+                    decimals: 18,
+                  },
+                  rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                  blockExplorerUrls: [
+                    `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+                  ],
+                },
+              ],
+            })
+            .then((e) => {
+              if (e) {
+                setCorrectNetwork(true);
+              }
+            });
+        } catch (e) {
+          setCorrectNetwork(false);
         }
       }
-    } catch (e) {
-      if (e) {
-        ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: `${ethers.utils.hexlify(
-                +process.env.REACT_APP_CHAIN_ID,
-              )}`,
-              chainName: 'Ambrosus Test',
-              nativeCurrency: {
-                name: 'AMB',
-                symbol: 'AMB',
-                decimals: 18,
-              },
-              rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-              blockExplorerUrls: [
-                `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-              ],
-            },
-          ],
-        });
+    }
+  };
+
+  const initEthereumNetwork = async () => {
+    if (ethereum && ethereum.isMetaMask) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        setCorrectNetwork(false);
+      }
+      setUserChainId(chainId);
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        // ethereum.request({
+        //   method: 'wallet_switchEthereumChain',
+        //   params: [
+        //     {
+        //       chainId: `${ethers.utils.hexlify(
+        //         +process.env.REACT_APP_CHAIN_ID,
+        //       )}`,
+        //     },
+        //   ],
+        // });
       }
     }
   };
 
   useEffect(async () => {
-    window.addEventListener('focus', function () {
-      initEthereumNetwork();
-    });
-  }, []);
+    initEthereumNetwork();
+  }, [correctNetwork]);
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -85,56 +102,61 @@ const Home = () => {
     </div>
   );
   return (
-    <div className="home">
-      <ReactNotifications />
-      <div className="home__top">
-        <div className="home__top--header">
-          <div className="home__top--logo">
-            <ReactSVG src={headerLogoSvg} wrapper="span" />
+    <>
+      {!correctNetwork && <NotSupported onclick={changeNetwork} />}
+
+      <div className="home">
+        <ReactNotifications />
+        <div className="home__top">
+          <div className="home__top--header">
+            <div className="home__top--logo">
+              <ReactSVG src={headerLogoSvg} wrapper="span" />
+            </div>
+            {menu}
+            <MetamaskConnect />
           </div>
-          {menu}
-          <MetamaskConnect />
-        </div>
-        <div className="home__top--info">
-          <div className="info-image"></div>
-          <div className="info-text">
-            <P size="xxxl-500" style={{ paddingBottom: 10 }}>
-              Maximize your AMB Rewards.
-            </P>
-            <P size="l-500-white">
-              You don&apos;t want to raise Node? Fine, steak your AMB and get up
-              to 55% APY
-            </P>
+          <div className="home__top--info">
+            <div className="info-image"></div>
+            <div className="info-text">
+              <P size="xxxl-500" style={{ paddingBottom: 10 }}>
+                Maximize your AMB Rewards.
+              </P>
+              <P size="l-500-white">
+                You don&apos;t want to raise Node? Fine, steak your AMB and get
+                up to 55% APY
+              </P>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="stacking">
-        <div className="stacking__header">
-          <div className="stacking__header__clearfix-pool">Pool</div>
-          <div style={{ marginLeft: -36 }}>Total staked</div>
-          <div className="stacking__header__clearfix-apy">Net APY</div>
-          <div style={{ maxWidth: 157 }}></div>
-        </div>
-        {pools.map((pool) => {
-          if (pool.active === true) {
+        <div className="stacking">
+          <div className="stacking__header">
+            <div className="stacking__header__clearfix-pool">Pool</div>
+            <div style={{ marginLeft: -36 }}>Total staked</div>
+            <div className="stacking__header__clearfix-apy">Net APY</div>
+            <div style={{ maxWidth: 157 }}></div>
+          </div>
+          {pools.map((pool) => {
+            if (pool.active === true) {
+              return (
+                <StackItem
+                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                  key={pool.contractName}
+                  poolInfo={pool}
+                  lazy
+                  expand={false}
+                />
+              );
+            }
             return (
-              <StackItem
-                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                key={pool.contractName}
-                poolInfo={pool}
-                lazy
-              />
+              <ComingSoonPool key={pool.contractName} poolInfo={pool} lazy />
             );
-          }
-          return (
-            <ComingSoonPool key={pool.contractName} poolInfo={pool} lazy />
-          );
-        })}
+          })}
+        </div>
+        <div className="faq">
+          <CollapsedList />
+        </div>
       </div>
-      <div className="faq">
-        <CollapsedList />
-      </div>
-    </div>
+    </>
   );
 };
 

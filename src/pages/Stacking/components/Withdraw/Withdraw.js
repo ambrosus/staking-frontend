@@ -25,64 +25,59 @@ const Withdraw = observer(
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
     const withdrawPayment = async () => {
       /* eslint-disable-next-line */
-      try {
-        const provider = new ethers.providers.Web3Provider(ethereum, 'any');
-        if (provider) {
-          const signer = provider.getSigner();
-          if (signer) {
-            const poolContract = new ethers.Contract(
-              withdrawContractInfo.address,
-              withdrawContractInfo.abi,
-              signer,
-            );
-            const decimal = ethers.utils.parseEther(inputValue);
-            const contractWithSigner = poolContract.connect(signer);
-            const overrides = {
-              gasPrice: ethers.utils.parseUnits('20', 'gwei'),
-              gasLimit: 1000000,
-            };
-            if (contractWithSigner) {
-              await contractWithSigner
-                .unstake(decimal, overrides)
-                .then(async (tx) => {
-                  if (tx) {
-                    notificationMassage(
-                      'PENDING',
-                      `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                        60,
-                      )} pending.`,
-                    );
-                    setInputValue('0');
-                    await tx
-                      .wait()
-                      .then((result) => {
-                        notificationMassage(
-                          'SUCCESS',
-                          `Transaction ${result.transactionHash.substr(
-                            0,
-                            6,
-                          )}...${result.transactionHash.slice(60)} success!`,
-                        );
-                        appStore.setObserverValue(-1);
-                        setInputValue('0');
-                      })
-                      .catch(() => {
-                        notificationMassage(
-                          'ERROR',
-                          `Transaction ${tx.hash.substr(
-                            0,
-                            6,
-                          )}...${tx.hash.slice(60)} failed!`,
-                        );
-                        setInputValue('');
-                      });
-                  }
-                });
-            }
+      const provider = new ethers.providers.Web3Provider(ethereum, 'any');
+      if (provider) {
+        const signer = provider.getSigner();
+        if (signer) {
+          const poolContract = new ethers.Contract(
+            withdrawContractInfo.address,
+            withdrawContractInfo.abi,
+            signer,
+          );
+          const decimal = ethers.utils.parseEther(inputValue);
+          const contractWithSigner = poolContract.connect(signer);
+          const overrides = {
+            gasPrice: ethers.utils.parseUnits('20', 'gwei'),
+            gasLimit: 1000000,
+          };
+          if (contractWithSigner) {
+            await contractWithSigner
+              .unstake(decimal, overrides)
+              .then(async (tx) => {
+                if (tx) {
+                  notificationMassage(
+                    'PENDING',
+                    `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                      60,
+                    )} pending.`,
+                  );
+                  setInputValue('0');
+                  await tx
+                    .wait()
+                    .then((result) => {
+                      notificationMassage(
+                        'SUCCESS',
+                        `Transaction ${result.transactionHash.substr(
+                          0,
+                          6,
+                        )}...${result.transactionHash.slice(60)} success!`,
+                      );
+                      appStore.setObserverValue(-1);
+                      setInputValue('0');
+                    })
+                    .catch(() => {
+                      notificationMassage(
+                        'ERROR',
+                        `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                          60,
+                        )} failed!`,
+                      );
+                      setInputValue('');
+                    });
+                }
+              });
           }
         }
-      } catch (e) {
-        console.log(e);
       }
       return false;
     };
@@ -98,15 +93,8 @@ const Withdraw = observer(
             utils.parseEther(!inputValue ? '0' : inputValue),
           ),
         );
-        console.log(
-          'availableSumForWithdraw',
-          availableSumForWithdraw.sub(
-            utils.parseEther(!inputValue ? '0' : inputValue),
-          ),
-        );
       } else {
         setAfterWithdraw(availableSumForWithdraw);
-        console.log(availableSumForWithdraw);
       }
     };
     useEffect(() => {

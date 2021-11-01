@@ -25,7 +25,6 @@ export const Header = observer(() => {
   useEffect(() => {
     if (storageService.get('auth') === true) {
       if (typeof ethereum !== 'undefined') {
-        ethereum.enable();
         ethereum.on('disconnect', () => {
           storageService.set('auth', false);
           appStore.setAuth(false);

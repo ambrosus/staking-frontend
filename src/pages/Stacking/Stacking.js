@@ -25,6 +25,9 @@ import {
   ZERO,
   MINSHOWSTAKE,
 } from '../../services/staking.wrapper';
+import NotSupported from '../../components/NotSupported';
+import Header from '../../layouts/Header';
+import Footer from '../../layouts/Footer';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
@@ -37,41 +40,108 @@ const Stacking = observer(() => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
   const [totalStaked, setTotalStaked] = useState(ZERO);
   const [totalReward, setTotalReward] = useState(ZERO);
+  const [correctNetwork, setCorrectNetwork] = useState(true);
 
   const { ethereum } = window;
   let contract = null;
+  const changeNetwork = async () => {
+    if (ethereum && ethereum.isMetaMask) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        try {
+          ethereum
+            .request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: `${ethers.utils.hexlify(
+                    +process.env.REACT_APP_CHAIN_ID,
+                  )}`,
+                  chainName: 'Ambrosus Test',
+                  nativeCurrency: {
+                    name: 'AMB',
+                    symbol: 'AMB',
+                    decimals: 18,
+                  },
+                  rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                  blockExplorerUrls: [
+                    `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+                  ],
+                },
+              ],
+            })
+            .then((e) => {
+              if (e) {
+                setCorrectNetwork(true);
+              }
+            });
+        } catch (e) {
+          setCorrectNetwork(false);
+        }
+      }
+    }
+  };
+  const initEthereumNetwork = async () => {
+    try {
+      if (ethereum && ethereum.isMetaMask) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const { chainId } = await provider.getNetwork();
+        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+          setCorrectNetwork(false);
+        }
+        setUserChainId(chainId);
+        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+          // ethereum.request({
+          //   method: 'wallet_switchEthereumChain',
+          //   params: [
+          //     {
+          //       chainId: `${ethers.utils.hexlify(
+          //         +process.env.REACT_APP_CHAIN_ID,
+          //       )}`,
+          //     },
+          //   ],
+          // });
+        }
+      }
+    } catch (e) {
+      if (e) {
+        // ethereum.request({
+        //   method: 'wallet_addEthereumChain',
+        //   params: [
+        //     {
+        //       chainId: `${ethers.utils.hexlify(
+        //         +process.env.REACT_APP_CHAIN_ID,
+        //       )}`,
+        //       chainName: 'Ambrosus Test',
+        //       nativeCurrency: {
+        //         name: 'AMB',
+        //         symbol: 'AMB',
+        //         decimals: 18,
+        //       },
+        //       rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+        //       blockExplorerUrls: [
+        //         `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+        //       ],
+        //     },
+        //   ],
+        // });
+      }
+    }
+  };
 
+  useEffect(async () => {
+    initEthereumNetwork();
+  }, [correctNetwork]);
   useEffect(() => {
     const inteval = setInterval(async () => {
       if (storageService.get('auth') === true) {
-        if (ethereum && ethereum.isMetaMask) {
+        if (ethereum && ethereum.isMetaMask && correctNetwork) {
           const provider = new ethers.providers.Web3Provider(ethereum);
           const { chainId } = await provider.getNetwork();
           setUserChainId(chainId);
           appStore.incrementObserver();
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: `${ethers.utils.hexlify(
-                  +process.env.REACT_APP_CHAIN_ID,
-                )}`,
-                chainName: 'Ambrosus Test',
-                nativeCurrency: {
-                  name: 'AMB',
-                  symbol: 'AMB',
-                  decimals: 18,
-                },
-                rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                blockExplorerUrls: [
-                  `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                ],
-              },
-            ],
-          });
-          window.ethereum.on('accountsChanged', function () {
-            window.location.reload();
-          });
+
           // const dater = new EthDater(provider);
           // const block = await dater.getDate(
           //   new Date(Date.now() - 24 * 60 * 60 * 1000),
@@ -224,8 +294,9 @@ const Stacking = observer(() => {
                   }}
                 >
                   <ReactTooltip id="earnings" place="top" effect="solid">
-                    Estimated earnings for the next 24h. This function is in
-                    early beta, the data is for reference only
+                    Estimated earnings for the next 24h. <br />
+                    This function is in early beta, <br />
+                    the data is for reference only
                   </ReactTooltip>
                   <ReactSVG
                     style={{
@@ -264,44 +335,53 @@ const Stacking = observer(() => {
   );
   return appStore.auth ? (
     <>
-      {infoBlock}
-      <div className="stacking wrapper">
-        <div className="stacking__header">
-          <div style={{ flexBasis: 64 }}>Pool</div>
-          <div style={{ flexBasis: 26 }}>My Stake</div>
-          <div style={{ flexBasis: 29 }}>Total staked</div>
-          <div style={{ flexBasis: 26 }}>Net APY</div>
-          <div style={{ maxWidth: 167, marginRight: -6 }} />
+      {!correctNetwork && <NotSupported onclick={changeNetwork} />}
+      <div className="layout">
+        <Header />
+        <div className="content">
+          <div className="page">
+            {infoBlock}
+            <div className="stacking wrapper">
+              <div className="stacking__header">
+                <div style={{ flexBasis: 64 }}>Pool</div>
+                <div style={{ flexBasis: 26 }}>My Stake</div>
+                <div style={{ flexBasis: 29 }}>Total staked</div>
+                <div style={{ flexBasis: 26 }}>Net APY</div>
+                <div style={{ maxWidth: 167, marginRight: -6 }} />
+              </div>
+              {pools.map(
+                (item, index) =>
+                  item.active && (
+                    <StackItem
+                      key={item.contractName}
+                      index={index}
+                      openIndex={openIndexStakeItem}
+                      setOpenIndex={setOpenIndexStakeItem}
+                      expand
+                      hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                      comingSoon={!item?.abi}
+                      lazy
+                      loading={!!account}
+                      poolInfo={item}
+                    />
+                  ),
+              )}
+              {pools.map(
+                (coming) =>
+                  !coming.active && (
+                    <ComingSoonPool
+                      key={coming.contractName}
+                      poolInfo={coming}
+                      lazy
+                    />
+                  ),
+              )}
+            </div>
+            <ToastContainer transition={bounce} />
+          </div>
         </div>
-        {pools.map(
-          (item, index) =>
-            item.active && (
-              <StackItem
-                key={item.contractName}
-                index={index}
-                openIndex={openIndexStakeItem}
-                setOpenIndex={setOpenIndexStakeItem}
-                expand
-                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                comingSoon={!item?.abi}
-                lazy
-                loading={!!account}
-                poolInfo={item}
-              />
-            ),
-        )}
-        {pools.map(
-          (coming) =>
-            !coming.active && (
-              <ComingSoonPool
-                key={coming.contractName}
-                poolInfo={coming}
-                lazy
-              />
-            ),
-        )}
+        <Footer />
       </div>
-      <ToastContainer transition={bounce} />
     </>
   ) : (
     <div>Loading...</div>

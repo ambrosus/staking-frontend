@@ -1,0 +1,23 @@
+.not-supported {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+
+  color: #FFFFFF;
+  background: #FF6767;
+
+  .switch-text {
+    cursor: pointer;
+    font-weight: bold;
+    font-style: oblique;
+  }
+
+}

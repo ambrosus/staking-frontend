@@ -228,32 +228,27 @@ export const StackItem = ({
       }
     } catch (switchError) {
       if (switchError.code === 4902) {
-        try {
-          ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: `${ethers.utils.hexlify(
-                  +process.env.REACT_APP_CHAIN_ID,
-                )}`,
-                chainName: 'Ambrosus Test',
-                nativeCurrency: {
-                  name: 'AMB',
-                  symbol: 'AMB',
-                  decimals: 18,
-                },
-                rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                blockExplorerUrls: [
-                  `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                ],
+        ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: `${ethers.utils.hexlify(
+                +process.env.REACT_APP_CHAIN_ID,
+              )}`,
+              chainName: 'Ambrosus Test',
+              nativeCurrency: {
+                name: 'AMB',
+                symbol: 'AMB',
+                decimals: 18,
               },
-            ],
-          });
-        } catch (addError) {
-          console.log(addError);
-        }
+              rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+              blockExplorerUrls: [
+                `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+              ],
+            },
+          ],
+        });
       }
-      console.log(switchError);
     }
     return () => {
       start();
