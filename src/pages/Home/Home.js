@@ -62,7 +62,9 @@ const Home = () => {
   };
 
   useEffect(async () => {
-    initEthereumNetwork();
+    window.addEventListener('focus', function () {
+      initEthereumNetwork();
+    });
   }, []);
   const menu = (
     <div className="menu">
