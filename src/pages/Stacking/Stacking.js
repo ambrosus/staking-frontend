@@ -32,6 +32,7 @@ const bounce = cssTransition({
 });
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
+  const [userChainId, setUserChainId] = useState(null);
   const [openIndexStakeItem, setOpenIndexStakeItem] = useState(-1);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
   const [totalStaked, setTotalStaked] = useState(ZERO);
@@ -44,6 +45,9 @@ const Stacking = observer(() => {
     const inteval = setInterval(async () => {
       if (storageService.get('auth') === true) {
         if (ethereum && ethereum.isMetaMask) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const { chainId } = await provider.getNetwork();
+          setUserChainId(chainId);
           appStore.incrementObserver();
           await ethereum.request({
             method: 'wallet_addEthereumChain',
@@ -68,15 +72,11 @@ const Stacking = observer(() => {
           window.ethereum.on('accountsChanged', function () {
             window.location.reload();
           });
-
-          const provider = new ethers.providers.Web3Provider(ethereum);
-
           // const dater = new EthDater(provider);
           // const block = await dater.getDate(
           //   new Date(Date.now() - 24 * 60 * 60 * 1000),
           // );
           // console.log('block', block);
-
           const signer = provider.getSigner();
           provider.listAccounts().then((accounts) => {
             const defaultAccount = accounts[0];
@@ -282,6 +282,7 @@ const Stacking = observer(() => {
                 openIndex={openIndexStakeItem}
                 setOpenIndex={setOpenIndexStakeItem}
                 expand
+                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
                 comingSoon={!item?.abi}
                 lazy
                 loading={!!account}

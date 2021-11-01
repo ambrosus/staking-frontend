@@ -29,6 +29,7 @@ export const StackItem = ({
   expand,
   comingSoon,
   children,
+  hasChain,
   loading = true,
   instant,
   lazy,
@@ -54,8 +55,7 @@ export const StackItem = ({
   const start = async () => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
       const provider = new ethers.providers.Web3Provider(ethereum);
-
-      const interv = setInterval(async () => {
+      setInterval(async () => {
         if (provider) {
           const singer = provider.getSigner();
           if (singer) {
@@ -223,15 +223,9 @@ export const StackItem = ({
   }, [renderChildren]);
   useEffect(() => {
     try {
-      start();
-      ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [
-          {
-            chainId: `${ethers.utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-          },
-        ],
-      });
+      if (hasChain === true) {
+        start();
+      }
     } catch (switchError) {
       if (switchError.code === 4902) {
         try {
@@ -264,7 +258,7 @@ export const StackItem = ({
     return () => {
       start();
     };
-  }, []);
+  }, [hasChain]);
 
   useEffect(() => {
     if (expand) {
@@ -291,7 +285,7 @@ export const StackItem = ({
       </div>
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
-          {!loading ? (
+          {!loading || hasChain === false ? (
             <SkeletonString />
           ) : (
             <P style={{ textTransform: 'uppercase' }} size="l-400">
@@ -310,7 +304,7 @@ export const StackItem = ({
       )}
 
       <div className="item--header__vault-assets">
-        {!loading ? (
+        {!loading || hasChain === false ? (
           <SkeletonString />
         ) : (
           <P style={{ textTransform: 'uppercase' }} size="l-400">
@@ -352,7 +346,9 @@ export const StackItem = ({
                 setOpen(!open);
               }
             } else {
-              logIn();
+              if (hasChain === true) {
+                logIn();
+              }
             }
           }}
         >
@@ -399,6 +395,7 @@ StackItem.propTypes = {
   open: PropTypes.bool,
   comingSoon: PropTypes.bool,
   lazy: PropTypes.bool,
+  hasChain: PropTypes.bool,
   instant: PropTypes.bool,
   onComplete: PropTypes.func,
   loading: PropTypes.bool,

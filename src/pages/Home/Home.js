@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
@@ -15,40 +15,25 @@ import ComingSoonPool from '../../components/ComingSoonPool';
 
 const Home = () => {
   const { ethereum } = window;
-  const menu = (
-    <div className="menu">
-      <a target="_blank" href="https://ambrosus.io/">
-        <P size="xs-500">Main</P>
-      </a>
-      <a target="_blank" href="https://explorer.ambrosus.io/">
-        <P size="xs-500">Explorer</P>
-      </a>
-      <Link to="/stacking">
-        <P style={{ color: 'white' }} size="xs-500">
-          Staking
-        </P>
-      </Link>
-      <a href="https://amb.to/" target="_blank">
-        <P size="xs-500">amb.to</P>
-      </a>
-    </div>
-  );
-  useEffect(() => {
+  const [userChainId, setUserChainId] = useState(null);
+  const initEthereumNetwork = async () => {
     try {
       if (ethereum && ethereum.isMetaMask) {
         const provider = new ethers.providers.Web3Provider(ethereum);
-        const { chainId } = provider.getNetwork();
-        console.log('chainId', chainId && chainId);
-        ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: `${ethers.utils.hexlify(
-                +process.env.REACT_APP_CHAIN_ID,
-              )}`,
-            },
-          ],
-        });
+        const { chainId } = await provider.getNetwork();
+        setUserChainId(chainId);
+        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+          ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [
+              {
+                chainId: `${ethers.utils.hexlify(
+                  +process.env.REACT_APP_CHAIN_ID,
+                )}`,
+              },
+            ],
+          });
+        }
       }
     } catch (e) {
       if (e) {
@@ -74,8 +59,29 @@ const Home = () => {
         });
       }
     }
-  }, []);
+  };
 
+  useEffect(async () => {
+    initEthereumNetwork();
+  }, []);
+  const menu = (
+    <div className="menu">
+      <a target="_blank" href="https://ambrosus.io/">
+        <P size="xs-500">Main</P>
+      </a>
+      <a target="_blank" href="https://explorer.ambrosus.io/">
+        <P size="xs-500">Explorer</P>
+      </a>
+      <Link to="/stacking">
+        <P style={{ color: 'white' }} size="xs-500">
+          Staking
+        </P>
+      </Link>
+      <a href="https://amb.to/" target="_blank">
+        <P size="xs-500">amb.to</P>
+      </a>
+    </div>
+  );
   return (
     <div className="home">
       <ReactNotifications />
@@ -109,7 +115,14 @@ const Home = () => {
         </div>
         {pools.map((pool) => {
           if (pool.active === true) {
-            return <StackItem key={pool.contractName} poolInfo={pool} lazy />;
+            return (
+              <StackItem
+                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                key={pool.contractName}
+                poolInfo={pool}
+                lazy
+              />
+            );
           }
           return (
             <ComingSoonPool key={pool.contractName} poolInfo={pool} lazy />
