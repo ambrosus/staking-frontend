@@ -98,8 +98,15 @@ const Withdraw = observer(
             utils.parseEther(!inputValue ? '0' : inputValue),
           ),
         );
+        console.log(
+          'availableSumForWithdraw',
+          availableSumForWithdraw.sub(
+            utils.parseEther(!inputValue ? '0' : inputValue),
+          ),
+        );
       } else {
         setAfterWithdraw(availableSumForWithdraw);
+        console.log(availableSumForWithdraw);
       }
     };
     useEffect(() => {

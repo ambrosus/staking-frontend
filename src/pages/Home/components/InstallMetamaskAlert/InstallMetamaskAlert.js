@@ -6,7 +6,10 @@ import mmLogoIcon from '../../../../assets/svg/download-extension.png';
 export default function InstallMetamaskAlert() {
   const [closeModal, setCloseModal] = useState(true);
   return (
-    <Modal isShowing={closeModal} hide={() => setCloseModal(false)}>
+    <Modal
+      isShowing={closeModal}
+      hide={() => (window.ethereum ? setCloseModal(false) : null)}
+    >
       <div
         style={{
           display: 'flex',

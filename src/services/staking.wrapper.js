@@ -5,8 +5,8 @@ import { ethers, BigNumber } from 'ethers';
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
 const TEN = BigNumber.from(10);
-const FIXEDPOINT = TEN.pow(18);             // 1.0 ether
-const MINSHOWSTAKE = FIXEDPOINT.div(100);   // 0.01 ether
+const FIXEDPOINT = TEN.pow(18); // 1.0 ether
+const MINSHOWSTAKE = FIXEDPOINT.div(100); // 0.01 ether
 
 function formatFixed(bigNumber, digits = 18) {
   digits = Math.floor(digits);
@@ -48,4 +48,12 @@ class StakingWrapper {
   }
 }
 
-export { StakingWrapper, formatFixed, ZERO, ONE, TEN, FIXEDPOINT, MINSHOWSTAKE };
+export {
+  StakingWrapper,
+  formatFixed,
+  ZERO,
+  ONE,
+  TEN,
+  FIXEDPOINT,
+  MINSHOWSTAKE,
+};

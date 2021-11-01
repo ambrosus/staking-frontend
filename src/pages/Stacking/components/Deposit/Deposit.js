@@ -111,14 +111,15 @@ const Deposit = observer(({ depositInfo }) => {
           const singer = provider.getSigner();
           if (singer) {
             const stakingWrapper = new StakingWrapper(singer, depositInfo);
-            const [totalStakeInAMB, myStakeInAMB] = await stakingWrapper.getPoolData();
+            const [totalStakeInAMB, myStakeInAMB] =
+              await stakingWrapper.getPoolData();
             setMyStake(myStakeInAMB);
             setAvailableForWithdraw(myStakeInAMB);
             setTotalStake(totalStakeInAMB);
           }
         }
       }
-    }
+    };
     asyncFn();
   }, []);
   const withdrawForm = (
@@ -199,7 +200,7 @@ const Deposit = observer(({ depositInfo }) => {
         </>
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
-          {balance.gte(utils.parseEther( !inputValue ? '0' : inputValue))
+          {balance.gte(utils.parseEther(!inputValue ? '0' : inputValue))
             ? utils.formatEther(balance)
             : utils.formatEther(0)}{' '}
           AMB
@@ -226,11 +227,7 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() =>
-                  setInputValue(
-                    formatFixed(balance.div(4), 0),
-                  )
-                }
+                onclick={() => setInputValue(formatFixed(balance.div(4), 0))}
               >
                 <P size="xs-500">25%</P>
               </Button>
@@ -241,11 +238,7 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() =>
-                  setInputValue(
-                    formatFixed(balance.div(2), 0),
-                  )
-                }
+                onclick={() => setInputValue(formatFixed(balance.div(2), 0))}
               >
                 <P size="xs-500">50%</P>
               </Button>
@@ -257,9 +250,7 @@ const Deposit = observer(({ depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(
-                    formatFixed(balance.mul(3).div(4), 0),
-                  )
+                  setInputValue(formatFixed(balance.mul(3).div(4), 0))
                 }
               >
                 <P size="xs-500">75%</P>
@@ -271,11 +262,7 @@ const Deposit = observer(({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() =>
-                  setInputValue(
-                    formatFixed(balance, 0),
-                  )
-                }
+                onclick={() => setInputValue(formatFixed(balance, 0))}
               >
                 <P size="xs-500">100%</P>
               </Button>
@@ -289,9 +276,7 @@ const Deposit = observer(({ depositInfo }) => {
             disabled={
               !inputValue ||
               Number(inputValue) < 1000 ||
-              balance.lte(
-                utils.parseEther(!inputValue ? '0' : inputValue),
-              )
+              balance.lte(utils.parseEther(!inputValue ? '0' : inputValue))
             }
             onclick={checkoutPayment}
           >

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
+import { ethers } from 'ethers';
 
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
@@ -13,6 +14,7 @@ import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
 
 const Home = () => {
+  const { ethereum } = window;
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -31,6 +33,48 @@ const Home = () => {
       </a>
     </div>
   );
+  useEffect(() => {
+    try {
+      if (ethereum && ethereum.isMetaMask) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const { chainId } = provider.getNetwork();
+        console.log('chainId', chainId && chainId);
+        ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
+              chainId: `${ethers.utils.hexlify(
+                +process.env.REACT_APP_CHAIN_ID,
+              )}`,
+            },
+          ],
+        });
+      }
+    } catch (e) {
+      if (e) {
+        ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: `${ethers.utils.hexlify(
+                +process.env.REACT_APP_CHAIN_ID,
+              )}`,
+              chainName: 'Ambrosus Test',
+              nativeCurrency: {
+                name: 'AMB',
+                symbol: 'AMB',
+                decimals: 18,
+              },
+              rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+              blockExplorerUrls: [
+                `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+              ],
+            },
+          ],
+        });
+      }
+    }
+  }, []);
 
   return (
     <div className="home">

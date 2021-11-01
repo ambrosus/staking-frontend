@@ -53,11 +53,9 @@ export const StackItem = ({
 
   const start = async () => {
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
-      console.log('StackItem: start 1');
       const provider = new ethers.providers.Web3Provider(ethereum);
 
       const interv = setInterval(async () => {
-        console.log('StackItem: setInterval', interv);
         if (provider) {
           const singer = provider.getSigner();
           if (singer) {
@@ -70,8 +68,6 @@ export const StackItem = ({
         }
       }, 3000);
     } else {
-      console.log('StackItem: start 2');
-
       const provider = new ethers.providers.Web3Provider(ethereum);
       const stakingWrapper = new StakingWrapper(provider, poolInfo);
       const [totalStakeInAMB] = await stakingWrapper.getPoolData();
@@ -89,7 +85,6 @@ export const StackItem = ({
   };
 
   const logIn = async () => {
-    console.log('StackItem: logIn');
     if (ethereum && ethereum.isMetaMask) {
       await ethereum
         .request({
@@ -227,7 +222,6 @@ export const StackItem = ({
     return () => openCollapse();
   }, [renderChildren]);
   useEffect(() => {
-    console.log('StackItem: useEffect');
     try {
       start();
       ethereum.request({
@@ -268,7 +262,6 @@ export const StackItem = ({
       console.log(switchError);
     }
     return () => {
-      console.log('StackItem: useEffect return');
       start();
     };
   }, []);

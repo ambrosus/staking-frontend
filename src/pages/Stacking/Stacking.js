@@ -15,7 +15,7 @@ import storageService from '../../services/storage.service';
 
 import errorOutlineIcon from '../../assets/svg/error_outline.svg';
 import pieChartOutlineIcon from '../../assets/svg/pie_chart_outline.svg';
-import last24hIcon from '../../assets/svg/last24h.svg';
+import earningsIcon from '../../assets/svg/last24h.svg';
 import copyIcon from '../../assets/svg/copy.svg';
 import { Loader, SkeletonString } from '../../components/Loader';
 import ComingSoonPool from '../../components/ComingSoonPool';
@@ -33,218 +33,117 @@ const bounce = cssTransition({
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
   const [openIndexStakeItem, setOpenIndexStakeItem] = useState(-1);
-  const { isCopied, onCopy } = useCopyToClipboard({ text: account });
+  const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
   const [totalStaked, setTotalStaked] = useState(ZERO);
   const [totalReward, setTotalReward] = useState(ZERO);
+
   const { ethereum } = window;
   let contract = null;
 
   useEffect(() => {
-    const asyncFn = async function () {
-      try {
-        if (storageService.get('auth') === true) {
-          setInterval(async () => {
-            appStore.incrementObserver();
-            if (ethereum && ethereum.isMetaMask) {
-              await ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [
-                  {
-                    chainId: `${ethers.utils.hexlify(
-                      +process.env.REACT_APP_CHAIN_ID,
-                    )}`,
-                  },
+    const inteval = setInterval(async () => {
+      if (storageService.get('auth') === true) {
+        if (ethereum && ethereum.isMetaMask) {
+          appStore.incrementObserver();
+          await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: `${ethers.utils.hexlify(
+                  +process.env.REACT_APP_CHAIN_ID,
+                )}`,
+                chainName: 'Ambrosus Test',
+                nativeCurrency: {
+                  name: 'AMB',
+                  symbol: 'AMB',
+                  decimals: 18,
+                },
+                rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                blockExplorerUrls: [
+                  `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
                 ],
-              });
-              window.ethereum.on('accountsChanged', function () {
-                window.location.reload();
-              });
-              const provider = new ethers.providers.Web3Provider(ethereum);
+              },
+            ],
+          });
+          window.ethereum.on('accountsChanged', function () {
+            window.location.reload();
+          });
 
-              // const dater = new EthDater(provider);
-              // const block = await dater.getDate(
-              //   new Date(Date.now() - 24 * 60 * 60 * 1000),
-              // );
-              // console.log('block', block);
+          const provider = new ethers.providers.Web3Provider(ethereum);
 
-              const signer = provider.getSigner();
-              provider.listAccounts().then((accounts) => {
-                const defaultAccount = accounts[0];
-                if (defaultAccount) {
-                  setAccount(defaultAccount);
-                }
-              });
-              if (provider) {
-                if (signer) {
-                  pools.forEach((item) => {
-                    if (item.active) {
-                      contract = new ethers.Contract(
-                        item.address,
-                        item.abi,
-                        signer,
-                      );
-                      if (appStore.observer === 1) {
-                        if (contract) {
-                          contract.viewStake().then(async (res) => {
-                            setTotalStaked((prevState) => prevState.add(res));
-                          });
-                        }
-                      }
-                      if (appStore.observer === 0) {
-                        setTotalStaked(ethers.BigNumber.from('0'));
-                      }
+          // const dater = new EthDater(provider);
+          // const block = await dater.getDate(
+          //   new Date(Date.now() - 24 * 60 * 60 * 1000),
+          // );
+          // console.log('block', block);
+
+          const signer = provider.getSigner();
+          provider.listAccounts().then((accounts) => {
+            const defaultAccount = accounts[0];
+            if (defaultAccount) {
+              setAccount(defaultAccount);
+            }
+          });
+          if (provider) {
+            if (signer) {
+              pools.forEach((item) => {
+                if (item.active) {
+                  contract = new ethers.Contract(
+                    item.address,
+                    item.abi,
+                    signer,
+                  );
+                  if (appStore.observer === 1) {
+                    if (contract) {
+                      contract.viewStake().then(async (res) => {
+                        setTotalStaked((prevState) => prevState.add(res));
+                      });
                     }
-                  });
-
-                  if (contract) {
-                    // await contract.nodes(0).then(console.log);
-                    // const iface = contract.interface;
-                    // console.log('iface', iface);
-                    // const event = iface.events['PoolReward(address,uint256)'];
-                    // console.log('event:', event);
-                    // TODO
-                    setTotalReward(ethers.BigNumber.from('0'));
-
-                    // const rewardsLogs = provider.getLogs({
-                    //   fromBlock: block.block,
-                    //   toBlock: 'latest',
-                    //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
-                    // });
-                    // if (rewardsLogs !== undefined) {
-                    //   const rewards =
-                    //     rewardsLogs &&
-                    //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
-                    //   if (rewards) {
-                    //     const totalRewards = rewards.reduce(
-                    //       (acc, reward) => acc.add(reward),
-                    //       ethers.BigNumber.from('0'),
-                    //     );
-                    //     if (totalRewards) {
-                    //       const formatTotalReward =
-                    //         ethers.utils.formatEther(totalRewards);
-                    //         prevState.add(formatTotalReward),
-                    //       );
-                    //     }
-                    //   }
-                    // }
+                  }
+                  if (appStore.observer === 0) {
+                    setTotalStaked(ethers.BigNumber.from('0'));
                   }
                 }
+              });
+
+              if (contract) {
+                // await contract.nodes(0).then(console.log);
+                // const iface = contract.interface;
+                // console.log('iface', iface);
+                // const event = iface.events['PoolReward(address,uint256)'];
+                // console.log('event:', event);
+                // TODO
+                setTotalReward(ethers.BigNumber.from('0'));
+
+                // const rewardsLogs = provider.getLogs({
+                //   fromBlock: block.block,
+                //   toBlock: 'latest',
+                //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
+                // });
+                // if (rewardsLogs !== undefined) {
+                //   const rewards =
+                //     rewardsLogs &&
+                //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
+                //   if (rewards) {
+                //     const totalRewards = rewards.reduce(
+                //       (acc, reward) => acc.add(reward),
+                //       ethers.BigNumber.from('0'),
+                //     );
+                //     if (totalRewards) {
+                //       const formatTotalReward =
+                //         ethers.utils.formatEther(totalRewards);
+                //         prevState.add(formatTotalReward),
+                //       );
+                //     }
+                //   }
+                // }
               }
             }
-          }, 3000);
-        }
-      } catch (switchError) {
-        if (switchError.code === 4902) {
-          try {
-            await ethereum.request({
-              method: 'wallet_addEthereumChain',
-              params: [
-                {
-                  chainId: `${ethers.utils.hexlify(
-                    +process.env.REACT_APP_CHAIN_ID,
-                  )}`,
-                  chainName: 'Ambrosus Test',
-                  nativeCurrency: {
-                    name: 'AMB',
-                    symbol: 'AMB',
-                    decimals: 18,
-                  },
-                  rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                  blockExplorerUrls: [
-                    `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                  ],
-                },
-              ],
-            });
-          } catch (addError) {
-            console.log(addError);
           }
         }
-        console.log(switchError);
       }
-      return () => {
-        try {
-          if (storageService.get('auth') === true) {
-            setInterval(async () => {
-              appStore.incrementObserver();
-              if (ethereum && ethereum.isMetaMask) {
-                window.ethereum.on('accountsChanged', function () {
-                  window.location.reload();
-                });
-                const provider = new ethers.providers.Web3Provider(ethereum);
-                // const dater = new EthDater(provider);
-                // const block = await dater.getDate(
-                //   new Date(Date.now() - 24 * 60 * 60 * 1000),
-                // );
-                // console.log('block', block);
-                const signer = provider.getSigner();
-                provider.listAccounts().then((accounts) => {
-                  const defaultAccount = accounts[0];
-                  if (defaultAccount) {
-                    setAccount(defaultAccount);
-                  }
-                });
-                if (provider) {
-                  pools.forEach((item) => {
-                    contract = new ethers.Contract(
-                      item.address,
-                      item.abi,
-                      signer,
-                    );
-                    if (appStore.observer === 1) {
-                      if (contract) {
-                        contract.viewStake().then(async (res) => {
-                          setTotalStaked((prevState) => prevState.add(res));
-                        });
-                      }
-                    }
-                    if (appStore.observer === 0) {
-                      setTotalStaked(ethers.BigNumber.from('0'));
-                    }
-                  });
-
-                  if (contract) {
-                    // await contract.nodes(0).then(console.log);
-                    // const iface = contract.interface;
-                    // console.log('iface', iface);
-                    // const event = iface.events['PoolReward(address,uint256)'];
-                    // console.log('event:', event);
-                    // TODO
-                    setTotalReward(ethers.BigNumber.from('0'));
-
-                    // const rewardsLogs = provider.getLogs({
-                    //   fromBlock: block.block,
-                    //   toBlock: 'latest',
-                    //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
-                    // });
-                    // if (rewardsLogs !== undefined) {
-                    //   const rewards =
-                    //     rewardsLogs &&
-                    //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
-                    //   if (rewards) {
-                    //     const totalRewards = rewards.reduce(
-                    //       (acc, reward) => acc.add(reward),
-                    //       ethers.BigNumber.from('0'),
-                    //     );
-                    //     if (totalRewards) {
-                    //       const formatTotalReward =
-                    //         ethers.utils.formatEther(totalRewards);
-                    //         prevState.add(formatTotalReward),
-                    //       );
-                    //     }
-                    //   }
-                    // }
-                  }
-                }
-              }
-            }, 3000);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      };
-    };
-    asyncFn();
+    }, 3000);
+    return () => clearInterval(inteval);
   }, []);
 
   const infoBlock = (
@@ -324,15 +223,25 @@ const Stacking = observer(() => {
                     justifyContent: 'center',
                   }}
                 >
+                  <ReactTooltip id="earnings" place="top" effect="solid">
+                    Estimated earnings for the next 24h. This function is in
+                    early beta, the data is for reference only
+                  </ReactTooltip>
                   <ReactSVG
                     style={{
                       paddingTop: 0,
                     }}
-                    src={last24hIcon}
+                    src={earningsIcon}
                   />
                   <P size="m-400" style={{ paddingBottom: 5 }}>
-                    &nbsp;&nbsp;Last 24 Hours
+                    &nbsp;&nbsp;Earnings &nbsp;&nbsp;
                   </P>
+                  <ReactSVG
+                    data-tip
+                    data-for="earnings"
+                    src={errorOutlineIcon}
+                    wrapper="span"
+                  />
                 </div>
 
                 <P size="xl-400" style={{ color: '#4A38AE' }}>
