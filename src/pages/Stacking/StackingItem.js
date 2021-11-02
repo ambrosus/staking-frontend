@@ -81,53 +81,80 @@ export const StackItem = ({
   };
 
   const logIn = async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      await ethereum
-        .request({
-          method: 'wallet_requestPermissions',
-          params: [
-            {
-              eth_accounts: {},
-            },
-          ],
-        })
-        .then((e) => {
-          if (e) {
-            history.push('/stacking');
-            storageService.set('auth', true);
-            appStore.setAuth(true);
-            const provider = new ethers.providers.Web3Provider(ethereum);
-            provider.listAccounts().then((accounts) => {
-              const defaultAccount = accounts[0];
-              if (defaultAccount) {
-                appStore.setAuth(true);
-              }
-            });
-          }
-        })
-        .catch((e) => {
-          if (e) {
-            storageService.set('auth', false);
-            appStore.setAuth(false);
-          }
+    if (ethereum) {
+      handleEthereum();
+    } else {
+      window.addEventListener('ethereum#initialized', handleEthereum, {
+        once: true,
+      });
+      setTimeout(handleEthereum, 0);
+    }
+
+    async function handleEthereum() {
+      if (ethereum && ethereum.isMetaMask) {
+        await ethereum
+          .request({
+            method: 'wallet_requestPermissions',
+            params: [
+              {
+                eth_accounts: {},
+              },
+            ],
+          })
+          .then(async (e) => {
+            if (e) {
+              history.push('/stacking');
+              storageService.set('auth', true);
+              appStore.setAuth(true);
+              const provider = new ethers.providers.Web3Provider(ethereum);
+              provider.on('network', (newNetwork, oldNetwork) => {
+                if (oldNetwork) {
+                  window.location.reload();
+                }
+              });
+
+              provider
+                .listAccounts()
+                .then((accounts) => {
+                  const defaultAccount = accounts[0];
+                  if (defaultAccount) {
+                    appStore.setAuth(true);
+                  } else {
+                    storageService.set('auth', false);
+                  }
+                })
+                .catch((error) => {
+                  if (error) {
+                    storageService.set('auth', false);
+                  }
+                });
+            }
+          })
+          .catch((e) => {
+            if (e) {
+              storageService.set('auth', false);
+              appStore.setAuth(false);
+            }
+          });
+      } else {
+        alertStore.addNotification({
+          content: InstallMetamaskAlert,
+          container: 'bottom-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
         });
-    } else if (ethereum === undefined) {
-      alertStore.addNotification({
-        content: InstallMetamaskAlert,
-        container: 'bottom-right',
-        animationIn: ['animated', 'fadeIn'],
-        animationOut: ['animated', 'fadeOut'],
-      });
-    } else if (
-      navigator.userAgent.includes('iPhone') ||
-      navigator.userAgent.includes('Android')
-    ) {
-      alertStore.addNotification({
-        content: FromPhoneDeviseEnter,
-        container: 'bottom-right',
-        animationIn: ['animated', 'fadeIn'],
-        animationOut: ['animated', 'fadeOut'],
-      });
+      }
+      if (
+        navigator.userAgent.includes('iPhone') ||
+        navigator.userAgent.includes('Android')
+      ) {
+        alertStore.addNotification({
+          content: FromPhoneDeviseEnter,
+          container: 'bottom-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
+        });
+      }
     }
   };
 
