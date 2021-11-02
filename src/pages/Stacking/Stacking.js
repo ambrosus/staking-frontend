@@ -26,8 +26,8 @@ import {
   ZERO,
   MINSHOWSTAKE,
 } from '../../services/staking.wrapper';
-import Header from '../../layouts/Header';
-import Footer from '../../layouts/Footer';
+import Header from '../../components/layouts/Header';
+import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
 import collapsedReducer from '../../utils/collapsedReducer';
 

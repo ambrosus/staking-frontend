@@ -4,15 +4,16 @@ import { ReactSVG } from 'react-svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
-
-import headerLogoSvg from '../../assets/svg/header-logo-blue.svg';
-import loginIcon from '../../assets/svg/login.svg';
-import greenLightIcon from '../../assets/svg/green-light-icon.svg';
-import P from '../../components/P';
-import storageService from '../../services/storage.service';
-import appStore from '../../store/app.store';
-import { ambMounthUSD } from '../../utils/constants';
 import { ethers } from 'ethers';
+
+import P from '../../P';
+import storageService from '../../../services/storage.service';
+import appStore from '../../../store/app.store';
+import { ambMounthUSD } from '../../../utils/constants';
+
+import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
+import loginIcon from '../../../assets/svg/login.svg';
+import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
 
 export const Header = observer(() => {
   const [usdPrice, setUsdPrice] = useState(0);

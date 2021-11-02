@@ -1,12 +1,13 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
-import githubIcon from '../../assets/svg/github-icon.svg';
-import mediumIcon from '../../assets/svg/medium-icon.svg';
-import redditIcon from '../../assets/svg/reddit-icon.svg';
-import telegramIcon from '../../assets/svg/telegram-icon.svg';
-import twitterIcon from '../../assets/svg/twitter-icon.svg';
-import linkedinIcon from '../../assets/svg/linkedin-icon.svg';
+
+import githubIcon from '../../../assets/svg/github-icon.svg';
+import mediumIcon from '../../../assets/svg/medium-icon.svg';
+import redditIcon from '../../../assets/svg/reddit-icon.svg';
+import telegramIcon from '../../../assets/svg/telegram-icon.svg';
+import twitterIcon from '../../../assets/svg/twitter-icon.svg';
+import linkedinIcon from '../../../assets/svg/linkedin-icon.svg';
 
 const socialsLinks = [
   {
