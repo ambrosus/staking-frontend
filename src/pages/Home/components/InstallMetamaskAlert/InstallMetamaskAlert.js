@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Modal from '../../../../components/Modal/Modal';
+import Modal from '../../../../components/Modal';
 import mmLogoIcon from '../../../../assets/svg/download-extension.png';
 
 export default function InstallMetamaskAlert() {

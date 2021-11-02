@@ -10,7 +10,7 @@ import P from '../../../../components/P';
 
 import infoIcon from '../../../../assets/svg/info.svg';
 import useModal from '../../../../utils/useModal';
-import Modal from '../../../../components/Modal/Modal';
+import Modal from '../../../../components/Modal';
 import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 import notificationMassage from '../../../../utils/notificationMassage';

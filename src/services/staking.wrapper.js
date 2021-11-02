@@ -57,14 +57,14 @@ class StakingWrapper {
     const block = await dater.getDate(
       new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
     );
-    console.log('block', block);
+    // console.log('block', block);
 
     const rewardsLogs = await this.providerOrSigner.getLogs({
       fromBlock: block.block,
       toBlock: 'latest',
       topics: [ethers.utils.id('PoolReward(address,uint256)')],
     });
-    console.log(rewardsLogs);
+    // console.log(rewardsLogs);
     // 0x732FA022168eF1F669fF2A4a6c5C632646a1822b poolEventsEmitter
     /*
     if (rewardsLogs !== undefined) {

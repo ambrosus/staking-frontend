@@ -24,7 +24,6 @@ const Withdraw = observer(
     const { ethereum } = window;
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
     const withdrawPayment = async () => {
-      /* eslint-disable-next-line */
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');
       if (provider) {
         const signer = provider.getSigner();

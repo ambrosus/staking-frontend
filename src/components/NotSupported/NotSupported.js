@@ -3,12 +3,10 @@ import * as PropTypes from 'prop-types';
 
 const NotSupported = ({ onclick }) => {
   const host = window.location.hostname;
-  console.log('host', host);
   const network =
     host === 'localhost' || host === 'staking.ambrosus-test.io'
       ? 'Testnet'
       : 'Mainnet';
-  console.log(network);
   return (
     <div className="not-supported">
       Ambrosus is not supported on this network. Please&nbsp;

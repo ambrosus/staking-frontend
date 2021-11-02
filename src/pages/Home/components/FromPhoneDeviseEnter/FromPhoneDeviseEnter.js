@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Modal from '../../../../components/Modal/Modal';
+import Modal from '../../../../components/Modal';
 
 export default function FromPhoneDeviseEnter() {
   const [closeModal, setCloseModal] = useState(true);

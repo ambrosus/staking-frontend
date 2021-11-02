@@ -1,14 +1,16 @@
+/*eslint-disable*/
 export default function collapsedReducer(state, { type, index }) {
-  const stateCopy = state;
+  const stateCopy = [false];
   switch (type) {
-    case 'expand-all':
-      return [true, true, true];
-    case 'collapse-all':
-      return [false, false, false];
     case 'toggle':
       stateCopy[index] = !stateCopy[index];
       return [...stateCopy];
-
+    case 'hide':
+      stateCopy[index] = false;
+      return [...stateCopy];
+    case 'show':
+      stateCopy[index] = true;
+      return [...stateCopy];
     default:
       throw new Error();
   }
