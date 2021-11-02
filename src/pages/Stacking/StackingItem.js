@@ -18,12 +18,17 @@ import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import { SkeletonString } from '../../components/Loader';
 
+
+
 import {
   StakingWrapper,
   MINSHOWSTAKE,
   ZERO,
   formatFixed,
 } from '../../services/staking.wrapper';
+// import { createPlugin } from 'stylelint';
+
+//console.log('StackItem.js');
 
 export const StackItem = ({
   expand,
@@ -42,6 +47,7 @@ export const StackItem = ({
   poolInfo,
   ...restProps
 }) => {
+  console.log('StackItem()');
   const ref = useRef();
   const firstRender = useRef(true);
   const [open, setOpen] = useState(false);
@@ -53,13 +59,14 @@ export const StackItem = ({
   const history = useHistory();
 
   const start = async () => {
+    console.log('start()');
     if (ethereum && ethereum.isMetaMask && appStore.auth) {
       const provider = new ethers.providers.Web3Provider(ethereum);
       setInterval(async () => {
         if (provider) {
           const singer = provider.getSigner();
           if (singer) {
-            const stakingWrapper = new StakingWrapper(singer, poolInfo);
+            const stakingWrapper = new StakingWrapper(poolInfo, singer);
             const [totalStakeInAMB, myStakeInAMB] =
               await stakingWrapper.getPoolData();
             setMyStake(myStakeInAMB);
@@ -68,10 +75,11 @@ export const StackItem = ({
         }
       }, 3000);
     } else {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const stakingWrapper = new StakingWrapper(provider, poolInfo);
+      const stakingWrapper = new StakingWrapper(poolInfo);
       const [totalStakeInAMB] = await stakingWrapper.getPoolData();
       setTotalStake(totalStakeInAMB);
+
+      // stakingWrapper.getAPY();
 
       if (!ethereum && !ethereum.isMetaMask) {
         alertStore.addNotification({
@@ -85,6 +93,7 @@ export const StackItem = ({
   };
 
   const logIn = async () => {
+    console.log('logIn()');
     if (ethereum && ethereum.isMetaMask) {
       await ethereum
         .request({
@@ -222,6 +231,7 @@ export const StackItem = ({
     return () => openCollapse();
   }, [renderChildren]);
   useEffect(() => {
+    console.log('useEffect()');
     try {
       if (hasChain === true) {
         start();
@@ -251,7 +261,7 @@ export const StackItem = ({
       }
     }
     return () => {
-      start();
+      // start();
     };
   }, [hasChain]);
 

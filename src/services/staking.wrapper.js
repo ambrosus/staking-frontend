@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { ethers, BigNumber } from 'ethers';
+import EthDater from 'ethereum-block-by-date';
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
@@ -24,10 +25,12 @@ function formatFixed(bigNumber, digits = 18) {
 }
 
 class StakingWrapper {
-  constructor(providerOrSigner, poolInfo) {
+  constructor(poolInfo, providerOrSigner = null) {
     if (!providerOrSigner || !poolInfo) {
-      throw new Error('providerOrSigner and poolInfo not set');
+      providerOrSigner = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL);
     }
+    this.poolInfo = poolInfo;
+    this.providerOrSigner = providerOrSigner;
     this.poolContract = new ethers.Contract(
       poolInfo.address,
       poolInfo.abi,
@@ -45,6 +48,41 @@ class StakingWrapper {
     );
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXEDPOINT);
     return [totalStakeInAMB, myStakeInAMB, tokenPriceAMB, myStakeInTokens];
+  }
+
+  async getAPY() {
+    const dater = new EthDater(this.providerOrSigner);
+    const block = await dater.getDate(
+      new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+    );
+    console.log('block', block);
+
+    const rewardsLogs = await this.providerOrSigner.getLogs({
+      fromBlock: block.block,
+      toBlock: 'latest',
+      topics: [ethers.utils.id('PoolReward(address,uint256)')],
+    });
+    console.log(rewardsLogs);
+    // 0x732FA022168eF1F669fF2A4a6c5C632646a1822b poolEventsEmitter
+    /*
+    if (rewardsLogs !== undefined) {
+      const rewards =
+        rewardsLogs &&
+        rewardsLogs.map((log) => iface.parseLog(log).args.reward);
+      if (rewards) {
+        const totalRewards = rewards.reduce(
+          (acc, reward) => acc.add(reward),
+          ethers.BigNumber.from('0'),
+        );
+        if (totalRewards) {
+          const formatTotalReward =
+            ethers.utils.formatEther(totalRewards);
+            prevState.add(formatTotalReward),
+          );
+        }
+      }
+    }
+    */
   }
 }
 
