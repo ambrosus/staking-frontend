@@ -11,6 +11,7 @@ import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 
 import { formatFixed, ZERO } from '../../../../services/staking.wrapper';
+import { ethereum } from '../../../../utils/constants';
 
 const Withdraw = observer(
   ({
@@ -21,7 +22,6 @@ const Withdraw = observer(
     availableSumForWithdraw,
   }) => {
     const [inputValue, setInputValue] = useState('0');
-    const { ethereum } = window;
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
     const withdrawPayment = async () => {
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');

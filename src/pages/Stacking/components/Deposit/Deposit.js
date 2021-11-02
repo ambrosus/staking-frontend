@@ -7,6 +7,12 @@ import { observer } from 'mobx-react-lite';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
+import {
+  StakingWrapper,
+  ZERO,
+  formatFixed,
+} from '../../../../services/staking.wrapper';
+import { ethereum } from '../../../../utils/constants';
 
 import infoIcon from '../../../../assets/svg/info.svg';
 import useModal from '../../../../utils/useModal';
@@ -16,12 +22,6 @@ import avatarIcon from '../../../../assets/svg/avatar.svg';
 import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 
-import {
-  StakingWrapper,
-  ZERO,
-  formatFixed,
-} from '../../../../services/staking.wrapper';
-
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
   const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
@@ -29,71 +29,67 @@ const Deposit = observer(({ depositInfo }) => {
   const [balance, setBalance] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
 
-  const { ethereum } = window;
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   const checkoutPayment = async () => {
-    try {
-      const provider = new ethers.providers.Web3Provider(ethereum, 'any');
-      if (provider) {
-        const signer = provider.getSigner();
-        if (signer) {
-          const poolContract = new ethers.Contract(
-            depositInfo.address,
-            depositInfo.abi,
-            signer,
-          );
-          const contractWithSigner = poolContract.connect(signer);
-          const overrides = {
-            value: ethers.utils.parseEther(inputValue), // todo
-            gasPrice: ethers.utils.parseUnits('20', 'gwei'),
-            gasLimit: 1000000,
-          };
-          if (contractWithSigner) {
-            await contractWithSigner.stake(overrides).then(async (tx) => {
-              if (tx) {
-                notificationMassage(
-                  'PENDING',
-                  `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                    60,
-                  )} pending.`,
-                );
-                await tx
-                  .wait()
-                  .then((result) => {
-                    notificationMassage(
-                      'SUCCESS',
-                      `Transaction ${result.transactionHash.substr(
-                        0,
-                        6,
-                      )}...${result.transactionHash.slice(60)} success!`,
-                    );
-                    setInputValue('0');
-                    appStore.setObserverValue(-2);
-                  })
-                  .catch(() => {
-                    notificationMassage(
-                      'ERROR',
-                      `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                        60,
-                      )} failed!`,
-                    );
-                    setInputValue('0');
-                  });
-              }
-            });
-          }
+    const provider = new ethers.providers.Web3Provider(ethereum, 'any');
+    if (provider) {
+      const signer = provider.getSigner();
+      if (signer) {
+        const poolContract = new ethers.Contract(
+          depositInfo.address,
+          depositInfo.abi,
+          signer,
+        );
+        const contractWithSigner = poolContract.connect(signer);
+        const overrides = {
+          value: ethers.utils.parseEther(inputValue), // todo
+          gasPrice: ethers.utils.parseUnits('20', 'gwei'),
+          gasLimit: 1000000,
+        };
+        if (contractWithSigner) {
+          await contractWithSigner.stake(overrides).then(async (tx) => {
+            if (tx) {
+              notificationMassage(
+                'PENDING',
+                `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                  60,
+                )} pending.`,
+              );
+              await tx
+                .wait()
+                .then((result) => {
+                  notificationMassage(
+                    'SUCCESS',
+                    `Transaction ${result.transactionHash.substr(
+                      0,
+                      6,
+                    )}...${result.transactionHash.slice(60)} success!`,
+                  );
+                  setInputValue('0');
+                  appStore.setObserverValue(-2);
+                })
+                .catch(() => {
+                  notificationMassage(
+                    'ERROR',
+                    `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                      60,
+                    )} failed!`,
+                  );
+                  setInputValue('0');
+                });
+            }
+          });
         }
       }
-    } catch (e) {
-      console.error(e);
     }
+
     return false;
   };
   useEffect(() => {
     let interv;
     let provider;
-    const asyncFn = async function () {
+    const asyncFn = async () => {
       if (ethereum && ethereum.isMetaMask) {
         provider = new ethers.providers.Web3Provider(ethereum);
       }

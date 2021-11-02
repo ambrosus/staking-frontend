@@ -6,8 +6,8 @@ import { ethers } from 'ethers';
 
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
-import StackItem from '../Stacking/StackingItem';
-import { pools } from '../../utils/constants';
+import StackItem from '../../components/StackingItem';
+import { ethereum, pools } from '../../utils/constants';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import CollapsedList from '../../components/CollapsedList';
@@ -15,7 +15,6 @@ import ComingSoonPool from '../../components/ComingSoonPool';
 import NotSupported from '../../components/NotSupported';
 
 const Home = () => {
-  const { ethereum } = window;
   const [userChainId, setUserChainId] = useState(false);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const changeNetwork = async () => {

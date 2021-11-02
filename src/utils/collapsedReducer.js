@@ -1,4 +1,3 @@
-/*eslint-disable*/
 export default function collapsedReducer(state, { type, index }) {
   const stateCopy = [false];
   switch (type) {

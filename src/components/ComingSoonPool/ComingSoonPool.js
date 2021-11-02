@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
+
 import Button from '../Button';
 import P from '../P';
+import { COMING_SOON } from '../../utils/constants';
+
 import avatarIcon from '../../assets/svg/coming_soon_pool_icon.svg';
+
 export const ComingSoonPool = ({ poolInfo }) => {
   const stackHeader = (
     <div className="item--header" role="presentation">
@@ -22,7 +26,7 @@ export const ComingSoonPool = ({ poolInfo }) => {
       <div style={{ minWidth: 160, maxWidth: 160 }}>
         <Button disabled priority="secondary">
           <P style={{ textTransform: 'uppercase' }} size="m-500">
-            COMING SOON
+            {COMING_SOON}
           </P>
         </Button>
       </div>

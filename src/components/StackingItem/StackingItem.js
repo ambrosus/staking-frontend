@@ -1,21 +1,20 @@
-/*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import { ethers } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
+import Collapse from '@kunukn/react-collapse';
 
-import Button from '../../components/Button';
-import P from '../../components/P';
-import Deposit from './components/Deposit';
-
+import Button from '../Button';
+import P from '../P';
+import Deposit from '../../pages/Stacking/components/Deposit';
 import appStore from '../../store/app.store';
-import storageService from '../../services/storage.service';
-import InstallMetamaskAlert from '../Home/components/InstallMetamaskAlert';
-import FromPhoneDeviseEnter from '../Home/components/FromPhoneDeviseEnter';
+import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
+import { SkeletonString } from '../Loader';
+import useLogIn from '../../utils/useLogIn';
+
 import avatarIcon from '../../assets/svg/avatar.svg';
-import { SkeletonString } from '../../components/Loader';
 
 import {
   StakingWrapper,
@@ -23,113 +22,34 @@ import {
   ZERO,
   formatFixed,
 } from '../../services/staking.wrapper';
-import Collapse from '@kunukn/react-collapse';
-// import { createPlugin } from 'stylelint';
+import {
+  COMING_SOON,
+  ethereum,
+  HIDE,
+  SHOW,
+  STAKE,
+} from '../../utils/constants';
 
-export const StackItem = ({
-  expand,
+const StackingItem = ({
+  expand = false,
   comingSoon,
   activeExpand,
   setActiveExpand,
   state = 0,
   hasChain,
   loading = true,
-  instant,
-  lazy,
   dispatch,
-  transitionDuration = '200ms',
-  transitionTimingFunction = 'ease-in',
-  onComplete,
   index = -1,
   poolInfo,
-  ...restProps
 }) => {
   const [myStake, setMyStake] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
-  const { ethereum } = window;
   const history = useHistory();
+  const { logIn } = useLogIn();
+  let provider;
+  let interv;
 
-  const logIn = async () => {
-    if (ethereum) {
-      handleEthereum();
-    } else {
-      window.addEventListener('ethereum#initialized', handleEthereum, {
-        once: true,
-      });
-      setTimeout(handleEthereum, 0);
-    }
-
-    async function handleEthereum() {
-      if (ethereum && ethereum.isMetaMask) {
-        await ethereum
-          .request({
-            method: 'wallet_requestPermissions',
-            params: [
-              {
-                eth_accounts: {},
-              },
-            ],
-          })
-          .then(async (e) => {
-            if (e) {
-              history.push('/stacking');
-              storageService.set('auth', true);
-              appStore.setAuth(true);
-              const provider = new ethers.providers.Web3Provider(ethereum);
-              provider.on('network', (newNetwork, oldNetwork) => {
-                if (oldNetwork) {
-                  window.location.reload();
-                }
-              });
-
-              provider
-                .listAccounts()
-                .then((accounts) => {
-                  const defaultAccount = accounts[0];
-                  if (defaultAccount) {
-                    appStore.setAuth(true);
-                  } else {
-                    storageService.set('auth', false);
-                  }
-                })
-                .catch((error) => {
-                  if (error) {
-                    storageService.set('auth', false);
-                  }
-                });
-            }
-          })
-          .catch((e) => {
-            if (e) {
-              storageService.set('auth', false);
-              appStore.setAuth(false);
-            }
-          });
-      } else {
-        alertStore.addNotification({
-          content: InstallMetamaskAlert,
-          container: 'bottom-right',
-          animationIn: ['animated', 'fadeIn'],
-          animationOut: ['animated', 'fadeOut'],
-        });
-      }
-      if (
-        navigator.userAgent.includes('iPhone') ||
-        navigator.userAgent.includes('Android')
-      ) {
-        alertStore.addNotification({
-          content: FromPhoneDeviseEnter,
-          container: 'bottom-right',
-          animationIn: ['animated', 'fadeIn'],
-          animationOut: ['animated', 'fadeOut'],
-        });
-      }
-    }
-  };
-
-  useEffect(async () => {
-    let provider;
-    let interv;
+  const updateState = async () => {
     try {
       if (appStore.auth) {
         if (ethereum && ethereum.isMetaMask) {
@@ -186,6 +106,10 @@ export const StackItem = ({
         });
       }
     }
+  };
+
+  useEffect(async () => {
+    updateState();
     return () => clearInterval(interv);
   }, [hasChain]);
 
@@ -252,7 +176,7 @@ export const StackItem = ({
         <div style={{ minWidth: 160, maxWidth: 160 }}>
           <Button disabled priority="secondary">
             <P style={{ textTransform: 'uppercase' }} size="m-500">
-              COMING SOON
+              {COMING_SOON}
             </P>
           </Button>
         </div>
@@ -278,9 +202,8 @@ export const StackItem = ({
           }}
         >
           <P style={{ textTransform: 'uppercase' }} size="m-500">
-            {expand &&
-              (state[index] && activeExpand === index ? 'HIDE' : 'SHOW')}
-            {!expand && 'STAKE'}
+            {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
+            {!expand && STAKE}
           </P>
         </Button>
       )}
@@ -289,11 +212,8 @@ export const StackItem = ({
   return (
     <div role="presentation" className="stack-item">
       {stackHeader}
-      <Collapse
-        layoutEffect
-        isOpen={state[index] ? activeExpand === index : state[index]}
-      >
-        <div className="item--content" {...restProps}>
+      <Collapse isOpen={state[index] ? activeExpand === index : state[index]}>
+        <div className="item--content">
           <div className="line" />
           <div className="collapsed-content">
             {appStore.auth && (
@@ -307,25 +227,16 @@ export const StackItem = ({
     </div>
   );
 };
-StackItem.propTypes = {
+StackingItem.propTypes = {
   poolInfo: PropTypes.object,
+  dispatch: PropTypes.func,
   expand: PropTypes.bool,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-  transitionDuration: PropTypes.string,
-  transitionTimingFunction: PropTypes.string,
-  open: PropTypes.bool,
   comingSoon: PropTypes.bool,
-  lazy: PropTypes.bool,
+  state: PropTypes.array,
   hasChain: PropTypes.bool,
   index: PropTypes.number,
-  openIndex: PropTypes.number,
-  setOpenIndex: PropTypes.func,
-  onToggle: PropTypes.func,
-  instant: PropTypes.bool,
-  onComplete: PropTypes.func,
+  activeExpand: PropTypes.number,
+  setActiveExpand: PropTypes.func,
   loading: PropTypes.bool,
 };
-export default StackItem;
+export default StackingItem;

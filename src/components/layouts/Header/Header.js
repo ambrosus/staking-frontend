@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link, useLocation } from 'react-router-dom';
@@ -9,7 +8,11 @@ import { ethers } from 'ethers';
 import P from '../../P';
 import storageService from '../../../services/storage.service';
 import appStore from '../../../store/app.store';
-import { ambMounthUSD } from '../../../utils/constants';
+import {
+  ambMounthUSD,
+  ethereum,
+  priceInPercent24h,
+} from '../../../utils/constants';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
@@ -21,9 +24,22 @@ export const Header = observer(() => {
   const [account, setAccount] = useState(null);
   const history = useHistory();
   const location = useLocation();
-  const { ethereum } = window;
+
+  const getAmbCourse = async () => {
+    const priceInUsd = await ambMounthUSD(1);
+    if (priceInUsd) {
+      setUsdPrice(priceInUsd);
+    }
+    const percent = await priceInPercent24h(1);
+    if (percent) {
+      setPercentChange24h(percent);
+      // data.data.percent_change_24h
+    }
+  };
 
   useEffect(() => {
+    getAmbCourse();
+
     if (storageService.get('auth') === true) {
       if (typeof ethereum !== 'undefined') {
         ethereum.on('disconnect', () => {
@@ -59,17 +75,6 @@ export const Header = observer(() => {
             }
           });
       }
-      fetch('https://token.ambrosus.io')
-        .then((response) => response.json())
-        .then((data) => {
-          if (data?.data) {
-            const priceInUsd = ambMounthUSD(1, data?.data?.price_usd);
-            if (priceInUsd) {
-              setUsdPrice(priceInUsd);
-            }
-            setPercentChange24h(data.data.percent_change_24h);
-          }
-        });
     } else {
       storageService.set('auth', false);
       appStore.setAuth(false);

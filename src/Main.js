@@ -6,10 +6,9 @@ import appStore from './store/app.store';
 
 import './styles/Main.scss';
 import RenderRoutes from './components/RenderRoutes';
+import { ethereum } from './utils/constants';
 
 const Main = observer(() => {
-  const { ethereum } = window;
-
   useEffect(async () => {
     if (ethereum && ethereum.isMetaMask) {
       ethereum.on('accountsChanged', () => window.location.reload());

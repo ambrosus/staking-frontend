@@ -1,14 +1,12 @@
-/*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
-// import EthDater from 'ethereum-block-by-date';
 import { ToastContainer, cssTransition } from 'react-toastify';
 
-import { pools } from '../../utils/constants';
-import StackItem from './StackingItem';
+import { ethereum, pools } from '../../utils/constants';
+import StackingItem from '../../components/StackingItem';
 import P from '../../components/P';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
 import appStore from '../../store/app.store';
@@ -45,7 +43,6 @@ const Stacking = observer(() => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
-  const { ethereum } = window;
   let contract = null;
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
@@ -90,32 +87,29 @@ const Stacking = observer(() => {
       }
     }
   };
-  const initEthereumNetwork = async () => {
-    try {
-      if (appStore.auth) {
-        if (ethereum && ethereum.isMetaMask) {
-          const provider = new ethers.providers.Web3Provider(ethereum);
-          const { chainId } = await provider.getNetwork();
-          if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-            setCorrectNetwork(false);
-            setRequestNetworkChange(true);
-          } else {
-            setCorrectNetwork(true);
-            setRequestNetworkChange(false);
-          }
-          setUserChainId(chainId);
-        }
-      }
-    } catch (e) {
-      console.log(e);
+  const checkEthereumNetwork = async () => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const { chainId } = await provider.getNetwork();
+    if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+      setCorrectNetwork(false);
+      setRequestNetworkChange(true);
+    } else {
+      setCorrectNetwork(true);
+      setRequestNetworkChange(false);
     }
+    setUserChainId(chainId);
   };
 
-  useEffect(async () => {
-    initEthereumNetwork();
-    window.addEventListener('focus', () => {
-      changeNetwork();
-    });
+  useEffect(() => {
+    if (appStore.auth) {
+      if (ethereum && ethereum.isMetaMask) {
+        checkEthereumNetwork();
+        window.addEventListener('focus', () => {
+          changeNetwork();
+        });
+      }
+    }
+    return () => checkEthereumNetwork();
   }, [correctNetwork]);
   useEffect(() => {
     const inteval = setInterval(async () => {
@@ -131,11 +125,6 @@ const Stacking = observer(() => {
           setUserChainId(chainId);
           appStore.incrementObserver();
 
-          // const dater = new EthDater(provider);
-          // const block = await dater.getDate(
-          //   new Date(Date.now() - 24 * 60 * 60 * 1000),
-          // );
-          // console.log('block', block);
           const signer = provider.getSigner();
           provider.listAccounts().then((accounts) => {
             const defaultAccount = accounts[0];
@@ -166,36 +155,8 @@ const Stacking = observer(() => {
               });
 
               if (contract) {
-                // await contract.nodes(0).then(console.log);
-                // const iface = contract.interface;
-                // console.log('iface', iface);
-                // const event = iface.events['PoolReward(address,uint256)'];
-                // console.log('event:', event);
                 // TODO
                 setTotalReward(ethers.BigNumber.from('0'));
-
-                // const rewardsLogs = provider.getLogs({
-                //   fromBlock: block.block,
-                //   toBlock: 'latest',
-                //   topics: [ethers.utils.id('PoolReward(address,uint256)')],
-                // });
-                // if (rewardsLogs !== undefined) {
-                //   const rewards =
-                //     rewardsLogs &&
-                //     rewardsLogs.map((log) => iface.parseLog(log).args.reward);
-                //   if (rewards) {
-                //     const totalRewards = rewards.reduce(
-                //       (acc, reward) => acc.add(reward),
-                //       ethers.BigNumber.from('0'),
-                //     );
-                //     if (totalRewards) {
-                //       const formatTotalReward =
-                //         ethers.utils.formatEther(totalRewards);
-                //         prevState.add(formatTotalReward),
-                //       );
-                //     }
-                //   }
-                // }
               }
             }
           }
@@ -341,7 +302,7 @@ const Stacking = observer(() => {
               {pools.map(
                 (item, index) =>
                   item.active && (
-                    <StackItem
+                    <StackingItem
                       dispatch={dispatch}
                       activeExpand={activeExpand}
                       setActiveExpand={setActiveExpand}
