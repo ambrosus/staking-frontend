@@ -52,34 +52,6 @@ export const StackItem = ({
   const { ethereum } = window;
   const history = useHistory();
 
-  const start = async () => {
-    if (appStore.auth) {
-      if (ethereum && ethereum.isMetaMask) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        setInterval(async () => {
-          if (provider) {
-            const singer = provider.getSigner();
-            if (singer) {
-              const stakingWrapper = new StakingWrapper(poolInfo, singer);
-              const [totalStakeInAMB, myStakeInAMB] =
-                await stakingWrapper.getPoolData();
-              setMyStake(myStakeInAMB);
-              setTotalStake(totalStakeInAMB);
-            }
-          }
-        }, 3000);
-      } else {
-        // stakingWrapper.getAPY();
-        alertStore.addNotification({
-          content: InstallMetamaskAlert,
-          container: 'bottom-right',
-          animationIn: ['animated', 'fadeIn'],
-          animationOut: ['animated', 'fadeOut'],
-        });
-      }
-    }
-  };
-
   const logIn = async () => {
     if (ethereum) {
       handleEthereum();
@@ -246,12 +218,41 @@ export const StackItem = ({
     return () => openCollapse();
   }, [renderChildren]);
   useEffect(async () => {
-    const stakingWrapper = new StakingWrapper(poolInfo);
-    const [totalStakeInAMB] = await stakingWrapper.getPoolData();
-    setTotalStake(totalStakeInAMB);
+    let provider;
+    let interv;
     try {
       if (hasChain === true) {
-        start();
+        if (appStore.auth) {
+          if (ethereum && ethereum.isMetaMask) {
+            provider = new ethers.providers.Web3Provider(ethereum);
+          } else {
+            // stakingWrapper.getAPY();
+            alertStore.addNotification({
+              content: InstallMetamaskAlert,
+              container: 'bottom-right',
+              animationIn: ['animated', 'fadeIn'],
+              animationOut: ['animated', 'fadeOut'],
+            });
+          }
+        }
+        if (provider) {
+          interv = setInterval(async () => {
+            if (provider) {
+              const singer = provider.getSigner();
+              if (singer) {
+                const stakingWrapper = new StakingWrapper(poolInfo, singer);
+                const [totalStakeInAMB, myStakeInAMB] =
+                  await stakingWrapper.getPoolData();
+                setMyStake(myStakeInAMB);
+                setTotalStake(totalStakeInAMB);
+              }
+            }
+          }, 3000);
+        } else {
+          const stakingWrapper = new StakingWrapper(poolInfo);
+          const [totalStakeInAMB] = await stakingWrapper.getPoolData();
+          setTotalStake(totalStakeInAMB);
+        }
       }
     } catch (switchError) {
       if (switchError.code === 4902) {
@@ -277,9 +278,7 @@ export const StackItem = ({
         });
       }
     }
-    return () => {
-      // start();
-    };
+    return () => clearInterval(interv);
   }, [hasChain]);
 
   useEffect(() => {
@@ -364,9 +363,6 @@ export const StackItem = ({
           onclick={() => {
             if (expand) {
               setOpenIndex(index);
-              if (openIndex === index) {
-                setOpen(!open);
-              }
             } else {
               /* eslint-disable-next-line */
               if (hasChain === true) {

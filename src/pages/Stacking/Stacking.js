@@ -25,9 +25,9 @@ import {
   ZERO,
   MINSHOWSTAKE,
 } from '../../services/staking.wrapper';
-import NotSupported from '../../components/NotSupported';
 import Header from '../../layouts/Header';
 import Footer from '../../layouts/Footer';
+import NotSupported from '../../components/NotSupported';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',

@@ -23,7 +23,7 @@ import {
 } from '../../../../services/staking.wrapper';
 
 const Deposit = observer(({ depositInfo }) => {
-  const [inputValue, setInputValue] = useState('0');
+  const [inputValue, setInputValue] = useState('');
   const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
   const [myStake, setMyStake] = useState(ZERO);
   const [balance, setBalance] = useState(ZERO);
@@ -32,7 +32,6 @@ const Deposit = observer(({ depositInfo }) => {
   const { ethereum } = window;
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
-
   const checkoutPayment = async () => {
     try {
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');
@@ -92,20 +91,24 @@ const Deposit = observer(({ depositInfo }) => {
     return false;
   };
   useEffect(() => {
+    let interv;
+    let provider;
     const asyncFn = async function () {
       if (ethereum && ethereum.isMetaMask) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        if (provider) {
-          setInterval(() => {
-            provider.listAccounts().then((accounts) => {
-              const defaultAccount = accounts[0];
-              if (defaultAccount) {
-                provider.getBalance(defaultAccount).then((balanceObj) => {
-                  setBalance(balanceObj);
-                });
-              }
-            });
-          }, 5000);
+        provider = new ethers.providers.Web3Provider(ethereum);
+      }
+    };
+    asyncFn().then(() => {
+      if (provider) {
+        interv = setInterval(async () => {
+          provider.listAccounts().then((accounts) => {
+            const defaultAccount = accounts[0];
+            if (defaultAccount) {
+              provider.getBalance(defaultAccount).then((balanceObj) => {
+                setBalance(balanceObj);
+              });
+            }
+          });
           const singer = provider.getSigner();
           if (singer) {
             const stakingWrapper = new StakingWrapper(depositInfo, singer);
@@ -115,10 +118,11 @@ const Deposit = observer(({ depositInfo }) => {
             setAvailableForWithdraw(myStakeInAMB);
             setTotalStake(totalStakeInAMB);
           }
-        }
+        }, 5000);
       }
-    };
-    asyncFn();
+    });
+
+    return () => clearInterval(interv);
   }, []);
   const withdrawForm = (
     <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
@@ -214,7 +218,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Input
             onchange={setInputValue}
             iconLeft
-            placeholder="0"
+            placeholder=" "
             value={inputValue}
             type="number"
           />

@@ -7,7 +7,7 @@ const Input = ({
   type = 'number',
   onchange,
   iconLeft,
-  placeholder,
+  placeholder = '',
   value = '',
 }) => (
   <div className="input">
@@ -15,7 +15,11 @@ const Input = ({
       type={type}
       placeholder={placeholder}
       value={value}
-      onChange={(e) => onchange(e.target.value)}
+      onChange={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onchange(e.target.value);
+      }}
       style={iconLeft && { padding: '0 50px' }}
     />
     {iconLeft && (
