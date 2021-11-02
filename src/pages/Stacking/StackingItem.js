@@ -1,4 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+/*eslint-disable*/
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
@@ -13,7 +14,6 @@ import appStore from '../../store/app.store';
 import storageService from '../../services/storage.service';
 import InstallMetamaskAlert from '../Home/components/InstallMetamaskAlert';
 import FromPhoneDeviseEnter from '../Home/components/FromPhoneDeviseEnter';
-import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import { SkeletonString } from '../../components/Loader';
 
@@ -23,30 +23,27 @@ import {
   ZERO,
   formatFixed,
 } from '../../services/staking.wrapper';
+import Collapse from '@kunukn/react-collapse';
 // import { createPlugin } from 'stylelint';
 
 export const StackItem = ({
   expand,
   comingSoon,
-  children,
+  activeExpand,
+  setActiveExpand,
+  state = 0,
   hasChain,
   loading = true,
   instant,
   lazy,
+  dispatch,
   transitionDuration = '200ms',
   transitionTimingFunction = 'ease-in',
   onComplete,
   index = -1,
-  openIndex = -1,
-  setOpenIndex,
   poolInfo,
   ...restProps
 }) => {
-  const ref = useRef();
-  const firstRender = useRef(true);
-  const [open, setOpen] = useState(false);
-  const transition = `height ${transitionDuration} ${transitionTimingFunction}`;
-  const [renderChildren, setRenderChildren] = useState(lazy ? open : true);
   const [myStake, setMyStake] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
   const { ethereum } = window;
@@ -130,129 +127,40 @@ export const StackItem = ({
     }
   };
 
-  function openCollapse() {
-    const node = ref.current;
-    requestAnimationFrame(() => {
-      node.style.height = `${node.scrollHeight}px`;
-      node.style.paddingBottom = 0;
-    });
-  }
-
-  function closeCollapse() {
-    const node = ref.current;
-    requestAnimationFrame(() => {
-      node.style.height = `${node.style.height}px`;
-      node.style.paddingBottom = 0;
-      node.style.overflow = 'hidden';
-      requestAnimationFrame(() => {
-        node.style.height = 0;
-        node.style.paddingBottom = 0;
-      });
-    });
-  }
-
-  useLayoutEffect(() => {
-    if (lazy) {
-      if (open) {
-        getBalance();
-        if (renderChildren) {
-          openCollapse();
-        } else {
-          setRenderChildren(true);
-        }
-      } else {
-        closeCollapse();
-      }
-    } else {
-      if (open) {
-        openCollapse();
-      }
-      closeCollapse();
-    }
-  }, [open]);
-
-  useLayoutEffect(() => {
-    const node = ref.current;
-
-    function handleComplete() {
-      node.style.overflow = open ? 'initial' : 'hidden';
-      if (open) {
-        node.style.height = 'auto';
-      }
-      if (!open) {
-        node.style.paddingBottom = '0px';
-      }
-      if (!open && lazy) {
-        setRenderChildren(false);
-      }
-      if (open && onComplete) {
-        (() => {
-          onComplete();
-        })();
-      }
-    }
-
-    function handleTransitionEnd(event) {
-      if (
-        (event.target === node && event.propertyName === 'height') ||
-        'padding-bottom'
-      ) {
-        handleComplete();
-      }
-    }
-
-    if (instant || firstRender.current) {
-      handleComplete();
-      firstRender.current = false;
-    }
-    node.addEventListener('transitionend', handleTransitionEnd);
-    return () => {
-      node.removeEventListener('transitionend', handleTransitionEnd);
-    };
-  }, [open]);
-
-  useLayoutEffect(() => {
-    if (open) {
-      openCollapse();
-    }
-    return () => openCollapse();
-  }, [renderChildren]);
   useEffect(async () => {
     let provider;
     let interv;
     try {
-      if (hasChain === true) {
-        if (appStore.auth) {
-          if (ethereum && ethereum.isMetaMask) {
-            provider = new ethers.providers.Web3Provider(ethereum);
-          } else {
-            // stakingWrapper.getAPY();
-            alertStore.addNotification({
-              content: InstallMetamaskAlert,
-              container: 'bottom-right',
-              animationIn: ['animated', 'fadeIn'],
-              animationOut: ['animated', 'fadeOut'],
-            });
-          }
-        }
-        if (provider) {
-          interv = setInterval(async () => {
-            if (provider) {
-              const singer = provider.getSigner();
-              if (singer) {
-                const stakingWrapper = new StakingWrapper(poolInfo, singer);
-                const [totalStakeInAMB, myStakeInAMB] =
-                  await stakingWrapper.getPoolData();
-                setMyStake(myStakeInAMB);
-                setTotalStake(totalStakeInAMB);
-              }
-            }
-          }, 3000);
+      if (appStore.auth) {
+        if (ethereum && ethereum.isMetaMask) {
+          provider = new ethers.providers.Web3Provider(ethereum);
         } else {
-          const stakingWrapper = new StakingWrapper(poolInfo);
-          const [totalStakeInAMB] = await stakingWrapper.getPoolData();
-          setTotalStake(totalStakeInAMB);
+          // stakingWrapper.getAPY();
+          alertStore.addNotification({
+            content: InstallMetamaskAlert,
+            container: 'bottom-right',
+            animationIn: ['animated', 'fadeIn'],
+            animationOut: ['animated', 'fadeOut'],
+          });
         }
+      }
+      if (provider) {
+        interv = setInterval(async () => {
+          if (provider) {
+            const singer = provider.getSigner();
+            if (singer) {
+              const stakingWrapper = new StakingWrapper(poolInfo, singer);
+              const [totalStakeInAMB, myStakeInAMB] =
+                await stakingWrapper.getPoolData();
+              setMyStake(myStakeInAMB);
+              setTotalStake(totalStakeInAMB);
+            }
+          }
+        }, 5000);
+      } else {
+        const stakingWrapper = new StakingWrapper(poolInfo);
+        const [totalStakeInAMB] = await stakingWrapper.getPoolData();
+        setTotalStake(totalStakeInAMB);
       }
     } catch (switchError) {
       if (switchError.code === 4902) {
@@ -281,15 +189,6 @@ export const StackItem = ({
     return () => clearInterval(interv);
   }, [hasChain]);
 
-  useEffect(() => {
-    if (expand) {
-      if (index === openIndex) {
-        setOpen(!open);
-      } else {
-        setOpen(false);
-      }
-    }
-  }, [openIndex, index]);
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div className="item--header__pool">
@@ -362,7 +261,14 @@ export const StackItem = ({
           type="primary"
           onclick={() => {
             if (expand) {
-              setOpenIndex(index);
+              setActiveExpand(index);
+              dispatch({ type: 'toggle', index });
+              if (index === activeExpand) {
+                dispatch({ type: 'hide', index });
+              }
+              if (index === activeExpand && !state[index]) {
+                dispatch({ type: 'toggle', index });
+              }
             } else {
               /* eslint-disable-next-line */
               if (hasChain === true) {
@@ -372,7 +278,8 @@ export const StackItem = ({
           }}
         >
           <P style={{ textTransform: 'uppercase' }} size="m-500">
-            {expand && (open ? 'HIDE' : 'SHOW')}
+            {expand &&
+              (state[index] && activeExpand === index ? 'HIDE' : 'SHOW')}
             {!expand && 'STAKE'}
           </P>
         </Button>
@@ -382,23 +289,21 @@ export const StackItem = ({
   return (
     <div role="presentation" className="stack-item">
       {stackHeader}
-      <div
-        ref={ref}
-        className="item--content"
-        style={{
-          transition: instant || firstRender.current ? undefined : transition,
-        }}
-        {...restProps}
+      <Collapse
+        layoutEffect
+        isOpen={state[index] ? activeExpand === index : state[index]}
       >
-        <div className="line" />
-        <div className="collapsed-content">
-          {appStore.auth && (
-            <div className="collapsed-content__body">
-              <Deposit depositInfo={poolInfo} />
-            </div>
-          )}
+        <div className="item--content" {...restProps}>
+          <div className="line" />
+          <div className="collapsed-content">
+            {appStore.auth && (
+              <div className="collapsed-content__body">
+                <Deposit depositInfo={poolInfo} />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </Collapse>
     </div>
   );
 };
@@ -418,6 +323,7 @@ StackItem.propTypes = {
   index: PropTypes.number,
   openIndex: PropTypes.number,
   setOpenIndex: PropTypes.func,
+  onToggle: PropTypes.func,
   instant: PropTypes.bool,
   onComplete: PropTypes.func,
   loading: PropTypes.bool,

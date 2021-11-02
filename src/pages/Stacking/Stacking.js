@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
@@ -28,6 +29,7 @@ import {
 import Header from '../../layouts/Header';
 import Footer from '../../layouts/Footer';
 import NotSupported from '../../components/NotSupported';
+import collapsedReducer from '../../utils/collapsedReducer';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
@@ -36,12 +38,13 @@ const bounce = cssTransition({
 const Stacking = observer(() => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);
-  const [openIndexStakeItem, setOpenIndexStakeItem] = useState(-1);
   const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
   const [totalStaked, setTotalStaked] = useState(ZERO);
+  const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState(ZERO);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
+  const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const { ethereum } = window;
   let contract = null;
   const changeNetwork = async () => {
@@ -88,17 +91,23 @@ const Stacking = observer(() => {
     }
   };
   const initEthereumNetwork = async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const { chainId } = await provider.getNetwork();
-      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-        setCorrectNetwork(false);
-        setRequestNetworkChange(true);
-      } else {
-        setCorrectNetwork(true);
-        setRequestNetworkChange(false);
+    try {
+      if (appStore.auth) {
+        if (ethereum && ethereum.isMetaMask) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const { chainId } = await provider.getNetwork();
+          if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+            setCorrectNetwork(false);
+            setRequestNetworkChange(true);
+          } else {
+            setCorrectNetwork(true);
+            setRequestNetworkChange(false);
+          }
+          setUserChainId(chainId);
+        }
       }
-      setUserChainId(chainId);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -192,7 +201,7 @@ const Stacking = observer(() => {
           }
         }
       }
-    }, 3000);
+    }, 7000);
     return () => clearInterval(inteval);
   }, []);
 
@@ -333,10 +342,12 @@ const Stacking = observer(() => {
                 (item, index) =>
                   item.active && (
                     <StackItem
+                      dispatch={dispatch}
+                      activeExpand={activeExpand}
+                      setActiveExpand={setActiveExpand}
                       key={item.contractName}
                       index={index}
-                      openIndex={openIndexStakeItem}
-                      setOpenIndex={setOpenIndexStakeItem}
+                      state={state}
                       expand
                       hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
                       comingSoon={!item?.abi}
