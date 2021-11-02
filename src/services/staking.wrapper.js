@@ -27,7 +27,9 @@ function formatFixed(bigNumber, digits = 18) {
 class StakingWrapper {
   constructor(poolInfo, providerOrSigner = null) {
     if (!providerOrSigner || !poolInfo) {
-      providerOrSigner = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL);
+      providerOrSigner = new ethers.providers.JsonRpcProvider(
+        process.env.REACT_APP_RPC_URL,
+      );
     }
     this.poolInfo = poolInfo;
     this.providerOrSigner = providerOrSigner;

@@ -56,7 +56,6 @@ const Home = () => {
       }
     }
   };
-
   const initEthereumNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -65,18 +64,6 @@ const Home = () => {
         setCorrectNetwork(false);
       }
       setUserChainId(chainId);
-      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-        // ethereum.request({
-        //   method: 'wallet_switchEthereumChain',
-        //   params: [
-        //     {
-        //       chainId: `${ethers.utils.hexlify(
-        //         +process.env.REACT_APP_CHAIN_ID,
-        //       )}`,
-        //     },
-        //   ],
-        // });
-      }
     }
   };
 
@@ -104,7 +91,6 @@ const Home = () => {
   return (
     <>
       {!correctNetwork && <NotSupported onclick={changeNetwork} />}
-
       <div className="home">
         <ReactNotifications />
         <div className="home__top">

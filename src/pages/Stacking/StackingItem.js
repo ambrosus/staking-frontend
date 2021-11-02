@@ -17,8 +17,6 @@ import { getBalance } from '../../utils/constants';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import { SkeletonString } from '../../components/Loader';
 
-
-
 import {
   StakingWrapper,
   MINSHOWSTAKE,
@@ -26,8 +24,6 @@ import {
   formatFixed,
 } from '../../services/staking.wrapper';
 // import { createPlugin } from 'stylelint';
-
-//console.log('StackItem.js');
 
 export const StackItem = ({
   expand,
@@ -46,7 +42,6 @@ export const StackItem = ({
   poolInfo,
   ...restProps
 }) => {
-  console.log('StackItem()');
   const ref = useRef();
   const firstRender = useRef(true);
   const [open, setOpen] = useState(false);
@@ -58,29 +53,23 @@ export const StackItem = ({
   const history = useHistory();
 
   const start = async () => {
-    console.log('start()');
-    if (ethereum && ethereum.isMetaMask && appStore.auth) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      setInterval(async () => {
-        if (provider) {
-          const singer = provider.getSigner();
-          if (singer) {
-            const stakingWrapper = new StakingWrapper(poolInfo, singer);
-            const [totalStakeInAMB, myStakeInAMB] =
-              await stakingWrapper.getPoolData();
-            setMyStake(myStakeInAMB);
-            setTotalStake(totalStakeInAMB);
+    if (appStore.auth) {
+      if (ethereum && ethereum.isMetaMask) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        setInterval(async () => {
+          if (provider) {
+            const singer = provider.getSigner();
+            if (singer) {
+              const stakingWrapper = new StakingWrapper(poolInfo, singer);
+              const [totalStakeInAMB, myStakeInAMB] =
+                await stakingWrapper.getPoolData();
+              setMyStake(myStakeInAMB);
+              setTotalStake(totalStakeInAMB);
+            }
           }
-        }
-      }, 3000);
-    } else {
-      const stakingWrapper = new StakingWrapper(poolInfo);
-      const [totalStakeInAMB] = await stakingWrapper.getPoolData();
-      setTotalStake(totalStakeInAMB);
-
-      // stakingWrapper.getAPY();
-
-      if (!ethereum && !ethereum.isMetaMask) {
+        }, 3000);
+      } else {
+        // stakingWrapper.getAPY();
         alertStore.addNotification({
           content: InstallMetamaskAlert,
           container: 'bottom-right',
@@ -92,7 +81,6 @@ export const StackItem = ({
   };
 
   const logIn = async () => {
-    console.log('logIn()');
     if (ethereum && ethereum.isMetaMask) {
       await ethereum
         .request({
@@ -230,8 +218,10 @@ export const StackItem = ({
     }
     return () => openCollapse();
   }, [renderChildren]);
-  useEffect(() => {
-    console.log('useEffect()');
+  useEffect(async () => {
+    const stakingWrapper = new StakingWrapper(poolInfo);
+    const [totalStakeInAMB] = await stakingWrapper.getPoolData();
+    setTotalStake(totalStakeInAMB);
     try {
       if (hasChain === true) {
         start();
@@ -309,7 +299,7 @@ export const StackItem = ({
       )}
 
       <div className="item--header__vault-assets">
-        {!loading || hasChain === false ? (
+        {!loading ? (
           <SkeletonString />
         ) : (
           <P style={{ textTransform: 'uppercase' }} size="l-400">
