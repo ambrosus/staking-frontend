@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
@@ -155,6 +154,7 @@ export const StackItem = ({
       });
     });
   }
+
   useLayoutEffect(() => {
     if (lazy) {
       if (open) {
@@ -341,6 +341,7 @@ export const StackItem = ({
                 setOpen(!open);
               }
             } else {
+              /* eslint-disable-next-line */
               if (hasChain === true) {
                 logIn();
               }
@@ -391,6 +392,9 @@ StackItem.propTypes = {
   comingSoon: PropTypes.bool,
   lazy: PropTypes.bool,
   hasChain: PropTypes.bool,
+  index: PropTypes.number,
+  openIndex: PropTypes.number,
+  setOpenIndex: PropTypes.func,
   instant: PropTypes.bool,
   onComplete: PropTypes.func,
   loading: PropTypes.bool,

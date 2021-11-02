@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
@@ -35,7 +34,6 @@ const Deposit = observer(({ depositInfo }) => {
     useModal();
 
   const checkoutPayment = async () => {
-    /* eslint-disable-next-line */
     try {
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');
       if (provider) {
@@ -74,7 +72,7 @@ const Deposit = observer(({ depositInfo }) => {
                     setInputValue('0');
                     appStore.setObserverValue(-2);
                   })
-                  .catch((error) => {
+                  .catch(() => {
                     notificationMassage(
                       'ERROR',
                       `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(

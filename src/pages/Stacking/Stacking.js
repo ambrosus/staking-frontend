@@ -41,7 +41,7 @@ const Stacking = observer(() => {
   const [totalStaked, setTotalStaked] = useState(ZERO);
   const [totalReward, setTotalReward] = useState(ZERO);
   const [correctNetwork, setCorrectNetwork] = useState(true);
-
+  const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const { ethereum } = window;
   let contract = null;
   const changeNetwork = async () => {
@@ -49,94 +49,74 @@ const Stacking = observer(() => {
       const provider = new ethers.providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-        try {
-          ethereum
-            .request({
-              method: 'wallet_addEthereumChain',
-              params: [
-                {
-                  chainId: `${ethers.utils.hexlify(
-                    +process.env.REACT_APP_CHAIN_ID,
-                  )}`,
-                  chainName: 'Ambrosus Test',
-                  nativeCurrency: {
-                    name: 'AMB',
-                    symbol: 'AMB',
-                    decimals: 18,
+        setCorrectNetwork(false);
+        setRequestNetworkChange(true);
+        if (requestNetworkChange) {
+          try {
+            ethereum
+              .request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: `${ethers.utils.hexlify(
+                      +process.env.REACT_APP_CHAIN_ID,
+                    )}`,
+                    chainName: 'Ambrosus Test',
+                    nativeCurrency: {
+                      name: 'AMB',
+                      symbol: 'AMB',
+                      decimals: 18,
+                    },
+                    rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                    blockExplorerUrls: [
+                      `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
+                    ],
                   },
-                  rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                  blockExplorerUrls: [
-                    `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                  ],
-                },
-              ],
-            })
-            .then((e) => {
-              if (e) {
-                setCorrectNetwork(true);
-              }
-            });
-        } catch (e) {
-          setCorrectNetwork(false);
+                ],
+              })
+              .then((e) => {
+                if (e) {
+                  setCorrectNetwork(true);
+                  setRequestNetworkChange(false);
+                }
+              });
+          } catch (e) {
+            setCorrectNetwork(false);
+          }
         }
       }
     }
   };
   const initEthereumNetwork = async () => {
-    try {
-      if (ethereum && ethereum.isMetaMask) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const { chainId } = await provider.getNetwork();
-        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-          setCorrectNetwork(false);
-        }
-        setUserChainId(chainId);
-        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-          // ethereum.request({
-          //   method: 'wallet_switchEthereumChain',
-          //   params: [
-          //     {
-          //       chainId: `${ethers.utils.hexlify(
-          //         +process.env.REACT_APP_CHAIN_ID,
-          //       )}`,
-          //     },
-          //   ],
-          // });
-        }
+    if (ethereum && ethereum.isMetaMask) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        setCorrectNetwork(false);
+        setRequestNetworkChange(true);
+      } else {
+        setCorrectNetwork(true);
+        setRequestNetworkChange(false);
       }
-    } catch (e) {
-      if (e) {
-        // ethereum.request({
-        //   method: 'wallet_addEthereumChain',
-        //   params: [
-        //     {
-        //       chainId: `${ethers.utils.hexlify(
-        //         +process.env.REACT_APP_CHAIN_ID,
-        //       )}`,
-        //       chainName: 'Ambrosus Test',
-        //       nativeCurrency: {
-        //         name: 'AMB',
-        //         symbol: 'AMB',
-        //         decimals: 18,
-        //       },
-        //       rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-        //       blockExplorerUrls: [
-        //         `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-        //       ],
-        //     },
-        //   ],
-        // });
-      }
+      setUserChainId(chainId);
     }
   };
 
   useEffect(async () => {
     initEthereumNetwork();
+    window.addEventListener('focus', () => {
+      changeNetwork();
+    });
   }, [correctNetwork]);
   useEffect(() => {
     const inteval = setInterval(async () => {
       if (storageService.get('auth') === true) {
-        if (ethereum && ethereum.isMetaMask && correctNetwork) {
+        if (
+          ethereum &&
+          ethereum.isMetaMask &&
+          correctNetwork &&
+          requestNetworkChange
+        ) {
           const provider = new ethers.providers.Web3Provider(ethereum);
           const { chainId } = await provider.getNetwork();
           setUserChainId(chainId);
