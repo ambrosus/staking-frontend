@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 
 const NotSupported = ({ onclick }) => {
   const host = window.location.hostname;
+  console.log('host', host);
   const network = host === 'localhost' ? 'Testnet' : 'Mainnet';
   console.log(network);
   return (
