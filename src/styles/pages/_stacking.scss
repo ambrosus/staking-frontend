@@ -43,8 +43,11 @@
       flex: 1;
     }
   }
-
-  .stack-item {
+ &__pools{
+   min-height: 100px;
+   width: 100%;
+ }
+ .stack-item {
     margin-top: 15px;
     margin-bottom: 15px;
     display: grid;

@@ -7,20 +7,21 @@ import { ethers } from 'ethers';
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
 import StackItem from '../../components/StackingItem';
-import { ethereum, pools } from '../../utils/constants';
+import { ethereum } from '../../utils/constants';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
 import NotSupported from '../../components/NotSupported';
-// import { StakingWrapper } from '../../services/staking.wrapper';
+import { StakingWrapper } from '../../services/staking.wrapper';
+import { Loader } from '../../components/Loader';
 
 const Home = () => {
   const [userChainId, setUserChainId] = useState(false);
   const [correctNetwork, setCorrectNetwork] = useState(true);
-
-  // const stakingWrapper = new StakingWrapper();
-  // console.log(stakingWrapper);
+  const [pools, setPools] = useState(null);
+  const stakingWrapper = new StakingWrapper();
+  // TODO stakingWrapper;
 
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
@@ -71,8 +72,8 @@ const Home = () => {
     }
   };
   const getPulls = async () => {
-    // const poolsArr = await stakingWrapper.getPools();
-    // console.log('poolsArr', poolsArr);
+    const poolsArr = await stakingWrapper.getPools();
+    setPools(poolsArr);
   };
   useEffect(() => {
     initEthereumNetwork();
@@ -129,22 +130,30 @@ const Home = () => {
             <div className="stacking__header__clearfix-apy">Net APY</div>
             <div style={{ maxWidth: 157 }}></div>
           </div>
-          {pools.map((pool) => {
-            if (pool.active === true) {
-              return (
-                <StackItem
-                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                  key={pool.contractName}
-                  poolInfo={pool}
-                  lazy
-                  expand={false}
-                />
-              );
-            }
-            return (
-              <ComingSoonPool key={pool.contractName} poolInfo={pool} lazy />
-            );
-          })}
+          <div className="stacking__pools">
+            {pools &&
+              pools.map((pool) => {
+                if (pool.active === true) {
+                  return (
+                    <StackItem
+                      hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                      key={pool.contractName}
+                      poolInfo={pool}
+                      lazy
+                      expand={false}
+                    />
+                  );
+                }
+                return (
+                  <ComingSoonPool
+                    key={pool.contractName}
+                    poolInfo={pool}
+                    lazy
+                  />
+                );
+              })}
+            {!pools && <Loader />}
+          </div>
         </div>
         <div className="faq">
           <CollapsedList />
