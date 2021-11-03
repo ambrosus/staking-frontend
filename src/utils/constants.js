@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { pool } from 'ambrosus-node-contracts';
 
 export const { ethereum } = window;
 
@@ -47,30 +46,3 @@ export const getBalance = async () => {
   }
   return balance && balance.toString();
 };
-
-export const pools = [
-  {
-    index: 0,
-    contractName: 'Alpha',
-    address: '0x5668B42418abe859A075C2ac08C5ce352FD78a4b',
-    abi: pool.abi,
-    active: true,
-  },
-  {
-    index: 1,
-    contractName: 'Beta',
-    address: '0xABa18d351B913aFb0F5a8E8a0cDCb67B6e6bB1C9',
-    abi: pool.abi,
-    active: true,
-  },
-  {
-    index: 2,
-    contractName: 'Charlie',
-    active: false,
-  },
-  {
-    index: 3,
-    contractName: 'Echo',
-    active: false,
-  },
-];
