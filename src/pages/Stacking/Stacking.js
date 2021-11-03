@@ -318,7 +318,6 @@ const Stacking = observer(() => {
                           }
                           comingSoon={!item?.abi}
                           lazy
-                          loading={!!account}
                           poolInfo={item}
                         />
                       ),

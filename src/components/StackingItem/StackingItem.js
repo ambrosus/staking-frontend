@@ -37,7 +37,6 @@ const StackingItem = ({
   setActiveExpand,
   state = 0,
   hasChain,
-  loading = true,
   dispatch,
   index = -1,
   poolInfo,
@@ -131,43 +130,39 @@ const StackingItem = ({
       </div>
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
-          {!loading || hasChain === false ? (
-            <SkeletonString />
-          ) : (
-            <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {comingSoon ? (
-                ''
-              ) : (
-                <span>
-                  {myStake && myStake.gte(MINSHOWSTAKE)
-                    ? `${formatFixed(myStake, 2)}  AMB`
-                    : '-'}
-                </span>
-              )}
-            </P>
-          )}
-        </div>
-      )}
-
-      <div className="item--header__vault-assets">
-        {!loading ? (
-          <SkeletonString />
-        ) : (
           <P style={{ textTransform: 'uppercase' }} size="l-400">
             {comingSoon ? (
               ''
             ) : (
-              <>
-                {' '}
-                <span>
-                  {totalStake && totalStake.gte(MINSHOWSTAKE)
-                    ? `${formatFixed(totalStake, 2)}  AMB`
-                    : '-'}
-                </span>
-              </>
+              <span style={{ width: 150 }}>
+                {myStake && myStake.gte(MINSHOWSTAKE) ? (
+                  `${formatFixed(myStake, 2)}  AMB`
+                ) : (
+                  <SkeletonString />
+                )}
+              </span>
             )}
           </P>
-        )}
+        </div>
+      )}
+
+      <div className="item--header__vault-assets">
+        <P style={{ textTransform: 'uppercase' }} size="l-400">
+          {comingSoon ? (
+            ''
+          ) : (
+            <>
+              {' '}
+              <span style={{ width: 150 }}>
+                {totalStake && totalStake.gte(MINSHOWSTAKE) ? (
+                  `${formatFixed(totalStake, 2)}  AMB`
+                ) : (
+                  <SkeletonString />
+                )}
+              </span>
+            </>
+          )}
+        </P>
       </div>
       <div className="item--header__apy">
         <P style={{ textTransform: 'uppercase' }} size="l-700">
@@ -239,6 +234,5 @@ StackingItem.propTypes = {
   index: PropTypes.number,
   activeExpand: PropTypes.number,
   setActiveExpand: PropTypes.func,
-  loading: PropTypes.bool,
 };
 export default StackingItem;
