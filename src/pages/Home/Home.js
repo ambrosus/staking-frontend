@@ -70,9 +70,13 @@ const Home = () => {
       setUserChainId(chainId);
     }
   };
-
+  const getPulls = async () => {
+    // const poolsArr = await stakingWrapper.getPools();
+    // console.log('poolsArr', poolsArr);
+  };
   useEffect(() => {
     initEthereumNetwork();
+    getPulls();
   }, [correctNetwork]);
   const menu = (
     <div className="menu">

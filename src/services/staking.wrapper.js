@@ -1,9 +1,8 @@
 /* eslint-disable */
 
-import {contractJsons, pool} from 'ambrosus-node-contracts';
+import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { ethers, BigNumber } from 'ethers';
 import EthDater from 'ethereum-block-by-date';
-
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
@@ -32,7 +31,9 @@ class StakingWrapper {
   constructor(poolInfo, providerOrSigner = null) {
     // console.log('StakingWrapper', poolInfo, providerOrSigner);
     if (!providerOrSigner) {
-      providerOrSigner = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL);
+      providerOrSigner = new ethers.providers.JsonRpcProvider(
+        process.env.REACT_APP_RPC_URL,
+      );
     }
     this.poolInfo = poolInfo;
     this.providerOrSigner = providerOrSigner;
@@ -42,7 +43,7 @@ class StakingWrapper {
       providerOrSigner,
     );
     // console.log('contractJsons',contractJsons);
-    
+
     this.headContract = new ethers.Contract(
       headContractAddress,
       contractJsons.head.abi,
@@ -69,7 +70,8 @@ class StakingWrapper {
       contractJsons.storageCatalogue.abi,
       this.providerOrSigner,
     );
-    const poolEventsEmitterAddr = await storageCatalogueContr.poolEventsEmitter();
+    const poolEventsEmitterAddr =
+      await storageCatalogueContr.poolEventsEmitter();
     this.poolEventsEmitter = new ethers.Contract(
       poolEventsEmitterAddr,
       contractJsons.poolEventsEmitter.abi,
@@ -86,36 +88,36 @@ class StakingWrapper {
     const poolsCount = (await this.poolsStore.getPoolsCount()).toNumber();
     const poolsAddrs = await this.poolsStore.getPools(0, poolsCount);
     // console.log('pools', poolsAddrs);
-    this.pools = poolsAddrs.map((poolAddr) => new ethers.Contract(
-      poolAddr,
-      pool.abi,
-      this.providerOrSigner,
-    ));
+    this.pools = poolsAddrs.map(
+      (poolAddr) =>
+        new ethers.Contract(poolAddr, pool.abi, this.providerOrSigner),
+    );
     // console.log(this.pools[0]);
   }
 
   async getPools() {
     await this.initPromise;
-    
-    return Promise.all(this.pools.map(async (_pool, index) => {
-      const info = await Promise.all([
-        _pool.name(),
-        _pool.active()
-      ]);
-      return {
-        index,
-        contractName: info[0],
-        address: _pool.address,
-        abi: pool.abi,
-        active: info[1],
-      }
-    }));
+
+    return Promise.all(
+      this.pools.map(async (_pool, index) => {
+        const info = await Promise.all([_pool.name(), _pool.active()]);
+        return {
+          index,
+          contractName: info[0],
+          address: _pool.address,
+          abi: pool.abi,
+          active: info[1],
+        };
+      }),
+    );
   }
 
   async getPoolData(index = null) {
     await this.initPromise;
 
-    const poolContract = Number.isInteger(index) ? pools[index] : this.poolContract;
+    const poolContract = Number.isInteger(index)
+      ? pools[index]
+      : this.poolContract;
 
     console.log('getPoolData');
     //console.log('pools:', await this.getPools());
@@ -144,7 +146,7 @@ class StakingWrapper {
     // console.log('block', block);
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
-      this.poolEventsEmitter.filters.PoolReward(null,null,null),
+      this.poolEventsEmitter.filters.PoolReward(null, null, null),
       block.block,
     );
     console.log('rewardEvents:', rewardEvents);
