@@ -1,8 +1,9 @@
 /* eslint-disable */
 
-import { contractJsons, pool } from 'ambrosus-node-contracts';
+import {contractJsons, pool} from 'ambrosus-node-contracts';
 import { ethers, BigNumber } from 'ethers';
 import EthDater from 'ethereum-block-by-date';
+
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
@@ -28,34 +29,22 @@ function formatFixed(bigNumber, digits = 18) {
 }
 
 class StakingWrapper {
-  constructor(poolInfo, providerOrSigner = null) {
-    // console.log('StakingWrapper', poolInfo, providerOrSigner);
+  constructor(providerOrSigner = null) {
+    console.log('StakingWrapper', providerOrSigner);
     if (!providerOrSigner) {
-      providerOrSigner = new ethers.providers.JsonRpcProvider(
-        process.env.REACT_APP_RPC_URL,
-      );
+      providerOrSigner = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL);
     }
-    this.poolInfo = poolInfo;
     this.providerOrSigner = providerOrSigner;
-    this.poolContract = new ethers.Contract(
-      poolInfo.address,
-      pool.abi,
-      providerOrSigner,
-    );
-    // console.log('contractJsons',contractJsons);
-
-    this.headContract = new ethers.Contract(
-      headContractAddress,
-      contractJsons.head.abi,
-      this.providerOrSigner,
-    );
-
-    // console.log('headContract', this.headContract);
 
     this.initPromise = this._initialize();
   }
 
   async _initialize() {
+    this.headContract = new ethers.Contract(
+      headContractAddress,
+      contractJsons.head.abi,
+      this.providerOrSigner,
+    );
     const contextAddr = await this.headContract.context();
     // console.log('contextAddr',contextAddr);
     const contextContract = new ethers.Contract(
@@ -70,8 +59,7 @@ class StakingWrapper {
       contractJsons.storageCatalogue.abi,
       this.providerOrSigner,
     );
-    const poolEventsEmitterAddr =
-      await storageCatalogueContr.poolEventsEmitter();
+    const poolEventsEmitterAddr = await storageCatalogueContr.poolEventsEmitter();
     this.poolEventsEmitter = new ethers.Contract(
       poolEventsEmitterAddr,
       contractJsons.poolEventsEmitter.abi,
@@ -88,36 +76,39 @@ class StakingWrapper {
     const poolsCount = (await this.poolsStore.getPoolsCount()).toNumber();
     const poolsAddrs = await this.poolsStore.getPools(0, poolsCount);
     // console.log('pools', poolsAddrs);
-    this.pools = poolsAddrs.map(
-      (poolAddr) =>
-        new ethers.Contract(poolAddr, pool.abi, this.providerOrSigner),
-    );
+    this.pools = poolsAddrs.map((poolAddr) => new ethers.Contract(
+      poolAddr,
+      pool.abi,
+      this.providerOrSigner,
+    ));
     // console.log(this.pools[0]);
   }
 
   async getPools() {
     await this.initPromise;
-
-    return Promise.all(
-      this.pools.map(async (_pool, index) => {
-        const info = await Promise.all([_pool.name(), _pool.active()]);
-        return {
-          index,
-          contractName: info[0],
-          address: _pool.address,
-          abi: pool.abi,
-          active: info[1],
-        };
-      }),
-    );
+    
+    return Promise.all(this.pools.map(async (_pool, index) => {
+      const info = await Promise.all([
+        _pool.name(),
+        _pool.active()
+      ]);
+      return {
+        index,
+        contractName: info[0],
+        address: _pool.address,
+        abi: pool.abi,
+        active: info[1],
+      }
+    }));
   }
 
-  async getPoolData(index = null) {
+  async getPoolData(index) {
+    if (typeof index !== 'Number') {
+      throw new Error('no pool index provided');
+    }
     await this.initPromise;
 
-    const poolContract = Number.isInteger(index)
-      ? pools[index]
-      : this.poolContract;
+    const poolContract = this.pools[index];
 
     console.log('getPoolData');
     //console.log('pools:', await this.getPools());
@@ -133,7 +124,7 @@ class StakingWrapper {
       ],
     );
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXEDPOINT);
-    return [totalStakeInAMB, myStakeInAMB, tokenPriceAMB, myStakeInTokens];
+    return {totalStakeInAMB, myStakeInAMB, tokenPriceAMB, myStakeInTokens};
   }
 
   async getAPY(index = null) {
@@ -146,7 +137,7 @@ class StakingWrapper {
     // console.log('block', block);
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
-      this.poolEventsEmitter.filters.PoolReward(null, null, null),
+      this.poolEventsEmitter.filters.PoolReward(null,null,null),
       block.block,
     );
     console.log('rewardEvents:', rewardEvents);
