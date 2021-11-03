@@ -23,6 +23,7 @@ import {
   formatFixed,
   ZERO,
   MINSHOWSTAKE,
+  StakingWrapper,
 } from '../../services/staking.wrapper';
 import Header from '../../components/layouts/Header';
 import Footer from '../../components/layouts/Footer';
@@ -43,7 +44,6 @@ const Stacking = observer(() => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
-  let contract = null;
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -134,19 +134,14 @@ const Stacking = observer(() => {
           });
           if (provider) {
             if (signer) {
-              pools.forEach((item) => {
+              pools.forEach(async (item) => {
                 if (item.active) {
-                  contract = new ethers.Contract(
-                    item.address,
-                    item.abi,
-                    signer,
-                  );
                   if (appStore.observer === 1) {
-                    if (contract) {
-                      contract.viewStake().then(async (res) => {
-                        setTotalStaked((prevState) => prevState.add(res));
-                      });
-                    }
+                    const stakingWrapper = new StakingWrapper(item, signer);
+                    /* eslint-disable-next-line */
+                    const [totalStakeInAMB, myStakeInAMB] =
+                      await stakingWrapper.getPoolData();
+                    setTotalStaked((prevState) => prevState.add(myStakeInAMB));
                   }
                   if (appStore.observer === 0) {
                     setTotalStaked(ethers.BigNumber.from('0'));
@@ -154,10 +149,8 @@ const Stacking = observer(() => {
                 }
               });
 
-              if (contract) {
-                // TODO
-                setTotalReward(ethers.BigNumber.from('0'));
-              }
+              // TODO
+              setTotalReward(ethers.BigNumber.from('0'));
             }
           }
         }
