@@ -85,13 +85,13 @@ class StakingWrapper {
 
     const poolsCount = (await this.poolsStore.getPoolsCount()).toNumber();
     const poolsAddrs = await this.poolsStore.getPools(0, poolsCount);
-    console.log('pools', poolsAddrs);
+    // console.log('pools', poolsAddrs);
     this.pools = poolsAddrs.map((poolAddr) => new ethers.Contract(
       poolAddr,
       pool.abi,
       this.providerOrSigner,
     ));
-    console.log(this.pools[0]);
+    // console.log(this.pools[0]);
   }
 
   async getPools() {
@@ -118,9 +118,8 @@ class StakingWrapper {
     const poolContract = Number.isInteger(index) ? pools[index] : this.poolContract;
 
     console.log('getPoolData');
-
-    await this.getAPY();
     console.log('pools:', await this.getPools());
+    console.log('apy:', await this.getAPY());
 
     // console.log('count', await this.getPoolsCount());
 
@@ -135,7 +134,7 @@ class StakingWrapper {
     return [totalStakeInAMB, myStakeInAMB, tokenPriceAMB, myStakeInTokens];
   }
 
-  async getAPY() {
+  async getAPY(index = null) {
     await this.initPromise;
 
     const dater = new EthDater(this.providerOrSigner);
@@ -144,19 +143,21 @@ class StakingWrapper {
     );
     // console.log('block', block);
 
-    const flt = await this.poolEventsEmitter.queryFilter(
+    const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null,null,null),
       block.block,
     );
-    console.log(flt);
+    console.log('rewardEvents:', rewardEvents);
     return;
 
+    /*
     const rewardsLogs = await this.providerOrSigner.getLogs({
       fromBlock: block.block,
       toBlock: 'latest',
       topics: [ethers.utils.id('PoolReward(address,uint256)')],
     });
     console.log(rewardsLogs);
+    */
     // 0x732FA022168eF1F669fF2A4a6c5C632646a1822b poolEventsEmitter
     /*
     if (rewardsLogs !== undefined) {

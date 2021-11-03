@@ -51,13 +51,13 @@ export const getBalance = async () => {
 export const pools = [
   {
     contractName: 'Alpha',
-    address: '0x10e6fBB9e86F9e0363FDDF3072055C871837E3Ce',
+    address: '0x5668B42418abe859A075C2ac08C5ce352FD78a4b',
     abi: pool.abi,
     active: true,
   },
   {
     contractName: 'Beta',
-    address: '0xC25Ce9cb3B5253a7153e2E64Aa6147a82127f07D',
+    address: '0xABa18d351B913aFb0F5a8E8a0cDCb67B6e6bB1C9',
     abi: pool.abi,
     active: true,
   },
