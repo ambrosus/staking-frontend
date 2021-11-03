@@ -39,14 +39,15 @@ const Withdraw = observer(
             signer,
           );
           const stakingWrapper = new StakingWrapper(signer);
-          const { tokenPriceAMB } = await stakingWrapper.getPoolData(
-            withdrawContractInfo.index,
-          );
+          const { tokenPriceAMB, myStakeInAMB } =
+            await stakingWrapper.getPoolData(withdrawContractInfo.index);
 
           const decimal = ethers.utils
             .parseEther(inputValue)
-            .div(tokenPriceAMB)
-            .mul(FIXEDPOINT);
+            .mul(FIXEDPOINT)
+            .div(tokenPriceAMB);
+          // TODO How to unstake all stake?
+
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
             gasPrice: ethers.utils.parseUnits('20', 'gwei'),
@@ -178,7 +179,7 @@ const Withdraw = observer(
                 type="outline"
                 disabled={availableSumForWithdraw.eq(0)}
                 onclick={() =>
-                  setInputValue(formatFixed(availableSumForWithdraw, 2))
+                  setInputValue(formatFixed(availableSumForWithdraw, 18))
                 }
               >
                 <P size="xs-500">100%</P>
@@ -216,10 +217,7 @@ const Withdraw = observer(
           <div>
             <P size="s-400" style={{ color: '#9198BB' }}>
               Estimated stake after withdraw:{' '}
-              {afterWithdraw.lt(0)
-                ? 0
-                : Number(utils.formatEther(afterWithdraw)).toFixed(2)}{' '}
-              AMB
+              {afterWithdraw.lt(0) ? 0 : formatFixed(afterWithdraw, 2)} AMB
             </P>
           </div>
         </div>

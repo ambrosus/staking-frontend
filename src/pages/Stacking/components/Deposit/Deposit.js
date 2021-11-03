@@ -11,10 +11,11 @@ import {
   StakingWrapper,
   ZERO,
   formatFixed,
+  MINSHOWSTAKE,
 } from '../../../../services/staking.wrapper';
 import { ethereum } from '../../../../utils/constants';
 
-import infoIcon from '../../../../assets/svg/info.svg';
+// import infoIcon from '../../../../assets/svg/info.svg';
 import useModal from '../../../../utils/useModal';
 import Modal from '../../../../components/Modal';
 import Withdraw from '../Withdraw';
@@ -165,7 +166,10 @@ const Deposit = observer(({ depositInfo }) => {
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
             Available for withdraw:{' '}
-            {Number(utils.formatEther(availableForWithdraw)).toFixed(2)} AMB
+            {availableForWithdraw &&
+              availableForWithdraw.gte(MINSHOWSTAKE) &&
+              formatFixed(availableForWithdraw, 2)}{' '}
+            AMB
           </P>
         </div>
         <Withdraw
@@ -182,13 +186,13 @@ const Deposit = observer(({ depositInfo }) => {
         <>
           <P size="xxl-500">
             Deposit AMB&nbsp;
-            <ReactSVG
-              style={{ paddingTop: 3 }}
-              data-tip
-              data-for="deposit"
-              src={infoIcon}
-              wrapper="span"
-            />
+            {/* <ReactSVG */}
+            {/*   style={{ paddingTop: 3 }} */}
+            {/*  data-tip */}
+            {/*  data-for="deposit" */}
+            {/*  src={infoIcon} */}
+            {/*  wrapper="span" */}
+            {/* /> */}
             &nbsp;&nbsp;&nbsp;
           </P>
           <ReactTooltip id="deposit" place="top" effect="solid">
@@ -284,13 +288,13 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-options">
           <div className="flex" style={{ marginBottom: 5 }}>
-            <ReactSVG
-              style={{ marginTop: 3 }}
-              data-tip
-              data-for="unstake"
-              src={infoIcon}
-              wrapper="span"
-            />
+            {/* <ReactSVG */}
+            {/*  style={{ marginTop: 3 }} */}
+            {/*  data-tip */}
+            {/*  data-for="unstake" */}
+            {/*  src={infoIcon} */}
+            {/*  wrapper="span" */}
+            {/* /> */}
             <P
               size="s-400"
               style={{ color: '#9198BB' }}
@@ -305,7 +309,10 @@ const Deposit = observer(({ depositInfo }) => {
           <div style={{ marginBottom: 5 }}>
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
               Available for withdraw:{' '}
-              {Number(utils.formatEther(availableForWithdraw)).toFixed(2)} AMB
+              {availableForWithdraw &&
+                availableForWithdraw.gte(MINSHOWSTAKE) &&
+                formatFixed(availableForWithdraw, 2)}{' '}
+              AMB
             </P>
 
             <ReactTooltip id="unstake" place="top" effect="solid">

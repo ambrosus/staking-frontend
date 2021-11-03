@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
 
@@ -114,6 +114,26 @@ const StackingItem = ({
     return () => clearInterval(interv);
   }, [hasChain]);
 
+  const sleepForDisplaying = (val) => {
+    if (val && val.lte(BigNumber.from('0'))) {
+      return <SkeletonString />;
+    }
+    if (val && val.lte(MINSHOWSTAKE)) {
+      return (
+        <P style={{ textTransform: 'uppercase' }} size="l-400">
+          {`${formatFixed(val, 2)} AMB`}
+        </P>
+      );
+    }
+    if (val && val.gte(MINSHOWSTAKE)) {
+      return (
+        <P style={{ textTransform: 'uppercase' }} size="l-400">
+          {`${formatFixed(val, 2)} AMB`}
+        </P>
+      );
+    }
+    return false;
+  };
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div className="item--header__pool">
@@ -134,15 +154,7 @@ const StackingItem = ({
             ''
           ) : (
             <span style={{ width: 150 }}>
-              {myStake && myStake.gte(MINSHOWSTAKE) ? (
-                <P style={{ textTransform: 'uppercase' }} size="l-400">
-                  {`${formatFixed(myStake, 2)}  AMB`}
-                </P>
-              ) : (
-                <span>
-                  <SkeletonString />
-                </span>
-              )}
+              {myStake && sleepForDisplaying(myStake)}
             </span>
           )}
         </div>
@@ -156,15 +168,7 @@ const StackingItem = ({
             <>
               {' '}
               <div style={{ width: 150 }}>
-                {totalStake && totalStake.gte(MINSHOWSTAKE) ? (
-                  <P style={{ textTransform: 'uppercase' }} size="l-400">
-                    {`${formatFixed(totalStake, 2)} AMB`}
-                  </P>
-                ) : (
-                  <span>
-                    <SkeletonString />
-                  </span>
-                )}
+                {totalStake && sleepForDisplaying(totalStake)}
               </div>
             </>
           )}
