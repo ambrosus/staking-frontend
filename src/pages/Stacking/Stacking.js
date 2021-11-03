@@ -137,7 +137,7 @@ const Stacking = observer(() => {
             if (signer) {
               const stakingWrapper = new StakingWrapper(signer);
               const poolsArr = await stakingWrapper.getPools();
-              console.log(poolsArr);
+              // console.log(poolsArr);
               if (poolsArr) {
                 setPools(poolsArr);
                 poolsArr.forEach(async (item) => {
