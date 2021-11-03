@@ -108,7 +108,7 @@ const StackingItem = ({
     }
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     updateState();
     return () => clearInterval(interv);
   }, [hasChain]);

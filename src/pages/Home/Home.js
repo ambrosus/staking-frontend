@@ -13,10 +13,15 @@ import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
 import NotSupported from '../../components/NotSupported';
+// import { StakingWrapper } from '../../services/staking.wrapper';
 
 const Home = () => {
   const [userChainId, setUserChainId] = useState(false);
   const [correctNetwork, setCorrectNetwork] = useState(true);
+
+  // const stakingWrapper = new StakingWrapper();
+  // console.log(stakingWrapper);
+
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -66,7 +71,7 @@ const Home = () => {
     }
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     initEthereumNetwork();
   }, [correctNetwork]);
   const menu = (

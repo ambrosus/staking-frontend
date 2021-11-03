@@ -9,7 +9,7 @@ import RenderRoutes from './components/RenderRoutes';
 import { ethereum } from './utils/constants';
 
 const Main = observer(() => {
-  useEffect(async () => {
+  useEffect(() => {
     if (ethereum && ethereum.isMetaMask) {
       ethereum.on('accountsChanged', () => window.location.reload());
       ethereum.on('chainChanged', () => window.location.reload());

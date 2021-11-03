@@ -49,7 +49,7 @@ class StakingWrapper {
       this.providerOrSigner,
     );
 
-    console.log('headContract', this.headContract);
+    // console.log('headContract', this.headContract);
 
     this.initPromise = this._initialize();
   }
@@ -94,6 +94,24 @@ class StakingWrapper {
     console.log(this.pools[0]);
   }
 
+  async getPools() {
+    await this.initPromise;
+    
+    return Promise.all(this.pools.map(async (_pool, index) => {
+      const info = await Promise.all([
+        _pool.name(),
+        _pool.active()
+      ]);
+      return {
+        index,
+        contractName: info[0],
+        address: _pool.address,
+        abi: pool.abi,
+        active: info[1],
+      }
+    }));
+  }
+
   async getPoolData(index = null) {
     await this.initPromise;
 
@@ -101,7 +119,8 @@ class StakingWrapper {
 
     console.log('getPoolData');
 
-    // await this.getAPY();
+    await this.getAPY();
+    console.log('pools:', await this.getPools());
 
     // console.log('count', await this.getPoolsCount());
 
