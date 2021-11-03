@@ -23,6 +23,20 @@ export const priceInPercent24h = async () => {
   return ambPercentChange && ambPercentChange;
 };
 
+export const round = (num) =>
+  /* eslint-disable-next-line */
+  Math.abs(Number(num)) >= 1.0e9
+    ? /* eslint-disable-next-line */
+      Math.abs(Number(num) / 1.0e9) + ' b'
+    : /* eslint-disable-next-line */
+    Math.abs(Number(num)) >= 1.0e6
+    ? /* eslint-disable-next-line */
+      Math.abs(Number(num) / 1.0e6).toFixed(2) + 'm'
+    : Math.abs(Number(num)) >= 1.0e3
+    ? /* eslint-disable-next-line */
+      Math.abs(Number(num) / 1.0e3).toFixed(2) + 'k'
+    : Number(num).toFixed(2);
+
 export function randomInteger(min, max) {
   const rand = min + Math.random() * (max + 1 - min);
   return rand.toFixed(2);

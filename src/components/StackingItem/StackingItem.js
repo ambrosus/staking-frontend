@@ -20,12 +20,12 @@ import {
   StakingWrapper,
   MINSHOWSTAKE,
   ZERO,
-  formatFixed,
 } from '../../services/staking.wrapper';
 import {
   COMING_SOON,
   ethereum,
   HIDE,
+  round,
   SHOW,
   STAKE,
 } from '../../utils/constants';
@@ -43,6 +43,7 @@ const StackingItem = ({
 }) => {
   const [myStake, setMyStake] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
+  const [APYOfPool, setAPYOfPool] = useState('');
   const history = useHistory();
   const { logIn } = useLogIn();
   let provider;
@@ -69,18 +70,20 @@ const StackingItem = ({
             const singer = provider.getSigner();
             if (singer) {
               const stakingWrapper = new StakingWrapper(singer);
-              const { totalStakeInAMB, myStakeInAMB } =
+              const { totalStakeInAMB, myStakeInAMB, poolAPY } =
                 await stakingWrapper.getPoolData(poolInfo.index);
               setMyStake(myStakeInAMB);
+              setAPYOfPool(poolAPY);
               setTotalStake(totalStakeInAMB);
             }
           }
         }, 5000);
       } else {
         const stakingWrapper = new StakingWrapper();
-        const { totalStakeInAMB } = await stakingWrapper.getPoolData(
+        const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
           poolInfo.index,
         );
+        setAPYOfPool(poolAPY);
         setTotalStake(totalStakeInAMB);
       }
     } catch (switchError) {
@@ -120,20 +123,17 @@ const StackingItem = ({
     }
     if (val && val.lte(MINSHOWSTAKE)) {
       return (
-        <P style={{ textTransform: 'uppercase' }} size="l-400">
-          {`${formatFixed(val, 2)} AMB`}
-        </P>
+        <P size="l-400">{`${round(ethers.utils.formatEther(val))} AMB`}</P>
       );
     }
     if (val && val.gte(MINSHOWSTAKE)) {
       return (
-        <P style={{ textTransform: 'uppercase' }} size="l-400">
-          {`${formatFixed(val, 2)} AMB`}
-        </P>
+        <P size="l-400">{`${round(ethers.utils.formatEther(val))} AMB`}</P>
       );
     }
     return false;
   };
+
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div className="item--header__pool">
@@ -176,7 +176,7 @@ const StackingItem = ({
       </div>
       <div className="item--header__apy">
         <P style={{ textTransform: 'uppercase' }} size="l-700">
-          {comingSoon ? '' : `${appStore.randomInteger}%`}
+          {APYOfPool && `${APYOfPool && APYOfPool}%`}
         </P>
       </div>
       {comingSoon ? (

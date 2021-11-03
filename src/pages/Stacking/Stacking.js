@@ -40,7 +40,7 @@ const Stacking = observer(() => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
   const [totalStaked, setTotalStaked] = useState(ZERO);
   const [activeExpand, setActiveExpand] = useState(-1);
-  const [totalReward, setTotalReward] = useState(ZERO);
+  const [totalReward, setTotalReward] = useState('');
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
@@ -143,12 +143,12 @@ const Stacking = observer(() => {
                 poolsArr.forEach(async (item) => {
                   if (item.active) {
                     if (appStore.observer === 1) {
-                      const { myStakeInAMB } = await stakingWrapper.getPoolData(
-                        item.index,
-                      );
+                      const { myStakeInAMB, estDR } =
+                        await stakingWrapper.getPoolData(item.index);
                       setTotalStaked((prevState) =>
                         prevState.add(myStakeInAMB),
                       );
+                      setTotalReward(estDR);
                     }
                     if (appStore.observer === 0) {
                       setTotalStaked(ethers.BigNumber.from('0'));
@@ -156,14 +156,11 @@ const Stacking = observer(() => {
                   }
                 });
               }
-
-              // TODO
-              setTotalReward(ethers.BigNumber.from('0'));
             }
           }
         }
       }
-    }, 5000);
+    }, 8000);
     return () => clearInterval(inteval);
   }, []);
 
@@ -269,9 +266,7 @@ const Stacking = observer(() => {
                 <P size="xl-400" style={{ color: '#4A38AE' }}>
                   <span style={{ color: '#1ACD8C' }}>
                     {' '}
-                    {totalReward && totalReward > ethers.BigNumber.from('0')
-                      ? `+${formatFixed(totalReward, 2)}  AMB`
-                      : '-'}
+                    {totalReward ? `+${totalReward}  AMB` : '-'}
                   </span>
                   &nbsp; / 34$
                 </P>

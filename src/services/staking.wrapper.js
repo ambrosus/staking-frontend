@@ -2,7 +2,7 @@
 
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { ethers, BigNumber } from 'ethers';
-import { create, all } from 'mathjs'
+import { create, all } from 'mathjs';
 import EthDater from 'ethereum-block-by-date';
 
 const ZERO = BigNumber.from(0);
@@ -13,7 +13,7 @@ const MINSHOWSTAKE = FIXEDPOINT.div(100); // 0.01 ether
 
 const math = create(all, {
   number: 'BigNumber',
-  precision: 64
+  precision: 64,
 });
 
 const headContractAddress = '0x0000000000000000000000000000000000000F10';
@@ -122,24 +122,39 @@ class StakingWrapper {
 
     //  console.log('count', await this.getPoolsCount());
 
-    const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens, poolDPY] = await Promise.all(
-      [
+    const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens, poolDPY] =
+      await Promise.all([
         poolContract.totalStake(),
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
         this.getDPY(index),
-      ],
-    );
+      ]);
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXEDPOINT);
-    const poolAPY = math.chain(poolDPY).add(1).pow(365).subtract(1).multiply(100).round(2).done().toNumber().toFixed(2);
-    const estDR = math.chain(myStakeInAMB.toString()).multiply(poolDPY).divide(FIXEDPOINT.toString()).round(2).done().toNumber().toFixed(2);
+    const poolAPY = math
+      .chain(poolDPY)
+      .add(1)
+      .pow(365)
+      .subtract(1)
+      .multiply(100)
+      .round(2)
+      .done()
+      .toNumber()
+      .toFixed(2);
+    const estDR = math
+      .chain(myStakeInAMB.toString())
+      .multiply(poolDPY)
+      .divide(FIXEDPOINT.toString())
+      .round(2)
+      .done()
+      .toNumber()
+      .toFixed(2);
     const poolData = {
       totalStakeInAMB,
       myStakeInAMB,
       tokenPriceAMB,
       myStakeInTokens,
       poolAPY,
-      estDR
+      estDR,
     };
     console.log(poolData);
     return poolData;
@@ -147,7 +162,7 @@ class StakingWrapper {
 
   async getDPY(index = null) {
     await this.initPromise;
-/*
+    /*
     const dater = new EthDater(this.providerOrSigner);
     const block = await dater.getDate(
       new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
@@ -156,7 +171,8 @@ class StakingWrapper {
 */
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
-      452200, 'latest'
+      452200,
+      'latest',
     );
     //console.log('rewardEvents:', index, rewardEvents);
 
@@ -167,10 +183,10 @@ class StakingWrapper {
       poolRewards.push({
         bn: ev.blockNumber,
         ts: (await ev.getBlock()).timestamp,
-        pool:ev.args.pool,
+        pool: ev.args.pool,
         price: ethers.utils.formatEther(ev.args.tokenPrice),
         rewardS: ethers.utils.formatEther(ev.args.reward),
-        reward:ev.args.reward,
+        reward: ev.args.reward,
         tokenPrice: ev.args.tokenPrice,
       });
     }
@@ -180,7 +196,7 @@ class StakingWrapper {
     const f = poolRewards.shift();
     const l = poolRewards.pop();
 
-    const n = 365*24*60*60 / (+l.ts - +f.ts);
+    const n = (365 * 24 * 60 * 60) / (+l.ts - +f.ts);
     const s = l.tokenPrice.mul(FIXEDPOINT).div(f.tokenPrice);
     //console.log({n, s:s.toString(), ss:ethers.utils.formatEther(s), f, l});
 
