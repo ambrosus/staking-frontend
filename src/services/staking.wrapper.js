@@ -2,6 +2,7 @@
 
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { ethers, BigNumber } from 'ethers';
+import { create, all } from 'mathjs'
 import EthDater from 'ethereum-block-by-date';
 
 const ZERO = BigNumber.from(0);
@@ -9,6 +10,11 @@ const ONE = BigNumber.from(1);
 const TEN = BigNumber.from(10);
 const FIXEDPOINT = TEN.pow(18); // 1.0 ether
 const MINSHOWSTAKE = FIXEDPOINT.div(100); // 0.01 ether
+
+const math = create(all, {
+  number: 'BigNumber',
+  precision: 64
+});
 
 const headContractAddress = '0x0000000000000000000000000000000000000F10';
 
@@ -111,66 +117,81 @@ class StakingWrapper {
     const poolContract = this.pools[index];
 
     //  console.log('getPoolData');
-    //  console.log('pools:', await this.getPools());
-    //  console.log('apy:', await this.getAPY());
+    // console.log('pools:', await this.getPools());
+    //if (typeof index === 'number') console.log('apy:', await this.getAPY(index));
 
     //  console.log('count', await this.getPoolsCount());
 
-    const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens] = await Promise.all(
+    const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens, poolDPY] = await Promise.all(
       [
         poolContract.totalStake(),
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
+        this.getDPY(index),
       ],
     );
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXEDPOINT);
-    return { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, myStakeInTokens };
+    const poolAPY = math.chain(poolDPY).add(1).pow(365).subtract(1).multiply(100).round(2).done().toNumber().toFixed(2);
+    const estDR = math.chain(myStakeInAMB.toString()).multiply(poolDPY).divide(FIXEDPOINT.toString()).round(2).done().toNumber().toFixed(2);
+    const poolData = {
+      totalStakeInAMB,
+      myStakeInAMB,
+      tokenPriceAMB,
+      myStakeInTokens,
+      poolAPY,
+      estDR
+    };
+    console.log(poolData);
+    return poolData;
   }
 
-  async getAPY(index = null) {
+  async getDPY(index = null) {
     await this.initPromise;
-
+/*
     const dater = new EthDater(this.providerOrSigner);
     const block = await dater.getDate(
       new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
     );
     //  console.log('block', block);
-
+*/
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
-      block.block,
+      452200, 'latest'
     );
-    //  console.log('rewardEvents:', rewardEvents);
-    return;
+    //console.log('rewardEvents:', index, rewardEvents);
 
-    /*  get logs
-    const rewardsLogs = await this.providerOrSigner.getLogs({
-      fromBlock: block.block,
-      toBlock: 'latest',
-      topics: [ethers.utils.id('PoolReward(address,uint256)')],
-    });
-    console.log(rewardsLogs);
-    */
-    // 0x732FA022168eF1F669fF2A4a6c5C632646a1822b poolEventsEmitter
-    /*
-    if (rewardsLogs !== undefined) {
-      const rewards =
-        rewardsLogs &&
-        rewardsLogs.map((log) => iface.parseLog(log).args.reward);
-      if (rewards) {
-        const totalRewards = rewards.reduce(
-          (acc, reward) => acc.add(reward),
-          ethers.BigNumber.from('0'),
-        );
-        if (totalRewards) {
-          const formatTotalReward =
-            ethers.utils.formatEther(totalRewards);
-            prevState.add(formatTotalReward),
-          );
-        }
-      }
+    const poolRewards = [];
+    for (let ev of rewardEvents) {
+      if (ev.args.pool !== this.pools[index].address) continue;
+      //console.log('ev', ev.blockNumber, ev.args.pool, ev.args.tokenPrice.toString(), (await ev.getBlock()).timestamp);
+      poolRewards.push({
+        bn: ev.blockNumber,
+        ts: (await ev.getBlock()).timestamp,
+        pool:ev.args.pool,
+        price: ethers.utils.formatEther(ev.args.tokenPrice),
+        rewardS: ethers.utils.formatEther(ev.args.reward),
+        reward:ev.args.reward,
+        tokenPrice: ev.args.tokenPrice,
+      });
     }
-    */
+    const fee = await this.pools[index].fee();
+    //console.log('fee', fee.toString(), fee.toNumber()/1000000);
+    //console.log('poolRewards',poolRewards);
+    const f = poolRewards.shift();
+    const l = poolRewards.pop();
+
+    const n = 365*24*60*60 / (+l.ts - +f.ts);
+    const s = l.tokenPrice.mul(FIXEDPOINT).div(f.tokenPrice);
+    //console.log({n, s:s.toString(), ss:ethers.utils.formatEther(s), f, l});
+
+    const s1 = f.tokenPrice.toString();
+    const s2 = l.tokenPrice.toString();
+
+    const xx = `( ((${s2}) / (${s1})) ^ ( 86400 / ((${l.ts}) - (${f.ts})) ) ) - 1`;
+    const dpy = math.evaluate(xx);
+    //console.log(math.chain(dpy).add(1).pow(365).subtract(1).round(8).toString(), math.round(dpy,8).toString(), '=', xx);
+
+    return dpy;
   }
 }
 
