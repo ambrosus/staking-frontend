@@ -103,7 +103,7 @@ class StakingWrapper {
   }
 
   async getPoolData(index) {
-    if (typeof index !== 'Number') {
+    if (typeof index !== 'number') {
       throw new Error('no pool index provided');
     }
     await this.initPromise;
