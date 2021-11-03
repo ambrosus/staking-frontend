@@ -10,7 +10,11 @@ import ButtonGroup from '../../../../components/ButtonGroup';
 import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 
-import { formatFixed, ZERO } from '../../../../services/staking.wrapper';
+import {
+  formatFixed,
+  StakingWrapper,
+  ZERO,
+} from '../../../../services/staking.wrapper';
 import { ethereum } from '../../../../utils/constants';
 
 const Withdraw = observer(
@@ -33,7 +37,14 @@ const Withdraw = observer(
             withdrawContractInfo.abi,
             signer,
           );
-          const decimal = ethers.utils.parseEther(inputValue);
+          const stakingWrapper = new StakingWrapper(signer);
+          const { tokenPriceAMB } = await stakingWrapper.getPoolData(
+            withdrawContractInfo.index,
+          );
+
+          const decimal = ethers.utils
+            .parseEther(inputValue)
+            .div(tokenPriceAMB);
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
             gasPrice: ethers.utils.parseUnits('20', 'gwei'),
