@@ -39,8 +39,9 @@ const Withdraw = observer(
             signer,
           );
           const stakingWrapper = new StakingWrapper(signer);
-          const { tokenPriceAMB, myStakeInAMB } =
-            await stakingWrapper.getPoolData(withdrawContractInfo.index);
+          const { tokenPriceAMB } = await stakingWrapper.getPoolData(
+            withdrawContractInfo.index,
+          );
 
           const decimal = ethers.utils
             .parseEther(inputValue)
