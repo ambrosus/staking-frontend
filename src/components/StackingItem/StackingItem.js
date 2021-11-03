@@ -130,39 +130,45 @@ const StackingItem = ({
       </div>
       {history.location.pathname === '/stacking' && (
         <div className="item--header__my-stake">
-          <P style={{ textTransform: 'uppercase' }} size="l-400">
-            {comingSoon ? (
-              ''
-            ) : (
-              <span style={{ width: 150 }}>
-                {myStake && myStake.gte(MINSHOWSTAKE) ? (
-                  `${formatFixed(myStake, 2)}  AMB`
-                ) : (
+          {comingSoon ? (
+            ''
+          ) : (
+            <span style={{ width: 150 }}>
+              {myStake && myStake.gte(MINSHOWSTAKE) ? (
+                <P style={{ textTransform: 'uppercase' }} size="l-400">
+                  {`${formatFixed(myStake, 2)}  AMB`}
+                </P>
+              ) : (
+                <span>
                   <SkeletonString />
-                )}
-              </span>
-            )}
-          </P>
+                </span>
+              )}
+            </span>
+          )}
         </div>
       )}
 
       <div className="item--header__vault-assets">
-        <P style={{ textTransform: 'uppercase' }} size="l-400">
+        <div>
           {comingSoon ? (
             ''
           ) : (
             <>
               {' '}
-              <span style={{ width: 150 }}>
+              <div style={{ width: 150 }}>
                 {totalStake && totalStake.gte(MINSHOWSTAKE) ? (
-                  `${formatFixed(totalStake, 2)}  AMB`
+                  <P style={{ textTransform: 'uppercase' }} size="l-400">
+                    {`${formatFixed(totalStake, 2)} AMB`}
+                  </P>
                 ) : (
-                  <SkeletonString />
+                  <span>
+                    <SkeletonString />
+                  </span>
                 )}
-              </span>
+              </div>
             </>
           )}
-        </P>
+        </div>
       </div>
       <div className="item--header__apy">
         <P style={{ textTransform: 'uppercase' }} size="l-700">

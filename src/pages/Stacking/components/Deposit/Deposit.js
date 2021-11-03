@@ -164,8 +164,8 @@ const Deposit = observer(({ depositInfo }) => {
         >
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
-            Available for withdraw: {utils.formatEther(availableForWithdraw)}{' '}
-            AMB
+            Available for withdraw:{' '}
+            {Number(utils.formatEther(availableForWithdraw)).toFixed(2)} AMB
           </P>
         </div>
         <Withdraw
@@ -199,7 +199,7 @@ const Deposit = observer(({ depositInfo }) => {
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
           {balance.gte(utils.parseEther(!inputValue ? '0' : inputValue))
-            ? utils.formatEther(balance)
+            ? Number(utils.formatEther(balance)).toFixed(2)
             : utils.formatEther(0)}{' '}
           AMB
         </P>
@@ -304,8 +304,8 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
           <div style={{ marginBottom: 5 }}>
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
-              Available for withdraw: {utils.formatEther(availableForWithdraw)}{' '}
-              AMB
+              Available for withdraw:{' '}
+              {Number(utils.formatEther(availableForWithdraw)).toFixed(2)} AMB
             </P>
 
             <ReactTooltip id="unstake" place="top" effect="solid">

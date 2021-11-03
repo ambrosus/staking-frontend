@@ -11,6 +11,7 @@ import notificationMassage from '../../../../utils/notificationMassage';
 import appStore from '../../../../store/app.store';
 
 import {
+  FIXEDPOINT,
   formatFixed,
   StakingWrapper,
   ZERO,
@@ -25,7 +26,7 @@ const Withdraw = observer(
     hideModal,
     availableSumForWithdraw,
   }) => {
-    const [inputValue, setInputValue] = useState('0');
+    const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
     const withdrawPayment = async () => {
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');
@@ -44,7 +45,8 @@ const Withdraw = observer(
 
           const decimal = ethers.utils
             .parseEther(inputValue)
-            .div(tokenPriceAMB);
+            .div(tokenPriceAMB)
+            .mul(FIXEDPOINT);
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
             gasPrice: ethers.utils.parseUnits('20', 'gwei'),
@@ -214,7 +216,10 @@ const Withdraw = observer(
           <div>
             <P size="s-400" style={{ color: '#9198BB' }}>
               Estimated stake after withdraw:{' '}
-              {afterWithdraw.lt(0) ? 0 : utils.formatEther(afterWithdraw)} AMB
+              {afterWithdraw.lt(0)
+                ? 0
+                : Number(utils.formatEther(afterWithdraw)).toFixed(2)}{' '}
+              AMB
             </P>
           </div>
         </div>
