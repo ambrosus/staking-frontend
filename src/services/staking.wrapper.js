@@ -118,8 +118,8 @@ class StakingWrapper {
     const poolContract = Number.isInteger(index) ? pools[index] : this.poolContract;
 
     console.log('getPoolData');
-    console.log('pools:', await this.getPools());
-    console.log('apy:', await this.getAPY());
+    //console.log('pools:', await this.getPools());
+    //console.log('apy:', await this.getAPY());
 
     // console.log('count', await this.getPoolsCount());
 
