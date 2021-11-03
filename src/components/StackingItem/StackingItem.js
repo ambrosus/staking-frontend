@@ -69,17 +69,19 @@ const StackingItem = ({
           if (provider) {
             const singer = provider.getSigner();
             if (singer) {
-              const stakingWrapper = new StakingWrapper(poolInfo, singer);
-              const [totalStakeInAMB, myStakeInAMB] =
-                await stakingWrapper.getPoolData();
+              const stakingWrapper = new StakingWrapper(singer);
+              const { totalStakeInAMB, myStakeInAMB } =
+                await stakingWrapper.getPoolData(poolInfo.index);
               setMyStake(myStakeInAMB);
               setTotalStake(totalStakeInAMB);
             }
           }
         }, 5000);
       } else {
-        const stakingWrapper = new StakingWrapper(poolInfo);
-        const [totalStakeInAMB] = await stakingWrapper.getPoolData();
+        const stakingWrapper = new StakingWrapper();
+        const { totalStakeInAMB } = await stakingWrapper.getPoolData(
+          poolInfo.index,
+        );
         setTotalStake(totalStakeInAMB);
       }
     } catch (switchError) {

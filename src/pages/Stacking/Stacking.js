@@ -137,10 +137,10 @@ const Stacking = observer(() => {
               pools.forEach(async (item) => {
                 if (item.active) {
                   if (appStore.observer === 1) {
-                    const stakingWrapper = new StakingWrapper(item, signer);
-                    /* eslint-disable-next-line */
-                    const [totalStakeInAMB, myStakeInAMB] =
-                      await stakingWrapper.getPoolData();
+                    const stakingWrapper = new StakingWrapper(signer);
+                    const { myStakeInAMB } = await stakingWrapper.getPoolData(
+                      item.index,
+                    );
                     setTotalStaked((prevState) => prevState.add(myStakeInAMB));
                   }
                   if (appStore.observer === 0) {

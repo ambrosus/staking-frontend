@@ -107,9 +107,9 @@ const Deposit = observer(({ depositInfo }) => {
           });
           const singer = provider.getSigner();
           if (singer) {
-            const stakingWrapper = new StakingWrapper(depositInfo, singer);
-            const [totalStakeInAMB, myStakeInAMB] =
-              await stakingWrapper.getPoolData();
+            const stakingWrapper = new StakingWrapper(singer);
+            const { totalStakeInAMB, myStakeInAMB } =
+              await stakingWrapper.getPoolData(depositInfo.index);
             setMyStake(myStakeInAMB);
             setAvailableForWithdraw(myStakeInAMB);
             setTotalStake(totalStakeInAMB);
