@@ -19,9 +19,9 @@ import { Loader } from '../../components/Loader';
 const Home = () => {
   const [userChainId, setUserChainId] = useState(false);
   const [correctNetwork, setCorrectNetwork] = useState(true);
-  const [pools, setPools] = useState(null);
+  const [pools, setPools] = useState([]);
   const stakingWrapper = new StakingWrapper();
-  // TODO stakingWrapper;
+  //  stakingWrapper;
 
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
@@ -97,6 +97,35 @@ const Home = () => {
       </a>
     </div>
   );
+  const poolsData = pools.length > 0 && (
+    <>
+      <div className="stacking__header">
+        <div className="stacking__header__clearfix-pool">Pool</div>
+        <div style={{ marginLeft: -36 }}>Total staked</div>
+        <div className="stacking__header__clearfix-apy">Net APY</div>
+        <div style={{ maxWidth: 157 }}></div>
+      </div>
+      <div className="stacking__pools">
+        {pools &&
+          pools.map((pool) => {
+            if (pool.active === true) {
+              return (
+                <StackItem
+                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                  key={pool.contractName}
+                  poolInfo={pool}
+                  lazy
+                  expand={false}
+                />
+              );
+            }
+            return (
+              <ComingSoonPool key={pool.contractName} poolInfo={pool} lazy />
+            );
+          })}
+      </div>
+    </>
+  );
   return (
     <>
       {!correctNetwork && <NotSupported onclick={changeNetwork} />}
@@ -124,36 +153,8 @@ const Home = () => {
           </div>
         </div>
         <div className="stacking">
-          <div className="stacking__header">
-            <div className="stacking__header__clearfix-pool">Pool</div>
-            <div style={{ marginLeft: -36 }}>Total staked</div>
-            <div className="stacking__header__clearfix-apy">Net APY</div>
-            <div style={{ maxWidth: 157 }}></div>
-          </div>
-          <div className="stacking__pools">
-            {pools &&
-              pools.map((pool) => {
-                if (pool.active === true) {
-                  return (
-                    <StackItem
-                      hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                      key={pool.contractName}
-                      poolInfo={pool}
-                      lazy
-                      expand={false}
-                    />
-                  );
-                }
-                return (
-                  <ComingSoonPool
-                    key={pool.contractName}
-                    poolInfo={pool}
-                    lazy
-                  />
-                );
-              })}
-            {!pools && <Loader />}
-          </div>
+          {poolsData}
+          <div className="stacking__loader">{!poolsData && <Loader />}</div>
         </div>
         <div className="faq">
           <CollapsedList />

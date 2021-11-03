@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
 import { ToastContainer, cssTransition } from 'react-toastify';
 
-import { ethereum, pools } from '../../utils/constants';
+import { ethereum } from '../../utils/constants';
 import StackingItem from '../../components/StackingItem';
 import P from '../../components/P';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
@@ -44,6 +44,7 @@ const Stacking = observer(() => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
+  const [pools, setPools] = useState([]);
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -134,20 +135,27 @@ const Stacking = observer(() => {
           });
           if (provider) {
             if (signer) {
-              pools.forEach(async (item) => {
-                if (item.active) {
-                  if (appStore.observer === 1) {
-                    const stakingWrapper = new StakingWrapper(signer);
-                    const { myStakeInAMB } = await stakingWrapper.getPoolData(
-                      item.index,
-                    );
-                    setTotalStaked((prevState) => prevState.add(myStakeInAMB));
+              const stakingWrapper = new StakingWrapper(signer);
+              const poolsArr = await stakingWrapper.getPools();
+              console.log(poolsArr);
+              if (poolsArr) {
+                setPools(poolsArr);
+                poolsArr.forEach(async (item) => {
+                  if (item.active) {
+                    if (appStore.observer === 1) {
+                      const { myStakeInAMB } = await stakingWrapper.getPoolData(
+                        item.index,
+                      );
+                      setTotalStaked((prevState) =>
+                        prevState.add(myStakeInAMB),
+                      );
+                    }
+                    if (appStore.observer === 0) {
+                      setTotalStaked(ethers.BigNumber.from('0'));
+                    }
                   }
-                  if (appStore.observer === 0) {
-                    setTotalStaked(ethers.BigNumber.from('0'));
-                  }
-                }
-              });
+                });
+              }
 
               // TODO
               setTotalReward(ethers.BigNumber.from('0'));
@@ -155,7 +163,7 @@ const Stacking = observer(() => {
           }
         }
       }
-    }, 7000);
+    }, 5000);
     return () => clearInterval(inteval);
   }, []);
 
@@ -285,41 +293,47 @@ const Stacking = observer(() => {
           <div className="page">
             {infoBlock}
             <div className="stacking wrapper">
-              <div className="stacking__header">
-                <div style={{ flexBasis: 64 }}>Pool</div>
-                <div style={{ flexBasis: 26 }}>My Stake</div>
-                <div style={{ flexBasis: 29 }}>Total staked</div>
-                <div style={{ flexBasis: 26 }}>Net APY</div>
-                <div style={{ maxWidth: 167, marginRight: -6 }} />
-              </div>
-              {pools.map(
-                (item, index) =>
-                  item.active && (
-                    <StackingItem
-                      dispatch={dispatch}
-                      activeExpand={activeExpand}
-                      setActiveExpand={setActiveExpand}
-                      key={item.contractName}
-                      index={index}
-                      state={state}
-                      expand
-                      hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                      comingSoon={!item?.abi}
-                      lazy
-                      loading={!!account}
-                      poolInfo={item}
-                    />
-                  ),
-              )}
-              {pools.map(
-                (coming) =>
-                  !coming.active && (
-                    <ComingSoonPool
-                      key={coming.contractName}
-                      poolInfo={coming}
-                      lazy
-                    />
-                  ),
+              {pools.length > 0 && (
+                <>
+                  <div className="stacking__header">
+                    <div style={{ flexBasis: 64 }}>Pool</div>
+                    <div style={{ flexBasis: 26 }}>My Stake</div>
+                    <div style={{ flexBasis: 29 }}>Total staked</div>
+                    <div style={{ flexBasis: 26 }}>Net APY</div>
+                    <div style={{ maxWidth: 167, marginRight: -6 }} />
+                  </div>
+                  {pools.map(
+                    (item, index) =>
+                      item.active && (
+                        <StackingItem
+                          dispatch={dispatch}
+                          activeExpand={activeExpand}
+                          setActiveExpand={setActiveExpand}
+                          key={item.contractName}
+                          index={index}
+                          state={state}
+                          expand
+                          hasChain={
+                            +process.env.REACT_APP_CHAIN_ID === userChainId
+                          }
+                          comingSoon={!item?.abi}
+                          lazy
+                          loading={!!account}
+                          poolInfo={item}
+                        />
+                      ),
+                  )}
+                  {pools.map(
+                    (coming) =>
+                      !coming.active && (
+                        <ComingSoonPool
+                          key={coming.contractName}
+                          poolInfo={coming}
+                          lazy
+                        />
+                      ),
+                  )}
+                </>
               )}
             </div>
             <ToastContainer transition={bounce} />

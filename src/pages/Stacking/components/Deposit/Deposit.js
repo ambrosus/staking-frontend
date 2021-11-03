@@ -43,7 +43,7 @@ const Deposit = observer(({ depositInfo }) => {
         );
         const contractWithSigner = poolContract.connect(signer);
         const overrides = {
-          value: ethers.utils.parseEther(inputValue), // todo
+          value: ethers.utils.parseEther(inputValue), //
           gasPrice: ethers.utils.parseUnits('20', 'gwei'),
           gasLimit: 1000000,
         };

@@ -10,6 +10,10 @@
     flex-direction: column;
   }
 
+  &__loader {
+    padding-top: 100px;
+  }
+
   &__header {
     display: flex;
     width: 100%;
@@ -43,11 +47,13 @@
       flex: 1;
     }
   }
- &__pools{
-   min-height: 100px;
-   width: 100%;
- }
- .stack-item {
+
+  &__pools {
+    min-height: 100px;
+    width: 100%;
+  }
+
+  .stack-item {
     margin-top: 15px;
     margin-bottom: 15px;
     display: grid;
@@ -177,11 +183,12 @@
 
       }
 
-      button{
-        p{
+      button {
+        p {
           color: #9198BB !important;
         }
       }
+
       > div {
         margin-top: 0;
         color: #9198BB !important;

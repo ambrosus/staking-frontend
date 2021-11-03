@@ -29,7 +29,7 @@ function formatFixed(bigNumber, digits = 18) {
 
 class StakingWrapper {
   constructor(providerOrSigner = null) {
-    // TODO console.log('StakingWrapper', providerOrSigner);
+    //  console.log('StakingWrapper', providerOrSigner);
     if (!providerOrSigner) {
       providerOrSigner = new ethers.providers.JsonRpcProvider(
         process.env.REACT_APP_RPC_URL,
@@ -47,14 +47,14 @@ class StakingWrapper {
       this.providerOrSigner,
     );
     const contextAddr = await this.headContract.context();
-    // TODO console.log('contextAddr',contextAddr);
+    //  console.log('contextAddr',contextAddr);
     const contextContract = new ethers.Contract(
       contextAddr,
       contractJsons.context.abi,
       this.providerOrSigner,
     );
     const storageCatalogueAddr = await contextContract.storageCatalogue();
-    // TODO console.log('storageCatalogueAddr',storageCatalogueAddr);
+    //  console.log('storageCatalogueAddr',storageCatalogueAddr);
     const storageCatalogueContr = new ethers.Contract(
       storageCatalogueAddr,
       contractJsons.storageCatalogue.abi,
@@ -68,7 +68,7 @@ class StakingWrapper {
       this.providerOrSigner,
     );
     const poolsStoreAddr = await storageCatalogueContr.poolsStore();
-    // TODO console.log('poolsStoreAddr',poolsStoreAddr);
+    //  console.log('poolsStoreAddr',poolsStoreAddr);
     this.poolsStore = new ethers.Contract(
       poolsStoreAddr,
       contractJsons.poolsStore.abi,
@@ -77,12 +77,12 @@ class StakingWrapper {
 
     const poolsCount = (await this.poolsStore.getPoolsCount()).toNumber();
     const poolsAddrs = await this.poolsStore.getPools(0, poolsCount);
-    // TODO console.log('pools', poolsAddrs);
+    //  console.log('pools', poolsAddrs);
     this.pools = poolsAddrs.map(
       (poolAddr) =>
         new ethers.Contract(poolAddr, pool.abi, this.providerOrSigner),
     );
-    // TODO console.log(this.pools[0]);
+    //  console.log(this.pools[0]);
   }
 
   async getPools() {
@@ -110,11 +110,11 @@ class StakingWrapper {
 
     const poolContract = this.pools[index];
 
-    // TODO console.log('getPoolData');
-    // TODO console.log('pools:', await this.getPools());
-    // TODO console.log('apy:', await this.getAPY());
+    //  console.log('getPoolData');
+    //  console.log('pools:', await this.getPools());
+    //  console.log('apy:', await this.getAPY());
 
-    // TODO console.log('count', await this.getPoolsCount());
+    //  console.log('count', await this.getPoolsCount());
 
     const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens] = await Promise.all(
       [
@@ -134,16 +134,16 @@ class StakingWrapper {
     const block = await dater.getDate(
       new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
     );
-    // TODO console.log('block', block);
+    //  console.log('block', block);
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
       block.block,
     );
-    // TODO console.log('rewardEvents:', rewardEvents);
+    //  console.log('rewardEvents:', rewardEvents);
     return;
 
-    /* TODO get logs
+    /*  get logs
     const rewardsLogs = await this.providerOrSigner.getLogs({
       fromBlock: block.block,
       toBlock: 'latest',

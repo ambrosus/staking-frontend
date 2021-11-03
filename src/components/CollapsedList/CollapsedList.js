@@ -10,12 +10,7 @@ function CollapsedList() {
 
   return (
     <div className="collapsed-list">
-      <div
-        className="collapsed-list__heading"
-        style={{ paddingBottom: 60, paddingTop: 120 }}
-      >
-        Arcadia Staking FAQs
-      </div>
+      <div className="collapsed-list__heading">Arcadia Staking FAQs</div>
       <Block
         title="What is AMB?"
         isOpen={state[0]}
