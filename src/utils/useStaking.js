@@ -4,15 +4,13 @@ import { ethers } from 'ethers';
 import { StakingWrapper, ZERO } from '../services/staking.wrapper';
 import { ambMounthUSD, ethereum } from './constants';
 import appStore from '../store/app.store';
-import useCopyToClipboard from './useCopyToClipboard';
 import collapsedReducer from './collapsedReducer';
 import storageService from '../services/storage.service';
 
 const useStaking = () => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);
-  const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
-  const [totalStaked, setTotalStaked] = useState(ZERO);
+  const [totalStaked, setTotalStaked] = useState(-ZERO);
   const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState('');
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
@@ -20,6 +18,7 @@ const useStaking = () => {
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
+
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -145,8 +144,6 @@ const useStaking = () => {
   return {
     account,
     userChainId,
-    isCopied,
-    onCopy,
     totalStaked,
     activeExpand,
     setActiveExpand,

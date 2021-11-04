@@ -77,14 +77,16 @@ const StakingItem = ({
               setTotalStake(totalStakeInAMB);
             }
           }
-        }, 4000);
+        }, 2000);
       } else {
-        const stakingWrapper = new StakingWrapper();
-        const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
-          poolInfo.index,
-        );
-        setAPYOfPool(poolAPY);
-        setTotalStake(totalStakeInAMB);
+        interv = setInterval(async () => {
+          const stakingWrapper = new StakingWrapper();
+          const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
+            poolInfo.index,
+          );
+          setAPYOfPool(poolAPY);
+          setTotalStake(totalStakeInAMB);
+        }, 4000);
       }
     } catch (switchError) {
       if (switchError.code === 4902) {
@@ -175,9 +177,13 @@ const StakingItem = ({
         </div>
       </div>
       <div className="item--header__apy">
-        <P style={{ textTransform: 'uppercase' }} size="l-700">
-          {APYOfPool && `${APYOfPool && APYOfPool}%`}
-        </P>
+        {APYOfPool ? (
+          <P style={{ textTransform: 'uppercase' }} size="l-700">
+            {`${APYOfPool}%`}
+          </P>
+        ) : (
+          <SkeletonString />
+        )}
       </div>
       {comingSoon ? (
         <div style={{ minWidth: 160, maxWidth: 160 }}>

@@ -28,6 +28,7 @@ const Withdraw = observer(
   }) => {
     const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
+
     const withdrawPayment = async () => {
       const provider = new ethers.providers.Web3Provider(ethereum, 'any');
       if (provider) {
@@ -65,7 +66,7 @@ const Withdraw = observer(
                       60,
                     )} pending.`,
                   );
-                  setInputValue('0');
+                  setInputValue('');
                   await tx
                     .wait()
                     .then((result) => {
@@ -77,7 +78,7 @@ const Withdraw = observer(
                         )}...${result.transactionHash.slice(60)} success!`,
                       );
                       appStore.setObserverValue(-1);
-                      setInputValue('0');
+                      setInputValue('');
                     })
                     .catch(() => {
                       notificationMassage(
@@ -97,19 +98,10 @@ const Withdraw = observer(
     };
 
     const calculateSumAfterWithdraw = () => {
-      if (
-        availableSumForWithdraw &&
-        availableSumForWithdraw.gte(
-          utils.parseEther(!inputValue ? '0' : inputValue),
-        )
-      ) {
+      if (availableSumForWithdraw && inputValue) {
         setAfterWithdraw(
-          availableSumForWithdraw.sub(
-            utils.parseEther(!inputValue ? '0' : inputValue),
-          ),
+          availableSumForWithdraw.sub(utils.parseEther(inputValue)),
         );
-      } else {
-        setAfterWithdraw(availableSumForWithdraw);
       }
     };
     useEffect(() => {
@@ -193,7 +185,7 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatFixed(availableSumForWithdraw, 18))
+                  setInputValue(formatFixed(availableSumForWithdraw, 2))
                 }
               >
                 <P size="xs-500">100%</P>
@@ -215,7 +207,12 @@ const Withdraw = observer(
               }}
               type="green"
               disabled={
-                (afterWithdraw && afterWithdraw.lt(0)) || Number(inputValue) < 0
+                (afterWithdraw && afterWithdraw.lt(0)) ||
+                (availableSumForWithdraw &&
+                  inputValue &&
+                  !ethers.utils
+                    .parseEther(inputValue && inputValue)
+                    .lt(availableSumForWithdraw && availableSumForWithdraw))
               }
               onclick={() => withdrawPayment()}
             >

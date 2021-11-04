@@ -27,7 +27,6 @@ import appStore from '../../../../store/app.store';
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
   const [errorStakeSum, setErrorStakeSum] = useState(false);
-  const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
   const [myStake, setMyStake] = useState(ZERO);
   const [balance, setBalance] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
@@ -116,7 +115,6 @@ const Deposit = observer(({ depositInfo }) => {
               await stakingWrapper.getPoolData(depositInfo.index);
             setTokenPrice(tokenPriceAMB);
             setMyStake(myStakeInAMB);
-            setAvailableForWithdraw(myStakeInAMB);
             setTotalStake(totalStakeInAMB);
             setAPYOfPool(poolAPY);
           }
@@ -179,15 +177,13 @@ const Deposit = observer(({ depositInfo }) => {
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
             Available for withdraw:{' '}
-            {availableForWithdraw && availableForWithdraw.gte(MINSHOWSTAKE)
-              ? formatFixed(availableForWithdraw, 2)
-              : 0}{' '}
+            {myStake && myStake.gte(MINSHOWSTAKE) ? formatFixed(myStake, 2) : 0}{' '}
             AMB
           </P>
         </div>
         <Withdraw
           withdrawContractInfo={depositInfo}
-          availableSumForWithdraw={availableForWithdraw}
+          availableSumForWithdraw={myStake}
           hideModal={toggleWithdrawForm}
         />
       </>
@@ -328,8 +324,8 @@ const Deposit = observer(({ depositInfo }) => {
           <div style={{ marginBottom: 5 }}>
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
               Available for withdraw:{' '}
-              {availableForWithdraw && availableForWithdraw.gte(MINSHOWSTAKE)
-                ? formatFixed(availableForWithdraw, 2)
+              {myStake && myStake.gte(MINSHOWSTAKE)
+                ? formatFixed(myStake, 2)
                 : 0}{' '}
               AMB
             </P>
