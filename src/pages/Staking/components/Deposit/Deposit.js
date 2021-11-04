@@ -14,7 +14,7 @@ import {
   MINSHOWSTAKE,
   THOUSAND,
 } from '../../../../services/staking.wrapper';
-import { ethereum } from '../../../../utils/constants';
+import { ethereum, round } from '../../../../utils/constants';
 
 // import infoIcon from '../../../../assets/svg/info.svg';
 import useModal from '../../../../utils/useModal';
@@ -149,13 +149,13 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
           <div>
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {formatFixed(myStake, 2)} AMB
+              {round(formatFixed(myStake, 2))} AMB
             </P>
           </div>
           <div>
             {' '}
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {formatFixed(totalStake, 2)} AMB
+              {round(formatFixed(totalStake, 2))} AMB
             </P>
           </div>
           <div>
@@ -177,7 +177,9 @@ const Deposit = observer(({ depositInfo }) => {
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
             Available for withdraw:{' '}
-            {myStake && myStake.gte(MINSHOWSTAKE) ? formatFixed(myStake, 2) : 0}{' '}
+            {myStake && myStake.gte(MINSHOWSTAKE)
+              ? round(formatFixed(myStake, 2))
+              : 0}{' '}
             AMB
           </P>
         </div>

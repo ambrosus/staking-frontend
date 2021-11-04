@@ -53,10 +53,16 @@ class StakingWrapper {
   }
 
   async _initialize() {
-    const now = Math.floor(Date.now()/1000);
-    const blocksCount = Math.floor(AVERAGING_PERIOD/5);
+    const now = Math.floor(Date.now() / 1000);
+    const blocksCount = Math.floor(AVERAGING_PERIOD / 5);
     const block = await this.providerOrSigner.provider.getBlock(-blocksCount);
-    console.log('block', blocksCount, block.number, now - block.timestamp - AVERAGING_PERIOD, (now - block.timestamp)/blocksCount);
+    console.log(
+      'block',
+      blocksCount,
+      block.number,
+      now - block.timestamp - AVERAGING_PERIOD,
+      (now - block.timestamp) / blocksCount,
+    );
 
     this.headContract = new ethers.Contract(
       headContractAddress,
@@ -164,38 +170,45 @@ class StakingWrapper {
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
-      -Math.floor(AVERAGING_PERIOD/5),
+      -Math.floor(AVERAGING_PERIOD / 5),
       'latest',
     );
 
     const sortedPoolRewards = rewardEvents
-      .filter(event => event.args.pool === this.pools[index].address)
+      .filter((event) => event.args.pool === this.pools[index].address)
       .sort((a, b) => a.args.tokenPrice.gte(b.args.tokenPrice));
 
     // console.log(sortedPoolRewards);
 
-    console.log('REWARD:', await Promise.all(sortedPoolRewards.map(async event => ({
-      n:event.blockNumber,
-      p:event.args.tokenPrice.toString(),
-      f:(await event.getTransactionReceipt()).from,
-      r:event.args.reward.toString()
-    }))));
+    console.log(
+      'REWARD:',
+      await Promise.all(
+        sortedPoolRewards.map(async (event) => ({
+          n: event.blockNumber,
+          p: event.args.tokenPrice.toString(),
+          f: (await event.getTransactionReceipt()).from,
+          r: event.args.reward.toString(),
+        })),
+      ),
+    );
 
-    const [firstReward, lastReward] = await Promise.all(sortedPoolRewards
-      .filter((_, index, array) => index === 0 || index === array.length - 1)
-      .map(async event => ({
-        blockNumber: event.blockNumber,
-        timestamp: (await event.getBlock()).timestamp,
-        pool: event.args.pool,
-        reward: event.args.reward,
-        tokenPrice: event.args.tokenPrice,
-      })));
+    const [firstReward, lastReward] = await Promise.all(
+      sortedPoolRewards
+        .filter((_, index, array) => index === 0 || index === array.length - 1)
+        .map(async (event) => ({
+          blockNumber: event.blockNumber,
+          timestamp: (await event.getBlock()).timestamp,
+          pool: event.args.pool,
+          reward: event.args.reward,
+          tokenPrice: event.args.tokenPrice,
+        })),
+    );
 
     const dpy = exprDPY.evaluate({
-      s1:math.bignumber(firstReward.tokenPrice.toString()),
-      s2:math.bignumber(lastReward.tokenPrice.toString()),
+      s1: math.bignumber(firstReward.tokenPrice.toString()),
+      s2: math.bignumber(lastReward.tokenPrice.toString()),
       t1: lastReward.timestamp,
-      t2: firstReward.timestamp
+      t2: firstReward.timestamp,
     });
 
     console.log('dpy:', dpy.toString());

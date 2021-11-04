@@ -13,10 +13,11 @@ import appStore from '../../../../store/app.store';
 import {
   FIXEDPOINT,
   formatFixed,
+  ONE,
   StakingWrapper,
   ZERO,
 } from '../../../../services/staking.wrapper';
-import { ethereum } from '../../../../utils/constants';
+import { ethereum, round } from '../../../../utils/constants';
 
 const Withdraw = observer(
   ({
@@ -185,7 +186,7 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatFixed(availableSumForWithdraw, 2))
+                  setInputValue(formatFixed(availableSumForWithdraw, 0))
                 }
               >
                 <P size="xs-500">100%</P>
@@ -207,12 +208,13 @@ const Withdraw = observer(
               }}
               type="green"
               disabled={
-                (afterWithdraw && afterWithdraw.lt(0)) ||
-                (availableSumForWithdraw &&
-                  inputValue &&
-                  !ethers.utils
-                    .parseEther(inputValue && inputValue)
-                    .lt(availableSumForWithdraw && availableSumForWithdraw))
+                availableSumForWithdraw &&
+                inputValue &&
+                ethers.utils
+                  .parseEther(inputValue && inputValue)
+                  .gt(
+                    availableSumForWithdraw && availableSumForWithdraw.mul(ONE),
+                  )
               }
               onclick={() => withdrawPayment()}
             >
@@ -232,7 +234,7 @@ const Withdraw = observer(
               Estimated stake after withdraw:{' '}
               {afterWithdraw && afterWithdraw.lt(0)
                 ? 0
-                : formatFixed(afterWithdraw, 2)}{' '}
+                : round(formatFixed(afterWithdraw, 2))}{' '}
               AMB
             </P>
           </div>

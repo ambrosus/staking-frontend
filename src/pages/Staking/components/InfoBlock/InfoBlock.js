@@ -15,6 +15,7 @@ import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../utils/useCopyToClipboard';
+import { round } from '../../../../utils/constants';
 
 const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
@@ -65,7 +66,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                       />
                       <P
                         size="m-400"
-                        style={{ paddingBottom: 5, wordWrap: 'nowrap' }}
+                        style={{ paddingBottom: 5, whiteSpace: 'nowrap' }}
                       >
                         &nbsp;&nbsp;My total stake&nbsp;&nbsp;
                       </P>
@@ -88,7 +89,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     {totalStaked ? (
                       <span>
                         {totalStaked.gte(MINSHOWSTAKE)
-                          ? `${formatFixed(totalStaked, 2)}AMB`
+                          ? `${round(formatFixed(totalStaked, 2))}AMB`
                           : '-'}
                       </span>
                     ) : (
@@ -135,8 +136,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     {' '}
                     {totalReward ? `+${totalReward}  AMB` : '-'}
                   </span>
-                  &nbsp; /
-                  {totalRewardInUsd && ` ${totalRewardInUsd.toFixed(2)}$`}
+                  &nbsp; /{totalRewardInUsd && ` ${round(+totalRewardInUsd)}$`}
                 </P>
               </div>
             </div>

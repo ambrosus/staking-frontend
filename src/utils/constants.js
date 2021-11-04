@@ -1,5 +1,3 @@
-import { ethers } from 'ethers';
-
 export const { ethereum } = window;
 
 export const CONNECT_TEXT = 'Connect Your Wallet';
@@ -41,22 +39,3 @@ export function randomInteger(min, max) {
   const rand = min + Math.random() * (max + 1 - min);
   return rand.toFixed(2);
 }
-
-export const getBalance = async () => {
-  let balance;
-  if (typeof ethereum !== 'undefined') {
-    setInterval(async () => {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      await provider.listAccounts().then(async (accounts) => {
-        const defaultAccount = accounts[0];
-        if (defaultAccount) {
-          await provider.getBalance(defaultAccount).then((balanceObj) => {
-            const balanceInEth = ethers.utils.formatEther(balanceObj);
-            balance = balanceInEth;
-          });
-        }
-      });
-    });
-  }
-  return balance && balance.toString();
-};
