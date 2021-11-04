@@ -34,7 +34,7 @@ const useLogIn = () => {
           })
           .then(async (e) => {
             if (e) {
-              history.push('/stacking');
+              history.push('/staking');
               storageService.set('auth', true);
               appStore.setAuth(true);
               const provider = new ethers.providers.Web3Provider(ethereum);

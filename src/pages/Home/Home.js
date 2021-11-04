@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
-import StackItem from '../../components/StackingItem';
+import StackItem from '../../components/StakingItem';
 import { ethereum } from '../../utils/constants';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
@@ -87,7 +87,7 @@ const Home = () => {
       <a target="_blank" href="https://explorer.ambrosus.io/">
         <P size="xs-500">Explorer</P>
       </a>
-      <Link to="/stacking">
+      <Link to="/staking">
         <P style={{ color: 'white' }} size="xs-500">
           Staking
         </P>
@@ -99,13 +99,13 @@ const Home = () => {
   );
   const poolsData = pools.length > 0 && (
     <>
-      <div className="stacking__header">
-        <div className="stacking__header__clearfix-pool">Pool</div>
-        <div style={{ marginLeft: -36 }}>Total staked</div>
-        <div className="stacking__header__clearfix-apy">Net APY</div>
+      <div className="staking__header">
+        <div className="staking__header__clearfix-pool">Pool</div>
+        <div style={{ marginLeft: -36 }}>Total pool stake</div>
+        <div className="staking__header__clearfix-apy">APY</div>
         <div style={{ maxWidth: 157 }}></div>
       </div>
-      <div className="stacking__pools">
+      <div className="staking__pools">
         {pools &&
           pools.map((pool) => {
             if (pool.active === true) {
@@ -152,9 +152,9 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="stacking">
+        <div className="staking">
           {poolsData}
-          <div className="stacking__loader">{!poolsData && <Loader />}</div>
+          <div className="staking__loader">{!poolsData && <Loader />}</div>
         </div>
         <div className="faq">
           <CollapsedList />

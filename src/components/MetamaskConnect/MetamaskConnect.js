@@ -16,7 +16,7 @@ export const MetamaskConnect = observer(() => {
   const { logIn } = useLogIn();
   useEffect(() => {
     if (storageService.get('auth') === true) {
-      history.push('/stacking');
+      history.push('/staking');
     }
   }, [sessionStorage, appStore.auth]);
 
@@ -30,7 +30,7 @@ export const MetamaskConnect = observer(() => {
       }}
     >
       <ReactSVG src={walletIcon} wrapper="span" />
-      <P size="m-500">&nbsp;&nbsp;Go to stacking</P>
+      <P size="m-500">&nbsp;&nbsp;Go to staking</P>
     </div>
   ) : (
     <div

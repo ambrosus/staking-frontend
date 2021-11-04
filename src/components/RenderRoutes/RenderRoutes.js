@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router';
 import { observer } from 'mobx-react-lite';
 
 import Home from '../../pages/Home';
-import Stacking from '../../pages/Stacking';
+import Staking from '../../pages/Staking';
 import appStore from '../../store/app.store';
 import Footer from '../layouts/Footer';
 
@@ -24,8 +24,8 @@ const RenderRoutes = observer(() =>
     </Switch>
   ) : (
     <Switch>
-      <Route path="/stacking" exact render={() => <Stacking />} />
-      <Redirect to="/stacking" />
+      <Route path="/staking" exact render={() => <Staking />} />
+      <Redirect to="/staking" />
     </Switch>
   ),
 );

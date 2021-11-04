@@ -99,10 +99,10 @@ export const Header = observer(() => {
       <a target="_blank" href="https://explorer.ambrosus.io/">
         <P size="xs-500">Explorer</P>
       </a>
-      <Link to="/stacking">
+      <Link to="/staking">
         <P
           style={{
-            color: location.pathname === '/stacking' ? '#4A38AE' : '#FFFFFF',
+            color: location.pathname === '/staking' ? '#4A38AE' : '#FFFFFF',
           }}
           size="xs-500"
         >
@@ -117,7 +117,7 @@ export const Header = observer(() => {
   return (
     <div className="header">
       <div className="header__logo">
-        <Link to="/stacking">
+        <Link to="/staking">
           <ReactSVG src={headerLogoSvg} wrapper="span" />
         </Link>
       </div>

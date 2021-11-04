@@ -8,7 +8,7 @@ import Collapse from '@kunukn/react-collapse';
 
 import Button from '../Button';
 import P from '../P';
-import Deposit from '../../pages/Stacking/components/Deposit';
+import Deposit from '../../pages/Staking/components/Deposit';
 import appStore from '../../store/app.store';
 import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
 import { SkeletonString } from '../Loader';
@@ -30,7 +30,7 @@ import {
   STAKE,
 } from '../../utils/constants';
 
-const StackingItem = ({
+const StakingItem = ({
   expand = false,
   comingSoon,
   activeExpand,
@@ -148,7 +148,7 @@ const StackingItem = ({
           {poolInfo?.contractName.substring(0, 8)}
         </P>
       </div>
-      {history.location.pathname === '/stacking' && (
+      {history.location.pathname === '/staking' && (
         <div className="item--header__my-stake">
           {comingSoon ? (
             ''
@@ -234,7 +234,7 @@ const StackingItem = ({
     </div>
   );
 };
-StackingItem.propTypes = {
+StakingItem.propTypes = {
   poolInfo: PropTypes.object,
   dispatch: PropTypes.func,
   expand: PropTypes.bool,
@@ -245,4 +245,4 @@ StackingItem.propTypes = {
   activeExpand: PropTypes.number,
   setActiveExpand: PropTypes.func,
 };
-export default StackingItem;
+export default StakingItem;

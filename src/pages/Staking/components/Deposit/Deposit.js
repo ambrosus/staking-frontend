@@ -140,8 +140,8 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="modal--modal-body__header">
           <div>Pool</div>
           <div>My Stake</div>
-          <div>Total staked</div>
-          <div>Net APY</div>
+          <div>Total pool stake</div>
+          <div>APY</div>
         </div>
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="modal--modal-body__header">
@@ -179,9 +179,9 @@ const Deposit = observer(({ depositInfo }) => {
           <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
           <P size="s-400" style={{ fontWeight: 500 }}>
             Available for withdraw:{' '}
-            {availableForWithdraw &&
-              availableForWithdraw.gte(MINSHOWSTAKE) &&
-              formatFixed(availableForWithdraw, 2)}{' '}
+            {availableForWithdraw && availableForWithdraw.gte(MINSHOWSTAKE)
+              ? formatFixed(availableForWithdraw, 2)
+              : 0}{' '}
             AMB
           </P>
         </div>
@@ -328,9 +328,9 @@ const Deposit = observer(({ depositInfo }) => {
           <div style={{ marginBottom: 5 }}>
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
               Available for withdraw:{' '}
-              {availableForWithdraw &&
-                availableForWithdraw.gte(MINSHOWSTAKE) &&
-                formatFixed(availableForWithdraw, 2)}{' '}
+              {availableForWithdraw && availableForWithdraw.gte(MINSHOWSTAKE)
+                ? formatFixed(availableForWithdraw, 2)
+                : 0}{' '}
               AMB
             </P>
 

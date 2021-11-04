@@ -98,6 +98,7 @@ const Withdraw = observer(
 
     const calculateSumAfterWithdraw = () => {
       if (
+        availableSumForWithdraw &&
         availableSumForWithdraw.gte(
           utils.parseEther(!inputValue ? '0' : inputValue),
         )
@@ -137,8 +138,11 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={availableSumForWithdraw.eq(0)}
+                disabled={
+                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
+                }
                 onclick={() =>
+                  availableSumForWithdraw &&
                   setInputValue(formatFixed(availableSumForWithdraw.div(4), 2))
                 }
               >
@@ -150,8 +154,11 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={availableSumForWithdraw.eq(0)}
+                disabled={
+                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
+                }
                 onclick={() =>
+                  availableSumForWithdraw &&
                   setInputValue(formatFixed(availableSumForWithdraw.div(2), 2))
                 }
               >
@@ -163,8 +170,11 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={availableSumForWithdraw.eq(0)}
+                disabled={
+                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
+                }
                 onclick={() =>
+                  availableSumForWithdraw &&
                   setInputValue(
                     formatFixed(availableSumForWithdraw.mul(3).div(4), 2),
                   )
@@ -178,8 +188,11 @@ const Withdraw = observer(
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
-                disabled={availableSumForWithdraw.eq(0)}
+                disabled={
+                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
+                }
                 onclick={() =>
+                  availableSumForWithdraw &&
                   setInputValue(formatFixed(availableSumForWithdraw, 18))
                 }
               >
@@ -201,7 +214,9 @@ const Withdraw = observer(
                 marginRight: 20,
               }}
               type="green"
-              disabled={afterWithdraw.lt(0) || Number(inputValue) < 0}
+              disabled={
+                (afterWithdraw && afterWithdraw.lt(0)) || Number(inputValue) < 0
+              }
               onclick={() => withdrawPayment()}
             >
               <P size="m-500">Withdraw</P>
@@ -218,7 +233,10 @@ const Withdraw = observer(
           <div>
             <P size="s-400" style={{ color: '#9198BB' }}>
               Estimated stake after withdraw:{' '}
-              {afterWithdraw.lt(0) ? 0 : formatFixed(afterWithdraw, 2)} AMB
+              {afterWithdraw && afterWithdraw.lt(0)
+                ? 0
+                : formatFixed(afterWithdraw, 2)}{' '}
+              AMB
             </P>
           </div>
         </div>
