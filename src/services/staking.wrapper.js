@@ -53,16 +53,16 @@ class StakingWrapper {
   }
 
   async _initialize() {
-    const now = Math.floor(Date.now() / 1000);
-    const blocksCount = Math.floor(AVERAGING_PERIOD / 5);
-    const block = await this.providerOrSigner.provider.getBlock(-blocksCount);
-    console.log(
-      'block',
-      blocksCount,
-      block.number,
-      now - block.timestamp - AVERAGING_PERIOD,
-      (now - block.timestamp) / blocksCount,
-    );
+    // const now = Math.floor(Date.now() / 1000);
+    // const blocksCount = Math.floor(AVERAGING_PERIOD / 5);
+    // const block = await this.providerOrSigner.provider.getBlock(-blocksCount);
+    // console.log(
+    //   'block',
+    //   blocksCount,
+    //   block.number,
+    //   now - block.timestamp - AVERAGING_PERIOD,
+    //   (now - block.timestamp) / blocksCount,
+    // );
 
     this.headContract = new ethers.Contract(
       headContractAddress,

@@ -24,7 +24,7 @@ const Button = ({
   );
 };
 Button.propTypes = {
-  disabled: PropTypes.bool,
+  disabled: PropTypes.any,
   onclick: PropTypes.func,
   buttonStyles: PropTypes.object,
   priority: PropTypes.string,

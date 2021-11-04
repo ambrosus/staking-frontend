@@ -21,7 +21,6 @@ const Home = () => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [pools, setPools] = useState([]);
   const stakingWrapper = new StakingWrapper();
-  //  stakingWrapper;
 
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {

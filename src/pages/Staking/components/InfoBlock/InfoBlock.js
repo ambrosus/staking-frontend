@@ -134,9 +134,11 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                 >
                   <span style={{ color: '#1ACD8C' }}>
                     {' '}
-                    {totalReward ? `+${totalReward}  AMB` : '-'}
+                    {totalReward ? `+${round(+totalReward)}  AMB` : '-'}
                   </span>
-                  &nbsp; /{totalRewardInUsd && ` ${round(+totalRewardInUsd)}$`}
+                  &nbsp; /
+                  {totalRewardInUsd &&
+                    ` ${round(+totalRewardInUsd.toFixed(2))}$`}
                 </P>
               </div>
             </div>
@@ -151,7 +153,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
 InfoBlock.propTypes = {
   account: PropTypes.string,
   totalReward: PropTypes.string,
-  totalStaked: PropTypes.object,
+  totalStaked: PropTypes.any,
   totalRewardInUsd: PropTypes.number,
 };
 export default InfoBlock;
