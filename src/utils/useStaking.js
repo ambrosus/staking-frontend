@@ -87,7 +87,7 @@ const useStaking = () => {
     return () => checkEthereumNetwork();
   }, [correctNetwork]);
   useEffect(() => {
-    const inteval = setInterval(async () => {
+    const intervProc = async () => {
       if (storageService.get('auth') === true) {
         if (
           ethereum &&
@@ -137,7 +137,9 @@ const useStaking = () => {
           }
         }
       }
-    }, 3000);
+    };
+    intervProc();
+    const inteval = setInterval(intervProc, 3000);
     return () => clearInterval(inteval);
   }, []);
 

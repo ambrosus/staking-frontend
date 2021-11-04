@@ -55,7 +55,6 @@ const StakingItem = ({
         if (ethereum && ethereum.isMetaMask) {
           provider = new ethers.providers.Web3Provider(ethereum);
         } else {
-          // stakingWrapper.getAPY();
           alertStore.addNotification({
             content: InstallMetamaskAlert,
             container: 'bottom-right',
@@ -64,30 +63,30 @@ const StakingItem = ({
           });
         }
       }
-      if (provider) {
-        interv = setInterval(async () => {
-          if (provider) {
-            const singer = provider.getSigner();
-            if (singer) {
-              const stakingWrapper = new StakingWrapper(singer);
-              const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-                await stakingWrapper.getPoolData(poolInfo.index);
-              setMyStake(myStakeInAMB);
-              setAPYOfPool(poolAPY);
-              setTotalStake(totalStakeInAMB);
-            }
+      const loggedInRefresh = async () => {
+        if (provider) {
+          const singer = provider.getSigner();
+          if (singer) {
+            const stakingWrapper = new StakingWrapper(singer);
+            const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+              await stakingWrapper.getPoolData(poolInfo.index);
+            setMyStake(myStakeInAMB);
+            setAPYOfPool(poolAPY);
+            setTotalStake(totalStakeInAMB);
           }
-        }, 2000);
-      } else {
-        interv = setInterval(async () => {
-          const stakingWrapper = new StakingWrapper();
-          const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
-            poolInfo.index,
-          );
-          setAPYOfPool(poolAPY);
-          setTotalStake(totalStakeInAMB);
-        }, 4000);
-      }
+        }
+      };
+      const loggedOutRefresh = async () => {
+        const stakingWrapper = new StakingWrapper();
+        const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
+          poolInfo.index,
+        );
+        setAPYOfPool(poolAPY);
+        setTotalStake(totalStakeInAMB);
+      };
+      const refreshProc = provider ? loggedInRefresh : loggedOutRefresh;
+      refreshProc();
+      interv = setInterval(refreshProc, 5000);
     } catch (switchError) {
       if (switchError.code === 4902) {
         ethereum.request({

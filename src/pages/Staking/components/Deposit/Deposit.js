@@ -92,35 +92,32 @@ const Deposit = observer(({ depositInfo }) => {
   useEffect(() => {
     let interv;
     let provider;
-    const asyncFn = async () => {
-      if (ethereum && ethereum.isMetaMask) {
-        provider = new ethers.providers.Web3Provider(ethereum);
-      }
-    };
-    asyncFn().then(() => {
-      if (provider) {
-        interv = setInterval(async () => {
-          provider.listAccounts().then((accounts) => {
-            const defaultAccount = accounts[0];
-            if (defaultAccount) {
-              provider.getBalance(defaultAccount).then((balanceObj) => {
-                setBalance(balanceObj);
-              });
-            }
-          });
-          const singer = provider.getSigner();
-          if (singer) {
-            const stakingWrapper = new StakingWrapper(singer);
-            const { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, poolAPY } =
-              await stakingWrapper.getPoolData(depositInfo.index);
-            setTokenPrice(tokenPriceAMB);
-            setMyStake(myStakeInAMB);
-            setTotalStake(totalStakeInAMB);
-            setAPYOfPool(poolAPY);
+
+    if (ethereum && ethereum.isMetaMask) {
+      provider = new ethers.providers.Web3Provider(ethereum);
+      const refreshProc = async () => {
+        provider.listAccounts().then((accounts) => {
+          const defaultAccount = accounts[0];
+          if (defaultAccount) {
+            provider.getBalance(defaultAccount).then((balanceObj) => {
+              setBalance(balanceObj);
+            });
           }
-        }, 5000);
-      }
-    });
+        });
+        const singer = provider.getSigner();
+        if (singer) {
+          const stakingWrapper = new StakingWrapper(singer);
+          const { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, poolAPY } =
+            await stakingWrapper.getPoolData(depositInfo.index);
+          setTokenPrice(tokenPriceAMB);
+          setMyStake(myStakeInAMB);
+          setTotalStake(totalStakeInAMB);
+          setAPYOfPool(poolAPY);
+        }
+      };
+      refreshProc();
+      interv = setInterval(refreshProc, 5000);
+    }
 
     return () => clearInterval(interv);
   }, []);
