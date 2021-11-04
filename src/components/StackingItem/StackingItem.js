@@ -77,7 +77,7 @@ const StackingItem = ({
               setTotalStake(totalStakeInAMB);
             }
           }
-        }, 5000);
+        }, 4000);
       } else {
         const stakingWrapper = new StakingWrapper();
         const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
@@ -115,7 +115,7 @@ const StackingItem = ({
   useEffect(() => {
     updateState();
     return () => clearInterval(interv);
-  }, [hasChain]);
+  }, []);
 
   const sleepForDisplaying = (val) => {
     if (val && val.lte(BigNumber.from('0'))) {

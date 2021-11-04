@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { ethers } from 'ethers';
 import { ToastContainer, cssTransition } from 'react-toastify';
 
-import { ethereum } from '../../utils/constants';
+import { ambMounthUSD, ethereum } from '../../utils/constants';
 import StackingItem from '../../components/StackingItem';
 import P from '../../components/P';
 import useCopyToClipboard from '../../utils/useCopyToClipboard';
@@ -41,6 +41,7 @@ const Stacking = observer(() => {
   const [totalStaked, setTotalStaked] = useState(ZERO);
   const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState('');
+  const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
@@ -137,7 +138,6 @@ const Stacking = observer(() => {
             if (signer) {
               const stakingWrapper = new StakingWrapper(signer);
               const poolsArr = await stakingWrapper.getPools();
-              // console.log(poolsArr);
               if (poolsArr) {
                 setPools(poolsArr);
                 poolsArr.forEach(async (item) => {
@@ -149,6 +149,10 @@ const Stacking = observer(() => {
                         prevState.add(myStakeInAMB),
                       );
                       setTotalReward(estDR);
+                      const priceInUsd = await ambMounthUSD(1);
+                      if (priceInUsd && estDR) {
+                        setTotalRewardInUsd(+priceInUsd * estDR);
+                      }
                     }
                     if (appStore.observer === 0) {
                       setTotalStaked(ethers.BigNumber.from('0'));
@@ -160,7 +164,7 @@ const Stacking = observer(() => {
           }
         }
       }
-    }, 8000);
+    }, 3000);
     return () => clearInterval(inteval);
   }, []);
 
@@ -224,9 +228,12 @@ const Stacking = observer(() => {
                 {appStore.observer < 1 ? (
                   <SkeletonString />
                 ) : (
-                  <P size="xl-400" style={{ color: '#4A38AE' }}>
+                  <P
+                    size="xl-400"
+                    style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
+                  >
                     {totalStaked && totalStaked.gte(MINSHOWSTAKE) ? (
-                      <span>{formatFixed(totalStaked, 2)} &nbsp;&nbsp;AMB</span>
+                      <span>{formatFixed(totalStaked, 2)} AMB</span>
                     ) : (
                       '-'
                     )}
@@ -263,12 +270,16 @@ const Stacking = observer(() => {
                   />
                 </div>
 
-                <P size="xl-400" style={{ color: '#4A38AE' }}>
+                <P
+                  size="xl-400"
+                  style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
+                >
                   <span style={{ color: '#1ACD8C' }}>
                     {' '}
                     {totalReward ? `+${totalReward}  AMB` : '-'}
                   </span>
-                  &nbsp; / 34$
+                  &nbsp; /
+                  {totalRewardInUsd && ` ${totalRewardInUsd.toFixed(2)}$`}
                 </P>
               </div>
             </div>

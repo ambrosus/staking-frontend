@@ -1,16 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { ReactSVG } from 'react-svg';
+
 import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
 
 const Input = ({
   type = 'number',
   onchange,
   iconLeft,
+  error = false,
   placeholder = '',
   value = '',
 }) => (
-  <div className="input">
+  <div
+    className={classNames('input', {
+      'input-error': error,
+    })}
+  >
     <input
       type={type}
       placeholder={placeholder}
@@ -36,5 +43,6 @@ Input.propTypes = {
   onchange: PropTypes.func,
   placeholder: PropTypes.string,
   value: PropTypes.any,
+  error: PropTypes.bool,
 };
 export default Input;

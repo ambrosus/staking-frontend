@@ -238,6 +238,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Input
             onchange={setInputValue}
             iconLeft
+            error={errorStakeSum}
             placeholder="1000 min"
             value={inputValue}
             type="number"

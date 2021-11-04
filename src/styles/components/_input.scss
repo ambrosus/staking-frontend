@@ -64,3 +64,18 @@ input[type=number] {
   top: 13px;
   right: 8px;
 }
+
+  .input-error input[type="number"]:focus,
+  .input-error input[type="email"]:focus,
+  .input-error input[type="password"]:focus {
+    border: 2px solid $red !important;
+    color: $red !important;
+  }
+
+  .input-error input[type="number"],
+  .input-error input[type="email"],
+  .input-error input[type="password"] {
+    border: 2px solid $red !important;
+    color: $red;
+  }
+
