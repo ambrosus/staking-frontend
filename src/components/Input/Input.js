@@ -15,7 +15,7 @@ const Input = ({
 }) => (
   <div
     className={classNames('input', {
-      'input-error': error,
+      'input-error': value && error,
     })}
   >
     <input

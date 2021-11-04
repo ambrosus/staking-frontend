@@ -12,7 +12,7 @@ import {
   ZERO,
   formatFixed,
   MINSHOWSTAKE,
-  ONE,
+  THOUSAND,
 } from '../../../../services/staking.wrapper';
 import { ethereum } from '../../../../utils/constants';
 
@@ -26,6 +26,7 @@ import appStore from '../../../../store/app.store';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
+  const [errorStakeSum, setErrorStakeSum] = useState(false);
   const [availableForWithdraw, setAvailableForWithdraw] = useState(0);
   const [myStake, setMyStake] = useState(ZERO);
   const [balance, setBalance] = useState(ZERO);
@@ -34,7 +35,6 @@ const Deposit = observer(({ depositInfo }) => {
   const [APYOfPool, setAPYOfPool] = useState('');
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
-  const [errorStakeSum, setErrorStakeSum] = useState(false);
   const checkoutPayment = async () => {
     const provider = new ethers.providers.Web3Provider(ethereum, 'any');
     if (provider) {
@@ -70,7 +70,7 @@ const Deposit = observer(({ depositInfo }) => {
                       6,
                     )}...${result.transactionHash.slice(60)} success!`,
                   );
-                  setInputValue('0');
+                  setInputValue('');
                   appStore.setObserverValue(-2);
                 })
                 .catch(() => {
@@ -80,7 +80,7 @@ const Deposit = observer(({ depositInfo }) => {
                       60,
                     )} failed!`,
                   );
-                  setInputValue('0');
+                  setInputValue('');
                 });
             }
           });
@@ -131,9 +131,7 @@ const Deposit = observer(({ depositInfo }) => {
     setErrorStakeSum(
       inputValue &&
         tokenPrice &&
-        tokenPrice
-          .mul(ONE.mul(1000))
-          .gt(ethers.utils.parseEther(inputValue).mul(tokenPrice)),
+        ethers.utils.parseEther(`${inputValue}`).gte(THOUSAND),
     );
   }, [inputValue]);
   const withdrawForm = (
@@ -228,7 +226,7 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="deposit-heading">
           {' '}
           <P size="s-400">Amount</P>
-          {inputValue && tokenPrice && errorStakeSum && (
+          {inputValue && tokenPrice && !errorStakeSum && (
             <P style={{ color: '#FF6767' }} size="s-400">
               &nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
             </P>
@@ -238,7 +236,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Input
             onchange={setInputValue}
             iconLeft
-            error={errorStakeSum}
+            error={!errorStakeSum}
             placeholder="1000 min"
             value={inputValue}
             type="number"

@@ -10,6 +10,7 @@ const ONE = BigNumber.from(1);
 const TEN = BigNumber.from(10);
 const FIXEDPOINT = TEN.pow(18); // 1.0 ether
 const MINSHOWSTAKE = FIXEDPOINT.div(100); // 0.01 ether
+const THOUSAND = FIXEDPOINT.mul('1000');
 
 const math = create(all, {
   number: 'BigNumber',
@@ -156,7 +157,7 @@ class StakingWrapper {
       poolAPY,
       estDR,
     };
-    console.log(poolData);
+    // console.log(poolData);
     return poolData;
   }
 
@@ -219,4 +220,5 @@ export {
   TEN,
   FIXEDPOINT,
   MINSHOWSTAKE,
+  THOUSAND,
 };
