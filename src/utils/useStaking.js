@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import { BigNumber, providers, utils } from 'ethers';
 
 import { StakingWrapper, ZERO } from '../services/staking.wrapper';
 import { ambMounthUSD, ethereum } from './constants';
@@ -10,7 +10,7 @@ import storageService from '../services/storage.service';
 const useStaking = () => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);
-  const [totalStaked, setTotalStaked] = useState(-ZERO);
+  const [totalStaked, setTotalStaked] = useState(ZERO);
   const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState('');
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
@@ -21,7 +21,7 @@ const useStaking = () => {
 
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
@@ -33,7 +33,7 @@ const useStaking = () => {
                 method: 'wallet_addEthereumChain',
                 params: [
                   {
-                    chainId: `${ethers.utils.hexlify(
+                    chainId: `${utils.hexlify(
                       +process.env.REACT_APP_CHAIN_ID,
                     )}`,
                     chainName: 'Ambrosus Test',
@@ -63,7 +63,7 @@ const useStaking = () => {
     }
   };
   const checkEthereumNetwork = async () => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
+    const provider = new providers.Web3Provider(ethereum);
     const { chainId } = await provider.getNetwork();
     if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
       setCorrectNetwork(false);
@@ -95,7 +95,7 @@ const useStaking = () => {
           correctNetwork &&
           requestNetworkChange
         ) {
-          const provider = new ethers.providers.Web3Provider(ethereum);
+          const provider = new providers.Web3Provider(ethereum);
           const { chainId } = await provider.getNetwork();
           setUserChainId(chainId);
           appStore.incrementObserver();
@@ -118,8 +118,8 @@ const useStaking = () => {
                     if (appStore.observer === 1) {
                       const { myStakeInAMB, estDR } =
                         await stakingWrapper.getPoolData(item.index);
-                      setTotalStaked((prevState) =>
-                        prevState.add(myStakeInAMB),
+                      setTotalStaked(
+                        (prevState) => prevState && prevState.add(myStakeInAMB),
                       );
                       setTotalReward(estDR);
                       const priceInUsd = await ambMounthUSD(1);
@@ -128,7 +128,7 @@ const useStaking = () => {
                       }
                     }
                     if (appStore.observer === 0) {
-                      setTotalStaked(ethers.BigNumber.from('0'));
+                      setTotalStaked(BigNumber.from('0'));
                     }
                   }
                 });
@@ -138,9 +138,8 @@ const useStaking = () => {
         }
       }
     };
-    intervProc();
-    const inteval = setInterval(intervProc, 3000);
-    return () => clearInterval(inteval);
+    const interval = setInterval(intervProc, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   return {

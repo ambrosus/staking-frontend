@@ -52,11 +52,11 @@ const Staking = observer(() => {
               {pools.length > 0 && (
                 <>
                   <div className="staking__header">
-                    <div style={{ flexBasis: 64 }}>Pool</div>
-                    <div style={{ flexBasis: 26 }}>My Stake</div>
-                    <div style={{ flexBasis: 29 }}>Total pool stake</div>
-                    <div style={{ flexBasis: 26 }}>APY</div>
-                    <div style={{ maxWidth: 167, marginRight: -6 }} />
+                    <div>Pool</div>
+                    <div>My Stake</div>
+                    <div>Total pool stake</div>
+                    <div>APY</div>
+                    <div style={{ marginRight: -45 }} />
                   </div>
                   {pools.map(
                     (item, index) =>

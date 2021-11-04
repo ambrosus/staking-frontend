@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
-import { ethers } from 'ethers';
+import { providers, utils } from 'ethers';
 
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
@@ -24,7 +24,7 @@ const Home = () => {
 
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         try {
@@ -33,9 +33,7 @@ const Home = () => {
               method: 'wallet_addEthereumChain',
               params: [
                 {
-                  chainId: `${ethers.utils.hexlify(
-                    +process.env.REACT_APP_CHAIN_ID,
-                  )}`,
+                  chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
                   chainName: 'Ambrosus Test',
                   nativeCurrency: {
                     name: 'AMB',
@@ -62,7 +60,7 @@ const Home = () => {
   };
   const initEthereumNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
@@ -100,9 +98,9 @@ const Home = () => {
     <>
       <div className="staking__header">
         <div className="staking__header__clearfix-pool">Pool</div>
-        <div style={{ marginLeft: -36 }}>Total pool stake</div>
+        <div>Total pool stake</div>
         <div className="staking__header__clearfix-apy">APY</div>
-        <div style={{ maxWidth: 157 }}></div>
+        <div style={{ maxWidth: 160, minWidth: 160 }}></div>
       </div>
       <div className="staking__pools">
         {pools &&

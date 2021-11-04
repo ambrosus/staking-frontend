@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router';
 import { store as alertStore } from 'react-notifications-component';
-import { ethers } from 'ethers';
+import { providers } from 'ethers';
 
 import storageService from '../services/storage.service';
 import appStore from '../store/app.store';
@@ -37,7 +37,7 @@ const useLogIn = () => {
               history.push('/staking');
               storageService.set('auth', true);
               appStore.setAuth(true);
-              const provider = new ethers.providers.Web3Provider(ethereum);
+              const provider = new providers.Web3Provider(ethereum);
               provider.on('network', (newNetwork, oldNetwork) => {
                 if (oldNetwork) {
                   window.location.reload();

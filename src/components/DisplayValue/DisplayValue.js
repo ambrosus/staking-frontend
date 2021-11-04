@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import ReactLoading from 'react-loading';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import * as PropTypes from 'prop-types';
+import { round } from '../../utils/constants';
 
-const Loader = () => (
-  <div className="loader">
-    <ReactLoading type="spokes" color="#4A38AE" />
-  </div>
-);
+import P from '../P';
 
-const SkeletonString = ({ flag }) => {
+const DisplayValue = ({ flag, value, size = 'l-400', color = '#333333' }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -17,12 +13,12 @@ const SkeletonString = ({ flag }) => {
     if (flag) {
       timing = setTimeout(() => {
         setShow(flag);
-      }, 2000);
+      }, 1000);
     }
     return () => show && clearTimeout(timing);
-  }, [show, flag]);
+  }, [show, flag, value]);
 
-  return (
+  return !show ? (
     <div className="skeleton">
       <SkeletonTheme color="#FFFFFF" highlightColor="rgba(215, 215, 215, 0.53)">
         <p>
@@ -34,9 +30,16 @@ const SkeletonString = ({ flag }) => {
         </p>
       </SkeletonTheme>
     </div>
+  ) : (
+    <P style={{ color, whiteSpace: 'nowrap' }} size={size}>
+      {value && `${round(value)} AMB`}
+    </P>
   );
 };
-SkeletonString.propTypes = {
+DisplayValue.propTypes = {
   flag: PropTypes.bool,
+  value: PropTypes.any,
+  size: PropTypes.string,
+  color: PropTypes.string,
 };
-export { Loader, SkeletonString };
+export default DisplayValue;

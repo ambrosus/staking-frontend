@@ -1,7 +1,7 @@
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
-import { ethers, utils } from 'ethers';
+import { ethers, providers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
@@ -35,7 +35,7 @@ const Deposit = observer(({ depositInfo }) => {
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   const checkoutPayment = async () => {
-    const provider = new ethers.providers.Web3Provider(ethereum, 'any');
+    const provider = new providers.Web3Provider(ethereum, 'any');
     if (provider) {
       const signer = provider.getSigner();
       if (signer) {
@@ -46,8 +46,8 @@ const Deposit = observer(({ depositInfo }) => {
         );
         const contractWithSigner = poolContract.connect(signer);
         const overrides = {
-          value: ethers.utils.parseEther(inputValue), //
-          gasPrice: ethers.utils.parseUnits('20', 'gwei'),
+          value: utils.parseEther(inputValue), //
+          gasPrice: utils.parseUnits('20', 'gwei'),
           gasLimit: 1000000,
         };
         if (contractWithSigner) {
@@ -94,7 +94,7 @@ const Deposit = observer(({ depositInfo }) => {
     let provider;
 
     if (ethereum && ethereum.isMetaMask) {
-      provider = new ethers.providers.Web3Provider(ethereum);
+      provider = new providers.Web3Provider(ethereum);
       const refreshProc = async () => {
         provider.listAccounts().then((accounts) => {
           const defaultAccount = accounts[0];
@@ -126,7 +126,7 @@ const Deposit = observer(({ depositInfo }) => {
     setErrorStakeSum(
       inputValue &&
         tokenPrice &&
-        ethers.utils.parseEther(`${inputValue}`).gte(THOUSAND),
+        utils.parseEther(`${inputValue}`).gte(THOUSAND),
     );
   }, [inputValue]);
   const withdrawForm = (

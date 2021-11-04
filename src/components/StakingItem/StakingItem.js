@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, providers, utils } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
 
@@ -13,6 +13,7 @@ import appStore from '../../store/app.store';
 import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
 import { SkeletonString } from '../Loader';
 import useLogIn from '../../utils/useLogIn';
+import DisplayValue from '../DisplayValue';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
 
@@ -21,14 +22,7 @@ import {
   MINSHOWSTAKE,
   ZERO,
 } from '../../services/staking.wrapper';
-import {
-  COMING_SOON,
-  ethereum,
-  HIDE,
-  round,
-  SHOW,
-  STAKE,
-} from '../../utils/constants';
+import { ethereum, HIDE, SHOW, STAKE } from '../../utils/constants';
 
 const StakingItem = ({
   expand = false,
@@ -53,7 +47,7 @@ const StakingItem = ({
     try {
       if (appStore.auth) {
         if (ethereum && ethereum.isMetaMask) {
-          provider = new ethers.providers.Web3Provider(ethereum);
+          provider = new providers.Web3Provider(ethereum);
         } else {
           alertStore.addNotification({
             content: InstallMetamaskAlert,
@@ -93,9 +87,7 @@ const StakingItem = ({
           method: 'wallet_addEthereumChain',
           params: [
             {
-              chainId: `${ethers.utils.hexlify(
-                +process.env.REACT_APP_CHAIN_ID,
-              )}`,
+              chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
               chainName: 'Ambrosus Test',
               nativeCurrency: {
                 name: 'AMB',
@@ -116,7 +108,7 @@ const StakingItem = ({
   useEffect(() => {
     updateState();
     return () => clearInterval(interv);
-  }, []);
+  }, [myStake, totalStake, APYOfPool]);
 
   const sleepForDisplaying = (val) => {
     if (val && val.lte(BigNumber.from('0'))) {
@@ -124,12 +116,18 @@ const StakingItem = ({
     }
     if (val && val.lte(MINSHOWSTAKE)) {
       return (
-        <P size="l-400">{`${round(ethers.utils.formatEther(val))} AMB`}</P>
+        <DisplayValue
+          value={utils.formatEther(val)}
+          flag={!!utils.formatEther(val)}
+        />
       );
     }
     if (val && val.gte(MINSHOWSTAKE)) {
       return (
-        <P size="l-400">{`${round(ethers.utils.formatEther(val))} AMB`}</P>
+        <DisplayValue
+          value={utils.formatEther(val)}
+          flag={!!utils.formatEther(val)}
+        />
       );
     }
     return false;
@@ -137,88 +135,95 @@ const StakingItem = ({
 
   const stackHeader = (
     <div className="item--header" role="presentation">
-      <div className="item--header__pool">
-        <ReactSVG src={avatarIcon} wrapper="span" />
-        <P
+      <div
+        className="item--header__flex"
+        style={{
+          paddingRight: history.location.pathname === '/staking' ? 100 : 100,
+        }}
+      >
+        <div
           style={{
-            textTransform: 'uppercase',
-            color: comingSoon && '#BFC9E0',
+            marginRight: history.location.pathname === '/staking' ? 10 : '',
           }}
-          size="l-500"
+          className="item--header__flex__pool"
         >
-          {poolInfo?.contractName.substring(0, 8)}
-        </P>
-      </div>
-      {history.location.pathname === '/staking' && (
-        <div className="item--header__my-stake">
-          {comingSoon ? (
-            ''
-          ) : (
-            <span style={{ width: 150 }}>
-              {myStake && sleepForDisplaying(myStake)}
-            </span>
-          )}
-        </div>
-      )}
-
-      <div className="item--header__vault-assets">
-        <div>
-          {comingSoon ? (
-            ''
-          ) : (
-            <>
-              {' '}
-              <div style={{ width: 150 }}>
-                {totalStake && sleepForDisplaying(totalStake)}
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-      <div className="item--header__apy">
-        {APYOfPool ? (
-          <P style={{ textTransform: 'uppercase' }} size="l-700">
-            {`${APYOfPool}%`}
+          <ReactSVG src={avatarIcon} wrapper="span" />
+          <P
+            style={{
+              textTransform: 'uppercase',
+              color: comingSoon && '#BFC9E0',
+            }}
+            size="l-500"
+          >
+            {poolInfo?.contractName.substring(0, 8)}
           </P>
-        ) : (
-          <SkeletonString />
+        </div>
+        {history.location.pathname === '/staking' && (
+          <div
+            style={{
+              marginRight: history.location.pathname === '/staking' ? 10 : '',
+            }}
+            className="item--header__flex__my-stake"
+          >
+            {comingSoon ? (
+              ''
+            ) : (
+              <span style={{ width: 150 }}>
+                {myStake && sleepForDisplaying(myStake)}
+              </span>
+            )}
+          </div>
         )}
-      </div>
-      {comingSoon ? (
-        <div style={{ minWidth: 160, maxWidth: 160 }}>
-          <Button disabled priority="secondary">
-            <P style={{ textTransform: 'uppercase' }} size="m-500">
-              {COMING_SOON}
-            </P>
-          </Button>
+
+        <div className="item--header__flex__vault-assets">
+          <div>
+            {comingSoon ? (
+              ''
+            ) : (
+              <>
+                {' '}
+                <div style={{ width: 150 }}>
+                  {totalStake && sleepForDisplaying(totalStake)}
+                </div>
+              </>
+            )}
+          </div>
         </div>
-      ) : (
-        <Button
-          type="primary"
-          onclick={() => {
-            if (expand) {
-              setActiveExpand(index);
-              dispatch({ type: 'toggle', index });
-              if (index === activeExpand) {
-                dispatch({ type: 'hide', index });
-              }
-              if (index === activeExpand && !state[index]) {
-                dispatch({ type: 'toggle', index });
-              }
-            } else {
-              /* eslint-disable-next-line */
-              if (hasChain === true) {
-                logIn();
-              }
+        <div className="item--header__flex__apy">
+          {APYOfPool ? (
+            <P style={{ textTransform: 'uppercase' }} size="l-700">
+              {`${APYOfPool}%`}
+            </P>
+          ) : (
+            <SkeletonString />
+          )}
+        </div>
+      </div>
+      <Button
+        type="primary"
+        onclick={() => {
+          if (expand) {
+            setActiveExpand(index);
+            dispatch({ type: 'toggle', index });
+            if (index === activeExpand) {
+              dispatch({ type: 'hide', index });
             }
-          }}
-        >
-          <P style={{ textTransform: 'uppercase' }} size="m-500">
-            {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
-            {!expand && STAKE}
-          </P>
-        </Button>
-      )}
+            if (index === activeExpand && !state[index]) {
+              dispatch({ type: 'toggle', index });
+            }
+          } else {
+            /* eslint-disable-next-line */
+            if (hasChain === true) {
+              logIn();
+            }
+          }
+        }}
+      >
+        <P style={{ textTransform: 'uppercase' }} size="m-500">
+          {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
+          {!expand && STAKE}
+        </P>
+      </Button>
     </div>
   );
   return (

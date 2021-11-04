@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { contractJsons, pool } from 'ambrosus-node-contracts';
-import { ethers, BigNumber } from 'ethers';
+import { ethers, BigNumber, providers } from 'ethers';
 import { create, all } from 'mathjs';
 
 const ZERO = BigNumber.from(0);
@@ -24,7 +24,7 @@ const headContractAddress = '0x0000000000000000000000000000000000000F10';
 
 function formatFixed(bigNumber, digits = 18) {
   digits = Math.floor(digits);
-  if (bigNumber && ethers.BigNumber.isBigNumber(bigNumber)) {
+  if (bigNumber && BigNumber.isBigNumber(bigNumber)) {
     if (digits < 0 || digits > 18) {
       throw new Error('digits out of range');
     }
@@ -43,7 +43,7 @@ class StakingWrapper {
   constructor(providerOrSigner = null) {
     //  console.log('StakingWrapper', providerOrSigner);
     if (!providerOrSigner) {
-      providerOrSigner = new ethers.providers.JsonRpcProvider(
+      providerOrSigner = new providers.JsonRpcProvider(
         process.env.REACT_APP_RPC_URL,
       );
     }
@@ -161,7 +161,7 @@ class StakingWrapper {
       poolAPY,
       estDR,
     };
-    console.log(poolData);
+    // console.log(poolData);
     return poolData;
   }
 
@@ -180,17 +180,17 @@ class StakingWrapper {
 
     // console.log(sortedPoolRewards);
 
-    console.log(
-      'REWARD:',
-      await Promise.all(
-        sortedPoolRewards.map(async (event) => ({
-          n: event.blockNumber,
-          p: event.args.tokenPrice.toString(),
-          f: (await event.getTransactionReceipt()).from,
-          r: event.args.reward.toString(),
-        })),
-      ),
-    );
+    // console.log(
+    //   'REWARD:',
+    //   await Promise.all(
+    //     sortedPoolRewards.map(async (event) => ({
+    //       n: event.blockNumber,
+    //       p: event.args.tokenPrice.toString(),
+    //       f: (await event.getTransactionReceipt()).from,
+    //       r: event.args.reward.toString(),
+    //     })),
+    //   ),
+    // );
 
     const [firstReward, lastReward] = await Promise.all(
       sortedPoolRewards
@@ -211,7 +211,7 @@ class StakingWrapper {
       t2: firstReward.timestamp,
     });
 
-    console.log('dpy:', dpy.toString());
+    // console.log('dpy:', dpy.toString());
     return dpy;
   }
 }

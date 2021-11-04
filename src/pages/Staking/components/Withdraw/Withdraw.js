@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { ethers, utils } from 'ethers';
+import { ethers, providers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
@@ -31,7 +31,7 @@ const Withdraw = observer(
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
 
     const withdrawPayment = async () => {
-      const provider = new ethers.providers.Web3Provider(ethereum, 'any');
+      const provider = new providers.Web3Provider(ethereum, 'any');
       if (provider) {
         const signer = provider.getSigner();
         if (signer) {
@@ -45,7 +45,7 @@ const Withdraw = observer(
             withdrawContractInfo.index,
           );
 
-          const decimal = ethers.utils
+          const decimal = utils
             .parseEther(inputValue)
             .mul(FIXEDPOINT)
             .div(tokenPriceAMB);
@@ -53,7 +53,7 @@ const Withdraw = observer(
 
           const contractWithSigner = poolContract.connect(signer);
           const overrides = {
-            gasPrice: ethers.utils.parseUnits('20', 'gwei'),
+            gasPrice: utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
           if (contractWithSigner) {

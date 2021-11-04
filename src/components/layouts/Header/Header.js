@@ -3,7 +3,7 @@ import { ReactSVG } from 'react-svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
-import { ethers } from 'ethers';
+import { providers } from 'ethers';
 
 import P from '../../P';
 import storageService from '../../../services/storage.service';
@@ -49,7 +49,7 @@ export const Header = observer(() => {
             history.push('/');
           }
         });
-        const provider = new ethers.providers.Web3Provider(ethereum);
+        const provider = new providers.Web3Provider(ethereum);
         provider
           .listAccounts()
           .then((accounts) => {

@@ -6,16 +6,14 @@ import ReactTooltip from 'react-tooltip';
 import P from '../../../../components/P';
 import appStore from '../../../../store/app.store';
 import { Loader, SkeletonString } from '../../../../components/Loader';
-import {
-  formatFixed,
-  MINSHOWSTAKE,
-} from '../../../../services/staking.wrapper';
+import { formatFixed } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../utils/useCopyToClipboard';
 import { round } from '../../../../utils/constants';
+import DisplayValue from '../../../../components/DisplayValue';
 
 const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
@@ -28,7 +26,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
               <P size="m-400" style={{ paddingBottom: 5 }}>
                 My Address
               </P>
-              <P size="xl-400" style={{ color: '#333333' }}>
+              <P size="l-500" style={{ color: '#333333' }}>
                 {account && account}
                 <ReactSVG
                   data-tip
@@ -86,15 +84,12 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     size="xl-400"
                     style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
                   >
-                    {totalStaked ? (
-                      <span>
-                        {totalStaked.gte(MINSHOWSTAKE)
-                          ? `${round(formatFixed(totalStaked, 2))}AMB`
-                          : '-'}
-                      </span>
-                    ) : (
-                      <SkeletonString />
-                    )}
+                    <DisplayValue
+                      color="#4A38AE"
+                      size="xl-400"
+                      value={formatFixed(totalStaked, 2)}
+                      flag={!!formatFixed(totalStaked, 2)}
+                    />
                   </P>
                 )}
               </div>
@@ -128,18 +123,23 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                   />
                 </div>
 
-                <P
-                  size="xl-400"
-                  style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
-                >
-                  <span style={{ color: '#1ACD8C' }}>
-                    {' '}
-                    {totalReward ? `+${round(+totalReward)}  AMB` : '-'}
-                  </span>
-                  &nbsp; /
-                  {totalRewardInUsd &&
-                    ` ${round(+totalRewardInUsd.toFixed(2))}$`}
-                </P>
+                {totalReward ? (
+                  <P
+                    size="xl-400"
+                    style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
+                  >
+                    <span style={{ color: '#1ACD8C' }}>
+                      {' '}
+                      {totalReward ? ` +${round(+totalReward)} AMB` : ' - AMB'}
+                    </span>
+                    &nbsp; /
+                    {totalRewardInUsd
+                      ? ` ${round(+totalRewardInUsd.toFixed(2))} $`
+                      : '- $'}{' '}
+                  </P>
+                ) : (
+                  <SkeletonString />
+                )}
               </div>
             </div>
           </>

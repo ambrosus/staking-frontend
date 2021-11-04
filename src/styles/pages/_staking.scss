@@ -28,23 +28,24 @@
     font-size: 14px;
     line-height: 17px;
     color: #9198BB;
+    white-space: nowrap;
 
     &__clearfix-pool {
-      margin-right: 70px;
-      @media (max-width: 480px) {
-        margin-right: 108px;
-      }
+      white-space: nowrap;
+
     }
 
     &__clearfix-apy {
-      padding-left: 7px;
-      @media (max-width: 480px) {
-        padding-left: 0px;
-      }
+      white-space: nowrap;
+
     }
 
     > div {
-      flex: 1;
+      white-space: nowrap;
+      display: flex;
+      align-items: flex-end;
+      min-width: 200px;
+      max-width: 200px;
     }
   }
 
@@ -73,38 +74,42 @@
       justify-content: space-between;
       padding: 20px 20px;
 
-      &__pool {
+      &__flex {
         display: flex;
-        flex-direction: row;
         align-items: center;
-        margin-right: 18px;
-
-        p {
-          margin-left: 20px;
-        }
-      }
-
-      &__my-stake {
-        display: flex;
+        justify-content: space-between;
         flex-direction: row;
-        align-items: center;
+        width: 80%;
 
-        p {
-          margin-left: 18px;
+        &__pool {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin-right: 18px;
+
+          p {
+            margin-left: 20px;
+          }
         }
-      }
 
-      &__vault-assets {
-        margin-left: 16px;
-        @media (max-width: 480px) {
-          margin-left: 0;
-          margin-right: 16px;
+        &__my-stake {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
         }
-      }
+
+        &__vault-assets {
+
+        }
 
 
-      &__apy {
-        margin-right: -7px;
+        &__apy {
+        }
+>div{
+  min-width: 200px;
+  max-width: 200px;
+}
       }
 
       button {
