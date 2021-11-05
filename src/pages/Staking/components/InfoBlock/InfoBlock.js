@@ -4,7 +4,6 @@ import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 
 import P from '../../../../components/P';
-import appStore from '../../../../store/app.store';
 import { Loader, SkeletonString } from '../../../../components/Loader';
 import { formatFixed } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
@@ -77,22 +76,18 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     />
                   </div>
                 </div>
-                {appStore.observer < 1 ? (
-                  <SkeletonString />
-                ) : (
-                  totalStaked && (
-                    <P
+                {totalStaked && (
+                  <P
+                    size="xl-400"
+                    style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
+                  >
+                    <DisplayValue
+                      color="#4A38AE"
                       size="xl-400"
-                      style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
-                    >
-                      <DisplayValue
-                        color="#4A38AE"
-                        size="xl-400"
-                        value={formatFixed(totalStaked, 2)}
-                        flag={!!formatFixed(totalStaked, 2)}
-                      />
-                    </P>
-                  )
+                      value={formatFixed(totalStaked, 2)}
+                      flag={!!formatFixed(totalStaked, 2)}
+                    />
+                  </P>
                 )}
               </div>
               <div className="info-block__stacked--course">

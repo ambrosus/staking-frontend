@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, providers, utils } from 'ethers';
-
 import { StakingWrapper, ZERO } from '../services/staking.wrapper';
 import { ambMounthUSD, ethereum } from './constants';
 import appStore from '../store/app.store';
@@ -18,7 +17,6 @@ const useStaking = () => {
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
-
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new providers.Web3Provider(ethereum);
@@ -98,8 +96,6 @@ const useStaking = () => {
           const provider = new providers.Web3Provider(ethereum);
           const { chainId } = await provider.getNetwork();
           setUserChainId(chainId);
-          appStore.incrementObserver();
-
           const signer = provider.getSigner();
           provider.listAccounts().then((accounts) => {
             const defaultAccount = accounts[0];
@@ -111,34 +107,43 @@ const useStaking = () => {
             if (signer) {
               const stakingWrapper = new StakingWrapper(signer);
               const poolsArr = await stakingWrapper.getPools();
-              if (poolsArr) {
-                setPools(poolsArr);
-                poolsArr.forEach(async (item) => {
-                  if (item.active) {
-                    if (appStore.observer === 1) {
-                      const { myStakeInAMB, estDR } =
-                        await stakingWrapper.getPoolData(item.index);
-                      setTotalStaked(
-                        (prevState) => prevState && prevState.add(myStakeInAMB),
+              setPools(poolsArr && poolsArr);
+              const poolRewards = [];
+              const myTotalStaked = [];
+              const priceInUsd = await ambMounthUSD(1);
+              /* eslint-disable-next-line */
+              for (const pool of poolsArr) {
+                if (pool.active) {
+                  const { estDR, myStakeInAMB } =
+                    /* eslint-disable-next-line */
+                    await stakingWrapper.getPoolData(pool.index);
+                  poolRewards.push(estDR && estDR);
+                  const esdSum =
+                    priceInUsd &&
+                    poolRewards?.length > 1 &&
+                    poolRewards.reduceRight((acc, curr) => acc + +curr, 0);
+                  setTotalReward(esdSum && esdSum);
+                  setTotalRewardInUsd(
+                    esdSum && priceInUsd && esdSum * priceInUsd,
+                  );
+                  if (myStakeInAMB) {
+                    myTotalStaked.push(myStakeInAMB);
+                    if (priceInUsd && myTotalStaked?.length > 1) {
+                      const totalStakeSum = myTotalStaked.reduceRight(
+                        (acc, curr) => acc.add(curr),
+                        BigNumber.from('0'),
                       );
-                      setTotalReward(estDR);
-                      const priceInUsd = await ambMounthUSD(1);
-                      if (priceInUsd && estDR) {
-                        setTotalRewardInUsd(+priceInUsd * estDR);
-                      }
-                    }
-                    if (appStore.observer === 0) {
-                      setTotalStaked(BigNumber.from('0'));
+                      setTotalStaked(totalStakeSum && totalStakeSum);
                     }
                   }
-                });
+                }
               }
             }
           }
         }
       }
     };
-    const interval = setInterval(intervProc, 2000);
+    const interval = setInterval(intervProc, 4000);
     return () => clearInterval(interval);
   }, []);
 
