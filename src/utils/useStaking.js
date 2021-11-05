@@ -146,10 +146,13 @@ const useStaking = () => {
         }
       }
     };
-    intervProc();
-    const interval = setInterval(intervProc, 5000);
+    if (correctNetwork) {
+      intervProc();
+    }
+    console.log('correctNetwork', correctNetwork);
+    const interval = correctNetwork && setInterval(intervProc, 5000);
     return () => clearInterval(interval);
-  }, [totalReward, totalStaked, totalRewardInUsd]);
+  }, [totalReward, totalStaked, totalRewardInUsd, correctNetwork]);
 
   return {
     account,

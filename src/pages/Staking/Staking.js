@@ -40,6 +40,49 @@ const Staking = observer(() => {
       totalStaked={totalStaked}
     />
   );
+  const stakingBody = (
+    <div className="staking wrapper">
+      {pools.length > 0 && (
+        <>
+          <div className="staking__header">
+            <div>Pool</div>
+            <div>My Stake</div>
+            <div>Total pool stake</div>
+            <div>APY</div>
+            <div style={{ marginRight: -45 }} />
+          </div>
+          {pools.map(
+            (item, index) =>
+              item.active && (
+                <StakingItem
+                  dispatch={dispatch}
+                  activeExpand={activeExpand}
+                  setActiveExpand={setActiveExpand}
+                  key={item.contractName}
+                  index={index}
+                  state={state}
+                  expand
+                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                  comingSoon={!item?.abi}
+                  lazy
+                  poolInfo={item}
+                />
+              ),
+          )}
+          {pools.map(
+            (coming) =>
+              !coming.active && (
+                <ComingSoonPool
+                  key={coming.contractName}
+                  poolInfo={coming}
+                  lazy
+                />
+              ),
+          )}
+        </>
+      )}
+    </div>
+  );
   return appStore.auth ? (
     <>
       {!correctNetwork && <NotSupported onclick={changeNetwork} />}
@@ -48,49 +91,7 @@ const Staking = observer(() => {
         <div className="content">
           <div className="page">
             {infoBlock}
-            <div className="staking wrapper">
-              {pools.length > 0 && (
-                <>
-                  <div className="staking__header">
-                    <div>Pool</div>
-                    <div>My Stake</div>
-                    <div>Total pool stake</div>
-                    <div>APY</div>
-                    <div style={{ marginRight: -45 }} />
-                  </div>
-                  {pools.map(
-                    (item, index) =>
-                      item.active && (
-                        <StakingItem
-                          dispatch={dispatch}
-                          activeExpand={activeExpand}
-                          setActiveExpand={setActiveExpand}
-                          key={item.contractName}
-                          index={index}
-                          state={state}
-                          expand
-                          hasChain={
-                            +process.env.REACT_APP_CHAIN_ID === userChainId
-                          }
-                          comingSoon={!item?.abi}
-                          lazy
-                          poolInfo={item}
-                        />
-                      ),
-                  )}
-                  {pools.map(
-                    (coming) =>
-                      !coming.active && (
-                        <ComingSoonPool
-                          key={coming.contractName}
-                          poolInfo={coming}
-                          lazy
-                        />
-                      ),
-                  )}
-                </>
-              )}
-            </div>
+            {correctNetwork && stakingBody}
             <ToastContainer transition={bounce} />
           </div>
         </div>
