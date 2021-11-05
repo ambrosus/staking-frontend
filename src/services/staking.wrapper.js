@@ -38,7 +38,6 @@ function formatFixed(bigNumber, digits = 18) {
   const fract = bigNumber.mod(pow10).add(pow10).toString().slice(1);
 
   return `${whole}.${fract}`;
-
 }
 
 class StakingWrapper {
@@ -172,7 +171,7 @@ class StakingWrapper {
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
-      -Math.floor(AVERAGING_PERIOD / 5)
+      -Math.floor(AVERAGING_PERIOD / 5),
     );
 
     if (!rewardEvents || !rewardEvents.length)
