@@ -11,7 +11,7 @@ const FIXEDPOINT = TEN.pow(18); // 1.0 ether
 const MINSHOWSTAKE = FIXEDPOINT.div(100); // 0.01 ether
 const THOUSAND = FIXEDPOINT.mul(1000); // 1000 ether
 
-const AVERAGING_PERIOD = 0.8 * 24 * 60 * 60; // 1 day
+const AVERAGING_PERIOD = 1 * 24 * 60 * 60; // 1 day
 
 const math = create(all, {
   number: 'BigNumber',
@@ -23,20 +23,22 @@ const exprDPY = math.compile('(s1 / s2) ^ (86400 / (t2 - t1)) - 1');
 const headContractAddress = '0x0000000000000000000000000000000000000F10';
 
 function formatFixed(bigNumber, digits = 18) {
-  digits = Math.floor(digits);
-  if (bigNumber && BigNumber.isBigNumber(bigNumber)) {
-    if (digits < 0 || digits > 18) {
-      throw new Error('digits out of range');
-    }
-    const whole = bigNumber.div(FIXEDPOINT).toString();
-    if (!digits) {
-      return whole;
-    }
-    const pow10 = TEN.pow(digits);
-    const fract = bigNumber.mod(pow10).add(pow10).toString().slice(1);
-
-    return `${whole}.${fract}`;
+  if (!bigNumber || !BigNumber.isBigNumber(bigNumber)) {
+    throw new Error('not a BigNumber');
   }
+  digits = Math.floor(digits);
+  if (digits < 0 || digits > 18) {
+    throw new Error('digits out of range');
+  }
+  const whole = bigNumber.div(FIXEDPOINT).toString();
+  if (!digits) {
+    return whole;
+  }
+  const pow10 = TEN.pow(digits);
+  const fract = bigNumber.mod(pow10).add(pow10).toString().slice(1);
+
+  return `${whole}.${fract}`;
+
 }
 
 class StakingWrapper {
@@ -123,11 +125,11 @@ class StakingWrapper {
 
     const poolContract = this.pools[index];
 
-    //  console.log('getPoolData');
+    // console.log('getPoolData');
     // console.log('pools:', await this.getPools());
-    //if (typeof index === 'number') console.log('apy:', await this.getAPY(index));
+    // if (typeof index === 'number') console.log('apy:', await this.getAPY(index));
 
-    //  console.log('count', await this.getPoolsCount());
+    // console.log('count', await this.getPoolsCount());
 
     const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens, poolDPY] =
       await Promise.all([
@@ -170,8 +172,7 @@ class StakingWrapper {
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
-      -Math.floor(AVERAGING_PERIOD / 5),
-      'latest',
+      -Math.floor(AVERAGING_PERIOD / 5)
     );
 
     const sortedPoolRewards = rewardEvents
