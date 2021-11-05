@@ -17,11 +17,7 @@ import DisplayValue from '../DisplayValue';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
 
-import {
-  StakingWrapper,
-  MINSHOWSTAKE,
-  ZERO,
-} from '../../services/staking.wrapper';
+import { StakingWrapper } from '../../services/staking.wrapper';
 import { ethereum, HIDE, SHOW, STAKE } from '../../utils/constants';
 
 const StakingItem = ({
@@ -35,8 +31,8 @@ const StakingItem = ({
   index = -1,
   poolInfo,
 }) => {
-  const [myStake, setMyStake] = useState(ZERO);
-  const [totalStake, setTotalStake] = useState(ZERO);
+  const [myStake, setMyStake] = useState(null);
+  const [totalStake, setTotalStake] = useState(null);
   const [APYOfPool, setAPYOfPool] = useState('');
   const history = useHistory();
   const { logIn } = useLogIn();
@@ -110,19 +106,6 @@ const StakingItem = ({
     return () => clearInterval(interv);
   }, [myStake, totalStake, APYOfPool]);
 
-  const sleepForDisplaying = (val) => {
-    if (!val) {
-      return <SkeletonString />;
-    }
-    if (val && val.lte(MINSHOWSTAKE)) {
-      return <DisplayValue value={utils.formatEther(val)} />;
-    }
-    if (val && val.gte(MINSHOWSTAKE)) {
-      return <DisplayValue value={utils.formatEther(val)} />;
-    }
-    return false;
-  };
-
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div
@@ -159,23 +142,22 @@ const StakingItem = ({
               ''
             ) : (
               <span style={{ width: 150 }}>
-                {myStake && sleepForDisplaying(myStake)}
+                {myStake ? (
+                  <DisplayValue value={utils.formatEther(myStake)} />
+                ) : (
+                  <SkeletonString />
+                )}
               </span>
             )}
           </div>
         )}
 
         <div className="item--header__flex__vault-assets">
-          <div>
-            {comingSoon ? (
-              ''
+          <div style={{ width: 150 }}>
+            {totalStake ? (
+              <DisplayValue value={utils.formatEther(totalStake)} />
             ) : (
-              <>
-                {' '}
-                <div style={{ width: 150 }}>
-                  {totalStake && sleepForDisplaying(totalStake)}
-                </div>
-              </>
+              <SkeletonString />
             )}
           </div>
         </div>

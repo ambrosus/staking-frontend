@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, providers, utils } from 'ethers';
-import { StakingWrapper, ZERO } from '../services/staking.wrapper';
+import { StakingWrapper } from '../services/staking.wrapper';
 import { ambMounthUSD, ethereum } from './constants';
 import appStore from '../store/app.store';
 import collapsedReducer from './collapsedReducer';
@@ -9,7 +9,7 @@ import storageService from '../services/storage.service';
 const useStaking = () => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);
-  const [totalStaked, setTotalStaked] = useState(ZERO);
+  const [totalStaked, setTotalStaked] = useState(null);
   const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState('');
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
@@ -146,7 +146,8 @@ const useStaking = () => {
         }
       }
     };
-    const interval = setInterval(intervProc, 7000);
+    intervProc();
+    const interval = setInterval(intervProc, 5000);
     return () => clearInterval(interval);
   }, [totalReward, totalStaked, totalRewardInUsd]);
 

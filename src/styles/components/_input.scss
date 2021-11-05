@@ -9,7 +9,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   /* display: none; <- Crashes Chrome on hover */
   -webkit-appearance: none;
-  margin: -10px; /* <-- Apparently some margin are still there even though it's hidden */
+  margin: -20px; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 input[type=number] {
@@ -29,7 +29,7 @@ input[type=number] {
   border-radius: 12px;
   font-size: 14px;
   padding-left: 16px;
-  padding-right: 16px;
+  padding-right: 89px !important;
   color: $color-primary;
   transition-property: border, color;
   transition-duration: 400ms;
@@ -61,21 +61,25 @@ input[type=number] {
 }
 
 .input .iconRight {
-  top: 13px;
-  right: 8px;
+  top: 4px;
+  right: 5px;
+  background: #BFC9E0;
+  border-radius: 12px;
+  padding: 6px;
+  cursor: pointer;
 }
 
-  .input-error input[type="number"]:focus,
-  .input-error input[type="email"]:focus,
-  .input-error input[type="password"]:focus {
-    border: 2px solid $red !important;
-    color: $red !important;
-  }
+.input-error input[type="number"]:focus,
+.input-error input[type="email"]:focus,
+.input-error input[type="password"]:focus {
+  border: 2px solid $red !important;
+  color: $red !important;
+}
 
-  .input-error input[type="number"],
-  .input-error input[type="email"],
-  .input-error input[type="password"] {
-    border: 2px solid $red !important;
-    color: $red;
-  }
+.input-error input[type="number"],
+.input-error input[type="email"],
+.input-error input[type="password"] {
+  border: 2px solid $red !important;
+  color: $red;
+}
 

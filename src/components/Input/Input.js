@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { ReactSVG } from 'react-svg';
 
 import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
+import clearIcon from '../../assets/svg/clear.svg';
 
 const Input = ({
   type = 'number',
@@ -32,6 +33,11 @@ const Input = ({
     {iconLeft && (
       <span className="iconLeft">
         <ReactSVG src={AMBsmallIcon} wrapper="span" />
+      </span>
+    )}
+    {value && (
+      <span className="iconRight">
+        <ReactSVG onClick={() => onchange('')} src={clearIcon} wrapper="span" />
       </span>
     )}
   </div>

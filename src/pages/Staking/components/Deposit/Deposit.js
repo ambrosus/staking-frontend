@@ -115,7 +115,7 @@ const Deposit = observer(({ depositInfo }) => {
         }
       };
       refreshProc();
-      interv = setInterval(refreshProc, 4000);
+      interv = setInterval(refreshProc, 5000);
     }
 
     return () => clearInterval(interv);
