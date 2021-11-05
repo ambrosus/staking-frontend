@@ -8,7 +8,6 @@ import Button from '../../../../components/Button';
 import P from '../../../../components/P';
 import ButtonGroup from '../../../../components/ButtonGroup';
 import notificationMassage from '../../../../utils/notificationMassage';
-import appStore from '../../../../store/app.store';
 
 import {
   FIXEDPOINT,
@@ -78,7 +77,6 @@ const Withdraw = observer(
                           6,
                         )}...${result.transactionHash.slice(60)} success!`,
                       );
-                      appStore.setObserverValue(-1);
                       setInputValue('');
                     })
                     .catch(() => {

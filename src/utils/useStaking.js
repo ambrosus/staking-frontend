@@ -118,17 +118,20 @@ const useStaking = () => {
                     /* eslint-disable-next-line */
                     await stakingWrapper.getPoolData(pool.index);
                   poolRewards.push(estDR && estDR);
+                  const rewardInAmb =
+                    poolRewards?.length > 1 &&
+                    poolRewards.reduceRight((acc, curr) => acc + +curr, 0);
+                  setTotalReward(rewardInAmb && rewardInAmb);
                   const esdSum =
                     priceInUsd &&
                     poolRewards?.length > 1 &&
                     poolRewards.reduceRight((acc, curr) => acc + +curr, 0);
-                  setTotalReward(esdSum && esdSum);
                   setTotalRewardInUsd(
                     esdSum && priceInUsd && esdSum * priceInUsd,
                   );
                   if (myStakeInAMB) {
                     myTotalStaked.push(myStakeInAMB);
-                    if (priceInUsd && myTotalStaked?.length > 1) {
+                    if (myTotalStaked?.length > 1) {
                       const totalStakeSum = myTotalStaked.reduceRight(
                         (acc, curr) => acc.add(curr),
                         BigNumber.from('0'),
@@ -143,9 +146,9 @@ const useStaking = () => {
         }
       }
     };
-    const interval = setInterval(intervProc, 4000);
+    const interval = setInterval(intervProc, 7000);
     return () => clearInterval(interval);
-  }, []);
+  }, [totalReward, totalStaked, totalRewardInUsd]);
 
   return {
     account,

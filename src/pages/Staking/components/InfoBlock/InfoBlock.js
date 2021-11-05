@@ -4,14 +4,13 @@ import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 
 import P from '../../../../components/P';
-import { Loader, SkeletonString } from '../../../../components/Loader';
+import { Loader } from '../../../../components/Loader';
 import { formatFixed } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../utils/useCopyToClipboard';
-import { round } from '../../../../utils/constants';
 import DisplayValue from '../../../../components/DisplayValue';
 
 const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
@@ -76,19 +75,16 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     />
                   </div>
                 </div>
-                {totalStaked && (
-                  <P
+                <P
+                  size="xl-400"
+                  style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
+                >
+                  <DisplayValue
+                    color="#4A38AE"
                     size="xl-400"
-                    style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
-                  >
-                    <DisplayValue
-                      color="#4A38AE"
-                      size="xl-400"
-                      value={formatFixed(totalStaked, 2)}
-                      flag={!!formatFixed(totalStaked, 2)}
-                    />
-                  </P>
-                )}
+                    value={formatFixed(totalStaked, 2)}
+                  />
+                </P>
               </div>
               <div className="info-block__stacked--course">
                 <div
@@ -120,23 +116,29 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                   />
                 </div>
 
-                {totalReward && totalRewardInUsd ? (
-                  <P
+                <div
+                  style={{
+                    minWidth: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                  }}
+                >
+                  <DisplayValue
                     size="xl-400"
-                    style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
-                  >
-                    <span style={{ color: '#1ACD8C' }}>
-                      {' '}
-                      {totalReward ? ` +${round(+totalReward)} AMB` : ' - AMB'}
-                    </span>
-                    &nbsp; /
-                    {totalRewardInUsd
-                      ? ` ${round(+totalRewardInUsd.toFixed(2))} $`
-                      : '- $'}{' '}
+                    color="#1ACD8C"
+                    value={totalReward && totalReward}
+                  />
+                  <P size="xl-400" style={{ color: '#4A38AE' }}>
+                    &nbsp; / &nbsp;
                   </P>
-                ) : (
-                  <SkeletonString />
-                )}
+                  <DisplayValue
+                    size="xl-400"
+                    color="#4A38AE"
+                    value={totalRewardInUsd && totalRewardInUsd}
+                    symbol="$"
+                  />
+                </div>
               </div>
             </div>
           </>

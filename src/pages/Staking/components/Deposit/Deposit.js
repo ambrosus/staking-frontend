@@ -22,7 +22,7 @@ import Modal from '../../../../components/Modal';
 import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 import notificationMassage from '../../../../utils/notificationMassage';
-import appStore from '../../../../store/app.store';
+import DisplayValue from '../../../../components/DisplayValue';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
@@ -70,7 +70,6 @@ const Deposit = observer(({ depositInfo }) => {
                     )}...${result.transactionHash.slice(60)} success!`,
                   );
                   setInputValue('');
-                  appStore.setObserverValue(-1);
                 })
                 .catch(() => {
                   notificationMassage(
@@ -116,7 +115,7 @@ const Deposit = observer(({ depositInfo }) => {
         }
       };
       refreshProc();
-      interv = setInterval(refreshProc, 5000);
+      interv = setInterval(refreshProc, 4000);
     }
 
     return () => clearInterval(interv);
@@ -146,13 +145,13 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
           <div>
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {round(formatFixed(myStake, 2))} AMB
+              <DisplayValue value={myStake} />
             </P>
           </div>
           <div>
             {' '}
             <P style={{ textTransform: 'uppercase' }} size="l-400">
-              {round(formatFixed(totalStake, 2))} AMB
+              <DisplayValue value={totalStake} />
             </P>
           </div>
           <div>

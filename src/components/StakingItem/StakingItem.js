@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { BigNumber, providers, utils } from 'ethers';
+import { providers, utils } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
 
@@ -111,24 +111,14 @@ const StakingItem = ({
   }, [myStake, totalStake, APYOfPool]);
 
   const sleepForDisplaying = (val) => {
-    if (val && val.lte(BigNumber.from('0'))) {
+    if (!val) {
       return <SkeletonString />;
     }
     if (val && val.lte(MINSHOWSTAKE)) {
-      return (
-        <DisplayValue
-          value={utils.formatEther(val)}
-          flag={!!utils.formatEther(val)}
-        />
-      );
+      return <DisplayValue value={utils.formatEther(val)} />;
     }
     if (val && val.gte(MINSHOWSTAKE)) {
-      return (
-        <DisplayValue
-          value={utils.formatEther(val)}
-          flag={!!utils.formatEther(val)}
-        />
-      );
+      return <DisplayValue value={utils.formatEther(val)} />;
     }
     return false;
   };

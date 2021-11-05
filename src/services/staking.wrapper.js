@@ -174,15 +174,13 @@ class StakingWrapper {
       -Math.floor(AVERAGING_PERIOD / 5),
     );
 
-    if (!rewardEvents || !rewardEvents.length)
-      return 0;
+    if (!rewardEvents || !rewardEvents.length) return 0;
 
     const sortedPoolRewards = rewardEvents
       .filter((event) => event.args.pool === this.pools[index].address)
       .sort((a, b) => a.args.tokenPrice.gte(b.args.tokenPrice));
 
-    if (!sortedPoolRewards || !sortedPoolRewards.length)
-      return 0;
+    if (!sortedPoolRewards || !sortedPoolRewards.length) return 0;
 
     // console.log(sortedPoolRewards);
 
@@ -210,8 +208,7 @@ class StakingWrapper {
         })),
     );
 
-    if (!firstReward || !lastReward)
-      return 0;
+    if (!firstReward || !lastReward) return 0;
 
     const dpy = exprDPY.evaluate({
       s1: math.bignumber(firstReward.tokenPrice.toString()),

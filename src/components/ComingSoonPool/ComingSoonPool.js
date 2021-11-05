@@ -17,14 +17,17 @@ export const ComingSoonPool = ({ poolInfo }) => {
         className="item--header__flex"
         style={{
           paddingRight: history.location.pathname === '/staking' ? 100 : 200,
+          width: '80%',
         }}
       >
-        <div className="item--header__flex__pool">
+        <div className="item--header__flex__pool" style={{ width: '80%' }}>
           <ReactSVG src={avatarIcon} wrapper="span" />
           <P
             style={{
               textTransform: 'uppercase',
+              whiteSpace: 'word-wrap',
               color: '#BFC9E0',
+              width: '80%',
             }}
             size="l-500"
           >
