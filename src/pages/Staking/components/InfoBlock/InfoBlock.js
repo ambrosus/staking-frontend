@@ -80,17 +80,19 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                 {appStore.observer < 1 ? (
                   <SkeletonString />
                 ) : (
-                  <P
-                    size="xl-400"
-                    style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
-                  >
-                    <DisplayValue
-                      color="#4A38AE"
+                  totalStaked && (
+                    <P
                       size="xl-400"
-                      value={formatFixed(totalStaked, 2)}
-                      flag={!!formatFixed(totalStaked, 2)}
-                    />
-                  </P>
+                      style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
+                    >
+                      <DisplayValue
+                        color="#4A38AE"
+                        size="xl-400"
+                        value={formatFixed(totalStaked, 2)}
+                        flag={!!formatFixed(totalStaked, 2)}
+                      />
+                    </P>
+                  )
                 )}
               </div>
               <div className="info-block__stacked--course">
@@ -123,7 +125,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                   />
                 </div>
 
-                {totalReward ? (
+                {totalReward && totalRewardInUsd ? (
                   <P
                     size="xl-400"
                     style={{ color: '#4A38AE', whiteSpace: 'nowrap' }}
@@ -152,7 +154,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
 };
 InfoBlock.propTypes = {
   account: PropTypes.string,
-  totalReward: PropTypes.string,
+  totalReward: PropTypes.any,
   totalStaked: PropTypes.any,
   totalRewardInUsd: PropTypes.number,
 };

@@ -70,7 +70,7 @@ const Deposit = observer(({ depositInfo }) => {
                     )}...${result.transactionHash.slice(60)} success!`,
                   );
                   setInputValue('');
-                  appStore.setObserverValue(-2);
+                  appStore.setObserverValue(-1);
                 })
                 .catch(() => {
                   notificationMassage(

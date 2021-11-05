@@ -32,7 +32,7 @@ const DisplayValue = ({ flag, value, size = 'l-400', color = '#333333' }) => {
     </div>
   ) : (
     <P style={{ color, whiteSpace: 'nowrap' }} size={size}>
-      {value && `${round(value)} AMB`}
+      {value && `${round(+value)} AMB`}
     </P>
   );
 };
