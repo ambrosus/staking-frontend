@@ -38,50 +38,55 @@ export const Header = observer(() => {
   };
 
   useEffect(() => {
-    getAmbCourse();
-
-    if (storageService.get('auth') === true) {
-      if (typeof ethereum !== 'undefined') {
-        ethereum.on('disconnect', () => {
-          storageService.set('auth', false);
-          appStore.setAuth(false);
-          if (!storageService.get('auth')) {
-            history.push('/');
-          }
-        });
-        const provider = new providers.Web3Provider(ethereum);
-        provider
-          .listAccounts()
-          .then((accounts) => {
-            const defaultAccount = accounts[0];
-            if (defaultAccount) {
-              setAccount(defaultAccount);
-              storageService.set('auth', true);
-            } else {
-              storageService.set('auth', false);
-              appStore.setAuth(false);
-              if (!storageService.get('auth')) {
-                history.push('/');
-              }
-            }
-          })
-          .catch((e) => {
-            if (e) {
-              storageService.set('auth', false);
-              appStore.setAuth(false);
-              if (!storageService.get('auth')) {
-                history.push('/');
-              }
+    let mounted = true;
+    if (mounted) {
+      getAmbCourse();
+      if (storageService.get('auth') === true) {
+        if (typeof ethereum !== 'undefined') {
+          ethereum.on('disconnect', () => {
+            storageService.set('auth', false);
+            appStore.setAuth(false);
+            if (!storageService.get('auth')) {
+              history.push('/');
             }
           });
-      }
-    } else {
-      storageService.set('auth', false);
-      appStore.setAuth(false);
-      if (!storageService.get('auth')) {
-        history.push('/');
+          const provider = new providers.Web3Provider(ethereum);
+          provider
+            .listAccounts()
+            .then((accounts) => {
+              const defaultAccount = accounts[0];
+              if (defaultAccount) {
+                setAccount(defaultAccount);
+                storageService.set('auth', true);
+              } else {
+                storageService.set('auth', false);
+                appStore.setAuth(false);
+                if (!storageService.get('auth')) {
+                  history.push('/');
+                }
+              }
+            })
+            .catch((e) => {
+              if (e) {
+                storageService.set('auth', false);
+                appStore.setAuth(false);
+                if (!storageService.get('auth')) {
+                  history.push('/');
+                }
+              }
+            });
+        }
+      } else {
+        storageService.set('auth', false);
+        appStore.setAuth(false);
+        if (!storageService.get('auth')) {
+          history.push('/');
+        }
       }
     }
+    return () => {
+      mounted = false;
+    };
   }, [ethereum]);
 
   const logOut = async () => {

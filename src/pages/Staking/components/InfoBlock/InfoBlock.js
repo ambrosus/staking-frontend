@@ -4,7 +4,7 @@ import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 
 import P from '../../../../components/P';
-import { Loader, SkeletonString } from '../../../../components/Loader';
+import { Loader } from '../../../../components/Loader';
 import { formatFixed } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
@@ -75,15 +75,11 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     />
                   </div>
                 </div>
-                {totalStaked ? (
-                  <DisplayValue
-                    color="#4A38AE"
-                    size="xl-400"
-                    value={formatFixed(totalStaked, 2)}
-                  />
-                ) : (
-                  <SkeletonString />
-                )}
+                <DisplayValue
+                  color="#4A38AE"
+                  size="xl-400"
+                  value={totalStaked && formatFixed(totalStaked, 2)}
+                />
               </div>
               <div className="info-block__stacked--course">
                 <div
@@ -123,29 +119,20 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     justifyContent: 'space-around',
                   }}
                 >
-                  {totalReward ? (
-                    <DisplayValue
-                      size="xl-400"
-                      color="#1ACD8C"
-                      value={totalReward && totalReward}
-                    />
-                  ) : (
-                    <SkeletonString />
-                  )}
-
+                  <DisplayValue
+                    size="xl-400"
+                    color="#1ACD8C"
+                    value={totalReward && totalReward}
+                  />
                   <P size="xl-400" style={{ color: '#4A38AE' }}>
                     &nbsp; / &nbsp;
                   </P>
-                  {totalRewardInUsd ? (
-                    <DisplayValue
-                      size="xl-400"
-                      color="#4A38AE"
-                      value={totalRewardInUsd && totalRewardInUsd}
-                      symbol="$"
-                    />
-                  ) : (
-                    <SkeletonString />
-                  )}
+                  <DisplayValue
+                    size="xl-400"
+                    color="#4A38AE"
+                    value={totalRewardInUsd && totalRewardInUsd}
+                    symbol="$"
+                  />
                 </div>
               </div>
             </div>

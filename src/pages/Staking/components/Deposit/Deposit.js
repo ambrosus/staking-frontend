@@ -34,8 +34,9 @@ const Deposit = observer(({ depositInfo }) => {
   const [APYOfPool, setAPYOfPool] = useState('');
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
+  let provider;
   const checkoutPayment = async () => {
-    const provider = new providers.Web3Provider(ethereum, 'any');
+    provider = new providers.Web3Provider(ethereum, 'any');
     if (provider) {
       const signer = provider.getSigner();
       if (signer) {
@@ -89,36 +90,37 @@ const Deposit = observer(({ depositInfo }) => {
     return false;
   };
   useEffect(() => {
-    let interv;
-    let provider;
-
-    if (ethereum && ethereum.isMetaMask) {
-      provider = new providers.Web3Provider(ethereum);
-      const refreshProc = async () => {
-        provider.listAccounts().then((accounts) => {
-          const defaultAccount = accounts[0];
-          if (defaultAccount) {
-            provider.getBalance(defaultAccount).then((balanceObj) => {
-              setBalance(balanceObj);
-            });
+    let mounted = true;
+    if (mounted) {
+      if (ethereum && ethereum.isMetaMask) {
+        provider = new providers.Web3Provider(ethereum);
+        const refreshProc = async () => {
+          provider.listAccounts().then((accounts) => {
+            const defaultAccount = accounts[0];
+            if (defaultAccount) {
+              provider.getBalance(defaultAccount).then((balanceObj) => {
+                setBalance(balanceObj);
+              });
+            }
+          });
+          const singer = provider.getSigner();
+          if (singer) {
+            const stakingWrapper = new StakingWrapper(singer);
+            const { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, poolAPY } =
+              await stakingWrapper.getPoolData(depositInfo.index);
+            setTokenPrice(tokenPriceAMB);
+            setMyStake(myStakeInAMB);
+            setTotalStake(totalStakeInAMB);
+            setAPYOfPool(poolAPY);
           }
-        });
-        const singer = provider.getSigner();
-        if (singer) {
-          const stakingWrapper = new StakingWrapper(singer);
-          const { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, poolAPY } =
-            await stakingWrapper.getPoolData(depositInfo.index);
-          setTokenPrice(tokenPriceAMB);
-          setMyStake(myStakeInAMB);
-          setTotalStake(totalStakeInAMB);
-          setAPYOfPool(poolAPY);
-        }
-      };
-      refreshProc();
-      interv = setInterval(refreshProc, 5000);
+        };
+        refreshProc();
+      }
     }
 
-    return () => clearInterval(interv);
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -143,16 +145,12 @@ const Deposit = observer(({ depositInfo }) => {
             <ReactSVG src={avatarIcon} wrapper="span" />
             <P size="l-500">&nbsp;&nbsp;&nbsp;&nbsp;Bravo</P>
           </div>
-          <div>
-            <P style={{ textTransform: 'uppercase' }} size="l-400">
-              <DisplayValue value={myStake} />
-            </P>
+          <div style={{ textTransform: 'uppercase' }}>
+            <DisplayValue size="l-400" value={utils.formatEther(myStake)} />
           </div>
-          <div>
+          <div style={{ textTransform: 'uppercase' }}>
             {' '}
-            <P style={{ textTransform: 'uppercase' }} size="l-400">
-              <DisplayValue value={totalStake} />
-            </P>
+            <DisplayValue value={utils.formatEther(totalStake)} size="l-400" />
           </div>
           <div>
             {' '}

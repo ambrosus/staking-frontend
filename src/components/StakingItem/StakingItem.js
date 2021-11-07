@@ -11,7 +11,6 @@ import P from '../P';
 import Deposit from '../../pages/Staking/components/Deposit';
 import appStore from '../../store/app.store';
 import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
-import { SkeletonString } from '../Loader';
 import useLogIn from '../../utils/useLogIn';
 import DisplayValue from '../DisplayValue';
 
@@ -37,7 +36,6 @@ const StakingItem = ({
   const history = useHistory();
   const { logIn } = useLogIn();
   let provider;
-  let interv;
 
   const updateState = async () => {
     try {
@@ -76,7 +74,6 @@ const StakingItem = ({
       };
       const refreshProc = provider ? loggedInRefresh : loggedOutRefresh;
       refreshProc();
-      interv = setInterval(refreshProc, 5000);
     } catch (switchError) {
       if (switchError.code === 4902) {
         ethereum.request({
@@ -102,8 +99,13 @@ const StakingItem = ({
   };
 
   useEffect(() => {
-    updateState();
-    return () => clearInterval(interv);
+    let mounted = true;
+    if (mounted) {
+      updateState();
+    }
+    return () => {
+      mounted = false;
+    };
   }, [myStake, totalStake, APYOfPool]);
 
   const stackHeader = (
@@ -141,34 +143,22 @@ const StakingItem = ({
             {comingSoon ? (
               ''
             ) : (
-              <span style={{ width: 150 }}>
-                {myStake ? (
-                  <DisplayValue value={utils.formatEther(myStake)} />
-                ) : (
-                  <SkeletonString />
-                )}
-              </span>
+              <div style={{ width: 150 }}>
+                <DisplayValue value={myStake && utils.formatEther(myStake)} />
+              </div>
             )}
           </div>
         )}
 
         <div className="item--header__flex__vault-assets">
           <div style={{ width: 150 }}>
-            {totalStake ? (
-              <DisplayValue value={utils.formatEther(totalStake)} />
-            ) : (
-              <SkeletonString />
-            )}
+            <DisplayValue value={totalStake && utils.formatEther(totalStake)} />
           </div>
         </div>
         <div className="item--header__flex__apy">
-          {APYOfPool ? (
-            <P style={{ textTransform: 'uppercase' }} size="l-700">
-              {`${APYOfPool}%`}
-            </P>
-          ) : (
-            <SkeletonString />
-          )}
+          <P style={{ textTransform: 'uppercase' }} size="l-700">
+            {APYOfPool ? `${APYOfPool}%` : <span className="skeleton" />}
+          </P>
         </div>
       </div>
       <Button

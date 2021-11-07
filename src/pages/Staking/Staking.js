@@ -91,7 +91,7 @@ const Staking = observer(() => {
         <div className="content">
           <div className="page">
             {infoBlock}
-            {correctNetwork && stakingBody}
+            {stakingBody}
             <ToastContainer transition={bounce} />
           </div>
         </div>

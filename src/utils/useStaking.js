@@ -11,15 +11,18 @@ const useStaking = () => {
   const [userChainId, setUserChainId] = useState(null);
   const [totalStaked, setTotalStaked] = useState(null);
   const [activeExpand, setActiveExpand] = useState(-1);
-  const [totalReward, setTotalReward] = useState('');
-  const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
+  const [totalReward, setTotalReward] = useState(null);
+  const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
+  let provider;
+  let signer;
+  let interval;
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
-      const provider = new providers.Web3Provider(ethereum);
+      provider = new providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
@@ -61,7 +64,7 @@ const useStaking = () => {
     }
   };
   const checkEthereumNetwork = async () => {
-    const provider = new providers.Web3Provider(ethereum);
+    provider = new providers.Web3Provider(ethereum);
     const { chainId } = await provider.getNetwork();
     if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
       setCorrectNetwork(false);
@@ -73,43 +76,34 @@ const useStaking = () => {
     setUserChainId(chainId);
   };
 
-  useEffect(() => {
-    if (appStore.auth) {
+  useEffect(async () => {
+    let mounetd = true;
+    if (mounetd) {
       if (ethereum && ethereum.isMetaMask) {
         checkEthereumNetwork();
         window.addEventListener('focus', () => {
           changeNetwork();
         });
       }
-    }
-    return () => checkEthereumNetwork();
-  }, [correctNetwork]);
-  useEffect(() => {
-    const intervProc = async () => {
-      if (storageService.get('auth') === true) {
-        if (
-          ethereum &&
-          ethereum.isMetaMask &&
-          correctNetwork &&
-          requestNetworkChange
-        ) {
-          const provider = new providers.Web3Provider(ethereum);
-          const { chainId } = await provider.getNetwork();
-          setUserChainId(chainId);
-          const signer = provider.getSigner();
-          provider.listAccounts().then((accounts) => {
-            const defaultAccount = accounts[0];
-            if (defaultAccount) {
-              setAccount(defaultAccount);
-            }
-          });
-          if (provider) {
-            if (signer) {
-              const stakingWrapper = new StakingWrapper(signer);
-              const poolsArr = await stakingWrapper.getPools();
-              setPools(poolsArr && poolsArr);
-              const poolRewards = [];
-              const myTotalStaked = [];
+      if (correctNetwork && appStore.auth) {
+        provider = new providers.Web3Provider(ethereum);
+        const { chainId } = provider && provider.getNetwork();
+        setUserChainId(chainId);
+        signer = provider && provider.getSigner();
+        if (provider && signer) {
+          if (storageService.get('auth') === true) {
+            const stakingWrapper = signer && new StakingWrapper(signer);
+            provider.listAccounts().then((accounts) => {
+              const defaultAccount = accounts[0];
+              if (defaultAccount) {
+                setAccount(defaultAccount);
+              }
+            });
+            const poolsArr = await stakingWrapper.getPools();
+            setPools(poolsArr && poolsArr);
+            interval = setInterval(async () => {
+              const poolsRewards = [];
+              const myTotalStake = [];
               const priceInUsd = await ambMounthUSD(1);
               /* eslint-disable-next-line */
               for (const pool of poolsArr) {
@@ -117,22 +111,22 @@ const useStaking = () => {
                   const { estDR, myStakeInAMB } =
                     /* eslint-disable-next-line */
                     await stakingWrapper.getPoolData(pool.index);
-                  poolRewards.push(estDR && estDR);
+                  poolsRewards.push(estDR && estDR);
                   const rewardInAmb =
-                    poolRewards?.length > 1 &&
-                    poolRewards.reduceRight((acc, curr) => acc + +curr, 0);
+                    poolsRewards?.length > 1 &&
+                    poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
                   setTotalReward(rewardInAmb && rewardInAmb);
                   const esdSum =
                     priceInUsd &&
-                    poolRewards?.length > 1 &&
-                    poolRewards.reduceRight((acc, curr) => acc + +curr, 0);
+                    poolsRewards?.length > 1 &&
+                    poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
                   setTotalRewardInUsd(
                     esdSum && priceInUsd && esdSum * priceInUsd,
                   );
                   if (myStakeInAMB) {
-                    myTotalStaked.push(myStakeInAMB);
-                    if (myTotalStaked?.length > 1) {
-                      const totalStakeSum = myTotalStaked.reduceRight(
+                    myTotalStake.push(myStakeInAMB);
+                    if (myTotalStake?.length > 1) {
+                      const totalStakeSum = myTotalStake.reduceRight(
                         (acc, curr) => acc.add(curr),
                         BigNumber.from('0'),
                       );
@@ -141,18 +135,16 @@ const useStaking = () => {
                   }
                 }
               }
-            }
+            }, 3000);
           }
         }
       }
-    };
-    if (correctNetwork) {
-      intervProc();
     }
-    console.log('correctNetwork', correctNetwork);
-    const interval = correctNetwork && setInterval(intervProc, 5000);
-    return () => clearInterval(interval);
-  }, [totalReward, totalStaked, totalRewardInUsd, correctNetwork]);
+    return () => {
+      mounetd = false;
+      return interval && clearInterval(interval);
+    };
+  }, []);
 
   return {
     account,
