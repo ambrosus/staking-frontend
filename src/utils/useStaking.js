@@ -19,6 +19,8 @@ const useStaking = () => {
   const [pools, setPools] = useState([]);
   let provider;
   let signer;
+  const interval = setInterval(() => appStore.setRefresh(), 60000);
+
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       provider = new providers.Web3Provider(ethereum);
@@ -138,6 +140,7 @@ const useStaking = () => {
     }
     return () => {
       mounetd = false;
+      return clearInterval(interval);
     };
   }, [appStore.refresh]);
 

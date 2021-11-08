@@ -14,7 +14,6 @@ const Main = observer(() => {
       ethereum.on('accountsChanged', () => window.location.reload());
       ethereum.on('chainChanged', () => window.location.reload());
     }
-
     if (!storageService.get('auth')) {
       appStore.setAuth(false);
     } else {
