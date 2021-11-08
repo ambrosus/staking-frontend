@@ -19,7 +19,6 @@ const useStaking = () => {
   const [pools, setPools] = useState([]);
   let provider;
   let signer;
-  const interval = setInterval(() => appStore.setRefresh(), 60000);
 
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
@@ -78,8 +77,11 @@ const useStaking = () => {
   };
 
   useEffect(async () => {
+    let interval;
+
     let mounetd = true;
     if (mounetd) {
+      interval = setInterval(() => appStore.setRefresh(), 70000);
       if (ethereum && ethereum.isMetaMask) {
         checkEthereumNetwork();
         window.addEventListener('focus', () => {
@@ -140,7 +142,7 @@ const useStaking = () => {
     }
     return () => {
       mounetd = false;
-      return clearInterval(interval);
+      return interval && clearInterval(interval);
     };
   }, [appStore.refresh]);
 
