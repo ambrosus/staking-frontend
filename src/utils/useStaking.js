@@ -142,7 +142,7 @@ const useStaking = () => {
     }
     return () => {
       mounetd = false;
-      return interval && clearInterval(interval);
+      return clearInterval(interval);
     };
   }, [appStore.refresh]);
 
