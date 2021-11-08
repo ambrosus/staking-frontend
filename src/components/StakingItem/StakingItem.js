@@ -106,7 +106,7 @@ const StakingItem = ({
     return () => {
       mounted = false;
     };
-  }, [myStake, totalStake, APYOfPool]);
+  }, [myStake]);
 
   const stackHeader = (
     <div className="item--header" role="presentation">

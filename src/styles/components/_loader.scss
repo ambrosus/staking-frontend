@@ -5,6 +5,7 @@
   width: 100%;
 }
 .skeleton{
+  -webkit-transition: top 1s ease-out 0.5s;
   max-width: 80px;
   min-width: 80px;
   background-color: transparent;
@@ -19,8 +20,7 @@
   transition: ease-in-out 1s;
 }
 .transition1s{
-  transition: ease-in-out 1s;
-
+  transition: all 1s ease-in-out 2s;
 }
 @keyframes skeleton-animation {
   0% {

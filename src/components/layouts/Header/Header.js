@@ -29,6 +29,7 @@ export const Header = observer(() => {
     const priceInUsd = await ambMounthUSD(1);
     if (priceInUsd) {
       setUsdPrice(priceInUsd);
+      appStore.setTokenPrice(priceInUsd);
     }
     const percent = await priceInPercent24h(1);
     if (percent) {

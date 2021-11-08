@@ -14,10 +14,12 @@ const DisplayValue = ({
   !value ? (
     <span className="skeleton" />
   ) : (
-    <P style={{ color, whiteSpace: 'nowrap', minWidth: 50 }} size={size}>
-      {value && flag === 'number' && `${round(value)} ${symbol}`}
-      {value && flag === 'string' && `${round(+value.toFixed(2))} ${symbol}`}
-    </P>
+    <span className="transition1s">
+      <P style={{ color, whiteSpace: 'nowrap', minWidth: 50 }} size={size}>
+        {value && flag === 'number' && `${round(value)} ${symbol}`}
+        {value && flag === 'string' && `${round(+value.toFixed(2))} ${symbol}`}
+      </P>
+    </span>
   );
 DisplayValue.propTypes = {
   flag: PropTypes.bool,

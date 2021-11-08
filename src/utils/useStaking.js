@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, providers, utils } from 'ethers';
 import { StakingWrapper } from '../services/staking.wrapper';
-import { ambMounthUSD, ethereum } from './constants';
+import { ethereum } from './constants';
 import appStore from '../store/app.store';
 import collapsedReducer from './collapsedReducer';
 import storageService from '../services/storage.service';
@@ -104,7 +104,6 @@ const useStaking = () => {
             interval = setInterval(async () => {
               const poolsRewards = [];
               const myTotalStake = [];
-              const priceInUsd = await ambMounthUSD(1);
               /* eslint-disable-next-line */
               for (const pool of poolsArr) {
                 if (pool.active) {
@@ -117,11 +116,13 @@ const useStaking = () => {
                     poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
                   setTotalReward(rewardInAmb && rewardInAmb);
                   const esdSum =
-                    priceInUsd &&
+                    appStore.tokenPrice &&
                     poolsRewards?.length > 1 &&
                     poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
                   setTotalRewardInUsd(
-                    esdSum && priceInUsd && esdSum * priceInUsd,
+                    esdSum &&
+                      appStore.tokenPrice &&
+                      esdSum * appStore.tokenPrice,
                   );
                   if (myStakeInAMB) {
                     myTotalStake.push(myStakeInAMB);
@@ -135,7 +136,7 @@ const useStaking = () => {
                   }
                 }
               }
-            }, 3000);
+            }, 5000);
           }
         }
       }

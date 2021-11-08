@@ -3,6 +3,8 @@ import { makeAutoObservable, runInAction } from 'mobx';
 export class AppStore {
   auth = false;
 
+  tokenPrice = 0.04;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -10,6 +12,12 @@ export class AppStore {
   setAuth(bool) {
     runInAction(() => {
       this.auth = bool;
+    });
+  }
+
+  setTokenPrice(price) {
+    runInAction(() => {
+      this.tokenPrice = price;
     });
   }
 
