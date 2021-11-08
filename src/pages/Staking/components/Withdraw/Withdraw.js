@@ -17,6 +17,7 @@ import {
   ZERO,
 } from '../../../../services/staking.wrapper';
 import { ethereum, round } from '../../../../utils/constants';
+import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(
   ({
@@ -77,6 +78,7 @@ const Withdraw = observer(
                           6,
                         )}...${result.transactionHash.slice(60)} success!`,
                       );
+                      appStore.setRefresh();
                       setInputValue('');
                     })
                     .catch(() => {

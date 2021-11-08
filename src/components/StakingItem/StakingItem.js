@@ -18,6 +18,7 @@ import avatarIcon from '../../assets/svg/avatar.svg';
 
 import { StakingWrapper } from '../../services/staking.wrapper';
 import { ethereum, HIDE, SHOW, STAKE } from '../../utils/constants';
+import StakingItemBody from './StakingItemBody';
 
 const StakingItem = ({
   expand = false,
@@ -106,7 +107,7 @@ const StakingItem = ({
     return () => {
       mounted = false;
     };
-  }, [myStake]);
+  }, [appStore.refresh]);
 
   const stackHeader = (
     <div className="item--header" role="presentation">
@@ -190,19 +191,21 @@ const StakingItem = ({
   );
   return (
     <div role="presentation" className="stack-item">
-      {stackHeader}
-      <Collapse isOpen={state[index] ? activeExpand === index : state[index]}>
-        <div className="item--content">
-          <div className="line" />
-          <div className="collapsed-content">
-            {appStore.auth && (
-              <div className="collapsed-content__body">
-                <Deposit depositInfo={poolInfo} />
-              </div>
-            )}
+      <StakingItemBody>
+        {stackHeader}
+        <Collapse isOpen={state[index] ? activeExpand === index : state[index]}>
+          <div className="item--content">
+            <div className="line" />
+            <div className="collapsed-content">
+              {appStore.auth && (
+                <div className="collapsed-content__body">
+                  <Deposit depositInfo={poolInfo} />
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </Collapse>
+        </Collapse>
+      </StakingItemBody>
     </div>
   );
 };
@@ -217,4 +220,4 @@ StakingItem.propTypes = {
   activeExpand: PropTypes.number,
   setActiveExpand: PropTypes.func,
 };
-export default StakingItem;
+export default React.memo(StakingItem);

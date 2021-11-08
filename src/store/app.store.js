@@ -5,6 +5,8 @@ export class AppStore {
 
   tokenPrice = 0.04;
 
+  refresh = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -12,6 +14,12 @@ export class AppStore {
   setAuth(bool) {
     runInAction(() => {
       this.auth = bool;
+    });
+  }
+
+  setRefresh() {
+    runInAction(() => {
+      this.refresh = !this.refresh;
     });
   }
 

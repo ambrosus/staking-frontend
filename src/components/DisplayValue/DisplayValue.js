@@ -28,4 +28,4 @@ DisplayValue.propTypes = {
   color: PropTypes.string,
   symbol: PropTypes.string,
 };
-export default DisplayValue;
+export default React.memo(DisplayValue);

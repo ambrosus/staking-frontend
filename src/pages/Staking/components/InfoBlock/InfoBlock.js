@@ -150,4 +150,4 @@ InfoBlock.propTypes = {
   totalStaked: PropTypes.any,
   totalRewardInUsd: PropTypes.any,
 };
-export default InfoBlock;
+export default React.memo(InfoBlock);

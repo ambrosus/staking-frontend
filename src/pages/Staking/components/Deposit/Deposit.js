@@ -23,6 +23,7 @@ import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 import notificationMassage from '../../../../utils/notificationMassage';
 import DisplayValue from '../../../../components/DisplayValue';
+import appStore from '../../../../store/app.store';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
@@ -70,6 +71,7 @@ const Deposit = observer(({ depositInfo }) => {
                       6,
                     )}...${result.transactionHash.slice(60)} success!`,
                   );
+                  appStore.setRefresh();
                   setInputValue('');
                 })
                 .catch(() => {
