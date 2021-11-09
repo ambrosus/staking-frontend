@@ -106,26 +106,42 @@ const Home = () => {
         <div className="staking__header__clearfix-pool">Pool</div>
         <div>Total pool stake</div>
         <div className="staking__header__clearfix-apy">APY</div>
-        <div style={{ maxWidth: 160, minWidth: 160 }}></div>
+        <div style={{ maxWidth: 160, minWidth: 160 }} />
       </div>
       <div className="staking__pools">
-        {pools &&
-          pools.map((pool) => {
-            if (pool.active === true) {
-              return (
-                <StackItem
-                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                  key={pool.contractName}
-                  poolInfo={pool}
-                  lazy
-                  expand={false}
-                />
-              );
-            }
-            return (
-              <ComingSoonPool key={pool.contractName} poolInfo={pool} lazy />
-            );
-          })}
+        {pools && pools.length && (
+          <>
+            <div className="staking__header">
+              <div>Pool</div>
+              <div>My Stake</div>
+              <div>Total pool stake</div>
+              <div>APY</div>
+              <div style={{ marginRight: -45 }} />
+            </div>
+            {pools.map(
+              (item) =>
+                item.active && (
+                  <StackItem
+                    hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                    key={item.contractName}
+                    poolInfo={item}
+                    lazy
+                    expand={false}
+                  />
+                ),
+            )}
+            {pools.map(
+              (coming) =>
+                !coming.active && (
+                  <ComingSoonPool
+                    key={coming.contractName}
+                    poolInfo={coming}
+                    lazy
+                  />
+                ),
+            )}
+          </>
+        )}
       </div>
     </>
   );
