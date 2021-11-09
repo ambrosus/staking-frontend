@@ -29,15 +29,23 @@
     line-height: 17px;
     color: #9198BB;
     white-space: nowrap;
+    @media (max-width: 600px) {
+      font-size: 12px;
+      > div {
+        max-width: 60px !important;
+        min-width: 60px !important;
+      }
+    }
 
     &__clearfix-pool {
       white-space: nowrap;
-
     }
 
     &__clearfix-apy {
       white-space: nowrap;
-
+      @media (max-width: 600px) {
+        padding-left: 20px;
+      }
     }
 
     > div {
@@ -73,6 +81,10 @@
       flex-direction: row;
       justify-content: space-between;
       padding: 20px 20px;
+      @media (max-width: 600px) {
+        padding: 10px 10px;
+        max-width: 100%;
+      }
 
       &__flex {
         display: flex;
@@ -80,40 +92,99 @@
         justify-content: space-between;
         flex-direction: row;
         width: 80%;
+        @media (max-width: 600px) {
+          padding-right: 0 !important;
+        }
 
         &__pool {
           display: flex;
           flex-direction: row;
           align-items: center;
           margin-right: 18px;
+          @media (max-width: 600px) {
+            > * {
+              margin: 0 !important;
+            }
+          }
 
           p {
             margin-left: 20px;
+            @media (max-width: 600px) {
+              font-size: 12px !important;
+              margin: 0 !important;
+              margin-left: 10px !important;
+            }
           }
         }
 
         &__my-stake {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
+          @media (max-width: 600px) {
+            > * {
+              margin: 0 !important;
+            }
+          }
 
+          p {
+            @media (max-width: 600px) {
+              font-size: 12px !important;
+              margin: 0 !important;
+
+            }
+          }
         }
 
         &__vault-assets {
+          @media (max-width: 600px) {
+            > * {
+              margin: 0 !important;
+            }
+          }
 
+          p {
+            @media (max-width: 600px) {
+              font-size: 12px !important;
+              margin: 0 !important;
+
+            }
+          }
         }
-
 
         &__apy {
+          @media (max-width: 600px) {
+            p {
+              font-size: 12px !important;
+            }
+            div {
+              margin: 0 !important;
+            }
+          }
         }
->div{
-  min-width: 200px;
-  max-width: 200px;
-}
+
+        > div {
+          min-width: 200px;
+          max-width: 200px;
+          @media (max-width: 600px) {
+            min-width: 75px;
+            max-width: 75px;
+          }
+        }
+      }
+
+      &--coming-soon-btn {
+        min-width: 160px !important;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        button {
+          min-width: 160px;
+        }
       }
 
       button {
         max-width: 160px;
+        @media (max-width: 600px) {
+          max-width: 60px;
+        }
       }
 
       > div, button {

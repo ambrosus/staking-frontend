@@ -10,11 +10,13 @@ import StackItem from '../../components/StakingItem';
 import { ethereum } from '../../utils/constants';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
+import headerImage from '../../assets/images/header-image.svg';
 import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
 import NotSupported from '../../components/NotSupported';
 import { StakingWrapper } from '../../services/staking.wrapper';
 import { Loader } from '../../components/Loader';
+import Sidebar from '../../components/Sidebar';
 
 const Home = () => {
   const [userChainId, setUserChainId] = useState(false);
@@ -141,18 +143,33 @@ const Home = () => {
   return (
     <>
       {!correctNetwork && <NotSupported onclick={changeNetwork} />}
-      <div className="home">
+      <div className="home" id="home">
+        <Sidebar pageWrapId="root" outerContainerId="root" />
         <ReactNotifications />
         <div className="home__top">
           <div className="home__top--header">
-            <div className="home__top--logo">
+            <div className="logo">
               <ReactSVG src={headerLogoSvg} wrapper="span" />
             </div>
             {menu}
             <MetamaskConnect />
           </div>
+          <div className="home__top--info-mobile">
+            <div className="info-image">
+              <ReactSVG src={headerImage} wrapper="span" />
+            </div>
+            <div className="info-text">
+              <P size="xxxl-500" style={{ paddingBottom: 10 }}>
+                Get AMB Rewards. No node needed.
+              </P>
+              <P size="l-500-white">
+                Stake your AMB and receive up to 30% APY in a few clicks.
+              </P>
+            </div>
+            <MetamaskConnect />
+          </div>
           <div className="home__top--info">
-            <div className="info-image"></div>
+            <div className="info-image" />
             <div className="info-text">
               <P size="xxxl-500" style={{ paddingBottom: 10 }}>
                 Maximize your AMB Rewards.

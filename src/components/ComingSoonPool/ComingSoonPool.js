@@ -14,15 +14,19 @@ export const ComingSoonPool = ({ poolInfo }) => {
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div
-        className="item--header__flex"
+        className="item--header__flex w-100"
         style={{
           paddingRight: history.location.pathname === '/staking' ? 100 : 200,
           width: '80%',
         }}
       >
-        <div className="item--header__flex__pool" style={{ width: '80%' }}>
+        <div
+          className="item--header__flex__pool w-100"
+          style={{ width: '80%' }}
+        >
           <ReactSVG src={avatarIcon} wrapper="span" />
           <P
+            className="w-100"
             style={{
               textTransform: 'uppercase',
               whiteSpace: 'word-wrap',
@@ -35,7 +39,7 @@ export const ComingSoonPool = ({ poolInfo }) => {
           </P>
         </div>
       </div>
-      <div style={{ minWidth: 160, maxWidth: 160 }}>
+      <div className="item--header--coming-soon-btn">
         <Button disabled priority="secondary">
           <P style={{ textTransform: 'uppercase' }} size="m-500">
             {COMING_SOON}

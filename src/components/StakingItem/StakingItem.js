@@ -5,6 +5,7 @@ import { ReactSVG } from 'react-svg';
 import { providers, utils } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
+import { useLocation } from 'react-router-dom';
 
 import Button from '../Button';
 import P from '../P';
@@ -36,6 +37,7 @@ const StakingItem = ({
   const [APYOfPool, setAPYOfPool] = useState('');
   const history = useHistory();
   const { logIn } = useLogIn();
+  const location = useLocation();
   let provider;
 
   const updateState = async () => {
@@ -150,7 +152,6 @@ const StakingItem = ({
             )}
           </div>
         )}
-
         <div className="item--header__flex__vault-assets">
           <div style={{ width: 150 }}>
             <DisplayValue value={totalStake && utils.formatEther(totalStake)} />
@@ -193,18 +194,22 @@ const StakingItem = ({
     <div role="presentation" className="stack-item">
       <StakingItemBody>
         {stackHeader}
-        <Collapse isOpen={state[index] ? activeExpand === index : state[index]}>
-          <div className="item--content">
-            <div className="line" />
-            <div className="collapsed-content">
-              {appStore.auth && (
-                <div className="collapsed-content__body">
-                  <Deposit depositInfo={poolInfo} />
-                </div>
-              )}
+        {location.pathname === '/staking' && (
+          <Collapse
+            isOpen={state[index] ? activeExpand === index : state[index]}
+          >
+            <div className="item--content">
+              <div className="line" />
+              <div className="collapsed-content">
+                {appStore.auth && (
+                  <div className="collapsed-content__body">
+                    <Deposit depositInfo={poolInfo} />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </Collapse>
+          </Collapse>
+        )}
       </StakingItemBody>
     </div>
   );
