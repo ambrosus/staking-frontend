@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@ambrosus/react": "^0.16.4",
     "@kunukn/react-collapse": "^2.2.9",
     "ambrosus-node-contracts": "^0.0.88",
     "animate.css": "^4.1.1",
