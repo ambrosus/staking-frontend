@@ -18,7 +18,7 @@ const math = create(all, {
   precision: 64,
 });
 
-const exprDPY = math.compile('(s1 / s2) ^ (86400 / (t2 - t1)) - 1');
+const exprDPY = math.compile('(s2 / s1) ^ (86400 / (t2 - t1)) - 1');
 
 const headContractAddress = '0x0000000000000000000000000000000000000F10';
 
@@ -165,7 +165,7 @@ class StakingWrapper {
 
     const sortedPoolRewards = rewardEvents
       .filter((event) => event.args.pool === poolAddr)
-      .sort((a, b) => a.args.tokenPrice.gte(b.args.tokenPrice));
+      .sort((a, b) => a.args.tokenPrice.lte(b.args.tokenPrice));
 
     if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
 
@@ -184,8 +184,8 @@ class StakingWrapper {
     const dpy = exprDPY.evaluate({
       s1: math.bignumber(firstReward.tokenPrice.toString()),
       s2: math.bignumber(lastReward.tokenPrice.toString()),
-      t1: lastReward.timestamp,
-      t2: firstReward.timestamp,
+      t1: firstReward.timestamp,
+      t2: lastReward.timestamp,
     });
 
     return dpy;
