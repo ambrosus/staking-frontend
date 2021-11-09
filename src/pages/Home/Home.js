@@ -56,7 +56,9 @@ const Home = () => {
               }
             });
         } catch (e) {
-          setCorrectNetwork(false);
+          if (e) {
+            setCorrectNetwork(false);
+          }
         }
       }
     }
@@ -65,15 +67,19 @@ const Home = () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
-      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+      if (chainId) {
+        setUserChainId(chainId);
+      }
+      if (chainId && chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
       }
-      setUserChainId(chainId);
     }
   };
   const getPulls = async () => {
-    const poolsArr = await stakingWrapper.getPools();
-    setPools(poolsArr);
+    const poolsArr = stakingWrapper && (await stakingWrapper.getPools());
+    if (poolsArr) {
+      setPools(poolsArr);
+    }
   };
   useEffect(() => {
     let mounted = true;
@@ -83,6 +89,7 @@ const Home = () => {
     }
     return () => {
       mounted = false;
+      getPulls();
     };
   }, [correctNetwork]);
   const menu = (

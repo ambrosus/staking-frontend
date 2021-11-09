@@ -5,7 +5,7 @@ import { ethereum } from './constants';
 import appStore from '../store/app.store';
 import collapsedReducer from './collapsedReducer';
 import storageService from '../services/storage.service';
-
+/*eslint-disable*/
 const useStaking = () => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);
@@ -78,57 +78,59 @@ const useStaking = () => {
 
   useEffect(async () => {
     let mounted = true;
-    const interval = mounted && setInterval(() => appStore.setRefresh(), 70000);
-    if (ethereum && ethereum.isMetaMask) {
-      checkEthereumNetwork();
-      window.addEventListener('focus', () => {
-        changeNetwork();
-      });
-    }
-    if (correctNetwork && appStore.auth) {
-      provider = new providers.Web3Provider(ethereum);
-      const { chainId } = provider && provider.getNetwork();
-      setUserChainId(chainId);
-      signer = provider && provider.getSigner();
-      if (provider && signer) {
-        if (storageService.get('auth') === true) {
-          const stakingWrapper = signer && new StakingWrapper(signer);
-          provider.listAccounts().then((accounts) => {
-            const defaultAccount = accounts[0];
-            if (defaultAccount) {
-              setAccount(defaultAccount);
-            }
-          });
-          const poolsArr = await stakingWrapper.getPools();
-          setPools(poolsArr && poolsArr);
-          const poolsRewards = [];
-          const myTotalStake = [];
-          /* eslint-disable-next-line */
-          for (const pool of poolsArr) {
-            if (pool.active) {
-              const { estDR, myStakeInAMB } =
-                /* eslint-disable-next-line */
-                await stakingWrapper.getPoolData(pool.index);
-              poolsRewards.push(estDR && estDR);
-              const rewardInAmb =
-                poolsRewards?.length > 0 &&
-                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-              setTotalReward(rewardInAmb && rewardInAmb);
-              const esdSum =
-                appStore.tokenPrice &&
-                poolsRewards?.length > 0 &&
-                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-              setTotalRewardInUsd(
-                esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
-              );
-              if (myStakeInAMB) {
-                myTotalStake.push(myStakeInAMB);
-                if (myTotalStake?.length > 0) {
-                  const totalStakeSum = myTotalStake.reduceRight(
-                    (acc, curr) => acc.add(curr),
-                    BigNumber.from('0'),
-                  );
-                  setTotalStaked(totalStakeSum && totalStakeSum);
+    const interval = setInterval(() => appStore.setRefresh(), 70000);
+    if (mounted === true) {
+      if (ethereum && ethereum.isMetaMask) {
+        checkEthereumNetwork();
+        window.addEventListener('focus', () => {
+          changeNetwork();
+        });
+      }
+      if (correctNetwork && appStore.auth) {
+        provider = new providers.Web3Provider(ethereum);
+        const { chainId } = provider && provider.getNetwork();
+        setUserChainId(chainId);
+        signer = provider && provider.getSigner();
+        if (provider && signer) {
+          if (storageService.get('auth') === true) {
+            const stakingWrapper = signer && new StakingWrapper(signer);
+            provider.listAccounts().then((accounts) => {
+              const defaultAccount = accounts[0];
+              if (defaultAccount) {
+                setAccount(defaultAccount);
+              }
+            });
+            const poolsArr = await stakingWrapper.getPools();
+            setPools(poolsArr && poolsArr);
+            const poolsRewards = [];
+            const myTotalStake = [];
+            /* eslint-disable-next-line */
+            for (const pool of poolsArr) {
+              if (pool.active) {
+                const { estDR, myStakeInAMB } =
+                  /* eslint-disable-next-line */
+                  await stakingWrapper.getPoolData(pool.index);
+                poolsRewards.push(estDR && estDR);
+                const rewardInAmb =
+                  poolsRewards?.length > 0 &&
+                  poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+                setTotalReward(rewardInAmb && rewardInAmb);
+                const esdSum =
+                  appStore.tokenPrice &&
+                  poolsRewards?.length > 0 &&
+                  poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+                setTotalRewardInUsd(
+                  esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
+                );
+                if (myStakeInAMB) {
+                  myTotalStake.push(myStakeInAMB);
+                  if (myTotalStake?.length > 0) {
+                    const totalStakeSum = myTotalStake.reduceRight(
+                      (acc, curr) => acc.add(curr),
+                      BigNumber.from('0'),
+                    );
+                    setTotalStaked(totalStakeSum && totalStakeSum);
+                  }
                 }
               }
             }
@@ -136,6 +138,7 @@ const useStaking = () => {
         }
       }
     }
+
     return () => {
       mounted = false;
       return clearInterval(interval);

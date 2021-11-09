@@ -60,9 +60,11 @@ const StakingItem = ({
             const stakingWrapper = new StakingWrapper(singer);
             const { totalStakeInAMB, myStakeInAMB, poolAPY } =
               await stakingWrapper.getPoolData(poolInfo.index);
-            setMyStake(myStakeInAMB);
-            setAPYOfPool(poolAPY);
-            setTotalStake(totalStakeInAMB);
+            if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+              setMyStake(myStakeInAMB);
+              setAPYOfPool(poolAPY);
+              setTotalStake(totalStakeInAMB);
+            }
           }
         }
       };
@@ -71,8 +73,10 @@ const StakingItem = ({
         const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
           poolInfo.index,
         );
-        setAPYOfPool(poolAPY);
-        setTotalStake(totalStakeInAMB);
+        if (poolAPY && totalStakeInAMB) {
+          setAPYOfPool(poolAPY);
+          setTotalStake(totalStakeInAMB);
+        }
       };
       const refreshProc = provider ? loggedInRefresh : loggedOutRefresh;
       refreshProc();

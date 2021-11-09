@@ -34,6 +34,8 @@ const useLogIn = () => {
           .then(async (e) => {
             if (e) {
               history.push('/staking');
+              /*eslint-disable*/
+              debugger;
               storageService.set('auth', true);
               appStore.setAuth(true);
               const provider = new providers.Web3Provider(ethereum);
