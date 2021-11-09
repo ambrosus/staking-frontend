@@ -1,7 +1,7 @@
 /*eslint-disable*/
 class StorageService {
   namespace = 'staking_';
-  storage = sessionStorage;
+  storage = localStorage;
 
   constructor() {}
 
