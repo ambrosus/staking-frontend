@@ -11,6 +11,7 @@ import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
 import useStaking from '../../utils/useStaking';
 import InfoBlock from './components/InfoBlock';
+import RenderItems from '../../components/StakingItem/RenderItems';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
@@ -51,25 +52,27 @@ const Staking = observer(() => {
             <div>APY</div>
             <div style={{ marginRight: -45 }} />
           </div>
-          {pools.map((item, index) =>
-            item.active ? (
-              <StakingItem
-                dispatch={dispatch}
-                activeExpand={activeExpand}
-                setActiveExpand={setActiveExpand}
-                key={item.contractName}
-                index={index}
-                state={state}
-                expand
-                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                comingSoon={!item?.abi}
-                lazy
-                poolInfo={item}
-              />
-            ) : (
-              <ComingSoonPool key={item.contractName} poolInfo={item} lazy />
-            ),
-          )}
+          <RenderItems>
+            {pools.map((item, index) =>
+              item.active ? (
+                <StakingItem
+                  dispatch={dispatch}
+                  activeExpand={activeExpand}
+                  setActiveExpand={setActiveExpand}
+                  key={item.contractName}
+                  index={index}
+                  state={state}
+                  expand
+                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                  comingSoon={!item?.abi}
+                  lazy
+                  poolInfo={item}
+                />
+              ) : (
+                <ComingSoonPool key={item.contractName} poolInfo={item} lazy />
+              ),
+            )}
+          </RenderItems>
         </>
       )}
     </div>
