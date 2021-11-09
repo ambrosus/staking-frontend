@@ -51,33 +51,24 @@ const Staking = observer(() => {
             <div>APY</div>
             <div style={{ marginRight: -45 }} />
           </div>
-          {pools.map(
-            (item, index) =>
-              item.active && (
-                <StakingItem
-                  dispatch={dispatch}
-                  activeExpand={activeExpand}
-                  setActiveExpand={setActiveExpand}
-                  key={item.contractName}
-                  index={index}
-                  state={state}
-                  expand
-                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                  comingSoon={!item?.abi}
-                  lazy
-                  poolInfo={item}
-                />
-              ),
-          )}
-          {pools.map(
-            (coming) =>
-              !coming.active && (
-                <ComingSoonPool
-                  key={coming.contractName}
-                  poolInfo={coming}
-                  lazy
-                />
-              ),
+          {pools.map((item, index) =>
+            item.active ? (
+              <StakingItem
+                dispatch={dispatch}
+                activeExpand={activeExpand}
+                setActiveExpand={setActiveExpand}
+                key={item.contractName}
+                index={index}
+                state={state}
+                expand
+                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                comingSoon={!item?.abi}
+                lazy
+                poolInfo={item}
+              />
+            ) : (
+              <ComingSoonPool key={item.contractName} poolInfo={item} lazy />
+            ),
           )}
         </>
       )}
