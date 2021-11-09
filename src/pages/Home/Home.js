@@ -17,6 +17,7 @@ import NotSupported from '../../components/NotSupported';
 import { StakingWrapper } from '../../services/staking.wrapper';
 import { Loader } from '../../components/Loader';
 import Sidebar from '../../components/Sidebar';
+import RenderItems from '../../components/StakingItem/RenderItems';
 
 const Home = () => {
   const [userChainId, setUserChainId] = useState(false);
@@ -83,7 +84,7 @@ const Home = () => {
     return () => {
       mounted = false;
     };
-  }, [correctNetwork]);
+  }, [userChainId, correctNetwork, pools]);
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -111,32 +112,34 @@ const Home = () => {
         <div style={{ maxWidth: 160, minWidth: 160 }} />
       </div>
       <div className="staking__pools">
-        {pools && pools.length && (
-          <>
-            {pools.map(
-              (item) =>
-                item.active && (
-                  <StackItem
-                    hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                    key={item.contractName}
-                    poolInfo={item}
-                    lazy
-                    expand={false}
-                  />
-                ),
-            )}
-            {pools.map(
-              (coming) =>
-                !coming.active && (
-                  <ComingSoonPool
-                    key={coming.contractName}
-                    poolInfo={coming}
-                    lazy
-                  />
-                ),
-            )}
-          </>
-        )}
+        <RenderItems>
+          {pools && pools.length && (
+            <>
+              {pools.map(
+                (item) =>
+                  item.active && (
+                    <StackItem
+                      hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                      key={item.contractName}
+                      poolInfo={item}
+                      lazy
+                      expand={false}
+                    />
+                  ),
+              )}
+              {pools.map(
+                (coming) =>
+                  !coming.active && (
+                    <ComingSoonPool
+                      key={coming.contractName}
+                      poolInfo={coming}
+                      lazy
+                    />
+                  ),
+              )}
+            </>
+          )}
+        </RenderItems>
       </div>
     </>
   );

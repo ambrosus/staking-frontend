@@ -18,7 +18,6 @@ const useLogIn = () => {
       window.addEventListener('ethereum#initialized', handleEthereum, {
         once: true,
       });
-      setTimeout(handleEthereum, 0);
     }
 
     async function handleEthereum() {
