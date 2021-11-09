@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Block from './Block';
 import collapsedReducer from '../../utils/collapsedReducer';
 import P from '../P';
 
 function CollapsedList() {
   const initialState = [false, false, false, false, false, false, false, false];
-
+  const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, initialState);
-
+  const toggleActive = (index) => {
+    setActiveExpand(index);
+    dispatch({ type: 'toggle', index });
+    if (index === activeExpand) {
+      dispatch({ type: 'hide', index });
+    }
+    if (index === activeExpand && !state[index]) {
+      dispatch({ type: 'toggle', index });
+    }
+  };
   return (
     <div className="collapsed-list">
       <div className="collapsed-list__heading">Arcadia Staking FAQs</div>
       <Block
         title="What is AMB?"
         isOpen={state[0]}
-        onToggle={() => dispatch({ type: 'toggle', index: 0 })}
+        onToggle={() => toggleActive(0)}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -28,7 +37,7 @@ function CollapsedList() {
       <Block
         title="How does Arcadia Staking work?"
         isOpen={state[1]}
-        onToggle={() => dispatch({ type: 'toggle', index: 1 })}
+        onToggle={() => toggleActive(1)}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -46,7 +55,7 @@ function CollapsedList() {
       <Block
         title="Can I trade AMB coins when they are staked?"
         isOpen={state[2]}
-        onToggle={() => dispatch({ type: 'toggle', index: 2 })}
+        onToggle={() => toggleActive(2)}
       >
         <div className="collapsed-content">
           <P size="m-400">No, you cannot trade staked coins.</P>
@@ -55,7 +64,7 @@ function CollapsedList() {
       <Block
         title="How often are rewards distributed?"
         isOpen={state[3]}
-        onToggle={() => dispatch({ type: 'toggle', index: 3 })}
+        onToggle={() => toggleActive(3)}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -68,7 +77,7 @@ function CollapsedList() {
       <Block
         title="Does staking generate the same rewards as setting up a masternode? "
         isOpen={state[4]}
-        onToggle={() => dispatch({ type: 'toggle', index: 4 })}
+        onToggle={() => toggleActive(4)}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -81,7 +90,7 @@ function CollapsedList() {
       <Block
         title="When can I redeem my staked AMB?"
         isOpen={state[5]}
-        onToggle={() => dispatch({ type: 'toggle', index: 5 })}
+        onToggle={() => toggleActive(5)}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -92,7 +101,7 @@ function CollapsedList() {
       <Block
         title="What is the minimum & maximum amount of AMB that can be staked? "
         isOpen={state[6]}
-        onToggle={() => dispatch({ type: 'toggle', index: 6 })}
+        onToggle={() => toggleActive(6)}
       >
         <div className="collapsed-content">
           <P size="m-400">
@@ -106,7 +115,7 @@ function CollapsedList() {
         title="Are there any staking fees?"
         lastElement
         isOpen={state[7]}
-        onToggle={() => dispatch({ type: 'toggle', index: 7 })}
+        onToggle={() => toggleActive(7)}
       >
         <div className="collapsed-content">
           <P size="m-400">
