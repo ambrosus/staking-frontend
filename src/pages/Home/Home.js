@@ -111,13 +111,6 @@ const Home = () => {
       <div className="staking__pools">
         {pools && pools.length && (
           <>
-            <div className="staking__header">
-              <div>Pool</div>
-              <div>My Stake</div>
-              <div>Total pool stake</div>
-              <div>APY</div>
-              <div style={{ marginRight: -45 }} />
-            </div>
             {pools.map(
               (item) =>
                 item.active && (
