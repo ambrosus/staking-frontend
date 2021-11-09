@@ -14,11 +14,11 @@ import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAle
 import useLogIn from '../../utils/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import avatarIcon from '../../assets/svg/avatar.svg';
-
 import { StakingWrapper } from '../../services/staking.wrapper';
 import { ethereum, HIDE, SHOW, STAKE } from '../../utils/constants';
 import StakingItemBody from './StakingItemBody';
+
+import avatarIcon from '../../assets/svg/avatar.svg';
 
 const StakingItem = ({
   expand = false,
