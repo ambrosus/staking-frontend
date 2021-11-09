@@ -1,7 +1,7 @@
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
-import { ethers, providers, utils } from 'ethers';
+import { providers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
@@ -37,58 +37,45 @@ const Deposit = observer(({ depositInfo }) => {
     useModal();
   let provider;
   const checkoutPayment = async () => {
-    provider = new providers.Web3Provider(ethereum, 'any');
-    if (provider) {
-      const signer = provider.getSigner();
-      if (signer) {
-        const poolContract = new ethers.Contract(
-          depositInfo.address,
-          depositInfo.abi,
-          signer,
-        );
-        const contractWithSigner = poolContract.connect(signer);
-        const overrides = {
-          value: utils.parseEther(inputValue), //
-          gasPrice: utils.parseUnits('20', 'gwei'),
-          gasLimit: 1000000,
-        };
-        if (contractWithSigner) {
-          await contractWithSigner.stake(overrides).then(async (tx) => {
-            if (tx) {
+    if (inputValue) {
+      const overrides = {
+        value: utils.parseEther(inputValue),
+        gasPrice: utils.parseUnits('20', 'gwei'),
+        gasLimit: 1000000,
+      };
+      await depositInfo.contract.stake(overrides).then(async (tx) => {
+        if (tx) {
+          notificationMassage(
+            'PENDING',
+            `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+              60,
+            )} pending.`,
+          );
+          await tx
+            .wait()
+            .then((result) => {
               notificationMassage(
-                'PENDING',
+                'SUCCESS',
+                `Transaction ${result.transactionHash.substr(
+                  0,
+                  6,
+                )}...${result.transactionHash.slice(60)} success!`,
+              );
+              appStore.setRefresh();
+              setInputValue('');
+            })
+            .catch(() => {
+              notificationMassage(
+                'ERROR',
                 `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
                   60,
-                )} pending.`,
+                )} failed!`,
               );
-              await tx
-                .wait()
-                .then((result) => {
-                  notificationMassage(
-                    'SUCCESS',
-                    `Transaction ${result.transactionHash.substr(
-                      0,
-                      6,
-                    )}...${result.transactionHash.slice(60)} success!`,
-                  );
-                  appStore.setRefresh();
-                  setInputValue('');
-                })
-                .catch(() => {
-                  notificationMassage(
-                    'ERROR',
-                    `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                      60,
-                    )} failed!`,
-                  );
-                  setInputValue('');
-                });
-            }
-          });
+              setInputValue('');
+            });
         }
-      }
+      });
     }
-
     return false;
   };
   useEffect(() => {

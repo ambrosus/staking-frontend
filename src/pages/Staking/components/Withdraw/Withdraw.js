@@ -36,11 +36,6 @@ const Withdraw = observer(
       if (provider) {
         const signer = provider.getSigner();
         if (signer) {
-          const poolContract = new ethers.Contract(
-            withdrawContractInfo.address,
-            withdrawContractInfo.abi,
-            signer,
-          );
           const stakingWrapper = new StakingWrapper(signer);
           const { tokenPriceAMB, myStakeInTokens } =
             await stakingWrapper.getPoolData(withdrawContractInfo.index);
@@ -51,49 +46,46 @@ const Withdraw = observer(
             .div(tokenPriceAMB);
           // TODO How to unstake all stake?
 
-          const contractWithSigner = poolContract.connect(signer);
           const overrides = {
             gasPrice: utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
-          if (contractWithSigner) {
-            await contractWithSigner
-              .unstake(oneHundredPercent ? myStakeInTokens : decimal, overrides)
-              .then(async (tx) => {
-                if (tx) {
-                  notificationMassage(
-                    'PENDING',
-                    `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                      60,
-                    )} pending.`,
-                  );
-                  setInputValue('');
-                  await tx
-                    .wait()
-                    .then((result) => {
-                      notificationMassage(
-                        'SUCCESS',
-                        `Transaction ${result.transactionHash.substr(
-                          0,
-                          6,
-                        )}...${result.transactionHash.slice(60)} success!`,
-                      );
-                      appStore.setRefresh();
-                      setInputValue('');
-                      oneHundredPercent(false);
-                    })
-                    .catch(() => {
-                      notificationMassage(
-                        'ERROR',
-                        `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                          60,
-                        )} failed!`,
-                      );
-                      setInputValue('');
-                    });
-                }
-              });
-          }
+          await withdrawContractInfo.contract
+            .unstake(oneHundredPercent ? myStakeInTokens : decimal, overrides)
+            .then(async (tx) => {
+              if (tx) {
+                notificationMassage(
+                  'PENDING',
+                  `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                    60,
+                  )} pending.`,
+                );
+                setInputValue('');
+                await tx
+                  .wait()
+                  .then((result) => {
+                    notificationMassage(
+                      'SUCCESS',
+                      `Transaction ${result.transactionHash.substr(
+                        0,
+                        6,
+                      )}...${result.transactionHash.slice(60)} success!`,
+                    );
+                    appStore.setRefresh();
+                    setInputValue('');
+                    oneHundredPercent(false);
+                  })
+                  .catch(() => {
+                    notificationMassage(
+                      'ERROR',
+                      `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                        60,
+                      )} failed!`,
+                    );
+                    setInputValue('');
+                  });
+              }
+            });
         }
       }
       return false;

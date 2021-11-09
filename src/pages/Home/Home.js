@@ -73,8 +73,14 @@ const Home = () => {
     setPools(poolsArr);
   };
   useEffect(() => {
-    getPulls();
-    initEthereumNetwork();
+    let mounted = true;
+    if (mounted) {
+      getPulls();
+      initEthereumNetwork();
+    }
+    return () => {
+      mounted = false;
+    };
   }, [correctNetwork]);
   const menu = (
     <div className="menu">
