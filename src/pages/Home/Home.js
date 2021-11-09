@@ -84,7 +84,7 @@ const Home = () => {
     return () => {
       mounted = false;
     };
-  }, [userChainId, correctNetwork, pools]);
+  }, [correctNetwork]);
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">
@@ -122,7 +122,6 @@ const Home = () => {
                       hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
                       key={item.contractName}
                       poolInfo={item}
-                      lazy
                       expand={false}
                     />
                   ),
@@ -145,7 +144,7 @@ const Home = () => {
   );
   return (
     <>
-      {!correctNetwork && <NotSupported onclick={changeNetwork} />}
+      {!correctNetwork && <NotSupported onclick={() => changeNetwork()} />}
       <div className="home" id="home">
         <Sidebar pageWrapId="root" outerContainerId="root" />
         <ReactNotifications />

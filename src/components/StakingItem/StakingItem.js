@@ -23,7 +23,6 @@ import avatarIcon from '../../assets/svg/avatar.svg';
 
 const StakingItem = ({
   expand = false,
-  comingSoon,
   activeExpand,
   setActiveExpand,
   state = 0,
@@ -129,7 +128,6 @@ const StakingItem = ({
           <P
             style={{
               textTransform: 'uppercase',
-              color: comingSoon && '#BFC9E0',
             }}
             size="l-500"
           >
@@ -143,13 +141,9 @@ const StakingItem = ({
             }}
             className="item--header__flex__my-stake"
           >
-            {comingSoon ? (
-              ''
-            ) : (
-              <div style={{ width: 150 }}>
-                <DisplayValue value={myStake && utils.formatEther(myStake)} />
-              </div>
-            )}
+            <div style={{ width: 150 }}>
+              <DisplayValue value={myStake && utils.formatEther(myStake)} />
+            </div>
           </div>
         )}
         <div className="item--header__flex__vault-assets">
@@ -218,7 +212,6 @@ StakingItem.propTypes = {
   poolInfo: PropTypes.object,
   dispatch: PropTypes.func,
   expand: PropTypes.bool,
-  comingSoon: PropTypes.bool,
   state: PropTypes.array,
   hasChain: PropTypes.bool,
   index: PropTypes.number,
