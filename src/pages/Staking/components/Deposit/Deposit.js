@@ -123,7 +123,7 @@ const Deposit = observer(({ depositInfo }) => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [appStore.refresh]);
 
   useEffect(() => {
     setErrorStakeSum(

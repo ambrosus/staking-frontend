@@ -29,6 +29,7 @@ const Withdraw = observer(
   }) => {
     const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
+    const [oneHundredPercent, setOneHundredPercent] = useState(false);
 
     const withdrawPayment = async () => {
       const provider = new providers.Web3Provider(ethereum, 'any');
@@ -41,9 +42,8 @@ const Withdraw = observer(
             signer,
           );
           const stakingWrapper = new StakingWrapper(signer);
-          const { tokenPriceAMB } = await stakingWrapper.getPoolData(
-            withdrawContractInfo.index,
-          );
+          const { tokenPriceAMB, myStakeInTokens } =
+            await stakingWrapper.getPoolData(withdrawContractInfo.index);
 
           const decimal = utils
             .parseEther(inputValue)
@@ -58,7 +58,7 @@ const Withdraw = observer(
           };
           if (contractWithSigner) {
             await contractWithSigner
-              .unstake(decimal, overrides)
+              .unstake(oneHundredPercent ? myStakeInTokens : decimal, overrides)
               .then(async (tx) => {
                 if (tx) {
                   notificationMassage(
@@ -80,6 +80,7 @@ const Withdraw = observer(
                       );
                       appStore.setRefresh();
                       setInputValue('');
+                      oneHundredPercent(false);
                     })
                     .catch(() => {
                       notificationMassage(
@@ -184,10 +185,13 @@ const Withdraw = observer(
                 disabled={
                   availableSumForWithdraw && availableSumForWithdraw.eq(0)
                 }
-                onclick={() =>
-                  availableSumForWithdraw &&
-                  setInputValue(formatFixed(availableSumForWithdraw, 0))
-                }
+                onclick={() => {
+                  setOneHundredPercent(true);
+                  return (
+                    availableSumForWithdraw &&
+                    setInputValue(formatFixed(availableSumForWithdraw, 18))
+                  );
+                }}
               >
                 <P size="xs-500">100%</P>
               </Button>

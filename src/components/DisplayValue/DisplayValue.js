@@ -11,13 +11,15 @@ const DisplayValue = ({
   size = 'l-400',
   color = '#333333',
 }) =>
-  !value ? (
+  value === null ? (
     <span className="skeleton" />
   ) : (
     <span className="transition1s">
       <P style={{ color, whiteSpace: 'nowrap', minWidth: 50 }} size={size}>
-        {value && flag === 'number' && `${round(value)} ${symbol}`}
-        {value && flag === 'string' && `${round(+value.toFixed(2))} ${symbol}`}
+        {value !== null && flag === 'number' && `${round(value)} ${symbol}`}
+        {value !== null &&
+          flag === 'string' &&
+          `${round(+value.toFixed(2))} ${symbol}`}
       </P>
     </span>
   );

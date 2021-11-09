@@ -9,10 +9,10 @@ import storageService from '../services/storage.service';
 const useStaking = () => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);
-  const [totalStaked, setTotalStaked] = useState(null);
+  const [totalStaked, setTotalStaked] = useState(BigNumber.from('0'));
   const [activeExpand, setActiveExpand] = useState(-1);
-  const [totalReward, setTotalReward] = useState(null);
-  const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
+  const [totalReward, setTotalReward] = useState(0);
+  const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
@@ -114,19 +114,19 @@ const useStaking = () => {
                   await stakingWrapper.getPoolData(pool.index);
                 poolsRewards.push(estDR && estDR);
                 const rewardInAmb =
-                  poolsRewards?.length > 1 &&
+                  poolsRewards?.length > 0 &&
                   poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
                 setTotalReward(rewardInAmb && rewardInAmb);
                 const esdSum =
                   appStore.tokenPrice &&
-                  poolsRewards?.length > 1 &&
+                  poolsRewards?.length > 0 &&
                   poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
                 setTotalRewardInUsd(
                   esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
                 );
                 if (myStakeInAMB) {
                   myTotalStake.push(myStakeInAMB);
-                  if (myTotalStake?.length > 1) {
+                  if (myTotalStake?.length > 0) {
                     const totalStakeSum = myTotalStake.reduceRight(
                       (acc, curr) => acc.add(curr),
                       BigNumber.from('0'),
