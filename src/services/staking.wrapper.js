@@ -99,7 +99,7 @@ class StakingWrapper {
           address: _pool.address,
           abi: pool.abi,
           active: info[1],
-          contract:_pool,
+          contract: _pool,
         };
       }),
     );
