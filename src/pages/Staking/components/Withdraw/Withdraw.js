@@ -13,7 +13,6 @@ import {
   FIXEDPOINT,
   formatFixed,
   ONE,
-  StakingWrapper,
   ZERO,
 } from '../../../../services/staking.wrapper';
 import { ethereum, round } from '../../../../utils/constants';
@@ -35,16 +34,16 @@ const Withdraw = observer(
       const provider = new providers.Web3Provider(ethereum, 'any');
       if (provider) {
         const signer = provider.getSigner();
-        if (signer) {
-          const stakingWrapper = new StakingWrapper(signer);
+        if (signer && appStore.stakingWrapper !== undefined) {
           const { tokenPriceAMB, myStakeInTokens } =
-            await stakingWrapper.getPoolData(withdrawContractInfo.index);
+            await appStore.stakingWrapper.getPoolData(
+              withdrawContractInfo.index,
+            );
 
           const decimal = utils
             .parseEther(inputValue)
             .mul(FIXEDPOINT)
             .div(tokenPriceAMB);
-          // TODO How to unstake all stake?
 
           const overrides = {
             gasPrice: utils.parseUnits('20', 'gwei'),
@@ -244,4 +243,4 @@ Withdraw.propTypes = {
   availableSumForWithdraw: PropTypes.any,
   withdrawContractInfo: PropTypes.any,
 };
-export default Withdraw;
+export default React.memo(Withdraw);

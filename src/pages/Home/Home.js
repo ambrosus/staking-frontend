@@ -23,7 +23,6 @@ const Home = () => {
   const [userChainId, setUserChainId] = useState(false);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [pools, setPools] = useState([]);
-  const stakingWrapper = new StakingWrapper();
 
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
@@ -65,6 +64,7 @@ const Home = () => {
   };
   const initEthereumNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
+      getPulls();
       const provider = new providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
       if (chainId) {
@@ -76,22 +76,15 @@ const Home = () => {
     }
   };
   const getPulls = async () => {
+    const stakingWrapper = new StakingWrapper();
     const poolsArr = stakingWrapper && (await stakingWrapper.getPools());
     if (poolsArr) {
       setPools(poolsArr);
     }
   };
   useEffect(() => {
-    let mounted = true;
-    if (mounted) {
-      getPulls();
-      initEthereumNetwork();
-    }
-    return () => {
-      mounted = false;
-      getPulls();
-    };
-  }, [correctNetwork]);
+    initEthereumNetwork();
+  }, []);
   const menu = (
     <div className="menu">
       <a target="_blank" href="https://ambrosus.io/">

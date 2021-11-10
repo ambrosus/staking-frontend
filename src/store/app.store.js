@@ -3,9 +3,11 @@ import { makeAutoObservable, runInAction } from 'mobx';
 export class AppStore {
   auth = false;
 
-  tokenPrice = 0.04;
+  tokenPrice = undefined;
 
   refresh = false;
+
+  stakingWrapper = undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,6 +22,12 @@ export class AppStore {
   setRefresh() {
     runInAction(() => {
       this.refresh = !this.refresh;
+    });
+  }
+
+  setStakingWrapper(wrap) {
+    runInAction(() => {
+      this.stakingWrapper = wrap;
     });
   }
 

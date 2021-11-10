@@ -57,13 +57,16 @@ const StakingItem = ({
         if (provider) {
           const singer = provider.getSigner();
           if (singer) {
-            const stakingWrapper = new StakingWrapper(singer);
-            const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-              await stakingWrapper.getPoolData(poolInfo.index);
-            if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-              setMyStake(myStakeInAMB);
-              setAPYOfPool(poolAPY);
-              setTotalStake(totalStakeInAMB);
+            const wrapper = new StakingWrapper(singer);
+            appStore.setStakingWrapper(wrapper);
+            if (appStore.stakingWrapper !== undefined) {
+              const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+                await appStore.stakingWrapper.getPoolData(poolInfo.index);
+              if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+                setMyStake(myStakeInAMB);
+                setAPYOfPool(poolAPY);
+                setTotalStake(totalStakeInAMB);
+              }
             }
           }
         }
@@ -105,14 +108,8 @@ const StakingItem = ({
   };
 
   useEffect(() => {
-    let mounted = true;
-    if (mounted) {
-      updateState();
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [appStore.refresh]);
+    updateState();
+  }, []);
 
   const stackHeader = (
     <div className="item--header" role="presentation">
