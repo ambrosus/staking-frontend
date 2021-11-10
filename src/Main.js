@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import storageService from './services/storage.service';
@@ -22,11 +22,7 @@ const Main = observer(() => {
     return <div>Loading...</div>;
   }, [appStore.auth, storageService, ethereum]);
 
-  return (
-    <Suspense fallback="Loading...">
-      <RenderRoutes />
-    </Suspense>
-  );
+  return <RenderRoutes />;
 });
 
 export default Main;

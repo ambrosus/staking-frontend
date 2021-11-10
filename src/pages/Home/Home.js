@@ -174,11 +174,10 @@ const Home = () => {
             <div className="info-image" />
             <div className="info-text">
               <P size="xxxl-500" style={{ paddingBottom: 10 }}>
-                Maximize your AMB Rewards.
+                Get AMB Rewards. No node needed.
               </P>
               <P size="l-500-white">
-                You don&apos;t want to raise Node? Fine, steak your AMB and get
-                up to 55% APY
+                Stake your AMB and receive up to 30% APY in a few clicks.
               </P>
             </div>
           </div>
