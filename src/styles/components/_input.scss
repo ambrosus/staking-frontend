@@ -61,12 +61,15 @@ input[type=number] {
 }
 
 .input .iconRight {
-  top: 4px;
-  right: 5px;
-  background: #BFC9E0;
-  border-radius: 12px;
-  padding: 6px;
+  top:11px;
+  right: 11px;
+  background: $color-gray;
+  border-radius: 8px;
+  padding: 4px 7px;
   cursor: pointer;
+}
+.input .iconRight:hover {
+  background: $color-gray-light;
 }
 
 .input-error input[type="number"]:focus,

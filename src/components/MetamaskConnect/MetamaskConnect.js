@@ -35,7 +35,7 @@ export const MetamaskConnect = observer(() => {
   ) : (
     <div
       role="presentation"
-      className="connect-btn"
+      className="connect-btn primary"
       style={{ display: 'flex' }}
       onClick={logIn}
     >

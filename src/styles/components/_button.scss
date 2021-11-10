@@ -18,14 +18,22 @@
   white-space: nowrap;
   @media (max-width: 600px) {
     min-height: auto;
+    font-size: 12px !important;
   }
 
   &.secondary {
     background-color: $color-blue;
   }
+
   &.primary {
     background-color: $color-primary;
+   p{
+     @media (max-width: 600px) {
+       font-size: 12px !important;
+     }
+   }
   }
+
   &.green {
     background-color: $green;
   }
@@ -38,11 +46,29 @@
     color: $color-gray;
   }
 }
-  button[disabled=disabled], button:disabled {
-    background: $color-blue !important;
-    opacity: 0.8;
-    pointer-events:none;
-    cursor: not-allowed;
-  }
 
+button[disabled=disabled], button:disabled {
+  background: $color-blue !important;
+  opacity: 0.8;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.primary {
+  &:hover {
+    background-color: $color-primary-light;
+  }
+}
+
+.green {
+  &:hover {
+    background-color: $green-light;
+  }
+}
+
+.secondary {
+  &:hover {
+    background-color: $color-gray-light;
+  }
+}
 
