@@ -5,7 +5,6 @@ import { providers } from 'ethers';
 import storageService from '../services/storage.service';
 import appStore from '../store/app.store';
 import InstallMetamaskAlert from '../pages/Home/components/InstallMetamaskAlert';
-import FromPhoneDeviseEnter from '../pages/Home/components/FromPhoneDeviseEnter';
 import { ethereum } from './constants';
 
 const useLogIn = () => {
