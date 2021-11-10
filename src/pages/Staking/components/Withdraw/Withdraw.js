@@ -72,16 +72,19 @@ const Withdraw = observer(
                     );
                     appStore.setRefresh();
                     setInputValue('');
-                    oneHundredPercent(false);
+                    setOneHundredPercent(false);
                   })
-                  .catch(() => {
-                    notificationMassage(
-                      'ERROR',
-                      `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                        60,
-                      )} failed!`,
-                    );
-                    setInputValue('');
+                  .catch((e) => {
+                    if (e) {
+                      console.log(e);
+                      notificationMassage(
+                        'ERROR',
+                        `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                          60,
+                        )} failed!`,
+                      );
+                      setInputValue('');
+                    }
                   });
               }
             });
@@ -102,7 +105,7 @@ const Withdraw = observer(
       return () => {
         calculateSumAfterWithdraw();
       };
-    }, [inputValue, availableSumForWithdraw]);
+    }, [inputValue, availableSumForWithdraw, oneHundredPercent]);
 
     return (
       <div className="deposit">
@@ -128,7 +131,7 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatFixed(availableSumForWithdraw.div(4), 2))
+                  setInputValue(formatFixed(availableSumForWithdraw.div(4), 0))
                 }
               >
                 <P size="xs-500">25%</P>
@@ -144,7 +147,7 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatFixed(availableSumForWithdraw.div(2), 2))
+                  setInputValue(formatFixed(availableSumForWithdraw.div(2), 0))
                 }
               >
                 <P size="xs-500">50%</P>
@@ -161,7 +164,7 @@ const Withdraw = observer(
                 onclick={() =>
                   availableSumForWithdraw &&
                   setInputValue(
-                    formatFixed(availableSumForWithdraw.mul(3).div(4), 2),
+                    formatFixed(availableSumForWithdraw.mul(3).div(4), 0),
                   )
                 }
               >
@@ -180,7 +183,7 @@ const Withdraw = observer(
                   setOneHundredPercent(true);
                   return (
                     availableSumForWithdraw &&
-                    setInputValue(formatFixed(availableSumForWithdraw, 18))
+                    setInputValue(formatFixed(availableSumForWithdraw, 0))
                   );
                 }}
               >

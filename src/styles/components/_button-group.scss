@@ -1,6 +1,10 @@
 .button-group {
   width: 100%;
-
+div{
+  button{
+    height: 48px!important;
+  }
+}
   display: flex;
   justify-content: space-between;
   align-items: center;

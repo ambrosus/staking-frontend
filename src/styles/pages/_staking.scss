@@ -175,6 +175,7 @@
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
+
         button {
           min-width: 160px;
         }
@@ -257,8 +258,12 @@
       > div {
         width: 64px;
         margin-left: 20px;
+        height: auto;
         color: #9198BB !important;
 
+        button {
+          height: 48px !important;
+        }
       }
 
       button {
@@ -298,6 +303,9 @@
   }
 
   .deposit-stake-btn {
+    button {
+      height: 48px !important;
+    }
   }
 
   .deposit-stake-options {

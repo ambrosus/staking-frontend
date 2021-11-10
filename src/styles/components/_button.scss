@@ -6,6 +6,7 @@
   background: $color-primary;
   color: $white;
   padding: 10px;
+  min-height: 40px;
   min-width: 4rem;
   display: flex;
   align-items: center;
@@ -15,6 +16,9 @@
   border-radius: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  @media (max-width: 600px) {
+    min-height: auto;
+  }
 
   &.secondary {
     background-color: $color-blue;

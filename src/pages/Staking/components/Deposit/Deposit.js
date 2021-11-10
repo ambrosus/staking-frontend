@@ -107,7 +107,7 @@ const Deposit = observer(({ depositInfo }) => {
         utils.parseEther(`${inputValue}`).gte(THOUSAND),
     );
     refreshProc();
-  }, [inputValue]);
+  }, [inputValue, appStore.stakingWrapper, appStore.refresh]);
 
   const withdrawForm = (
     <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
@@ -187,7 +187,7 @@ const Deposit = observer(({ depositInfo }) => {
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
           {balance.gte(utils.parseEther(!inputValue ? '0' : inputValue))
-            ? Number(utils.formatEther(balance)).toFixed(2)
+            ? round(Number(utils.formatEther(balance)).toFixed(2))
             : utils.formatEther(0)}{' '}
           AMB
         </P>
@@ -300,7 +300,7 @@ const Deposit = observer(({ depositInfo }) => {
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
               Available for withdraw:{' '}
               {myStake && myStake.gte(MINSHOWSTAKE)
-                ? formatFixed(myStake, 2)
+                ? round(formatFixed(myStake, 2))
                 : 0}{' '}
               AMB
             </P>
