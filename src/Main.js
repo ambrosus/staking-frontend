@@ -10,8 +10,10 @@ import { ethereum } from './utils/constants';
 
 const Main = observer(() => {
   useEffect(() => {
-    if (ethereum && ethereum.isMetaMask) {
-      ethereum.on('accountsChanged', () => window.location.reload());
+    if (ethereum) {
+      ethereum.on('accountsChanged', function () {
+        return window.location.reload();
+      });
       ethereum.on('chainChanged', () => window.location.reload());
     }
     if (!storageService.get('auth')) {
