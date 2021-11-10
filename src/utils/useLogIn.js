@@ -65,17 +65,6 @@ const useLogIn = () => {
         animationOut: ['animated', 'fadeOut'],
       });
     }
-    if (
-      navigator.userAgent.includes('iPhone') ||
-      navigator.userAgent.includes('Android')
-    ) {
-      alertStore.addNotification({
-        content: FromPhoneDeviseEnter,
-        container: 'bottom-right',
-        animationIn: ['animated', 'fadeIn'],
-        animationOut: ['animated', 'fadeOut'],
-      });
-    }
   };
   return { logIn };
 };
