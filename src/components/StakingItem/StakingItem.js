@@ -109,7 +109,7 @@ const StakingItem = ({
 
   useEffect(() => {
     updateState();
-  }, []);
+  }, [appStore.refresh]);
 
   const stackHeader = (
     <div className="item--header" role="presentation">
@@ -219,4 +219,4 @@ StakingItem.propTypes = {
   activeExpand: PropTypes.number,
   setActiveExpand: PropTypes.func,
 };
-export default React.memo(StakingItem);
+export default StakingItem;

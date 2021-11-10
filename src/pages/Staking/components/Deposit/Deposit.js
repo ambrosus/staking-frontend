@@ -77,31 +77,28 @@ const Deposit = observer(({ depositInfo }) => {
     }
     return false;
   };
-  useEffect(() => {
-    const refreshProc = async () => {
-      provider = new providers.Web3Provider(ethereum);
-      if (provider !== undefined) {
-        provider.listAccounts().then((accounts) => {
-          const defaultAccount = accounts[0];
-          if (defaultAccount) {
-            provider.getBalance(defaultAccount).then((balanceObj) => {
-              setBalance(balanceObj);
-            });
-          }
-        });
-        const singer = provider.getSigner();
-        if (singer && appStore.stakingWrapper !== undefined) {
-          const { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, poolAPY } =
-            await appStore.stakingWrapper.getPoolData(depositInfo.index);
-          setTokenPrice(tokenPriceAMB);
-          setMyStake(myStakeInAMB);
-          setTotalStake(totalStakeInAMB);
-          setAPYOfPool(poolAPY);
+  const refreshProc = async () => {
+    provider = new providers.Web3Provider(ethereum);
+    if (provider !== undefined) {
+      provider.listAccounts().then((accounts) => {
+        const defaultAccount = accounts[0];
+        if (defaultAccount) {
+          provider.getBalance(defaultAccount).then((balanceObj) => {
+            setBalance(balanceObj);
+          });
         }
+      });
+      const singer = provider.getSigner();
+      if (singer && appStore.stakingWrapper !== undefined) {
+        const { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, poolAPY } =
+          await appStore.stakingWrapper.getPoolData(depositInfo.index);
+        setTokenPrice(tokenPriceAMB);
+        setMyStake(myStakeInAMB);
+        setTotalStake(totalStakeInAMB);
+        setAPYOfPool(poolAPY);
       }
-    };
-    refreshProc();
-  }, [appStore.refresh, appStore.stakingWrapper]);
+    }
+  };
 
   useEffect(() => {
     setErrorStakeSum(
@@ -109,7 +106,9 @@ const Deposit = observer(({ depositInfo }) => {
         tokenPrice &&
         utils.parseEther(`${inputValue}`).gte(THOUSAND),
     );
+    refreshProc();
   }, [inputValue]);
+
   const withdrawForm = (
     <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
       <>
