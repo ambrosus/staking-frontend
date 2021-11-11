@@ -125,11 +125,11 @@ const Deposit = observer(({ depositInfo }) => {
             <P size="l-500">&nbsp;&nbsp;&nbsp;&nbsp;Bravo</P>
           </div>
           <div style={{ textTransform: 'uppercase' }}>
-            <DisplayValue size="l-400" value={utils.formatEther(myStake)} />
+            <DisplayValue size="l-400" value={formatRounded(myStake)} />
           </div>
           <div style={{ textTransform: 'uppercase' }}>
             {' '}
-            <DisplayValue value={utils.formatEther(totalStake)} size="l-400" />
+            <DisplayValue value={formatRounded(totalStake)} size="l-400" />
           </div>
           <div>
             {' '}
@@ -187,8 +187,8 @@ const Deposit = observer(({ depositInfo }) => {
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
           {balance.gte(utils.parseEther(!inputValue ? '0' : inputValue))
-            ? round(Number(utils.formatEther(balance)).toFixed(2))
-            : round(utils.formatEther(0))}{' '}
+            ? round(Number(formatRounded(balance)).toFixed(2))
+            : round(formatRounded(0))}{' '}
           AMB
         </P>
         <div style={{ flexBasis: '90%' }} />

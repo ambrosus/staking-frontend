@@ -15,7 +15,7 @@ import {
   ONE,
   ZERO,
 } from '../../../../services/staking.wrapper';
-import { ethereum, round } from '../../../../utils/constants';
+import { ethereum } from '../../../../utils/constants';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(
@@ -132,7 +132,9 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatRounded(availableSumForWithdraw.div(4), 0))
+                  setInputValue(
+                    formatRounded(availableSumForWithdraw.div(4), 0),
+                  )
                 }
               >
                 <P size="xs-500">25%</P>
@@ -148,7 +150,9 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatRounded(availableSumForWithdraw.div(2), 0))
+                  setInputValue(
+                    formatRounded(availableSumForWithdraw.div(2), 0),
+                  )
                 }
               >
                 <P size="xs-500">50%</P>

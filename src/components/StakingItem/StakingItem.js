@@ -15,7 +15,7 @@ import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAle
 import useLogIn from '../../utils/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import { StakingWrapper } from '../../services/staking.wrapper';
+import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
 import { ethereum, HIDE, SHOW, STAKE } from '../../utils/constants';
 import StakingItemBody from './StakingItemBody';
 
@@ -143,7 +143,7 @@ const StakingItem = ({
             className="item--header__flex__my-stake"
           >
             <div style={{ width: 150 }}>
-              <DisplayValue value={myStake && utils.formatEther(myStake)} />
+              <DisplayValue value={myStake && formatRounded(myStake)} />
             </div>
           </div>
         )}
@@ -151,7 +151,7 @@ const StakingItem = ({
           <div style={{ width: 150 }}>
             <DisplayValue
               color={history.location.pathname === '/' && '#FFFFFF'}
-              value={totalStake && utils.formatEther(totalStake)}
+              value={totalStake && formatRounded(totalStake)}
             />
           </div>
         </div>
