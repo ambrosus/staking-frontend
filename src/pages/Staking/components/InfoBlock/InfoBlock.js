@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 
 import P from '../../../../components/P';
 import { Loader } from '../../../../components/Loader';
-import { formatFixed } from '../../../../services/staking.wrapper';
+import { formatRounded } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
@@ -78,7 +78,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                 <DisplayValue
                   color="#4A38AE"
                   size="xl-400"
-                  value={totalStaked && formatFixed(totalStaked, 2)}
+                  value={totalStaked && formatRounded(totalStaked, 2)}
                 />
               </div>
               <div className="info-block__stacked--course">

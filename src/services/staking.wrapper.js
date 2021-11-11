@@ -22,7 +22,7 @@ const exprDPY = math.compile('(s2 / s1) ^ (86400 / (t2 - t1)) - 1');
 
 const headContractAddress = '0x0000000000000000000000000000000000000F10';
 
-function formatFixed(bigNumber, digits = 18) {
+function formatRounded(bigNumber, digits = 18) {
   if (!bigNumber || !BigNumber.isBigNumber(bigNumber)) {
     throw new Error('not a BigNumber');
   }
@@ -194,7 +194,7 @@ class StakingWrapper {
 
 export {
   StakingWrapper,
-  formatFixed,
+  formatRounded,
   ZERO,
   ONE,
   TEN,

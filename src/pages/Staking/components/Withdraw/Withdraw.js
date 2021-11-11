@@ -11,7 +11,7 @@ import notificationMassage from '../../../../utils/notificationMassage';
 
 import {
   FIXEDPOINT,
-  formatFixed,
+  formatRounded,
   ONE,
   ZERO,
 } from '../../../../services/staking.wrapper';
@@ -132,7 +132,7 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatFixed(availableSumForWithdraw.div(4), 0))
+                  setInputValue(formatRounded(availableSumForWithdraw.div(4), 0))
                 }
               >
                 <P size="xs-500">25%</P>
@@ -148,7 +148,7 @@ const Withdraw = observer(
                 }
                 onclick={() =>
                   availableSumForWithdraw &&
-                  setInputValue(formatFixed(availableSumForWithdraw.div(2), 0))
+                  setInputValue(formatRounded(availableSumForWithdraw.div(2), 0))
                 }
               >
                 <P size="xs-500">50%</P>
@@ -165,7 +165,7 @@ const Withdraw = observer(
                 onclick={() =>
                   availableSumForWithdraw &&
                   setInputValue(
-                    formatFixed(availableSumForWithdraw.mul(3).div(4), 0),
+                    formatRounded(availableSumForWithdraw.mul(3).div(4), 0),
                   )
                 }
               >
@@ -184,7 +184,7 @@ const Withdraw = observer(
                   setOneHundredPercent(true);
                   return (
                     availableSumForWithdraw &&
-                    setInputValue(formatFixed(availableSumForWithdraw, 0))
+                    setInputValue(formatRounded(availableSumForWithdraw, 0))
                   );
                 }}
               >
@@ -233,7 +233,7 @@ const Withdraw = observer(
               Estimated stake after withdraw:{' '}
               {afterWithdraw && afterWithdraw.lt(0)
                 ? 0
-                : round(formatFixed(afterWithdraw, 2))}{' '}
+                : formatRounded(afterWithdraw, 2)}{' '}
               AMB
             </P>
           </div>
