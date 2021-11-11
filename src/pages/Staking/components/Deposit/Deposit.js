@@ -12,6 +12,7 @@ import {
   formatRounded,
   MINSHOWSTAKE,
   THOUSAND,
+  parseFloatToBigNumber,
 } from '../../../../services/staking.wrapper';
 import { ethereum, formatThousand } from '../../../../utils/constants';
 
@@ -38,7 +39,7 @@ const Deposit = observer(({ depositInfo }) => {
   const checkoutPayment = async () => {
     if (inputValue) {
       const overrides = {
-        value: utils.parseEther(inputValue),
+        value: parseFloatToBigNumber(inputValue),
         gasPrice: utils.parseUnits('20', 'gwei'),
         gasLimit: 1000000,
       };
@@ -104,7 +105,7 @@ const Deposit = observer(({ depositInfo }) => {
     setErrorStakeSum(
       inputValue &&
         tokenPrice &&
-        utils.parseEther(`${inputValue}`).gte(THOUSAND),
+        parseFloatToBigNumber(`${inputValue}`).gte(THOUSAND),
     );
     refreshProc();
   }, [inputValue, appStore.stakingWrapper, appStore.refresh]);
@@ -186,7 +187,7 @@ const Deposit = observer(({ depositInfo }) => {
         </>
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
-          {balance.gte(utils.parseEther(!inputValue ? '0' : inputValue))
+          {balance.gte(parseFloatToBigNumber(!inputValue ? '0' : inputValue))
             ? formatThousand(Number(utils.formatEther(balance)).toFixed(2))
             : formatThousand(utils.formatEther(0))}{' '}
           AMB
@@ -254,7 +255,7 @@ const Deposit = observer(({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatRounded(balance, 0))}
+                onclick={() => setInputValue(formatRounded(balance, 2))}
               >
                 <P size="xs-500">100%</P>
               </Button>
@@ -268,7 +269,7 @@ const Deposit = observer(({ depositInfo }) => {
             disabled={
               !inputValue ||
               Number(inputValue) < 1000 ||
-              balance.lte(utils.parseEther(!inputValue ? '0' : inputValue))
+              balance.lte(parseFloatToBigNumber(!inputValue ? '0' : inputValue))
             }
             onclick={checkoutPayment}
           >

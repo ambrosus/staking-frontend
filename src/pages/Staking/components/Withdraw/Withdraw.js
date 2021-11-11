@@ -12,7 +12,6 @@ import notificationMassage from '../../../../utils/notificationMassage';
 import {
   FIXEDPOINT,
   formatRounded,
-  ONE,
   parseFloatToBigNumber,
   ZERO,
 } from '../../../../services/staking.wrapper';
@@ -41,8 +40,7 @@ const Withdraw = observer(
               withdrawContractInfo.index,
             );
 
-          const decimal = utils
-            .parseEther(inputValue)
+          const decimal = parseFloatToBigNumber(inputValue)
             .mul(FIXEDPOINT)
             .div(tokenPriceAMB);
 
@@ -98,7 +96,7 @@ const Withdraw = observer(
       setOneHundredPercent(false);
       if (availableSumForWithdraw && inputValue) {
         setAfterWithdraw(
-          availableSumForWithdraw.sub(utils.parseEther(inputValue)),
+          availableSumForWithdraw.sub(parseFloatToBigNumber(inputValue)),
         );
       }
     };
@@ -211,13 +209,7 @@ const Withdraw = observer(
                 marginRight: 20,
               }}
               type="green"
-              disabled={
-                availableSumForWithdraw &&
-                inputValue &&
-                parseFloatToBigNumber(inputValue && inputValue).gt(
-                  availableSumForWithdraw && availableSumForWithdraw.mul(ONE),
-                )
-              }
+              disabled={inputValue && parseFloatToBigNumber(inputValue).eq(0)}
               onclick={() => withdrawPayment()}
             >
               <P size="m-500">Withdraw</P>
