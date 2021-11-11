@@ -1,30 +1,60 @@
 .home {
   margin: 0 auto;
-  background-color: #F7F7FD;
+  background: #212121;
+  position: relative;
+z-index: 0;
+  .back-figure1 {
+    position: absolute;
+    width: 514.64px;
+    height: 900.48px;
+    left: 0;
+    top: 10px;
+    background-blend-mode: normal, hue, normal, normal;
+    mix-blend-mode: lighten;
+    opacity: 0.7;
+    background: url('../../assets/images/back2.png');
+    background-repeat: no-repeat;
+    z-index: -1;
+
+  }
+
+  .back-figure2 {
+    position: absolute;
+    width: 527.24px;
+    height: 582px;
+    right: 0;
+    top: 27px;
+    background-blend-mode: normal, hue, normal, normal;
+    mix-blend-mode: lighten;
+    background: url('../../assets/images/back1.png') no-repeat !important;
+    z-index: -1;
+
+  }
 
   &__top {
     width: 100%;
-    height: 360px;
-    padding: 10px;
-    background: linear-gradient(160.67deg, #4A38AE 12.99%, #6850E8 107.47%);
+    height: auto;
+    background: linear-gradient(180deg, #212121 39.84%, rgba(33, 33, 33, 0) 100%);
     background-repeat: no-repeat;
     position: relative;
 
     &--header {
-      height: 10%;
+      height: 99px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      padding: 40px 30px 0 30px;
+      padding: 40px 80px 0 80px;
 
       .menu {
         display: flex;
+        text-transform: uppercase;
         z-index: 3;
         flex-direction: row;
         justify-content: space-between;
-        max-width: 230px;
+        width: 398px;
         align-items: center;
+        color: white;
 
         .active {
           color: #FFFFFF;
@@ -32,7 +62,33 @@
 
         > a {
           padding-right: 20px;
+        }
+      }
 
+    }
+
+    &--info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      position: relative;
+
+      .info-text {
+        text-align: center;
+        height: 90%;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+
+        p:first-of-type {
+          margin-top: 60px;
+
+        }
+
+        p {
+          margin-top: 30px;
         }
       }
 
@@ -47,64 +103,60 @@
         width: 240px;
         display: flex;
         align-items: center;
+        margin-top: 60px;
+        margin-bottom: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 19px;
+        text-align: center;
+        color: #FFFFFF;
+
+        p {
+          font-size: 16px !important;
+        }
+
+        &:hover {
+          background-color: #76778E !important;
+        }
       }
-    }
-
-    &--info {
-      background-image: url("./../../assets/images/header-image.svg");
-      background-repeat: no-repeat;
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      max-width: 976px;
-      margin: 0 auto;
-      position: absolute;
-      right: 50%;
-      left: 50%;
-      width: 100%;
-      transform: translate(-50%, 0%);
-      top: 26px;
-
-      .info-image {
-        width: 332px;
-        height: 332px;
-        padding-right: 50px;
-      }
-
-      .info-text {
-        text-align: left;
-        height: 90%;
-        width: auto;
-        display: flex;
-        flex-direction: column;
-      }
-    }
-
-    &--info-mobile {
-      display: none;
     }
 
   }
+
 }
 
 @media (max-width: 600px) {
   .home {
+    overflow: hidden;
+    .back-figure1 {
+      display: none;
+    }
+
+    .back-figure2 {
+      top: -10px;
+      right: -70px;
+      transform: rotate(-2deg) scale(0.8);
+
+    }
+
     &__top {
       height: 100%;
-      padding: 25px;
+
       &--header {
         height: 10%;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding: 0px 0px 20px 0px;
-.logo{
-svg{
-  width: 100px;
-  height: 29px;
-}
-}
+        padding: 0px 0px 0px 0px;
+
+        .logo {
+          svg {
+            width: 100px;
+            height: 29px;
+          }
+        }
+
         .menu {
           display: none;
         }
@@ -114,26 +166,12 @@ svg{
         }
       }
 
-
       &--info {
-        display: none;
-      }
-
-      &--info-mobile {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         width: 100%;
-
-        .info-image {
-          svg{
-            width: 120px;
-            height: 120px;
-          }
-
-          padding-bottom: 20px;
-        }
 
         .info-text {
           text-align: center;
@@ -141,29 +179,33 @@ svg{
           width: auto;
           display: flex;
           flex-direction: column;
+          padding: 10px;
 
           p:first-of-type {
+            margin-top: 68px;
             font-style: normal !important;
             font-weight: 500 !important;
             font-size: 36px !important;
             line-height: 43px !important;
-            display: flex !important;
-            align-items: center !important;
             text-align: center !important;
             font-feature-settings: 'liga' off !important;
-            color: #FFFFFF !important;
+            padding: 0;
+            color: #FFFFFF;
+
           }
 
           p {
-            font-style: normal!important;
-            font-weight: normal!important;
-            font-size: 18px!important;
-            line-height: 21px!important;
-            display: flex!important;
-            align-items: center!important;
-            text-align: center!important;
-            letter-spacing: -0.01em!important;
-            font-feature-settings: 'liga' off!important;
+            margin-top: 0px;
+            padding: 10px 25px;
+            font-style: normal !important;
+            font-weight: normal !important;
+            font-size: 18px !important;
+            line-height: 21px !important;
+            text-align: center !important;
+            letter-spacing: -0.01em !important;
+            font-feature-settings: 'liga' off !important;
+
+            color: #FFFFFF;
           }
         }
 
@@ -178,8 +220,17 @@ svg{
           width: 240px;
           display: flex;
           align-items: center;
-          margin-top: 20px;
+          margin-top: 60px;
           margin-bottom: 20px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 19px;
+          text-align: center;
+          color: #FFFFFF;
+
+          p {
+            font-size: 16px !important;
+          }
         }
       }
 

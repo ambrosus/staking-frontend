@@ -19,7 +19,7 @@ p {
   line-height: 14px;
   display: flex;
   align-items: center;
-  color: $color-gray ;
+  color: $color-gray;
 }
 
 .s-400 {
@@ -93,13 +93,14 @@ p {
 }
 
 .l-500-white {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-  display: flex;
-  align-items: center;
-  color: $white;
+  font-family: Rubik;
+  font-style: normal !important;
+  font-weight: 300 !important;
+  font-size: 26px !important;
+  line-height: 31px !important;
+  text-align: center !important;
+  letter-spacing: 0.03em !important;
+  color: #FFFFFF !important;
 }
 
 .l-700 {
@@ -137,10 +138,11 @@ p {
 }
 
 .xxxl-500 {
-  font-style: normal;
-  font-weight: 500 !important;
-  font-size: 36px !important;
-  line-height: 64px !important;
-  font-feature-settings: 'liga' off;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 60px !important;
+  line-height: 71px !important;
+  text-align: center !important;
+  letter-spacing: -0.02em !important;
   color: $white !important;
 }

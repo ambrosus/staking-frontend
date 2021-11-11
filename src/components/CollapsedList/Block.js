@@ -14,7 +14,12 @@ export default function Block({
   return (
     <div className="block">
       <button type="button" className="btn toggle" onClick={onToggle}>
-        <span className={cx({ 'active-toggle-text': isOpen })}>{title}</span>
+        <span
+          className={cx({ 'active-toggle-text': isOpen })}
+          style={{ color: 'white' }}
+        >
+          {title}
+        </span>
         <Down isOpen={isOpen} />
       </button>
       <Collapse isOpen={isOpen}>{children}</Collapse>

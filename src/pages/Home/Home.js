@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 import { providers, utils } from 'ethers';
 
@@ -9,8 +9,6 @@ import MetamaskConnect from '../../components/MetamaskConnect';
 import StackItem from '../../components/StakingItem';
 import { ethereum } from '../../utils/constants';
 
-import headerLogoSvg from '../../assets/svg/header-logo.svg';
-import headerImage from '../../assets/images/header-image.svg';
 import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
 import NotSupported from '../../components/NotSupported';
@@ -19,11 +17,13 @@ import { Loader } from '../../components/Loader';
 import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/StakingItem/RenderItems';
 
+import headerLogoSvg from '../../assets/svg/header-logo.svg';
+
 const Home = () => {
   const [userChainId, setUserChainId] = useState(false);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [pools, setPools] = useState([]);
-
+  const location = useLocation();
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new providers.Web3Provider(ethereum);
@@ -87,25 +87,40 @@ const Home = () => {
   }, []);
   const menu = (
     <div className="menu">
-      <a target="_blank" href="https://ambrosus.io/">
+      <a
+        style={{ fontWeight: 'normal' }}
+        target="_blank"
+        href="https://ambrosus.io/"
+      >
         <P size="xs-500">Main</P>
       </a>
-      <a target="_blank" href="https://explorer.ambrosus.io/">
+      <a
+        style={{ fontWeight: 'normal' }}
+        target="_blank"
+        href="https://explorer.ambrosus.io/"
+      >
         <P size="xs-500">Explorer</P>
       </a>
       <Link to="/staking">
-        <P style={{ color: 'white' }} size="xs-500">
+        <P style={{ color: 'white', fontWeight: 'bold' }} size="xs-500">
           Staking
         </P>
       </Link>
-      <a href="https://amb.to/" target="_blank">
+      <a
+        style={{ fontWeight: 'normal' }}
+        href="https://amb.to/"
+        target="_blank"
+      >
         <P size="xs-500">amb.to</P>
       </a>
     </div>
   );
   const poolsData = pools.length > 0 && (
     <>
-      <div className="staking__header">
+      <div
+        className="staking__header"
+        style={{ color: location.pathname === '/' && '#FFFFFF' }}
+      >
         <div className="staking__header__clearfix-pool">Pool</div>
         <div>Total pool stake</div>
         <div className="staking__header__clearfix-apy">APY</div>
@@ -148,39 +163,28 @@ const Home = () => {
       <div className="home" id="home">
         <Sidebar pageWrapId="root" outerContainerId="root" />
         <ReactNotifications />
+        <div className="back-figure1" />
+        <div className="back-figure2" />
         <div className="home__top">
           <div className="home__top--header">
             <div className="logo">
               <ReactSVG src={headerLogoSvg} wrapper="span" />
             </div>
             {menu}
-            <MetamaskConnect />
           </div>
-          <div className="home__top--info-mobile">
-            <div className="info-image">
-              <ReactSVG src={headerImage} wrapper="span" />
-            </div>
-            <div className="info-text">
-              <P size="xxxl-500" style={{ paddingBottom: 10 }}>
-                Get AMB Rewards. No node needed.
-              </P>
-              <P size="l-500-white">
-                Stake your AMB and receive up to 30% APY in a few clicks.
-              </P>
-            </div>
-            <MetamaskConnect />
+        </div>
+        <div className="home__top--info">
+          <div className="info-text">
+            <P size="xxxl-500" style={{ paddingBottom: 10 }}>
+              Get AMB Rewards. No node needed.
+            </P>
+            <P size="l-500-white">
+              Stake your AMB and receive up to
+              <span style={{ color: '#1ACD8C' }}> 55% APY</span> in a few
+              clicks.
+            </P>
           </div>
-          <div className="home__top--info">
-            <div className="info-image" />
-            <div className="info-text">
-              <P size="xxxl-500" style={{ paddingBottom: 10 }}>
-                Get AMB Rewards. No node needed.
-              </P>
-              <P size="l-500-white">
-                Stake your AMB and receive up to 30% APY in a few clicks.
-              </P>
-            </div>
-          </div>
+          <MetamaskConnect />
         </div>
         <div className="staking">
           {poolsData}

@@ -26,7 +26,7 @@ function CollapsedList() {
         onToggle={() => toggleActive(0)}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <P style={{ color: '#9C9C9C' }} size="m-400">
             AMB is a data-bonded coin that is used to bind continuously updated
             and verified data from the supply chain to its corresponding product
             as it travels between counterparties. It is also used to carry out
@@ -40,7 +40,7 @@ function CollapsedList() {
         onToggle={() => toggleActive(1)}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <P style={{ color: '#9C9C9C' }} size="m-400">
             The new AMB staking service allows users to stake AMB coins quickly,
             without having to set up a node. The process of enabling,
             configuring, and onboarding the node is fully automated.
@@ -58,7 +58,9 @@ function CollapsedList() {
         onToggle={() => toggleActive(2)}
       >
         <div className="collapsed-content">
-          <P size="m-400">No, you cannot trade staked coins.</P>
+          <P style={{ color: '#9C9C9C' }} size="m-400">
+            No, you cannot trade staked coins.
+          </P>
         </div>
       </Block>
       <Block
@@ -67,7 +69,7 @@ function CollapsedList() {
         onToggle={() => toggleActive(3)}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <P style={{ color: '#9C9C9C' }} size="m-400">
             Payments occur approximately every 6 hours, with your reward
             automatically being added to your stake. You can unstake your coins
             at any time. {' '}
@@ -80,7 +82,7 @@ function CollapsedList() {
         onToggle={() => toggleActive(4)}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <P style={{ color: '#9C9C9C' }} size="m-400">
             No, as staking is a simplified way of setting up a node. Those who
             have the required amount of AMB and set up a masternode will receive
             a greater reward.
@@ -93,7 +95,7 @@ function CollapsedList() {
         onToggle={() => toggleActive(5)}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <P style={{ color: '#9C9C9C' }} size="m-400">
             You can redeem staked AMB at any time and cash out instantly.
           </P>
         </div>
@@ -104,7 +106,7 @@ function CollapsedList() {
         onToggle={() => toggleActive(6)}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <P style={{ color: '#9C9C9C' }} size="m-400">
             The minimum staking amount is 1000 AMB.
             <br />
             There is no limit to the amount of AMB that can be staked.{' '}
@@ -118,7 +120,7 @@ function CollapsedList() {
         onToggle={() => toggleActive(7)}
       >
         <div className="collapsed-content">
-          <P size="m-400">
+          <P style={{ color: '#9C9C9C' }} size="m-400">
             The commission is set by the pool owner upon creation and cannot be
             changed. We recommend setting the commission at 20%.
             <br /> Importantly, commission is accrued from staked rewards only,

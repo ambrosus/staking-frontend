@@ -49,7 +49,13 @@ export const ComingSoonPool = ({ poolInfo }) => {
     </div>
   );
   return (
-    <div role="presentation" className="stack-item">
+    <div
+      role="presentation"
+      className="stack-item"
+      style={{
+        background: history.location.pathname === '/' && '#262626',
+      }}
+    >
       {stackHeader}
     </div>
   );

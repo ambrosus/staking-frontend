@@ -128,7 +128,7 @@ const StakingItem = ({
           <ReactSVG src={avatarIcon} wrapper="span" />
           <P
             style={{
-              textTransform: 'uppercase',
+              color: history.location.pathname === '/' && '#FFFFFF',
             }}
             size="l-500"
           >
@@ -149,7 +149,10 @@ const StakingItem = ({
         )}
         <div className="item--header__flex__vault-assets">
           <div style={{ width: 150 }}>
-            <DisplayValue value={totalStake && utils.formatEther(totalStake)} />
+            <DisplayValue
+              color={history.location.pathname === '/' && '#FFFFFF'}
+              value={totalStake && utils.formatEther(totalStake)}
+            />
           </div>
         </div>
         <div className="item--header__flex__apy">
@@ -159,7 +162,7 @@ const StakingItem = ({
         </div>
       </div>
       <Button
-        type="primary"
+        type="green"
         onclick={() => {
           if (expand) {
             setActiveExpand(index);
@@ -186,7 +189,11 @@ const StakingItem = ({
     </div>
   );
   return (
-    <div role="presentation" className="stack-item">
+    <div
+      role="presentation"
+      className="stack-item"
+      style={{ background: location.pathname === '/' && '#262626' }}
+    >
       <StakingItemBody>
         {stackHeader}
         {location.pathname === '/staking' && (

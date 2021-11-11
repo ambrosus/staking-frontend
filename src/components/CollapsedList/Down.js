@@ -6,9 +6,19 @@ import inExpandIcon from '../../assets/svg/in-expand-icon.svg';
 import expandIcon from '../../assets/svg/expand-icon.svg';
 export default function Down({ isOpen }) {
   return isOpen ? (
-    <ReactSVG className={cx('icon-down')} src={expandIcon} wrapper="span" />
+    <ReactSVG
+      style={{ color: 'white' }}
+      className={cx('icon-down')}
+      src={expandIcon}
+      wrapper="span"
+    />
   ) : (
-    <ReactSVG className={cx('icon-down')} src={inExpandIcon} wrapper="span" />
+    <ReactSVG
+      style={{ color: 'white' }}
+      className={cx('icon-down')}
+      src={inExpandIcon}
+      wrapper="span"
+    />
   );
 }
 Down.propTypes = {
