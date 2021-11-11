@@ -9,6 +9,9 @@
   font-size: 12px;
   color: $color-gray;
   background: #FFF;
+  @media (max-width: 600px) {
+    height: auto;
+  }
 
   a {
     color: currentColor;
