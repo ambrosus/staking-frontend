@@ -27,7 +27,7 @@ DisplayValue.propTypes = {
   flag: PropTypes.bool,
   value: PropTypes.any,
   size: PropTypes.string,
-  color: PropTypes.string,
+  color: PropTypes.any,
   symbol: PropTypes.string,
 };
 export default React.memo(DisplayValue);

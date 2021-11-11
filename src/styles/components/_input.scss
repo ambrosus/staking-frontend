@@ -56,16 +56,14 @@ input[type=number] {
 }
 
 .input .iconLeft {
-  top: 17px;
+  top: 16px;
   left: 12px;
 }
 
 .input .iconRight {
-  top:11px;
-  right: 11px;
-  background: $color-gray;
+  top:12px;
+  right: 12px;
   border-radius: 8px;
-  padding: 4px 7px;
   cursor: pointer;
 }
 .input .iconRight:hover {
