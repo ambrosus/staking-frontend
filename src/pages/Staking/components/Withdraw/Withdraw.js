@@ -94,6 +94,7 @@ const Withdraw = observer(
     };
 
     const calculateSumAfterWithdraw = () => {
+      setOneHundredPercent(false);
       if (availableSumForWithdraw && inputValue) {
         setAfterWithdraw(
           availableSumForWithdraw.sub(utils.parseEther(inputValue)),

@@ -192,7 +192,11 @@ const StakingItem = ({
     <div
       role="presentation"
       className="stack-item"
-      style={{ background: location.pathname === '/' && '#262626' }}
+      style={{
+        background: location.pathname === '/' && '#262626',
+        boxShadow:
+          location.pathname === '/' && '0px 6px 10px rgba(0, 0, 0, 0.25)',
+      }}
     >
       <StakingItemBody>
         {stackHeader}

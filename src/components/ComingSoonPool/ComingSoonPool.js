@@ -54,6 +54,9 @@ export const ComingSoonPool = ({ poolInfo }) => {
       className="stack-item"
       style={{
         background: history.location.pathname === '/' && '#262626',
+        boxShadow:
+          history.location.pathname === '/' &&
+          '0px 6px 10px rgba(0, 0, 0, 0.25)',
       }}
     >
       {stackHeader}

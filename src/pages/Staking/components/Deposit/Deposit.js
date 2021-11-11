@@ -188,7 +188,7 @@ const Deposit = observer(({ depositInfo }) => {
           &nbsp; Available for stake:{' '}
           {balance.gte(utils.parseEther(!inputValue ? '0' : inputValue))
             ? round(Number(utils.formatEther(balance)).toFixed(2))
-            : utils.formatEther(0)}{' '}
+            : round(utils.formatEther(0))}{' '}
           AMB
         </P>
         <div style={{ flexBasis: '90%' }} />
