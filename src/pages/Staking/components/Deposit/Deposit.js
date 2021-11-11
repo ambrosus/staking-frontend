@@ -13,7 +13,7 @@ import {
   MINSHOWSTAKE,
   THOUSAND,
 } from '../../../../services/staking.wrapper';
-import { ethereum, round } from '../../../../utils/constants';
+import { ethereum, formatThousand } from '../../../../utils/constants';
 
 // import infoIcon from '../../../../assets/svg/info.svg';
 import useModal from '../../../../utils/useModal';
@@ -187,8 +187,8 @@ const Deposit = observer(({ depositInfo }) => {
         <P size="s-400" style={{ fontWeight: 500 }}>
           &nbsp; Available for stake:{' '}
           {balance.gte(utils.parseEther(!inputValue ? '0' : inputValue))
-            ? round(Number(formatRounded(balance)).toFixed(2))
-            : round(formatRounded(0))}{' '}
+            ? formatThousand(Number(utils.formatEther(balance)).toFixed(2))
+            : formatThousand(utils.formatEther(0))}{' '}
           AMB
         </P>
         <div style={{ flexBasis: '90%' }} />

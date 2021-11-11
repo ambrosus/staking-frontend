@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { ethers, providers, utils } from 'ethers';
+import { providers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
@@ -13,6 +13,7 @@ import {
   FIXEDPOINT,
   formatRounded,
   ONE,
+  parseFloatToBigNumber,
   ZERO,
 } from '../../../../services/staking.wrapper';
 import { ethereum } from '../../../../utils/constants';
@@ -213,11 +214,9 @@ const Withdraw = observer(
               disabled={
                 availableSumForWithdraw &&
                 inputValue &&
-                ethers.utils
-                  .parseEther(inputValue && inputValue)
-                  .gt(
-                    availableSumForWithdraw && availableSumForWithdraw.mul(ONE),
-                  )
+                parseFloatToBigNumber(inputValue && inputValue).gt(
+                  availableSumForWithdraw && availableSumForWithdraw.mul(ONE),
+                )
               }
               onclick={() => withdrawPayment()}
             >

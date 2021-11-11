@@ -21,7 +21,7 @@ export const priceInPercent24h = async () => {
   return ambPercentChange && ambPercentChange;
 };
 
-export const round = (num) =>
+export const formatThousand = (num) =>
   /* eslint-disable-next-line */
   Math.abs(Number(num)) >= 1.0e9
     ? /* eslint-disable-next-line */

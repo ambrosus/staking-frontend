@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { round } from '../../utils/constants';
+import { formatThousand } from '../../utils/constants';
 
 import P from '../P';
 
@@ -16,10 +16,12 @@ const DisplayValue = ({
   ) : (
     <span className="transition1s">
       <P style={{ color, whiteSpace: 'nowrap', minWidth: 50 }} size={size}>
-        {value !== null && flag === 'number' && `${round(value)} ${symbol}`}
+        {value !== null &&
+          flag === 'number' &&
+          `${formatThousand(value)} ${symbol}`}
         {value !== null &&
           flag === 'string' &&
-          `${round(+value.toFixed(2))} ${symbol}`}
+          `${formatThousand(+value.toFixed(2))} ${symbol}`}
       </P>
     </span>
   );
