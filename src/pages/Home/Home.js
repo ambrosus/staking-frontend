@@ -73,6 +73,8 @@ const Home = () => {
       if (chainId && chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
       }
+    } else {
+      getPulls();
     }
   };
   const getPulls = async () => {

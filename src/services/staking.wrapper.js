@@ -31,7 +31,10 @@ function formatRounded(bigNumber, digits = 18) {
     throw new Error('digits out of range');
   }
   const mathBn = math.bignumber(ethers.utils.formatEther(bigNumber));
-  return math.format(mathBn.round(digits), {notation: 'fixed', precision: digits});
+  return math.format(mathBn.round(digits), {
+    notation: 'fixed',
+    precision: digits,
+  });
 }
 
 class StakingWrapper {
