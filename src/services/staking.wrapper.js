@@ -37,6 +37,11 @@ function formatRounded(bigNumber, digits = 18) {
   });
 }
 
+function parseFloatToBigNumber(str) {
+  const mathBn = math.bignumber(str);
+  return ethers.utils.parseEther(mathBn.round(18).toString());
+}
+
 class StakingWrapper {
   constructor(providerOrSigner = null) {
     if (!providerOrSigner) {
@@ -192,6 +197,7 @@ class StakingWrapper {
 export {
   StakingWrapper,
   formatRounded,
+  parseFloatToBigNumber,
   ZERO,
   ONE,
   TEN,
