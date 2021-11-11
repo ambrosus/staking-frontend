@@ -30,14 +30,8 @@ function formatRounded(bigNumber, digits = 18) {
   if (digits < 0 || digits > 18) {
     throw new Error('digits out of range');
   }
-  const whole = bigNumber.div(FIXEDPOINT).toString();
-  if (!digits) {
-    return whole;
-  }
-  const pow10 = TEN.pow(digits);
-  const fract = bigNumber.mod(pow10).add(pow10).toString().slice(1);
-
-  return `${whole}.${fract}`;
+  const mathBn = math.bignumber(ethers.utils.formatEther(bigNumber));
+  return math.format(mathBn.round(digits), {notation: 'fixed', precision: digits});
 }
 
 class StakingWrapper {
