@@ -9,7 +9,7 @@ import Button from '../../../../components/Button';
 import P from '../../../../components/P';
 import {
   ZERO,
-  formatFixed,
+  formatRounded,
   MINSHOWSTAKE,
   THOUSAND,
 } from '../../../../services/staking.wrapper';
@@ -151,7 +151,7 @@ const Deposit = observer(({ depositInfo }) => {
           <P size="s-400" style={{ fontWeight: 500 }}>
             Available for withdraw:{' '}
             {myStake && myStake.gte(MINSHOWSTAKE)
-              ? round(formatFixed(myStake, 2))
+              ? formatRounded(myStake, 2)
               : 0}{' '}
             AMB
           </P>
@@ -219,7 +219,7 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatFixed(balance.div(4), 0))}
+                onclick={() => setInputValue(formatRounded(balance.div(4), 0))}
               >
                 <P size="xs-500">25%</P>
               </Button>
@@ -230,7 +230,7 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatFixed(balance.div(2), 0))}
+                onclick={() => setInputValue(formatRounded(balance.div(2), 0))}
               >
                 <P size="xs-500">50%</P>
               </Button>
@@ -242,7 +242,7 @@ const Deposit = observer(({ depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(formatFixed(balance.mul(3).div(4), 0))
+                  setInputValue(formatRounded(balance.mul(3).div(4), 0))
                 }
               >
                 <P size="xs-500">75%</P>
@@ -254,7 +254,7 @@ const Deposit = observer(({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatFixed(balance, 0))}
+                onclick={() => setInputValue(formatRounded(balance, 0))}
               >
                 <P size="xs-500">100%</P>
               </Button>
@@ -300,7 +300,7 @@ const Deposit = observer(({ depositInfo }) => {
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
               Available for withdraw:{' '}
               {myStake && myStake.gte(MINSHOWSTAKE)
-                ? round(formatFixed(myStake, 2))
+                ? formatRounded(myStake, 2)
                 : 0}{' '}
               AMB
             </P>
