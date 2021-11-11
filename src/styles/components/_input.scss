@@ -65,9 +65,15 @@ input[type=number] {
   right: 12px;
   border-radius: 8px;
   cursor: pointer;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  background-color: $color-gray;
 }
 .input .iconRight:hover {
-  background: $color-gray-light;
+  background-color: $color-gray-light;
 }
 
 .input-error input[type="number"]:focus,

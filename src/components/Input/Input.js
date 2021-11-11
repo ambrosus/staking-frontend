@@ -49,12 +49,12 @@ const Input = ({
         </span>
       )}
       {value && (
-        <span className="iconRight">
-          <ReactSVG
-            onClick={() => onchange('')}
-            src={clearIcon}
-            wrapper="span"
-          />
+        <span
+          className="iconRight"
+          onClick={() => onchange('')}
+          role="presentation"
+        >
+          <img src={clearIcon} alt="clear" />
         </span>
       )}
     </div>
