@@ -2,7 +2,7 @@
 
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { ethers, BigNumber, providers } from 'ethers';
-import { create, all } from 'mathjs';
+import { create, all, re } from 'mathjs';
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
@@ -11,7 +11,7 @@ const FIXEDPOINT = TEN.pow(18); // 1.0 ether
 const MINSHOWSTAKE = FIXEDPOINT.div(100); // 0.01 ether
 const THOUSAND = FIXEDPOINT.mul(1000); // 1000 ether
 
-const AVERAGING_PERIOD = 5 * 24 * 60 * 60; // 5 days
+const AVERAGING_PERIOD = 7 * 24 * 60 * 60; // 7 days
 
 const math = create(all, {
   number: 'BigNumber',
@@ -37,9 +37,22 @@ function formatRounded(bigNumber, digits = 18) {
   });
 }
 
+function checkValidNumberString(str) {
+  let ret = false;
+  try {
+    parseFloatToBigNumber(str);
+    ret = true;
+  } catch (err) {
+  }
+  // console.log('checkValidNumberString:', str, ret);
+  return ret;
+}
+
 function parseFloatToBigNumber(str) {
   const mathBn = math.bignumber(str);
-  return ethers.utils.parseEther(mathBn.round(18).toString());
+  const ret = ethers.utils.parseEther(math.round(mathBn, 18).toString());
+  // console.log('parseFloatToBigNumber:', str, ret.toString());
+  return ret;
 }
 
 class StakingWrapper {
@@ -198,6 +211,7 @@ export {
   StakingWrapper,
   formatRounded,
   parseFloatToBigNumber,
+  checkValidNumberString,
   ZERO,
   ONE,
   TEN,

@@ -13,6 +13,8 @@ import {
   MINSHOWSTAKE,
   THOUSAND,
   parseFloatToBigNumber,
+  checkValidNumberString,
+  FIXEDPOINT,
 } from '../../../../services/staking.wrapper';
 import { ethereum, formatThousand } from '../../../../utils/constants';
 
@@ -31,52 +33,54 @@ const Deposit = observer(({ depositInfo }) => {
   const [myStake, setMyStake] = useState(ZERO);
   const [balance, setBalance] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
-  const [tokenPrice, setTokenPrice] = useState(ZERO);
+  // const [tokenPrice, setTokenPrice] = useState(ZERO);
   const [APYOfPool, setAPYOfPool] = useState('');
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   let provider;
   const checkoutPayment = async () => {
-    if (inputValue) {
-      const overrides = {
-        value: parseFloatToBigNumber(inputValue),
-        gasPrice: utils.parseUnits('20', 'gwei'),
-        gasLimit: 1000000,
-      };
-      await depositInfo.contract.stake(overrides).then(async (tx) => {
-        if (tx) {
-          notificationMassage(
-            'PENDING',
-            `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-              60,
-            )} pending.`,
-          );
-          await tx
-            .wait()
-            .then((result) => {
-              notificationMassage(
-                'SUCCESS',
-                `Transaction ${result.transactionHash.substr(
-                  0,
-                  6,
-                )}...${result.transactionHash.slice(60)} success!`,
-              );
-              appStore.setRefresh();
-              setInputValue('');
-            })
-            .catch(() => {
-              notificationMassage(
-                'ERROR',
-                `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                  60,
-                )} failed!`,
-              );
-              setInputValue('');
-            });
-        }
-      });
+    if (!checkValidNumberString(inputValue)) {
+      return false;
     }
-    return false;
+
+    const overrides = {
+      value: parseFloatToBigNumber(inputValue),
+      gasPrice: utils.parseUnits('20', 'gwei'),
+      gasLimit: 1000000,
+    };
+
+    await depositInfo.contract.stake(overrides).then(async (tx) => {
+      if (tx) {
+        notificationMassage(
+          'PENDING',
+          `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(60)} pending.`,
+        );
+        await tx
+          .wait()
+          .then((result) => {
+            notificationMassage(
+              'SUCCESS',
+              `Transaction ${result.transactionHash.substr(
+                0,
+                6,
+              )}...${result.transactionHash.slice(60)} success!`,
+            );
+            appStore.setRefresh();
+            setInputValue('');
+          })
+          .catch(() => {
+            notificationMassage(
+              'ERROR',
+              `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                60,
+              )} failed!`,
+            );
+            setInputValue('');
+          });
+      }
+    });
+
+    return true;
   };
   const refreshProc = async () => {
     provider = new providers.Web3Provider(ethereum);
@@ -91,9 +95,9 @@ const Deposit = observer(({ depositInfo }) => {
       });
       const singer = provider.getSigner();
       if (singer && appStore.stakingWrapper !== undefined) {
-        const { totalStakeInAMB, myStakeInAMB, tokenPriceAMB, poolAPY } =
+        const { totalStakeInAMB, myStakeInAMB, poolAPY } =
           await appStore.stakingWrapper.getPoolData(depositInfo.index);
-        setTokenPrice(tokenPriceAMB);
+        // setTokenPrice(tokenPriceAMB);
         setMyStake(myStakeInAMB);
         setTotalStake(totalStakeInAMB);
         setAPYOfPool(poolAPY);
@@ -103,9 +107,8 @@ const Deposit = observer(({ depositInfo }) => {
 
   useEffect(() => {
     setErrorStakeSum(
-      inputValue &&
-        tokenPrice &&
-        parseFloatToBigNumber(`${inputValue}`).gte(THOUSAND),
+      checkValidNumberString(inputValue) &&
+        parseFloatToBigNumber(inputValue).gte(THOUSAND),
     );
     refreshProc();
   }, [inputValue, appStore.stakingWrapper, appStore.refresh]);
@@ -159,7 +162,7 @@ const Deposit = observer(({ depositInfo }) => {
         </div>
         <Withdraw
           withdrawContractInfo={depositInfo}
-          availableSumForWithdraw={myStake}
+          stake={myStake}
           hideModal={toggleWithdrawForm}
         />
       </>
@@ -186,10 +189,7 @@ const Deposit = observer(({ depositInfo }) => {
           </ReactTooltip>
         </>
         <P size="s-400" style={{ fontWeight: 500 }}>
-          &nbsp; Available for stake:{' '}
-          {balance.gte(parseFloatToBigNumber(!inputValue ? '0' : inputValue))
-            ? formatThousand(Number(utils.formatEther(balance)).toFixed(2))
-            : formatThousand(utils.formatEther(0))}{' '}
+          &nbsp; Available for stake: {formatThousand(formatRounded(balance))}{' '}
           AMB
         </P>
         <div style={{ flexBasis: '90%' }} />
@@ -198,7 +198,7 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="deposit-heading">
           {' '}
           <P size="s-400">Amount</P>
-          {inputValue && tokenPrice && !errorStakeSum && (
+          {inputValue && !errorStakeSum && (
             <P style={{ color: '#FF6767' }} size="s-400">
               &nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
             </P>
@@ -255,7 +255,9 @@ const Deposit = observer(({ depositInfo }) => {
                 buttonStyles={{ height: 48 }}
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatRounded(balance, 2))}
+                onclick={() =>
+                  setInputValue(balance.div(FIXEDPOINT).toString())
+                }
               >
                 <P size="xs-500">100%</P>
               </Button>
@@ -267,9 +269,9 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
-              !inputValue ||
-              Number(inputValue) < 1000 ||
-              balance.lte(parseFloatToBigNumber(!inputValue ? '0' : inputValue))
+              !checkValidNumberString(inputValue) ||
+              parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
+              parseFloatToBigNumber(inputValue).gt(balance)
             }
             onclick={checkoutPayment}
           >

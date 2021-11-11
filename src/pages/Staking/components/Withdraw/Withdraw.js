@@ -10,6 +10,7 @@ import ButtonGroup from '../../../../components/ButtonGroup';
 import notificationMassage from '../../../../utils/notificationMassage';
 
 import {
+  checkValidNumberString,
   FIXEDPOINT,
   formatRounded,
   parseFloatToBigNumber,
@@ -24,13 +25,17 @@ const Withdraw = observer(
       abi: [],
     },
     hideModal,
-    availableSumForWithdraw,
+    stake,
   }) => {
     const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
     const [oneHundredPercent, setOneHundredPercent] = useState(false);
 
     const withdrawPayment = async () => {
+      if (!checkValidNumberString(inputValue)) {
+        return false;
+      }
+
       const provider = new providers.Web3Provider(ethereum, 'any');
       if (provider) {
         const signer = provider.getSigner();
@@ -89,15 +94,13 @@ const Withdraw = observer(
             });
         }
       }
-      return false;
+      return true;
     };
 
     const calculateSumAfterWithdraw = () => {
       setOneHundredPercent(false);
-      if (availableSumForWithdraw && inputValue) {
-        setAfterWithdraw(
-          availableSumForWithdraw.sub(parseFloatToBigNumber(inputValue)),
-        );
+      if (stake && checkValidNumberString(inputValue)) {
+        setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)));
       }
     };
     useEffect(() => {
@@ -105,7 +108,7 @@ const Withdraw = observer(
       return () => {
         calculateSumAfterWithdraw();
       };
-    }, [inputValue, availableSumForWithdraw, oneHundredPercent]);
+    }, [inputValue, stake, oneHundredPercent]);
 
     return (
       <div className="deposit">
@@ -126,14 +129,9 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={
-                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
-                }
+                disabled={stake && stake.eq(0)}
                 onclick={() =>
-                  availableSumForWithdraw &&
-                  setInputValue(
-                    formatRounded(availableSumForWithdraw.div(4), 0),
-                  )
+                  stake && setInputValue(formatRounded(stake.div(4), 0))
                 }
               >
                 <P size="xs-500">25%</P>
@@ -144,14 +142,9 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={
-                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
-                }
+                disabled={stake && stake.eq(0)}
                 onclick={() =>
-                  availableSumForWithdraw &&
-                  setInputValue(
-                    formatRounded(availableSumForWithdraw.div(2), 0),
-                  )
+                  stake && setInputValue(formatRounded(stake.div(2), 0))
                 }
               >
                 <P size="xs-500">50%</P>
@@ -162,14 +155,9 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={
-                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
-                }
+                disabled={stake && stake.eq(0)}
                 onclick={() =>
-                  availableSumForWithdraw &&
-                  setInputValue(
-                    formatRounded(availableSumForWithdraw.mul(3).div(4), 0),
-                  )
+                  stake && setInputValue(formatRounded(stake.mul(3).div(4), 0))
                 }
               >
                 <P size="xs-500">75%</P>
@@ -180,15 +168,10 @@ const Withdraw = observer(
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
-                disabled={
-                  availableSumForWithdraw && availableSumForWithdraw.eq(0)
-                }
+                disabled={stake && stake.eq(0)}
                 onclick={() => {
                   setOneHundredPercent(true);
-                  return (
-                    availableSumForWithdraw &&
-                    setInputValue(formatRounded(availableSumForWithdraw, 0))
-                  );
+                  return stake && setInputValue(formatRounded(stake, 0));
                 }}
               >
                 <P size="xs-500">100%</P>
@@ -209,7 +192,13 @@ const Withdraw = observer(
                 marginRight: 20,
               }}
               type="green"
-              disabled={inputValue && parseFloatToBigNumber(inputValue).eq(0)}
+              disabled={
+                !checkValidNumberString(inputValue) ||
+                parseFloatToBigNumber(inputValue).eq(0) ||
+                parseFloatToBigNumber(inputValue).gt(
+                  stake.add(FIXEDPOINT.div(2)),
+                )
+              }
               onclick={() => withdrawPayment()}
             >
               <P size="m-500">Withdraw</P>
@@ -239,7 +228,7 @@ const Withdraw = observer(
 );
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
-  availableSumForWithdraw: PropTypes.any,
+  stake: PropTypes.any,
   withdrawContractInfo: PropTypes.any,
 };
 export default React.memo(Withdraw);

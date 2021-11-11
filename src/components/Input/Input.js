@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { ReactSVG } from 'react-svg';
-import { utils } from 'ethers';
+// import { utils } from 'ethers';
 
 import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
 import clearIcon from '../../assets/svg/clear.svg';
+
+import { checkValidNumberString } from '../../services/staking.wrapper';
 
 const Input = ({
   type = 'number',
@@ -29,17 +31,8 @@ const Input = ({
         onChange={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          try {
-            const floor =
-              utils.formatEther(Math.floor(e.target.value).toString()) &&
-              Math.floor(e.target.value).toString();
-            onchange(floor && floor);
-            setInputError(false);
-          } catch (err) {
-            if (err) {
-              setInputError(true);
-            }
-          }
+          setInputError(!checkValidNumberString(e.target.value));
+          onchange(e.target.value);
         }}
         style={iconLeft && { padding: '0 50px' }}
       />
