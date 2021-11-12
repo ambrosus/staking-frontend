@@ -56,6 +56,17 @@ p {
   text-align: center;
 
   color: $white !important;
+  @media (max-width: 600px) {
+    font-family: Neue Machina, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 12px !important;
+    line-height: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    text-align: center !important;
+    color: #FFFFFF !important;
+  }
 }
 
 .m-400 {
@@ -91,14 +102,19 @@ p {
 }
 
 .l-500-white {
-  font-family: Rubik;
-  font-style: normal !important;
-  font-weight: 300 !important;
-  font-size: 26px !important;
-  line-height: 31px !important;
-  text-align: center !important;
-  letter-spacing: 0.03em !important;
-  color: #FFFFFF !important;
+  font-family: Proxima Nova, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 26px;
+  line-height: 32px;
+  /* identical to box height */
+
+  text-align: center;
+  letter-spacing: 0.03em;
+
+  /* White */
+
+  color: #FFFFFF;
 }
 
 .l-700 {
@@ -136,11 +152,12 @@ p {
 }
 
 .xxxl-500 {
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-size: 60px !important;
-  line-height: 71px !important;
-  text-align: center !important;
-  letter-spacing: -0.02em !important;
-  color: $white !important;
+  font-family: Halvar Breit, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 60px;
+  line-height: 69px;
+  text-align: center;
+  letter-spacing: -0.02em;
+  color: $white;
 }

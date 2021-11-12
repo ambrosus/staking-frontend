@@ -89,30 +89,22 @@ const Home = () => {
   }, []);
   const menu = (
     <div className="menu">
-      <a
-        style={{ fontWeight: 'normal' }}
-        target="_blank"
-        href="https://ambrosus.io/"
-      >
+      <a target="_blank" href="https://ambrosus.io/">
         <P size="xs-500">Main</P>
       </a>
-      <a
-        style={{ fontWeight: 'normal' }}
-        target="_blank"
-        href="https://explorer.ambrosus.io/"
-      >
+      <a target="_blank" href="https://explorer.ambrosus.io/">
         <P size="xs-500">Explorer</P>
       </a>
-      <Link to="/staking">
-        <P style={{ color: 'white', fontWeight: 'bold' }} size="xs-500">
+      <Link to="/staking" className="menu__bold">
+        <P
+          style={{ color: 'white', fontWeight: '500' }}
+          className="active"
+          size="xs-500"
+        >
           Staking
         </P>
       </Link>
-      <a
-        style={{ fontWeight: 'normal' }}
-        href="https://amb.to/"
-        target="_blank"
-      >
+      <a href="https://amb.to/" target="_blank">
         <P size="xs-500">amb.to</P>
       </a>
     </div>
@@ -120,15 +112,17 @@ const Home = () => {
   const poolsData = pools.length > 0 && (
     <>
       <div
-        className="staking__header"
-        style={{ color: location.pathname === '/' && '#FFFFFF' }}
+        className="staking__header Halvar_Breit "
+        style={{
+          color: location.pathname === '/' && '#FFFFFF',
+        }}
       >
         <div className="staking__header__clearfix-pool">Pool</div>
         <div>Total pool stake</div>
         <div className="staking__header__clearfix-apy">APY</div>
         <div style={{ maxWidth: 160, minWidth: 160 }} />
       </div>
-      <div className="staking__pools">
+      <div className="staking__pools Halvar_Breit">
         <RenderItems>
           {pools && pools.length && (
             <>
@@ -177,7 +171,13 @@ const Home = () => {
         </div>
         <div className="home__top--info">
           <div className="info-text">
-            <P size="xxxl-500" style={{ paddingBottom: 10 }}>
+            <P
+              size="xxxl-500"
+              style={{
+                paddingBottom: 10,
+                fontFamily: 'Halvar Breit,sans-serif',
+              }}
+            >
               Get AMB Rewards. No node needed.
             </P>
             <P size="l-500-white">

@@ -28,14 +28,14 @@ function CollapsedList() {
     }
   };
   return (
-    <div className="collapsed-list">
+    <div className="collapsed-list Halvar_Breit">
       <div className="collapsed-list__heading">Arcadia Staking FAQs</div>
       <Block
         title="What is Ambrosus and what is the AMB coin?"
         isOpen={state[0]}
         onToggle={() => toggleActive(0)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova  ">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             Ambrosus is a decentralized network of over hundreds of masternodes,
             each validating or storing data from assets and corresponding events
@@ -53,7 +53,7 @@ function CollapsedList() {
         isOpen={state[1]}
         onToggle={() => toggleActive(1)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             Arcadia allows users to stake AMB coins quickly, without having to
             set up a node manually. Here is how the automation works—all coins
@@ -68,7 +68,7 @@ function CollapsedList() {
         isOpen={state[2]}
         onToggle={() => toggleActive(2)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             The simplest answer—you earn great rewards while contributing to an
             ecosystem that is constantly expanding through successful
@@ -82,7 +82,7 @@ function CollapsedList() {
         isOpen={state[3]}
         onToggle={() => toggleActive(3)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             No, you cannot trade staked coins.
           </P>
@@ -93,7 +93,7 @@ function CollapsedList() {
         isOpen={state[4]}
         onToggle={() => toggleActive(4)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             Payments occur approximately every 6 hours, with your reward
             automatically being added to your stake.
@@ -105,7 +105,7 @@ function CollapsedList() {
         isOpen={state[5]}
         onToggle={() => toggleActive(5)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             No, as staking is a simplified way of setting up a node. Those who
             have the required amount of AMB and set up a masternode receive
@@ -118,7 +118,7 @@ function CollapsedList() {
         isOpen={state[6]}
         onToggle={() => toggleActive(6)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             You can redeem staked AMB at any time and withdraw instantly.
           </P>
@@ -130,7 +130,7 @@ function CollapsedList() {
         isOpen={state[7]}
         onToggle={() => toggleActive(7)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             The minimum staking amount is 1000 AMB, and there is no upper limit
             to the amount of AMB that can be staked.
@@ -143,7 +143,7 @@ function CollapsedList() {
         isOpen={state[8]}
         onToggle={() => toggleActive(8)}
       >
-        <div className="collapsed-content">
+        <div className="collapsed-content Proxima_Nova">
           <P style={{ color: '#9C9C9C' }} size="m-400">
             The commission is set by the pool owner upon creation and cannot be
             changed. We recommend setting the commission between 20% and 30%.

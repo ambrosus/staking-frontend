@@ -64,6 +64,7 @@ const Footer = observer(() => {
       style={{
         background: location.pathname === '/' && '#262626',
         color: location.pathname === '/' && 'white',
+        fontFamily: location.pathname === '/' && 'Proxima Nova',
       }}
     >
       <div className="wrapper">
