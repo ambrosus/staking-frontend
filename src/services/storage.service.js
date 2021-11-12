@@ -1,11 +1,8 @@
-/*eslint-disable*/
 class StorageService {
   namespace = 'staking_';
+
   storage = localStorage;
 
-  constructor() {}
-
-  // localStorage wrapper
   set(key, value) {
     this.storage.setItem(`${this.namespace}${key}`, JSON.stringify(value));
   }
@@ -13,9 +10,8 @@ class StorageService {
   put(key, value) {
     if (!this.get(key)) {
       this.storage.setItem(`${this.namespace}${key}`, JSON.stringify(value));
-    } else {
-      return false;
     }
+    return false;
   }
 
   get(key) {

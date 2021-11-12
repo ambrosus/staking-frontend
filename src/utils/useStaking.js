@@ -5,7 +5,6 @@ import { ethereum } from './constants';
 import appStore from '../store/app.store';
 import collapsedReducer from './collapsedReducer';
 import storageService from '../services/storage.service';
-/*eslint-disable*/
 const useStaking = () => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);

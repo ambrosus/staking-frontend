@@ -48,13 +48,13 @@ const Withdraw = observer(
           const decimal = parseFloatToBigNumber(inputValue)
             .mul(FIXEDPOINT)
             .div(tokenPriceAMB);
-
+          const value = oneHundredPercent ? myStakeInTokens : decimal;
           const overrides = {
             gasPrice: utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
           };
           await withdrawContractInfo.contract
-            .unstake(oneHundredPercent ? myStakeInTokens : decimal, overrides)
+            .unstake(value, overrides)
             .then(async (tx) => {
               if (tx) {
                 notificationMassage(
@@ -76,11 +76,9 @@ const Withdraw = observer(
                     );
                     appStore.setRefresh();
                     setInputValue('');
-                    setOneHundredPercent(false);
                   })
                   .catch((e) => {
                     if (e) {
-                      console.log(e);
                       notificationMassage(
                         'ERROR',
                         `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
@@ -98,10 +96,14 @@ const Withdraw = observer(
     };
 
     const calculateSumAfterWithdraw = () => {
-      setOneHundredPercent(false);
-      if (stake && checkValidNumberString(inputValue)) {
-        setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)));
+      if (oneHundredPercent) {
+        setOneHundredPercent(false);
       }
+      return (
+        stake &&
+        checkValidNumberString(inputValue) &&
+        setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)))
+      );
     };
     useEffect(() => {
       calculateSumAfterWithdraw();
@@ -170,8 +172,11 @@ const Withdraw = observer(
                 type="outline"
                 disabled={stake && stake.eq(0)}
                 onclick={() => {
+                  if (stake) {
+                    setInputValue(formatRounded(stake, 0));
+                  }
                   setOneHundredPercent(true);
-                  return stake && setInputValue(formatRounded(stake, 0));
+                  return false;
                 }}
               >
                 <P size="xs-500">100%</P>

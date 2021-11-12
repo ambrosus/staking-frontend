@@ -33,7 +33,6 @@ const Deposit = observer(({ depositInfo }) => {
   const [myStake, setMyStake] = useState(ZERO);
   const [balance, setBalance] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
-  // const [tokenPrice, setTokenPrice] = useState(ZERO);
   const [APYOfPool, setAPYOfPool] = useState('');
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
@@ -97,7 +96,6 @@ const Deposit = observer(({ depositInfo }) => {
       if (singer && appStore.stakingWrapper !== undefined) {
         const { totalStakeInAMB, myStakeInAMB, poolAPY } =
           await appStore.stakingWrapper.getPoolData(depositInfo.index);
-        // setTokenPrice(tokenPriceAMB);
         setMyStake(myStakeInAMB);
         setTotalStake(totalStakeInAMB);
         setAPYOfPool(poolAPY);
@@ -174,6 +172,7 @@ const Deposit = observer(({ depositInfo }) => {
         <>
           <P size="xxl-500">
             Deposit AMB&nbsp;
+            {/* TODO toltip for deposit */}
             {/* <ReactSVG */}
             {/*   style={{ paddingTop: 3 }} */}
             {/*  data-tip */}
@@ -281,6 +280,7 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-options">
           <div className="flex" style={{ marginBottom: 5 }}>
+            {/* TODO toltip for unstake */}
             {/* <ReactSVG */}
             {/*  style={{ marginTop: 3 }} */}
             {/*  data-tip */}

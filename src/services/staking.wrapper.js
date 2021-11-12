@@ -42,8 +42,7 @@ function checkValidNumberString(str) {
   try {
     parseFloatToBigNumber(str);
     ret = true;
-  } catch (err) {
-  }
+  } catch (err) {}
   // console.log('checkValidNumberString:', str, ret);
   return ret;
 }

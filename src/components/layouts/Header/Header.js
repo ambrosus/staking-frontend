@@ -34,7 +34,6 @@ export const Header = observer(() => {
     const percent = await priceInPercent24h(1);
     if (percent) {
       setPercentChange24h(percent);
-      // data.data.percent_change_24h
     }
   };
 

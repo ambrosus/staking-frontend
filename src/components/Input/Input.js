@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { ReactSVG } from 'react-svg';
-// import { utils } from 'ethers';
 
 import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
 import clearIcon from '../../assets/svg/clear.svg';
@@ -31,8 +30,10 @@ const Input = ({
         onChange={(e) => {
           e.preventDefault();
           e.stopPropagation();
+          if (e.target.value.length <= 20) {
+            onchange(e.target.value);
+          }
           setInputError(!checkValidNumberString(e.target.value));
-          onchange(e.target.value);
         }}
         style={iconLeft && { padding: '0 50px' }}
       />

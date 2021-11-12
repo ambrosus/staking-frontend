@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import { useEffect, useState } from 'react';
 export const copyToClipboard = (text) => {
   const el = document.createElement('textarea');
@@ -24,17 +23,15 @@ const useCopyToClipboard = ({ text, successDuration }) => {
   };
 
   useEffect(() => {
+    let timer;
     if (isCopied && successDuration) {
-      const timer = setTimeout(() => {
+      timer = setTimeout(() => {
         setIsCopied(false);
       }, successDuration);
-
-      return () => {
-        clearTimeout(timer);
-      };
     }
+    return () => timer !== undefined && clearTimeout(timer);
   }, [isCopied, successDuration]);
-
+  /* eslint-disable-next-line */
   useEffect(() => {
     return () => setIsCopied(false);
   }, [text]);

@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer, cssTransition } from 'react-toastify';
@@ -53,24 +52,33 @@ const Staking = observer(() => {
             <div style={{ marginRight: -45 }} />
           </div>
           <RenderItems>
-            {pools.map((item, index) =>
-              item.active ? (
-                <StakingItem
-                  dispatch={dispatch}
-                  activeExpand={activeExpand}
-                  setActiveExpand={setActiveExpand}
-                  key={item.contractName}
-                  index={index}
-                  state={state}
-                  expand
-                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                  comingSoon={!item?.abi}
-                  lazy
-                  poolInfo={item}
-                />
-              ) : (
-                <ComingSoonPool key={item.contractName} poolInfo={item} lazy />
-              ),
+            {pools.map(
+              (item, index) =>
+                item.active && (
+                  <StakingItem
+                    dispatch={dispatch}
+                    activeExpand={activeExpand}
+                    setActiveExpand={setActiveExpand}
+                    key={item.contractName}
+                    index={index}
+                    state={state}
+                    expand
+                    hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                    comingSoon={!item?.abi}
+                    lazy
+                    poolInfo={item}
+                  />
+                ),
+            )}
+            {pools.map(
+              (item) =>
+                !item.active && (
+                  <ComingSoonPool
+                    key={item.contractName}
+                    poolInfo={item}
+                    lazy
+                  />
+                ),
             )}
           </RenderItems>
         </>
