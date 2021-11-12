@@ -1,15 +1,11 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 export class AppStore {
-  auth = false;
-
-  tokenPrice = undefined;
-
-  refresh = false;
-
-  stakingWrapper = undefined;
-
   constructor() {
+    this.auth = false;
+    this.tokenPrice = undefined;
+    this.refresh = false;
+    this.stakingWrapper = undefined;
     makeAutoObservable(this);
   }
 
