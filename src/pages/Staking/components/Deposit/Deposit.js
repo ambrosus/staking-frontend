@@ -124,7 +124,10 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="modal--modal-body__header">
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <ReactSVG src={avatarIcon} wrapper="span" />
-            <P size="l-500">&nbsp;&nbsp;&nbsp;&nbsp;Bravo</P>
+            <P size="l-500">
+              &nbsp;&nbsp;&nbsp;&nbsp;{' '}
+              {depositInfo?.contractName.substring(0, 8)}
+            </P>
           </div>
           <div style={{ textTransform: 'uppercase' }}>
             <DisplayValue size="l-400" value={formatRounded(myStake)} />
