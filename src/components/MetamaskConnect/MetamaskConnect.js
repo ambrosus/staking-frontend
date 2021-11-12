@@ -41,7 +41,15 @@ export const MetamaskConnect = observer(() => {
     >
       <ReactSVG src={walletIcon} wrapper="span" />
       <P style={{ paddingLeft: 10, fontFamily: ' Neue Machina' }} size="m-500">
-        {CONNECT_TEXT}
+        <span
+          style={{
+            paddingLeft: 5,
+            fontFamily: ' Neue Machina',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {CONNECT_TEXT}
+        </span>
       </P>
     </div>
   );

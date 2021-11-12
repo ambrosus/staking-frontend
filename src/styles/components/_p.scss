@@ -1,6 +1,6 @@
 p {
   margin: 0;
-  font-family: Rubik;
+  font-family: Halvar Breitschrift, sans-serif;
 }
 
 .xs-400 {
@@ -11,13 +11,16 @@ p {
 }
 
 .xs-500 {
+  font-family: Halvar Breitschrift, sans-serif;
   font-style: normal;
-  font-weight: 500 !important;
-  font-size: 12px !important;
+  font-weight: normal;
+  font-size: 12px;
   line-height: 14px;
   display: flex;
   align-items: center;
-  color: $color-gray;
+  text-align: center;
+
+  color: #9198BB;
 }
 
 .s-400 {
@@ -50,22 +53,21 @@ p {
 
 .m-500 {
   font-style: normal;
-  font-weight: 500 !important;
-  font-size: 16px !important;
-  line-height: 19px !important;
+  font-weight: 500 ;
+  font-size: 16px ;
+  line-height: 19px ;
   text-align: center;
-
   color: $white !important;
   @media (max-width: 600px) {
-    font-family: Neue Machina, sans-serif !important;
-    font-style: normal !important;
-    font-weight: 500 !important;
-    font-size: 12px !important;
-    line-height: 12px !important;
-    display: flex !important;
-    align-items: center !important;
-    text-align: center !important;
-    color: #FFFFFF !important;
+    font-family: Neue Machina, sans-serif ;
+    font-style: normal ;
+    font-weight: 500 ;
+    font-size: 12px ;
+    line-height: 12px ;
+    display: flex ;
+    align-items: center ;
+    text-align: center ;
+    color: #FFFFFF ;
   }
 }
 
@@ -138,17 +140,16 @@ p {
   align-items: center;
   text-align: center;
   font-feature-settings: 'liga' off;
-  color: $white;
 }
 
 .xxl-500 {
   font-style: normal;
-  font-weight: 500 !important;
-  font-size: 24px !important;
-  line-height: 28px !important;
+  font-weight: 500 ;
+  font-size: 24px ;
+  line-height: 28px ;
   display: flex;
   align-items: center;
-  color: $black !important;
+  color: $black ;
 }
 
 .xxxl-500 {

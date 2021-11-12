@@ -162,7 +162,7 @@ const StakingItem = ({
         </div>
       </div>
       <Button
-        type="green"
+        type={location.pathname === '/' ? 'green' : 'primary'}
         onclick={() => {
           if (expand) {
             setActiveExpand(index);

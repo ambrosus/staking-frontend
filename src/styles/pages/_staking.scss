@@ -50,6 +50,11 @@
     }
 
     > div {
+      font-family: Halvar Breitschrift;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
       white-space: nowrap;
       display: flex;
       align-items: flex-end;
@@ -210,11 +215,10 @@
       border-bottom-right-radius: 12px;
 
       p {
-        font-family: Proxima Nova, sans-serif!important;
-        font-style: normal!important;
-        font-weight: normal!important;
-        font-size: 16px!important;
-        line-height: 24px!important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        font-size: 16px !important;
+        line-height: 24px !important;
         /* or 150% */
 
 
@@ -268,6 +272,21 @@
     &__buttons {
       flex-direction: row;
       display: flex;
+
+      > div {
+        button {
+          p {
+            font-family: Halvar Breitschrift, sans-serif !important;
+            font-style: normal !important;
+            font-weight: normal !important;
+            font-size: 12px !important;
+            line-height: 14px !important;
+            display: flex !important;
+            align-items: center !important;
+            text-align: center !important;
+          }
+        }
+      }
 
       > div {
         width: 64px;
@@ -451,4 +470,16 @@
   * {
     font-family: Proxima Nova, sans-serif !important;
   }
+}
+.percent-btn{
+  font-family: Halvar Breitschrift, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #9198BB;
+
 }

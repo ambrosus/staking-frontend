@@ -152,13 +152,25 @@ const Deposit = observer(({ depositInfo }) => {
             alignItems: 'center',
           }}
         >
-          <P size="xxl-500">Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P>
+          <P size="xxl-500">
+            <span style={{ fontWeight: 'normal', fontSize: 20 }}>
+              Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+          </P>
           <P size="s-400" style={{ fontWeight: 500 }}>
-            Available for withdraw:{' '}
-            {myStake && myStake.gte(MINSHOWSTAKE)
-              ? formatThousand(formatRounded(myStake, 2))
-              : 0}{' '}
-            AMB
+            <span
+              style={{
+                fontFamily: ' Proxima Nova',
+                fontSize: 14,
+                fontWeight: 600,
+              }}
+            >
+              Available for withdraw:{' '}
+              {myStake && myStake.gte(MINSHOWSTAKE)
+                ? formatThousand(formatRounded(myStake, 2))
+                : 0}{' '}
+              AMB
+            </span>
           </P>
         </div>
         <Withdraw
@@ -173,37 +185,46 @@ const Deposit = observer(({ depositInfo }) => {
     <>
       <div className="collapsed-content__header">
         <>
-          <P size="xxl-500">
-            Deposit AMB&nbsp;
-            {/* TODO toltip for deposit */}
-            {/* <ReactSVG */}
-            {/*   style={{ paddingTop: 3 }} */}
-            {/*  data-tip */}
-            {/*  data-for="deposit" */}
-            {/*  src={infoIcon} */}
-            {/*  wrapper="span" */}
-            {/* /> */}
-            &nbsp;&nbsp;&nbsp;
-          </P>
+          <span style={{ fontWeight: 'normal', fontSize: 20 }}>
+            Deposit AMB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+          </span>
+          {/* TODO toltip for deposit */}
+          {/* <ReactSVG */}
+          {/*   style={{ paddingTop: 3 }} */}
+          {/*  data-tip */}
+          {/*  data-for="deposit" */}
+          {/*  src={infoIcon} */}
+          {/*  wrapper="span" */}
+          {/* /> */}
           <ReactTooltip id="deposit" place="top" effect="solid">
             Ну тут какая-то поdсказка которая сообщает о том о сём. И человек
             себе сразу понимает что к чему.
           </ReactTooltip>
         </>
-        <P size="s-400" style={{ fontWeight: 500 }}>
-          &nbsp; Available for stake: {formatThousand(formatRounded(balance))}{' '}
-          AMB
+        <P size="s-400">
+          <span
+            style={{
+              fontWeight: 600,
+              fontFamily: ' Proxima Nova',
+              color: '#333333',
+            }}
+          >
+            &nbsp; Available for stake: {formatThousand(formatRounded(balance))}{' '}
+            AMB
+          </span>
         </P>
         <div style={{ flexBasis: '90%' }} />
       </div>
       <div className="deposit">
         <div className="deposit-heading">
           {' '}
-          <P size="s-400">Amount</P>
+          <span style={{ fontSeight: 'normal', fontSize: 14 }}>Amount</span>
           {inputValue && inputError && (
-            <P style={{ color: '#FF6767' }} size="s-400">
-              &nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
-            </P>
+            <span
+              style={{ fontSeight: 'normal', fontSize: 14, color: '#FF6767' }}
+            >
+              &nbsp;&nbsp;&nbsp;&nbsp; Min amount for stake = 1000 AMB
+            </span>
           )}
         </div>
         <div className="deposit-actions">
@@ -223,7 +244,7 @@ const Deposit = observer(({ depositInfo }) => {
                 disabled={balance.isZero()}
                 onclick={() => setInputValue(formatRounded(balance.div(4), 0))}
               >
-                <P size="xs-500">25%</P>
+                <span className="percent-btn">25%</span>{' '}
               </Button>
             </div>
             <div>
@@ -234,7 +255,7 @@ const Deposit = observer(({ depositInfo }) => {
                 disabled={balance.isZero()}
                 onclick={() => setInputValue(formatRounded(balance.div(2), 0))}
               >
-                <P size="xs-500">50%</P>
+                <span className="percent-btn">50%</span>{' '}
               </Button>
             </div>
             <div>
@@ -247,7 +268,7 @@ const Deposit = observer(({ depositInfo }) => {
                   setInputValue(formatRounded(balance.mul(3).div(4), 0))
                 }
               >
-                <P size="xs-500">75%</P>
+                <span className="percent-btn">75%</span>{' '}
               </Button>
             </div>
             <div>
@@ -260,7 +281,7 @@ const Deposit = observer(({ depositInfo }) => {
                   setInputValue(balance.div(FIXEDPOINT).toString())
                 }
               >
-                <P size="xs-500">100%</P>
+                <span className="percent-btn">100%</span>{' '}
               </Button>
             </div>
           </div>
@@ -303,11 +324,13 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
           <div style={{ marginBottom: 5 }}>
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
-              Available for withdraw:{' '}
-              {myStake && myStake.gte(MINSHOWSTAKE)
-                ? formatThousand(formatRounded(myStake, 2))
-                : 0}{' '}
-              AMB
+              <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
+                Available for withdraw:{' '}
+                {myStake && myStake.gte(MINSHOWSTAKE)
+                  ? formatThousand(formatRounded(myStake, 2))
+                  : 0}{' '}
+                AMB
+              </span>
             </P>
 
             <ReactTooltip id="unstake" place="top" effect="solid">

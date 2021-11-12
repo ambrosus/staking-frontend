@@ -16,6 +16,9 @@
   border-radius: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  p{
+    font-family: Neue Machina, sans-serif;
+  }
   @media (max-width: 600px) {
     min-height: auto;
     font-size: 12px !important;
@@ -27,15 +30,17 @@
 
   &.primary {
     background-color: $color-primary;
-   p{
-     @media (max-width: 600px) {
-       font-size: 12px !important;
-     }
-   }
+
+    p {
+      @media (max-width: 600px) {
+        font-size: 12px !important;
+      }
+    }
   }
 
   &.green {
     background-color: $green;
+    color: #FFFFFF;
   }
 
   &.outline {
@@ -52,9 +57,10 @@ button[disabled=disabled], button:disabled {
   opacity: 0.8;
   pointer-events: none;
   cursor: not-allowed;
-p{
-  color: #D0DBF3!important;
-}
+
+  p {
+    color: #D0DBF3 !important;
+  }
 }
 
 .primary {

@@ -3,11 +3,26 @@
   position: relative;
   width: 100%;
   max-width: 665px;
+  font-family: Halvar Breitschrift, sans-serif !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  font-feature-settings: 'liga' off;
+
+  input {
+    * {
+      font-family: Halvar Breitschrift, sans-serif !important
+    }
+  }
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   /* display: none; <- Crashes Chrome on hover */
+  font-family: Halvar Breitschrift, sans-serif !important;
   -webkit-appearance: none;
   margin: -20px; /* <-- Apparently some margin are still there even though it's hidden */
 }
@@ -20,6 +35,11 @@ input[type=number] {
 .input input[type="email"],
 .input input[type="text"],
 .input input[type="password"] {
+  font-family: Halvar Breitschrift, sans-serif !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  line-height: 16px !important;
+  font-feature-settings: 'liga' off !important;
   background: #F7F7FD;
   appearance: none;
   height: 48px;
@@ -40,6 +60,8 @@ input[type=number] {
 .input input[type="email"]:focus,
 .input input[type="text"]:focus,
 .input input[type="password"]:focus {
+  font-family: Halvar Breitschrift, sans-serif !important;
+  font-size: 14px;
   border: 2px solid $color-primary;
   color: $color-primary;
 }
@@ -48,6 +70,8 @@ input[type=number] {
 .input input[type="email"]:focus + .iconLeft,
 .input input[type="text"]:focus + .iconLeft,
 .input input[type="password"]:focus + .iconLeft {
+  font-family: Halvar Breitschrift, sans-serif !important;
+
   opacity: 1;
 }
 
@@ -64,7 +88,7 @@ input[type=number] {
 }
 
 .input .iconRight {
-  top:12px;
+  top: 12px;
   right: 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -75,6 +99,7 @@ input[type=number] {
   height: 25px;
   background-color: $color-gray;
 }
+
 .input .iconRight:hover {
   background-color: $color-gray-light;
 }
@@ -83,6 +108,8 @@ input[type=number] {
 .input-error input[type="email"]:focus,
 .input-error input[type="text"]:focus,
 .input-error input[type="password"]:focus {
+  font-family: Halvar Breitschrift, sans-serif !important;
+
   border: 2px solid $red !important;
   color: $red !important;
 }
@@ -93,5 +120,9 @@ input[type=number] {
 .input-error input[type="password"] {
   border: 2px solid $red !important;
   color: $red;
+  font-family: Halvar Breitschrift, sans-serif !important;
+
 }
+
+input, textarea, select { font-family:inherit; }
 

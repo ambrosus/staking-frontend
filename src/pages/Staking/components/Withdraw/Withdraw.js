@@ -118,7 +118,7 @@ const Withdraw = observer(
     return (
       <div className="deposit">
         <div className="deposit-heading">
-          <P size="s-400">Amount</P>
+          <span style={{ fontSeight: 'normal', fontSize: 14 }}>Amount</span>
         </div>
         <div className="deposit-actions">
           <Input
@@ -138,7 +138,7 @@ const Withdraw = observer(
                   stake && setInputValue(formatRounded(stake.div(4), 0))
                 }
               >
-                <P size="xs-500">25%</P>
+                <span className="percent-btn">25%</span>
               </Button>
             </div>
             <div>
@@ -151,7 +151,7 @@ const Withdraw = observer(
                   stake && setInputValue(formatRounded(stake.div(2), 0))
                 }
               >
-                <P size="xs-500">50%</P>
+                <span className="percent-btn">50%</span>
               </Button>
             </div>
             <div>
@@ -164,7 +164,7 @@ const Withdraw = observer(
                   stake && setInputValue(formatRounded(stake.mul(3).div(4), 0))
                 }
               >
-                <P size="xs-500">75%</P>
+                <span className="percent-btn">75%</span>
               </Button>
             </div>
             <div>
@@ -181,7 +181,7 @@ const Withdraw = observer(
                   return false;
                 }}
               >
-                <P size="xs-500">100%</P>
+                <span className="percent-btn">100%</span>
               </Button>
             </div>
           </div>
@@ -221,11 +221,13 @@ const Withdraw = observer(
         <div className="deposit-stake-options">
           <div>
             <P size="s-400" style={{ color: '#9198BB' }}>
-              Estimated stake after withdraw:{' '}
-              {afterWithdraw && afterWithdraw.lt(0)
-                ? 0
-                : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
-              AMB
+              <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
+                Estimated stake after withdraw:{' '}
+                {afterWithdraw && afterWithdraw.lt(0)
+                  ? 0
+                  : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
+                AMB
+              </span>
             </P>
           </div>
         </div>
