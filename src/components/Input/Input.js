@@ -28,7 +28,10 @@ const Input = ({
       onChange={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (e.target.value === '' || checkValidNumberString(e.target.value)) {
+        if (
+          /^[\d.]*$/.test(e.target.value) ||
+          checkValidNumberString(e.target.value)
+        ) {
           onchange(e.target.value);
         }
       }}
