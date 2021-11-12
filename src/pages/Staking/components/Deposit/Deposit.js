@@ -153,7 +153,7 @@ const Deposit = observer(({ depositInfo }) => {
           <P size="s-400" style={{ fontWeight: 500 }}>
             Available for withdraw:{' '}
             {myStake && myStake.gte(MINSHOWSTAKE)
-              ? formatRounded(myStake, 2)
+              ? formatThousand(formatRounded(myStake, 2))
               : 0}{' '}
             AMB
           </P>
@@ -302,7 +302,7 @@ const Deposit = observer(({ depositInfo }) => {
             <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
               Available for withdraw:{' '}
               {myStake && myStake.gte(MINSHOWSTAKE)
-                ? formatRounded(myStake, 2)
+                ? formatThousand(formatRounded(myStake, 2))
                 : 0}{' '}
               AMB
             </P>

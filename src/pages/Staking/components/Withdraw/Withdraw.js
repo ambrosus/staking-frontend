@@ -16,7 +16,7 @@ import {
   parseFloatToBigNumber,
   ZERO,
 } from '../../../../services/staking.wrapper';
-import { ethereum } from '../../../../utils/constants';
+import { ethereum, formatThousand } from '../../../../utils/constants';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(
@@ -28,7 +28,7 @@ const Withdraw = observer(
     stake,
   }) => {
     const [inputValue, setInputValue] = useState('');
-    const [afterWithdraw, setAfterWithdraw] = useState(ZERO);
+    const [afterWithdraw, setAfterWithdraw] = useState(stake ? stake : ZERO);
     const [oneHundredPercent, setOneHundredPercent] = useState(false);
 
     const withdrawPayment = async () => {
@@ -221,7 +221,7 @@ const Withdraw = observer(
               Estimated stake after withdraw:{' '}
               {afterWithdraw && afterWithdraw.lt(0)
                 ? 0
-                : formatRounded(afterWithdraw, 2)}{' '}
+                : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
               AMB
             </P>
           </div>
