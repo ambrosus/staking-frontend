@@ -7,6 +7,12 @@ import { observer } from 'mobx-react-lite';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
+import useModal from '../../../../utils/useModal';
+import Modal from '../../../../components/Modal';
+import Withdraw from '../Withdraw';
+import notificationMassage from '../../../../utils/notificationMassage';
+import DisplayValue from '../../../../components/DisplayValue';
+import appStore from '../../../../store/app.store';
 import {
   ZERO,
   formatRounded,
@@ -16,16 +22,18 @@ import {
   checkValidNumberString,
   FIXEDPOINT,
 } from '../../../../services/staking.wrapper';
-import { ethereum, formatThousand } from '../../../../utils/constants';
+import {
+  ethereum,
+  FIFTY_PERCENT,
+  formatThousand,
+  ONE_HUNDRED_PERCENT,
+  SEVENTY_FIVE_PERCENT,
+  tooltips,
+  TWENTY_FIVE_PERCENT,
+} from '../../../../utils/constants';
 
-// import infoIcon from '../../../../assets/svg/info.svg';
-import useModal from '../../../../utils/useModal';
-import Modal from '../../../../components/Modal';
-import Withdraw from '../Withdraw';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
-import notificationMassage from '../../../../utils/notificationMassage';
-import DisplayValue from '../../../../components/DisplayValue';
-import appStore from '../../../../store/app.store';
+// import infoIcon from '../../../../assets/svg/info.svg';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
@@ -197,8 +205,7 @@ const Deposit = observer(({ depositInfo }) => {
           {/*  wrapper="span" */}
           {/* /> */}
           <ReactTooltip id="deposit" place="top" effect="solid">
-            Ну тут какая-то поdсказка которая сообщает о том о сём. И человек
-            себе сразу понимает что к чему.
+            {tooltips.deposit}
           </ReactTooltip>
         </>
         <P size="s-400">
@@ -244,7 +251,7 @@ const Deposit = observer(({ depositInfo }) => {
                 disabled={balance.isZero()}
                 onclick={() => setInputValue(formatRounded(balance.div(4), 0))}
               >
-                <span className="percent-btn">25%</span>{' '}
+                <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>{' '}
               </Button>
             </div>
             <div>
@@ -255,7 +262,7 @@ const Deposit = observer(({ depositInfo }) => {
                 disabled={balance.isZero()}
                 onclick={() => setInputValue(formatRounded(balance.div(2), 0))}
               >
-                <span className="percent-btn">50%</span>{' '}
+                <span className="percent-btn">{FIFTY_PERCENT}</span>{' '}
               </Button>
             </div>
             <div>
@@ -268,7 +275,7 @@ const Deposit = observer(({ depositInfo }) => {
                   setInputValue(formatRounded(balance.mul(3).div(4), 0))
                 }
               >
-                <span className="percent-btn">75%</span>{' '}
+                <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>{' '}
               </Button>
             </div>
             <div>
@@ -281,7 +288,7 @@ const Deposit = observer(({ depositInfo }) => {
                   setInputValue(balance.div(FIXEDPOINT).toString())
                 }
               >
-                <span className="percent-btn">100%</span>{' '}
+                <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}
               </Button>
             </div>
           </div>
@@ -333,10 +340,9 @@ const Deposit = observer(({ depositInfo }) => {
               </span>
             </P>
 
-            <ReactTooltip id="unstake" place="top" effect="solid">
-              Ну тут какая-то посказка которая сообщает о том о сём. И человек
-              себе сразу понимает что к чему.
-            </ReactTooltip>
+            {/* TODO <ReactTooltip id="unstake" place="top" effect="solid"> */}
+            {tooltips.unstake}
+            {/* </ReactTooltip> */}
           </div>
         </div>
         {withdrawForm}

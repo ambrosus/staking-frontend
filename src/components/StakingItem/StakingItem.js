@@ -5,7 +5,6 @@ import { ReactSVG } from 'react-svg';
 import { providers, utils } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
-import { useLocation } from 'react-router-dom';
 
 import Button from '../Button';
 import P from '../P';
@@ -16,7 +15,14 @@ import useLogIn from '../../utils/useLogIn';
 import DisplayValue from '../DisplayValue';
 
 import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
-import { ethereum, HIDE, SHOW, STAKE } from '../../utils/constants';
+import {
+  ethereum,
+  HIDE,
+  MAIN_PAGE,
+  SHOW,
+  STAKE,
+  STAKING_PAGE,
+} from '../../utils/constants';
 import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
@@ -35,8 +41,8 @@ const StakingItem = ({
   const [totalStake, setTotalStake] = useState(null);
   const [APYOfPool, setAPYOfPool] = useState('');
   const history = useHistory();
+  const { pathname } = history.location;
   const { logIn } = useLogIn();
-  const location = useLocation();
   let provider;
 
   const updateState = async () => {
@@ -106,7 +112,23 @@ const StakingItem = ({
       }
     }
   };
-
+  const stakeBtnHandler = () => {
+    if (expand) {
+      setActiveExpand(index);
+      dispatch({ type: 'toggle', index });
+      if (index === activeExpand) {
+        dispatch({ type: 'hide', index });
+      }
+      if (index === activeExpand && !state[index]) {
+        dispatch({ type: 'toggle', index });
+      }
+    } else {
+      /* eslint-disable-next-line */
+      if (hasChain === true) {
+        logIn();
+      }
+    }
+  };
   useEffect(() => {
     updateState();
   }, [appStore.refresh]);
@@ -116,29 +138,29 @@ const StakingItem = ({
       <div
         className="item--header__flex"
         style={{
-          paddingRight: history.location.pathname === '/staking' ? 100 : 100,
+          paddingRight: pathname === STAKING_PAGE ? 100 : 100,
         }}
       >
         <div
           style={{
-            marginRight: history.location.pathname === '/staking' ? 10 : '',
+            marginRight: pathname === STAKING_PAGE ? 10 : '',
           }}
           className="item--header__flex__pool"
         >
           <ReactSVG src={avatarIcon} wrapper="span" />
           <P
             style={{
-              color: history.location.pathname === '/' && '#FFFFFF',
+              color: pathname === MAIN_PAGE && '#FFFFFF',
             }}
             size="l-500"
           >
             {poolInfo?.contractName.substring(0, 8)}
           </P>
         </div>
-        {history.location.pathname === '/staking' && (
+        {pathname === STAKING_PAGE && (
           <div
             style={{
-              marginRight: history.location.pathname === '/staking' ? 10 : '',
+              marginRight: pathname === STAKING_PAGE ? 10 : '',
             }}
             className="item--header__flex__my-stake"
           >
@@ -150,7 +172,7 @@ const StakingItem = ({
         <div className="item--header__flex__vault-assets">
           <div style={{ width: 150 }}>
             <DisplayValue
-              color={history.location.pathname === '/' && '#FFFFFF'}
+              color={pathname === MAIN_PAGE && '#FFFFFF'}
               value={totalStake && formatRounded(totalStake)}
             />
           </div>
@@ -162,24 +184,8 @@ const StakingItem = ({
         </div>
       </div>
       <Button
-        type={location.pathname === '/' ? 'green' : 'primary'}
-        onclick={() => {
-          if (expand) {
-            setActiveExpand(index);
-            dispatch({ type: 'toggle', index });
-            if (index === activeExpand) {
-              dispatch({ type: 'hide', index });
-            }
-            if (index === activeExpand && !state[index]) {
-              dispatch({ type: 'toggle', index });
-            }
-          } else {
-            /* eslint-disable-next-line */
-            if (hasChain === true) {
-              logIn();
-            }
-          }
-        }}
+        type={pathname === MAIN_PAGE ? 'green' : 'primary'}
+        onclick={stakeBtnHandler}
       >
         <P style={{ textTransform: 'uppercase' }} size="m-500">
           {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
@@ -193,14 +199,13 @@ const StakingItem = ({
       role="presentation"
       className="stack-item"
       style={{
-        background: location.pathname === '/' && '#262626',
-        boxShadow:
-          location.pathname === '/' && '0px 6px 10px rgba(0, 0, 0, 0.25)',
+        background: pathname === MAIN_PAGE && '#262626',
+        boxShadow: pathname === MAIN_PAGE && '0px 6px 10px rgba(0, 0, 0, 0.25)',
       }}
     >
       <StakingItemBody>
         {stackHeader}
-        {location.pathname === '/staking' && (
+        {pathname === STAKING_PAGE && (
           <Collapse
             isOpen={state[index] ? activeExpand === index : state[index]}
           >

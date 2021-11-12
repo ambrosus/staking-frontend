@@ -1,22 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 import Button from '../Button';
 import P from '../P';
-import { COMING_SOON } from '../../utils/constants';
+import { COMING_SOON, MAIN_PAGE, STAKING_PAGE } from '../../utils/constants';
 
 import avatarIcon from '../../assets/svg/coming_soon_pool_icon.svg';
 
 export const ComingSoonPool = ({ poolInfo }) => {
-  const history = useHistory();
+  const location = useLocation();
+  const { pathname } = location;
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div
         className="item--header__flex w-100"
         style={{
-          paddingRight: history.location.pathname === '/staking' ? 100 : 200,
+          paddingRight: pathname === STAKING_PAGE ? 100 : 200,
           width: '80%',
         }}
       >
@@ -53,10 +54,8 @@ export const ComingSoonPool = ({ poolInfo }) => {
       role="presentation"
       className="stack-item"
       style={{
-        background: history.location.pathname === '/' && '#262626',
-        boxShadow:
-          history.location.pathname === '/' &&
-          '0px 6px 10px rgba(0, 0, 0, 0.25)',
+        background: pathname === MAIN_PAGE && '#262626',
+        boxShadow: pathname === MAIN_PAGE && '0px 6px 10px rgba(0, 0, 0, 0.25)',
       }}
     >
       {stackHeader}

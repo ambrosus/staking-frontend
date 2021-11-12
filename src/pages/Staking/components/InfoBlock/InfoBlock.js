@@ -12,6 +12,7 @@ import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../utils/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
+import { tooltips } from '../../../../utils/constants';
 
 const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
@@ -37,11 +38,11 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
               </P>
               {!isCopied ? (
                 <ReactTooltip id="copy-state" place="top" effect="solid">
-                  Copy to clipboard
+                  {tooltips.copyState.notCopied}
                 </ReactTooltip>
               ) : (
                 <ReactTooltip id="copy-state" place="top" effect="solid">
-                  Copied
+                  {tooltips.copyState.isCopied}
                 </ReactTooltip>
               )}
             </div>
@@ -49,7 +50,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
               <div className="info-block__stacked--total">
                 <div>
                   <ReactTooltip id="total-staked" place="top" effect="solid">
-                    The amount of staked coins in all pools
+                    {tooltips.totalStaked}
                   </ReactTooltip>
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -90,9 +91,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                   }}
                 >
                   <ReactTooltip id="earnings" place="top" effect="solid">
-                    Estimated earnings for the next 24h. <br />
-                    This function is in early beta, <br />
-                    the data is for reference only
+                    {tooltips.earnings}
                   </ReactTooltip>
                   <ReactSVG
                     style={{

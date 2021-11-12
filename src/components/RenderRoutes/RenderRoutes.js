@@ -7,13 +7,14 @@ import Home from '../../pages/Home';
 import Staking from '../../pages/Staking';
 import appStore from '../../store/app.store';
 import Footer from '../layouts/Footer';
+import { MAIN_PAGE, STAKING_PAGE } from '../../utils/constants';
 
 const RenderRoutes = observer(() => (
   <BrowserRouter>
     {!appStore.auth ? (
       <Switch>
         <Route
-          path="/"
+          path={MAIN_PAGE}
           exact
           render={() => (
             <>
@@ -22,12 +23,12 @@ const RenderRoutes = observer(() => (
             </>
           )}
         />
-        <Redirect to="/" />
+        <Redirect to={MAIN_PAGE} />
       </Switch>
     ) : (
       <Switch>
-        <Route path="/staking" exact render={() => <Staking />} />
-        <Redirect to="/staking" />
+        <Route path={STAKING_PAGE} exact render={() => <Staking />} />
+        <Redirect to={STAKING_PAGE} />
       </Switch>
     )}
   </BrowserRouter>

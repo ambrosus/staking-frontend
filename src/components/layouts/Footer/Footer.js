@@ -9,6 +9,7 @@ import redditIcon from '../../../assets/svg/reddit-icon.svg';
 import telegramIcon from '../../../assets/svg/telegram-icon.svg';
 import twitterIcon from '../../../assets/svg/twitter-icon.svg';
 import linkedinIcon from '../../../assets/svg/linkedin-icon.svg';
+import { MAIN_PAGE } from '../../../utils/constants';
 
 const socialsLinks = [
   {
@@ -50,6 +51,7 @@ const socialsLinks = [
 
 const Footer = observer(() => {
   const location = useLocation();
+  const { pathname } = location;
   const socials = socialsLinks.map((social) => (
     <li className="socials__list__link" key={social.url}>
       <a href={social.url} target="_blank" rel="noopener noreferrer">
@@ -62,9 +64,9 @@ const Footer = observer(() => {
     <footer
       className="footer"
       style={{
-        background: location.pathname === '/' && '#262626',
-        color: location.pathname === '/' && 'white',
-        fontFamily: location.pathname === '/' && 'Proxima Nova',
+        background: pathname === MAIN_PAGE && '#262626',
+        color: pathname === MAIN_PAGE && 'white',
+        fontFamily: pathname === MAIN_PAGE && 'Proxima Nova',
       }}
     >
       <div className="wrapper">

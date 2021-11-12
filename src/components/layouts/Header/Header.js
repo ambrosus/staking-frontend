@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { providers } from 'ethers';
@@ -11,6 +11,7 @@ import appStore from '../../../store/app.store';
 import {
   ambMounthUSD,
   ethereum,
+  menuLinks,
   priceInPercent24h,
 } from '../../../utils/constants';
 
@@ -23,7 +24,6 @@ export const Header = observer(() => {
   const [percentChange24h, setPercentChange24h] = useState(0);
   const [account, setAccount] = useState(null);
   const history = useHistory();
-  const location = useLocation();
 
   const getAmbCourse = async () => {
     const priceInUsd = await ambMounthUSD(1);
@@ -96,27 +96,26 @@ export const Header = observer(() => {
       history.push('/');
     }
   };
+
   const menu = (
     <div className="menu">
-      <a target="_blank" href="https://ambrosus.io/">
-        <P size="xs-500">Main</P>
-      </a>
-      <a target="_blank" href="https://explorer.ambrosus.io/">
-        <P size="xs-500">Explorer</P>
-      </a>
-      <Link to="/staking">
-        <P
-          style={{
-            color: location.pathname === '/staking' ? '#4A38AE' : '#FFFFFF',
-          }}
-          size="xs-500"
-        >
-          Staking
-        </P>
-      </Link>
-      <a href="https://amb.to/" target="_blank">
-        <P size="xs-500">amb.to</P>
-      </a>
+      {menuLinks.map((link) =>
+        link.route ? (
+          <Link to={link.href} className="menu__bold">
+            <P
+              style={{ color: '#4A38AE', fontWeight: '600' }}
+              className="active"
+              size="xs-500"
+            >
+              {link.title}
+            </P>
+          </Link>
+        ) : (
+          <a target={link.taget && '_blank'} href={link.href}>
+            <P size="xs-500">{link.title}</P>
+          </a>
+        ),
+      )}
     </div>
   );
   return (

@@ -3,16 +3,18 @@ import { slide as Menu } from 'react-burger-menu';
 import { Link, useLocation } from 'react-router-dom';
 import P from '../P';
 import useLogIn from '../../utils/useLogIn';
+import { STAKING_PAGE } from '../../utils/constants';
 
 const Sidebar = (props) => {
   const location = useLocation();
+  const { pathname } = location;
   const { logIn } = useLogIn();
   return (
     <Menu {...props}>
       <a target="_blank" href="https://ambrosus.io/">
         <P
           style={{
-            color: location.pathname === '/staking' ? '#4A38AE' : '#FFFFFF',
+            color: pathname === STAKING_PAGE ? '#4A38AE' : '#FFFFFF',
           }}
           size="xs-500"
         >
@@ -25,7 +27,7 @@ const Sidebar = (props) => {
       <Link to="/staking" onClick={logIn}>
         <P
           style={{
-            color: location.pathname === '/staking' ? '#4A38AE' : '#9198BB',
+            color: pathname === STAKING_PAGE ? '#4A38AE' : '#9198BB',
           }}
           size="xs-500"
         >

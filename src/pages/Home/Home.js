@@ -7,7 +7,7 @@ import { providers, utils } from 'ethers';
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
 import StackItem from '../../components/StakingItem';
-import { ethereum } from '../../utils/constants';
+import { ethereum, MAIN_PAGE, menuLinks } from '../../utils/constants';
 
 import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
@@ -24,6 +24,7 @@ const Home = () => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [pools, setPools] = useState([]);
   const location = useLocation();
+  const { pathname } = location;
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       const provider = new providers.Web3Provider(ethereum);
@@ -89,24 +90,23 @@ const Home = () => {
   }, []);
   const menu = (
     <div className="menu">
-      <a target="_blank" href="https://ambrosus.io/">
-        <P size="xs-500">Main</P>
-      </a>
-      <a target="_blank" href="https://explorer.ambrosus.io/">
-        <P size="xs-500">Explorer</P>
-      </a>
-      <Link to="/staking" className="menu__bold">
-        <P
-          style={{ color: 'white', fontWeight: '500' }}
-          className="active"
-          size="xs-500"
-        >
-          Staking
-        </P>
-      </Link>
-      <a href="https://amb.to/" target="_blank">
-        <P size="xs-500">amb.to</P>
-      </a>
+      {menuLinks.map((link) =>
+        link.route ? (
+          <Link to={link.href} className="menu__bold">
+            <P
+              style={{ color: 'white', fontWeight: '500' }}
+              className="active"
+              size="xs-500"
+            >
+              {link.title}
+            </P>
+          </Link>
+        ) : (
+          <a target={link.taget && '_blank'} href={link.href}>
+            <P size="xs-500">{link.title}</P>
+          </a>
+        ),
+      )}
     </div>
   );
   const poolsData = pools.length > 0 && (
@@ -114,7 +114,7 @@ const Home = () => {
       <div
         className="staking__header Halvar_Breit "
         style={{
-          color: location.pathname === '/' && '#FFFFFF',
+          color: pathname === MAIN_PAGE && '#FFFFFF',
         }}
       >
         <div className="staking__header__clearfix-pool">Pool</div>
