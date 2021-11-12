@@ -14,7 +14,7 @@ import useCopyToClipboard from '../../../../utils/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
 
 const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
-  const { isCopied, onCopy } = useCopyToClipboard({ text:  account });
+  const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   return (
     <div className="info-block ">
       <div className="wrapper">
