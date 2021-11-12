@@ -115,7 +115,7 @@ const Withdraw = observer(
     return (
       <div className="deposit">
         <div className="deposit-heading">
-          <P size="s-400s">Amount</P>
+          <P size="s-400">Amount</P>
         </div>
         <div className="deposit-actions">
           <Input
