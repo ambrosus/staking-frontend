@@ -18,6 +18,7 @@ input[type=number] {
 
 .input input[type="number"],
 .input input[type="email"],
+.input input[type="text"],
 .input input[type="password"] {
   background: #F7F7FD;
   appearance: none;
@@ -37,6 +38,7 @@ input[type=number] {
 
 .input input[type="number"]:focus,
 .input input[type="email"]:focus,
+.input input[type="text"]:focus,
 .input input[type="password"]:focus {
   border: 2px solid $color-primary;
   color: $color-primary;
@@ -44,6 +46,7 @@ input[type=number] {
 
 .input input[type="number"]:focus + .iconLeft,
 .input input[type="email"]:focus + .iconLeft,
+.input input[type="text"]:focus + .iconLeft,
 .input input[type="password"]:focus + .iconLeft {
   opacity: 1;
 }
@@ -78,6 +81,7 @@ input[type=number] {
 
 .input-error input[type="number"]:focus,
 .input-error input[type="email"]:focus,
+.input-error input[type="text"]:focus,
 .input-error input[type="password"]:focus {
   border: 2px solid $red !important;
   color: $red !important;
@@ -85,6 +89,7 @@ input[type=number] {
 
 .input-error input[type="number"],
 .input-error input[type="email"],
+.input-error input[type="text"],
 .input-error input[type="password"] {
   border: 2px solid $red !important;
   color: $red;

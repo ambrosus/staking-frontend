@@ -9,7 +9,6 @@ import clearIcon from '../../assets/svg/clear.svg';
 import { checkValidNumberString } from '../../services/staking.wrapper';
 
 const Input = ({
-  type = 'number',
   onchange,
   iconLeft,
   error = false,
@@ -22,7 +21,7 @@ const Input = ({
     })}
   >
     <input
-      type={type}
+      type="text"
       placeholder={placeholder}
       value={value}
       onChange={(e) => {
@@ -55,7 +54,6 @@ const Input = ({
 );
 
 Input.propTypes = {
-  type: PropTypes.string,
   iconLeft: PropTypes.bool,
   onchange: PropTypes.func,
   placeholder: PropTypes.string,

@@ -123,7 +123,6 @@ const Withdraw = observer(
             iconLeft
             placeholder="0"
             value={inputValue}
-            type="number"
           />
           <div className="deposit-actions__buttons">
             <div>

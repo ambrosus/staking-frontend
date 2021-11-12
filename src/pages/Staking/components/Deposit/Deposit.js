@@ -210,7 +210,6 @@ const Deposit = observer(({ depositInfo }) => {
             error={!errorStakeSum}
             placeholder="1000 min"
             value={inputValue}
-            type="number"
           />
           <div className="deposit-actions__buttons">
             <div>
