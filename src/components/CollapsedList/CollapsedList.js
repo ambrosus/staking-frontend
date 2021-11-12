@@ -4,7 +4,17 @@ import collapsedReducer from '../../utils/collapsedReducer';
 import P from '../P';
 
 function CollapsedList() {
-  const initialState = [false, false, false, false, false, false, false, false];
+  const initialState = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, initialState);
   const toggleActive = (index) => {
@@ -130,8 +140,8 @@ function CollapsedList() {
       <Block
         title="Are there any staking fees?"
         lastElement
-        isOpen={state[7]}
-        onToggle={() => toggleActive(7)}
+        isOpen={state[8]}
+        onToggle={() => toggleActive(8)}
       >
         <div className="collapsed-content">
           <P style={{ color: '#9C9C9C' }} size="m-400">
