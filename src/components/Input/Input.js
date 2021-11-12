@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { ReactSVG } from 'react-svg';
@@ -15,45 +15,41 @@ const Input = ({
   error = false,
   placeholder = '',
   value = '',
-}) => {
-  const [inputError, setInputError] = useState(false);
-  return (
-    <div
-      className={classNames('input', {
-        'input-error': (value && error) || inputError,
-      })}
-    >
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.target.value === '' || checkValidNumberString(e.target.value)) {
-            onchange(e.target.value);
-          }
-          setInputError(inputError); // remove this!
-        }}
-        style={iconLeft && { padding: '0 50px' }}
-      />
-      {iconLeft && (
-        <span className="iconLeft">
-          <ReactSVG src={AMBsmallIcon} wrapper="span" />
-        </span>
-      )}
-      {value && (
-        <span
-          className="iconRight"
-          onClick={() => onchange('')}
-          role="presentation"
-        >
-          <img src={clearIcon} alt="clear" />
-        </span>
-      )}
-    </div>
-  );
-};
+}) => (
+  <div
+    className={classNames('input', {
+      'input-error': value && error,
+    })}
+  >
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.target.value === '' || checkValidNumberString(e.target.value)) {
+          onchange(e.target.value);
+        }
+      }}
+      style={iconLeft && { padding: '0 50px' }}
+    />
+    {iconLeft && (
+      <span className="iconLeft">
+        <ReactSVG src={AMBsmallIcon} wrapper="span" />
+      </span>
+    )}
+    {value && (
+      <span
+        className="iconRight"
+        onClick={() => onchange('')}
+        role="presentation"
+      >
+        <img src={clearIcon} alt="clear" />
+      </span>
+    )}
+  </div>
+);
 
 Input.propTypes = {
   type: PropTypes.string,
