@@ -30,10 +30,10 @@ const Input = ({
         onChange={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          if (e.target.value.length <= 20) {
+          if (e.target.value === '' || checkValidNumberString(e.target.value)) {
             onchange(e.target.value);
           }
-          setInputError(!checkValidNumberString(e.target.value));
+          setInputError(inputError); // remove this!
         }}
         style={iconLeft && { padding: '0 50px' }}
       />
