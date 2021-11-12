@@ -29,7 +29,7 @@ import appStore from '../../../../store/app.store';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
-  const [errorStakeSum, setErrorStakeSum] = useState(false);
+  const [inputError, setInputError] = useState(false);
   const [myStake, setMyStake] = useState(ZERO);
   const [balance, setBalance] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
@@ -104,7 +104,7 @@ const Deposit = observer(({ depositInfo }) => {
   };
 
   useEffect(() => {
-    setErrorStakeSum(
+    setInputError(
       checkValidNumberString(inputValue) &&
         parseFloatToBigNumber(inputValue).gte(THOUSAND),
     );
@@ -197,7 +197,7 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="deposit-heading">
           {' '}
           <P size="s-400">Amount</P>
-          {inputValue && !errorStakeSum && (
+          {inputValue && !inputError && (
             <P style={{ color: '#FF6767' }} size="s-400">
               &nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
             </P>
@@ -207,7 +207,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Input
             onchange={setInputValue}
             iconLeft
-            error={!errorStakeSum}
+            error={!inputError}
             placeholder="1000 min"
             value={inputValue}
           />
