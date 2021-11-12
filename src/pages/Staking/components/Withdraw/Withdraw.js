@@ -28,7 +28,10 @@ const Withdraw = observer(
     stake,
   }) => {
     const [inputValue, setInputValue] = useState('');
-    const [afterWithdraw, setAfterWithdraw] = useState(stake ? stake : ZERO);
+    const [afterWithdraw, setAfterWithdraw] = useState(
+      /* eslint-disable-next-line */
+      stake ? stake : ZERO,
+    );
     const [oneHundredPercent, setOneHundredPercent] = useState(false);
 
     const withdrawPayment = async () => {
