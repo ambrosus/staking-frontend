@@ -105,8 +105,8 @@ const Deposit = observer(({ depositInfo }) => {
 
   useEffect(() => {
     setInputError(
-      checkValidNumberString(inputValue) &&
-        parseFloatToBigNumber(inputValue).gte(THOUSAND),
+      !checkValidNumberString(inputValue) ||
+        parseFloatToBigNumber(inputValue).lt(THOUSAND),
     );
     refreshProc();
   }, [inputValue, appStore.stakingWrapper, appStore.refresh]);
@@ -197,7 +197,7 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="deposit-heading">
           {' '}
           <P size="s-400">Amount</P>
-          {inputValue && !inputError && (
+          {inputValue && inputError && (
             <P style={{ color: '#FF6767' }} size="s-400">
               &nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
             </P>
@@ -207,7 +207,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Input
             onchange={setInputValue}
             iconLeft
-            error={!inputError}
+            error={inputError}
             placeholder="1000 min"
             value={inputValue}
           />
