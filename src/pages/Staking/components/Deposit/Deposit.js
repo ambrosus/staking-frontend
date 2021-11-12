@@ -136,7 +136,7 @@ const Deposit = observer(({ depositInfo }) => {
           <div>
             {' '}
             <P style={{ textTransform: 'uppercase' }} size="l-700">
-              {APYOfPool && APYOfPool}%
+              {APYOfPool}%
             </P>
           </div>
         </div>

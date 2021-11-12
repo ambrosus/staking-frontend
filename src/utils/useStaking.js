@@ -98,7 +98,7 @@ const useStaking = () => {
             }
           });
           const poolsArr = await stakingWrapper.getPools();
-          setPools(poolsArr && poolsArr);
+          setPools(poolsArr);
           const poolsRewards = [];
           const myTotalStake = [];
           /* eslint-disable-next-line */
@@ -112,7 +112,7 @@ const useStaking = () => {
                 const rewardInAmb =
                   poolsRewards?.length > 0 &&
                   poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-                setTotalReward(rewardInAmb && rewardInAmb);
+                setTotalReward(rewardInAmb);
                 const esdSum =
                   appStore.tokenPrice &&
                   poolsRewards?.length > 0 &&
@@ -128,7 +128,7 @@ const useStaking = () => {
                     (acc, curr) => acc.add(curr),
                     BigNumber.from('0'),
                   );
-                  setTotalStaked(totalStakeSum && totalStakeSum);
+                  setTotalStaked(totalStakeSum);
                 }
               }
             }

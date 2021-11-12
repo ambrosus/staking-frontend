@@ -145,7 +145,7 @@ export const Header = observer(() => {
             <span
               style={{ color: percentChange24h > 0 ? '#1ACD8C' : '#9198BB' }}
             >
-              {percentChange24h && percentChange24h}%
+              {percentChange24h}%
             </span>
           </P>
         </div>

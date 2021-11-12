@@ -14,7 +14,7 @@ import useCopyToClipboard from '../../../../utils/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
 
 const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
-  const { isCopied, onCopy } = useCopyToClipboard({ text: account && account });
+  const { isCopied, onCopy } = useCopyToClipboard({ text:  account });
   return (
     <div className="info-block ">
       <div className="wrapper">
@@ -25,7 +25,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                 My Address
               </P>
               <P size="l-500" style={{ color: '#333333' }}>
-                {account && account}
+                {account}
                 <ReactSVG
                   data-tip
                   data-for="copy-state"
@@ -122,7 +122,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                   <DisplayValue
                     size="xl-400"
                     color="#1ACD8C"
-                    value={totalReward && totalReward}
+                    value={totalReward}
                   />
                   <P size="xl-400" style={{ color: '#4A38AE' }}>
                     &nbsp; / &nbsp;
@@ -130,7 +130,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                   <DisplayValue
                     size="xl-400"
                     color="#4A38AE"
-                    value={totalRewardInUsd && totalRewardInUsd}
+                    value={totalRewardInUsd}
                     symbol="$"
                   />
                 </div>

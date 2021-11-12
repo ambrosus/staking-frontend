@@ -70,7 +70,7 @@ const Home = () => {
       if (chainId) {
         setUserChainId(chainId);
       }
-      if (chainId && chainId !== +process.env.REACT_APP_CHAIN_ID) {
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
       }
     } else {

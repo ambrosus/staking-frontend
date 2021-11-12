@@ -14,12 +14,12 @@ const Button = ({
   return (
     <button
       type="button"
-      disabled={disabled && disabled}
-      onClick={onclick && onclick}
-      className={cssClasses && cssClasses}
-      style={buttonStyles && buttonStyles}
+      disabled={disabled}
+      onClick={onclick}
+      className={cssClasses}
+      style={buttonStyles}
     >
-      {children && children}
+      {children}
     </button>
   );
 };
