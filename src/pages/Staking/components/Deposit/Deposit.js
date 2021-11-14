@@ -1,5 +1,4 @@
 import { ReactSVG } from 'react-svg';
-import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
 import { providers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
@@ -28,7 +27,6 @@ import {
   formatThousand,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
-  tooltips,
   TWENTY_FIVE_PERCENT,
 } from '../../../../utils/constants';
 
@@ -204,9 +202,9 @@ const Deposit = observer(({ depositInfo }) => {
           {/*  src={infoIcon} */}
           {/*  wrapper="span" */}
           {/* /> */}
-          <ReactTooltip id="deposit" place="top" effect="solid">
-            {tooltips.deposit}
-          </ReactTooltip>
+          {/* <ReactTooltip id="deposit" place="top" effect="solid"> */}
+          {/*    {tooltips.deposit} */}
+          {/* </ReactTooltip> */}
         </>
         <P size="s-400">
           <span
@@ -341,7 +339,7 @@ const Deposit = observer(({ depositInfo }) => {
             </P>
 
             {/* TODO <ReactTooltip id="unstake" place="top" effect="solid"> */}
-            {tooltips.unstake}
+            {/* {tooltips.unstake} */}
             {/* </ReactTooltip> */}
           </div>
         </div>

@@ -1,10 +1,12 @@
-.loader{
+.loader {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  animation: show-loader .5s forwards;
 }
-.skeleton{
+
+.skeleton {
   -webkit-transition: top 1s ease-out 0.5s;
   max-width: 80px;
   min-width: 80px;
@@ -19,14 +21,29 @@
   height: 20px;
   transition: ease-in-out 1s;
 }
-.transition1s{
+
+.transition1s {
   transition: all 1s ease-in-out 2s;
 }
+
 @keyframes skeleton-animation {
   0% {
     background-position: -100px 0;
   }
   100% {
     background-position: calc(100px + 100%) 0;
+  }
+}
+
+@keyframes show-loader {
+  0% {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+  50% {
+    opacity: 1%;
+  }
+  100% {
+    transform: translateY(0);
   }
 }
