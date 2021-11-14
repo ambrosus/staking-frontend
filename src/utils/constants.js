@@ -10,8 +10,8 @@ export const STAKE = 'STAKE';
 export const COMING_SOON = 'COMING SOON';
 export const TWENTY_FIVE_PERCENT = '25%';
 export const FIFTY_PERCENT = '50%';
-export const SEVENTY_FIVE_PERCENT = '50%';
-export const ONE_HUNDRED_PERCENT = '50%';
+export const SEVENTY_FIVE_PERCENT = '75%';
+export const ONE_HUNDRED_PERCENT = '100%';
 
 export const menuLinks = [
   {

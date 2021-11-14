@@ -113,7 +113,7 @@ const StakingItem = ({
     }
   };
   const stakeBtnHandler = () => {
-    if (expand) {
+    if (expand !== false) {
       setActiveExpand(index);
       dispatch({ type: 'toggle', index });
       if (index === activeExpand) {

@@ -101,7 +101,7 @@ export const Header = observer(() => {
     <div className="menu">
       {menuLinks.map((link) =>
         link.route ? (
-          <Link to={link.href} className="menu__bold">
+          <Link to={link.href} className="menu__bold" key={link.href}>
             <P
               style={{ color: '#4A38AE', fontWeight: '600' }}
               className="active"
@@ -111,7 +111,7 @@ export const Header = observer(() => {
             </P>
           </Link>
         ) : (
-          <a target={link.taget && '_blank'} href={link.href}>
+          <a target={link.taget && '_blank'} href={link.href} key={link.href}>
             <P size="xs-500">{link.title}</P>
           </a>
         ),

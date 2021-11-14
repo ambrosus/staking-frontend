@@ -16,7 +16,14 @@ import {
   parseFloatToBigNumber,
   ZERO,
 } from '../../../../services/staking.wrapper';
-import { ethereum, formatThousand } from '../../../../utils/constants';
+import {
+  ethereum,
+  FIFTY_PERCENT,
+  formatThousand,
+  ONE_HUNDRED_PERCENT,
+  SEVENTY_FIVE_PERCENT,
+  TWENTY_FIVE_PERCENT,
+} from '../../../../utils/constants';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(
@@ -32,7 +39,6 @@ const Withdraw = observer(
       /* eslint-disable-next-line */
       stake ? stake : ZERO,
     );
-    const [oneHundredPercent, setOneHundredPercent] = useState(false);
 
     const withdrawPayment = async () => {
       if (!checkValidNumberString(inputValue)) {
@@ -51,7 +57,8 @@ const Withdraw = observer(
           const decimal = parseFloatToBigNumber(inputValue)
             .mul(FIXEDPOINT)
             .div(tokenPriceAMB);
-          const value = oneHundredPercent ? myStakeInTokens : decimal;
+          const value =
+            formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
           const overrides = {
             gasPrice: utils.parseUnits('20', 'gwei'),
             gasLimit: 1000000,
@@ -98,22 +105,16 @@ const Withdraw = observer(
       return true;
     };
 
-    const calculateSumAfterWithdraw = () => {
-      if (oneHundredPercent) {
-        setOneHundredPercent(false);
-      }
-      return (
-        stake &&
-        checkValidNumberString(inputValue) &&
-        setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)))
-      );
-    };
+    const calculateSumAfterWithdraw = () =>
+      stake &&
+      checkValidNumberString(inputValue) &&
+      setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)));
     useEffect(() => {
       calculateSumAfterWithdraw();
       return () => {
         calculateSumAfterWithdraw();
       };
-    }, [inputValue, stake, oneHundredPercent]);
+    }, [inputValue, stake]);
 
     return (
       <div className="deposit">
@@ -135,10 +136,10 @@ const Withdraw = observer(
                 type="outline"
                 disabled={stake && stake.eq(0)}
                 onclick={() =>
-                  stake && setInputValue(formatRounded(stake.div(4), 0))
+                  stake && setInputValue(formatRounded(stake.div(4), 2))
                 }
               >
-                <span className="percent-btn">25%</span>
+                <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>
               </Button>
             </div>
             <div>
@@ -148,10 +149,10 @@ const Withdraw = observer(
                 type="outline"
                 disabled={stake && stake.eq(0)}
                 onclick={() =>
-                  stake && setInputValue(formatRounded(stake.div(2), 0))
+                  stake && setInputValue(formatRounded(stake.div(2), 2))
                 }
               >
-                <span className="percent-btn">50%</span>
+                <span className="percent-btn">{FIFTY_PERCENT}</span>
               </Button>
             </div>
             <div>
@@ -161,10 +162,10 @@ const Withdraw = observer(
                 type="outline"
                 disabled={stake && stake.eq(0)}
                 onclick={() =>
-                  stake && setInputValue(formatRounded(stake.mul(3).div(4), 0))
+                  stake && setInputValue(formatRounded(stake.mul(3).div(4), 2))
                 }
               >
-                <span className="percent-btn">75%</span>
+                <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>
               </Button>
             </div>
             <div>
@@ -173,15 +174,9 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 type="outline"
                 disabled={stake && stake.eq(0)}
-                onclick={() => {
-                  if (stake) {
-                    setInputValue(formatRounded(stake, 0));
-                  }
-                  setOneHundredPercent(true);
-                  return false;
-                }}
+                onclick={() => setInputValue(stake && formatRounded(stake, 2))}
               >
-                <span className="percent-btn">100%</span>
+                <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>
               </Button>
             </div>
           </div>

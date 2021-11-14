@@ -247,7 +247,7 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatRounded(balance.div(4), 0))}
+                onclick={() => setInputValue(formatRounded(balance.div(4), 2))}
               >
                 <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>{' '}
               </Button>
@@ -258,7 +258,7 @@ const Deposit = observer(({ depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatRounded(balance.div(2), 0))}
+                onclick={() => setInputValue(formatRounded(balance.div(2), 2))}
               >
                 <span className="percent-btn">{FIFTY_PERCENT}</span>{' '}
               </Button>
@@ -270,7 +270,7 @@ const Deposit = observer(({ depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(formatRounded(balance.mul(3).div(4), 0))
+                  setInputValue(formatRounded(balance.mul(3).div(4), 2))
                 }
               >
                 <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>{' '}
