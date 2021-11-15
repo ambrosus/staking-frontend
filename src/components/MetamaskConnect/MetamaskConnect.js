@@ -9,7 +9,7 @@ import { CONNECT_TEXT } from '../../utils/constants';
 import appStore from '../../store/app.store';
 
 import walletIcon from '../../assets/svg/wallet.svg';
-import useLogIn from '../../utils/useLogIn';
+import useLogIn from '../../hooks/useLogIn';
 
 export const MetamaskConnect = observer(() => {
   const history = useHistory();

@@ -6,25 +6,25 @@ import { observer } from 'mobx-react-lite';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
-import useModal from '../../../../utils/useModal';
+import useModal from '../../../../hooks/useModal';
 import Modal from '../../../../components/Modal';
 import Withdraw from '../Withdraw';
-import notificationMassage from '../../../../utils/notificationMassage';
 import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
-  ZERO,
-  formatRounded,
-  MINSHOWSTAKE,
-  THOUSAND,
-  parseFloatToBigNumber,
   checkValidNumberString,
   FIXEDPOINT,
+  formatRounded,
+  MINSHOWSTAKE,
+  parseFloatToBigNumber,
+  THOUSAND,
+  ZERO,
 } from '../../../../services/staking.wrapper';
 import {
   ethereum,
   FIFTY_PERCENT,
   formatThousand,
+  notificationMassage,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,

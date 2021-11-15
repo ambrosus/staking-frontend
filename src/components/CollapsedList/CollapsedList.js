@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Block from './Block';
-import collapsedReducer from '../../utils/collapsedReducer';
 import P from '../P';
+import { collapsedReducer } from '../../utils/constants';
 
 function CollapsedList() {
   const initialState = [

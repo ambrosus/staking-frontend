@@ -11,7 +11,7 @@ import P from '../P';
 import Deposit from '../../pages/Staking/components/Deposit';
 import appStore from '../../store/app.store';
 import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
-import useLogIn from '../../utils/useLogIn';
+import useLogIn from '../../hooks/useLogIn';
 import DisplayValue from '../DisplayValue';
 
 import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';

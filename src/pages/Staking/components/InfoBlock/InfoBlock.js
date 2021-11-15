@@ -10,7 +10,7 @@ import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
-import useCopyToClipboard from '../../../../utils/useCopyToClipboard';
+import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
 import { tooltips } from '../../../../utils/constants';
 

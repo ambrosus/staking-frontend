@@ -31,7 +31,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "lint": "eslint ./ --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"{,!(node_modules)/**/}*.js\"",

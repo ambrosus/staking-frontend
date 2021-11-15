@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 export const copyToClipboard = (text) => {
   const el = document.createElement('textarea');
   el.value = text;
