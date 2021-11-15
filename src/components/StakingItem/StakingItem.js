@@ -170,7 +170,7 @@ const StakingItem = ({
             className="item--header__flex__my-stake"
           >
             <div style={{ width: 150 }}>
-              <DisplayValue value={myStake && formatRounded(myStake)} />
+              <DisplayValue value={myStake && formatRounded(myStake, 2)} />
             </div>
           </div>
         )}
@@ -178,7 +178,7 @@ const StakingItem = ({
           <div style={{ width: 150 }}>
             <DisplayValue
               color={pathname === MAIN_PAGE && '#FFFFFF'}
-              value={totalStake && formatRounded(totalStake)}
+              value={totalStake && formatRounded(totalStake, 2)}
             />
           </div>
         </div>
