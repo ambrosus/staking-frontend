@@ -20,7 +20,13 @@
   height: 20px;
   transition: ease-in-out 1s;
 }
-
+.skeleton-pool{
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
 .transitions {
   transition: all 1s ease-in-out 2s;
 }

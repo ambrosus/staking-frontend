@@ -14,7 +14,11 @@ import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAle
 import useLogIn from '../../hooks/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
+import {
+  formatRounded,
+  MINSHOWSTAKE,
+  StakingWrapper,
+} from '../../services/staking.wrapper';
 import {
   ethereum,
   HIDE,
@@ -26,6 +30,8 @@ import {
 import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
+import ComingSoonPool from '../ComingSoonPool';
+// import { SkeletonPool } from '../Loader';
 
 const StakingItem = ({
   expand = false,
@@ -145,6 +151,11 @@ const StakingItem = ({
         <div
           style={{
             marginRight: pathname === STAKING_PAGE ? 10 : '',
+            color:
+              pathname === MAIN_PAGE &&
+              !myStake &&
+              !poolInfo.active &&
+              'rgb(191 201 224)',
           }}
           className="item--header__flex__pool"
         >
@@ -155,7 +166,9 @@ const StakingItem = ({
           />
           <P
             style={{
-              color: pathname === MAIN_PAGE && '#FFFFFF',
+              color: poolInfo.active
+                ? pathname === MAIN_PAGE && '#FFF'
+                : 'rgb(191, 201, 224)',
             }}
             size="l-500"
           >
@@ -170,20 +183,39 @@ const StakingItem = ({
             className="item--header__flex__my-stake"
           >
             <div style={{ width: 150 }}>
-              <DisplayValue value={myStake && formatRounded(myStake)} />
+              <DisplayValue
+                color={
+                  poolInfo.active
+                    ? pathname === MAIN_PAGE && '#FFF'
+                    : 'rgb(191, 201, 224)'
+                }
+                value={myStake && formatRounded(myStake)}
+              />
             </div>
           </div>
         )}
         <div className="item--header__flex__vault-assets">
           <div style={{ width: 150 }}>
             <DisplayValue
-              color={pathname === MAIN_PAGE && '#FFFFFF'}
+              color={
+                poolInfo.active
+                  ? pathname === MAIN_PAGE && '#FFF'
+                  : 'rgb(191, 201, 224)'
+              }
               value={totalStake && formatRounded(totalStake)}
             />
           </div>
         </div>
         <div className="item--header__flex__apy">
-          <P style={{ textTransform: 'uppercase' }} size="l-700">
+          <P
+            style={{
+              textTransform: 'uppercase',
+              color: poolInfo.active
+                ? pathname === MAIN_PAGE && '#FFF'
+                : 'rgb(191, 201, 224)',
+            }}
+            size="l-700"
+          >
             {APYOfPool ? `${APYOfPool}%` : <span className="skeleton" />}
           </P>
         </div>
@@ -199,13 +231,18 @@ const StakingItem = ({
       </Button>
     </div>
   );
-  return (
+  return totalStake && totalStake.gte(MINSHOWSTAKE) ? (
     <div
       role="presentation"
       className="stack-item"
       style={{
         background: pathname === MAIN_PAGE && '#262626',
         boxShadow: pathname === MAIN_PAGE && '0px 6px 10px rgba(0, 0, 0, 0.25)',
+        color:
+          pathname === MAIN_PAGE &&
+          !myStake &&
+          !poolInfo.active &&
+          'rgb(191 201 224)',
       }}
     >
       <StakingItemBody>
@@ -228,6 +265,8 @@ const StakingItem = ({
         )}
       </StakingItemBody>
     </div>
+  ) : (
+    <ComingSoonPool loading={!!myStake} poolInfo={poolInfo} lazy />
   );
 };
 StakingItem.propTypes = {

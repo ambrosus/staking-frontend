@@ -88,7 +88,7 @@ const useStaking = () => {
       if (provider !== undefined && signer !== undefined) {
         const { chainId } = provider && provider.getNetwork();
         setUserChainId(chainId);
-        if (storageService.get('auth') === true) {
+        if (storageService.get('auth')) {
           const stakingWrapper = new StakingWrapper(signer);
           provider.listAccounts().then((accounts) => {
             const defaultAccount = accounts[0];
@@ -101,33 +101,31 @@ const useStaking = () => {
           const poolsRewards = [];
           const myTotalStake = [];
           poolsArr.map(async (pool) => {
-            if (pool.active) {
-              const { estDR, myStakeInAMB } = await stakingWrapper.getPoolData(
-                pool.index,
+            const { estDR, myStakeInAMB } = await stakingWrapper.getPoolData(
+              pool.index,
+            );
+            if (estDR) {
+              poolsRewards.push(estDR);
+              const rewardInAmb =
+                poolsRewards?.length > 0 &&
+                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+              setTotalReward(rewardInAmb);
+              const esdSum =
+                appStore.tokenPrice &&
+                poolsRewards?.length > 0 &&
+                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+              setTotalRewardInUsd(
+                esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
               );
-              if (estDR) {
-                poolsRewards.push(estDR);
-                const rewardInAmb =
-                  poolsRewards?.length > 0 &&
-                  poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-                setTotalReward(rewardInAmb);
-                const esdSum =
-                  appStore.tokenPrice &&
-                  poolsRewards?.length > 0 &&
-                  poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-                setTotalRewardInUsd(
-                  esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
+            }
+            if (myStakeInAMB) {
+              myTotalStake.push(myStakeInAMB);
+              if (myTotalStake?.length > 0) {
+                const totalStakeSum = myTotalStake.reduceRight(
+                  (acc, curr) => acc.add(curr),
+                  BigNumber.from('0'),
                 );
-              }
-              if (myStakeInAMB) {
-                myTotalStake.push(myStakeInAMB);
-                if (myTotalStake?.length > 0) {
-                  const totalStakeSum = myTotalStake.reduceRight(
-                    (acc, curr) => acc.add(curr),
-                    BigNumber.from('0'),
-                  );
-                  setTotalStaked(totalStakeSum);
-                }
+                setTotalStaked(totalStakeSum);
               }
             }
           });

@@ -142,6 +142,7 @@ const Home = () => {
                 (coming) =>
                   !coming.active && (
                     <ComingSoonPool
+                      loading
                       key={coming.contractName}
                       poolInfo={coming}
                       lazy
@@ -191,7 +192,9 @@ const Home = () => {
         </div>
         <div className="staking">
           {poolsData}
-          <div className="staking__loader">{!poolsData && <Loader />}</div>
+          <div className="staking__loader">
+            {!poolsData && <Loader types="spokes" />}
+          </div>
         </div>
         <div className="faq">
           <CollapsedList />

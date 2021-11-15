@@ -1,2 +1,2 @@
-import { SkeletonString, Loader } from './LoadComponent';
-export { SkeletonString, Loader };
+import { SkeletonString, Loader, SkeletonPool } from './LoadComponent';
+export { SkeletonString, Loader, SkeletonPool };

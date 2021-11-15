@@ -142,7 +142,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
             </div>
           </>
         ) : (
-          <Loader />
+          <Loader types="spokes" />
         )}
       </div>
     </div>

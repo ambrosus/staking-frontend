@@ -286,13 +286,16 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
+              !depositInfo.active ||
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
               parseFloatToBigNumber(inputValue).gt(balance)
             }
             onclick={checkoutPayment}
           >
-            <P size="m-500">Stake</P>
+            <P size="m-500">
+              {!depositInfo.active ? 'Pool is no active' : ' Stake'}
+            </P>
           </Button>
         </div>
         <div className="space" style={{ marginBottom: 5 }} />

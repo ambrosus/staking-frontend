@@ -8,8 +8,9 @@ import P from '../P';
 import { COMING_SOON, MAIN_PAGE, STAKING_PAGE } from '../../utils/constants';
 
 import avatarIcon from '../../assets/svg/coming_soon_pool_icon.svg';
+import { Loader } from '../Loader';
 
-export const ComingSoonPool = ({ poolInfo }) => {
+export const ComingSoonPool = ({ poolInfo, loading }) => {
   const location = useLocation();
   const { pathname } = location;
   const stackHeader = (
@@ -43,7 +44,7 @@ export const ComingSoonPool = ({ poolInfo }) => {
       <div className="item--header--coming-soon-btn">
         <Button disabled priority="secondary">
           <P style={{ textTransform: 'uppercase' }} size="m-500">
-            {COMING_SOON}
+            {!loading ? <Loader types="cubes" /> : COMING_SOON}
           </P>
         </Button>
       </div>
@@ -64,5 +65,6 @@ export const ComingSoonPool = ({ poolInfo }) => {
 };
 ComingSoonPool.propTypes = {
   poolInfo: PropTypes.object,
+  loading: PropTypes.bool,
 };
 export default ComingSoonPool;
