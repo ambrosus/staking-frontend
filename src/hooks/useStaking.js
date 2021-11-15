@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, providers, utils } from 'ethers';
 import { StakingWrapper } from '../services/staking.wrapper';
-import { collapsedReducer, ethereum } from '../utils/constants';
+import { ethereum } from '../utils/constants';
+import { collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
 import storageService from '../services/storage.service';
 
@@ -89,7 +90,6 @@ const useStaking = () => {
         setUserChainId(chainId);
         if (storageService.get('auth') === true) {
           const stakingWrapper = new StakingWrapper(signer);
-          /* eslint-disable-next-line */
           provider.listAccounts().then((accounts) => {
             const defaultAccount = accounts[0];
             if (defaultAccount) {
@@ -100,12 +100,11 @@ const useStaking = () => {
           setPools(poolsArr);
           const poolsRewards = [];
           const myTotalStake = [];
-          /* eslint-disable-next-line */
-          for (const pool of poolsArr) {
+          poolsArr.map(async (pool) => {
             if (pool.active) {
-              const { estDR, myStakeInAMB } =
-                /* eslint-disable-next-line */
-                await stakingWrapper.getPoolData(pool.index);
+              const { estDR, myStakeInAMB } = await stakingWrapper.getPoolData(
+                pool.index,
+              );
               if (estDR) {
                 poolsRewards.push(estDR);
                 const rewardInAmb =
@@ -131,7 +130,7 @@ const useStaking = () => {
                 }
               }
             }
-          }
+          });
         }
       }
     }

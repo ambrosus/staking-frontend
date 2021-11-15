@@ -27,7 +27,6 @@
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
-    line-height: 17px;
     color: #9198BB;
     white-space: nowrap;
     @media (max-width: 600px) {
@@ -54,7 +53,6 @@
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
-      line-height: 16px;
       white-space: nowrap;
       display: flex;
       align-items: flex-end;
@@ -230,7 +228,6 @@
         font-style: normal !important;
         font-weight: normal !important;
         font-size: 16px !important;
-        line-height: 24px !important;
         /* or 150% */
 
 
@@ -269,7 +266,7 @@
 
   .deposit-heading {
     width: 100%;
-    padding: 10px;
+    padding: 15px 10px ;
     display: flex;
     flex-direction: row;
   }
@@ -292,7 +289,6 @@
             font-style: normal !important;
             font-weight: normal !important;
             font-size: 12px !important;
-            line-height: 14px !important;
             display: flex !important;
             align-items: center !important;
             text-align: center !important;
@@ -486,7 +482,6 @@
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  line-height: 14px;
   display: flex;
   align-items: center;
   text-align: center;
