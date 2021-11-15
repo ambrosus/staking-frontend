@@ -18,12 +18,11 @@ import {
 import {
   ethereum,
   FIFTY_PERCENT,
-  formatThousand,
-  notificationMassage,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
 } from '../../../../utils/constants';
+import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(
@@ -35,10 +34,7 @@ const Withdraw = observer(
     stake,
   }) => {
     const [inputValue, setInputValue] = useState('');
-    const [afterWithdraw, setAfterWithdraw] = useState(
-      /* eslint-disable-next-line */
-      stake ? stake : ZERO,
-    );
+    const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
 
     const withdrawPayment = async () => {
       if (!checkValidNumberString(inputValue)) {

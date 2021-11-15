@@ -15,13 +15,18 @@
   background-size: 80px 100%;
   background-repeat: no-repeat;
   display: inline-block;
-  line-height: 1;
   border: none;
   animation: skeleton-animation 1.5s ease-in-out infinite;
   height: 20px;
   transition: ease-in-out 1s;
 }
-
+.skeleton-pool{
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
 .transitions {
   transition: all 1s ease-in-out 2s;
 }

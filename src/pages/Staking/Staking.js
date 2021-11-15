@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { cssTransition, ToastContainer } from 'react-toastify';
 import StakingItem from '../../components/StakingItem';
 import appStore from '../../store/app.store';
-import ComingSoonPool from '../../components/ComingSoonPool';
 
 import Header from '../../components/layouts/Header';
 import Footer from '../../components/layouts/Footer';
@@ -52,34 +51,21 @@ const Staking = observer(() => {
             <div style={{ marginRight: -45 }} />
           </div>
           <RenderItems>
-            {pools.map(
-              (item, index) =>
-                item.active && (
-                  <StakingItem
-                    dispatch={dispatch}
-                    activeExpand={activeExpand}
-                    setActiveExpand={setActiveExpand}
-                    key={item.contractName}
-                    index={index}
-                    state={state}
-                    expand
-                    hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                    comingSoon={!item?.abi}
-                    lazy
-                    poolInfo={item}
-                  />
-                ),
-            )}
-            {pools.map(
-              (item) =>
-                !item.active && (
-                  <ComingSoonPool
-                    key={item.contractName}
-                    poolInfo={item}
-                    lazy
-                  />
-                ),
-            )}
+            {pools.sort().map((item, index) => (
+              <StakingItem
+                dispatch={dispatch}
+                activeExpand={activeExpand}
+                setActiveExpand={setActiveExpand}
+                key={item.contractName}
+                index={index}
+                state={state}
+                expand
+                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                comingSoon={!item?.abi}
+                lazy
+                poolInfo={item}
+              />
+            ))}
           </RenderItems>
         </>
       )}

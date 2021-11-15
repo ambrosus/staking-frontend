@@ -8,12 +8,8 @@ import { providers } from 'ethers';
 import P from '../../P';
 import storageService from '../../../services/storage.service';
 import appStore from '../../../store/app.store';
-import {
-  ambMounthUSD,
-  ethereum,
-  menuLinks,
-  priceInPercent24h,
-} from '../../../utils/constants';
+import { ethereum, menuLinks } from '../../../utils/constants';
+import { ambMountUSD, priceInPercent24h } from '../../../API/API';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
@@ -26,7 +22,7 @@ export const Header = observer(() => {
   const history = useHistory();
 
   const getAmbCourse = async () => {
-    const priceInUsd = await ambMounthUSD(1);
+    const priceInUsd = await ambMountUSD(1);
     if (priceInUsd) {
       setUsdPrice(priceInUsd);
       appStore.setTokenPrice(priceInUsd);

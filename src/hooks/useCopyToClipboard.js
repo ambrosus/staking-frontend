@@ -32,10 +32,7 @@ const useCopyToClipboard = ({ text, successDuration }) => {
     }
     return () => timer !== undefined && clearTimeout(timer);
   }, [isCopied, successDuration]);
-  /* eslint-disable-next-line */
-  useEffect(() => {
-    return () => setIsCopied(false);
-  }, [text]);
+  useEffect(() => () => setIsCopied(false), [text]);
 
   return { isCopied, onCopy: handleCopyToClipboard };
 };

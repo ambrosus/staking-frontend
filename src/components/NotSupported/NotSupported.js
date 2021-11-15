@@ -5,14 +5,14 @@ import P from '../P';
 const NotSupported = ({ onclick }) => {
   const host = window.location.hostname;
   const network =
-    host === 'localhost' || host === 'staking.ambrosus-test.io'
+    host.includes('local') || host.includes('dev') || host.includes('test')
       ? 'Testnet'
       : 'Mainnet';
   return (
     <div className="not-supported">
       <P>
         {' '}
-        Ambrosus is not supported on this network. Please&nbsp;
+        Ambrosus is not supported on this network. Please &nbsp;
         <span
           className="switch-text"
           role="presentation"

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, providers, utils } from 'ethers';
 import { StakingWrapper } from '../services/staking.wrapper';
-import { collapsedReducer, ethereum } from '../utils/constants';
+import { ethereum } from '../utils/constants';
+import { collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
 import storageService from '../services/storage.service';
 
@@ -87,9 +88,8 @@ const useStaking = () => {
       if (provider !== undefined && signer !== undefined) {
         const { chainId } = provider && provider.getNetwork();
         setUserChainId(chainId);
-        if (storageService.get('auth') === true) {
+        if (storageService.get('auth')) {
           const stakingWrapper = new StakingWrapper(signer);
-          /* eslint-disable-next-line */
           provider.listAccounts().then((accounts) => {
             const defaultAccount = accounts[0];
             if (defaultAccount) {
@@ -100,38 +100,35 @@ const useStaking = () => {
           setPools(poolsArr);
           const poolsRewards = [];
           const myTotalStake = [];
-          /* eslint-disable-next-line */
-          for (const pool of poolsArr) {
-            if (pool.active) {
-              const { estDR, myStakeInAMB } =
-                /* eslint-disable-next-line */
-                await stakingWrapper.getPoolData(pool.index);
-              if (estDR) {
-                poolsRewards.push(estDR);
-                const rewardInAmb =
-                  poolsRewards?.length > 0 &&
-                  poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-                setTotalReward(rewardInAmb);
-                const esdSum =
-                  appStore.tokenPrice &&
-                  poolsRewards?.length > 0 &&
-                  poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-                setTotalRewardInUsd(
-                  esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
+          poolsArr.map(async (pool) => {
+            const { estDR, myStakeInAMB } = await stakingWrapper.getPoolData(
+              pool.index,
+            );
+            if (estDR) {
+              poolsRewards.push(estDR);
+              const rewardInAmb =
+                poolsRewards?.length > 0 &&
+                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+              setTotalReward(rewardInAmb);
+              const esdSum =
+                appStore.tokenPrice &&
+                poolsRewards?.length > 0 &&
+                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+              setTotalRewardInUsd(
+                esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
+              );
+            }
+            if (myStakeInAMB) {
+              myTotalStake.push(myStakeInAMB);
+              if (myTotalStake?.length > 0) {
+                const totalStakeSum = myTotalStake.reduceRight(
+                  (acc, curr) => acc.add(curr),
+                  BigNumber.from('0'),
                 );
-              }
-              if (myStakeInAMB) {
-                myTotalStake.push(myStakeInAMB);
-                if (myTotalStake?.length > 0) {
-                  const totalStakeSum = myTotalStake.reduceRight(
-                    (acc, curr) => acc.add(curr),
-                    BigNumber.from('0'),
-                  );
-                  setTotalStaked(totalStakeSum);
-                }
+                setTotalStaked(totalStakeSum);
               }
             }
-          }
+          });
         }
       }
     }

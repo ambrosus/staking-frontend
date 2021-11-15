@@ -23,12 +23,11 @@ import {
 import {
   ethereum,
   FIFTY_PERCENT,
-  formatThousand,
-  notificationMassage,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
 } from '../../../../utils/constants';
+import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 
@@ -163,7 +162,7 @@ const Deposit = observer(({ depositInfo }) => {
               Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
           </P>
-          <P size="s-400" style={{ fontWeight: 500 }}>
+          <P size="s-400" style={{ fontWeight: 500, fontSize: 12 }}>
             <span
               style={{
                 fontFamily: ' Proxima Nova',
@@ -200,6 +199,7 @@ const Deposit = observer(({ depositInfo }) => {
           <span
             style={{
               fontWeight: 600,
+              fontSize: 14,
               fontFamily: ' Proxima Nova',
               color: '#333333',
             }}
@@ -216,7 +216,7 @@ const Deposit = observer(({ depositInfo }) => {
           <span style={{ fontSeight: 'normal', fontSize: 14 }}>Amount</span>
           {inputValue && inputError && (
             <span
-              style={{ fontSeight: 'normal', fontSize: 14, color: '#FF6767' }}
+              style={{ fontSeight: 'normal', fontSize: 12, color: '#FF6767' }}
             >
               &nbsp;&nbsp;&nbsp;&nbsp; Min amount for stake = 1000 AMB
             </span>
@@ -286,13 +286,16 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
+              !depositInfo.active ||
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
               parseFloatToBigNumber(inputValue).gt(balance)
             }
             onclick={checkoutPayment}
           >
-            <P size="m-500">Stake</P>
+            <P size="m-500">
+              {!depositInfo.active ? 'Pool is no active' : ' Stake'}
+            </P>
           </Button>
         </div>
         <div className="space" style={{ marginBottom: 5 }} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { formatThousand } from '../../utils/constants';
+import { formatThousand } from '../../utils/helpers';
 
 import P from '../P';
 
