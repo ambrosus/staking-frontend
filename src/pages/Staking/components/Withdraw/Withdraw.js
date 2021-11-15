@@ -7,7 +7,6 @@ import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
 import ButtonGroup from '../../../../components/ButtonGroup';
-import notificationMassage from '../../../../utils/notificationMassage';
 
 import {
   checkValidNumberString,
@@ -20,6 +19,7 @@ import {
   ethereum,
   FIFTY_PERCENT,
   formatThousand,
+  notificationMassage,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,

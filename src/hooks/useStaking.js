@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { BigNumber, providers, utils } from 'ethers';
-import { StakingWrapper } from '../services/staking.wrapper';
-import { ethereum } from './constants';
+import React, {useEffect, useState} from 'react';
+import {BigNumber, providers, utils} from 'ethers';
+import {StakingWrapper} from '../services/staking.wrapper';
+import {collapsedReducer, ethereum} from '../utils/constants';
 import appStore from '../store/app.store';
-import collapsedReducer from './collapsedReducer';
 import storageService from '../services/storage.service';
+
 const useStaking = () => {
   const [account, setAccount] = useState(null);
   const [userChainId, setUserChainId] = useState(null);

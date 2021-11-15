@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import React, {useEffect, useState} from 'react';
+import {useHistory} from 'react-router';
 import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg';
-import { providers, utils } from 'ethers';
-import { store as alertStore } from 'react-notifications-component';
+import {ReactSVG} from 'react-svg';
+import {providers, utils} from 'ethers';
+import {store as alertStore} from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
 
 import Button from '../Button';
@@ -11,28 +11,21 @@ import P from '../P';
 import Deposit from '../../pages/Staking/components/Deposit';
 import appStore from '../../store/app.store';
 import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
-import useLogIn from '../../utils/useLogIn';
+import useLogIn from '../../hooks/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
-import {
-  ethereum,
-  HIDE,
-  MAIN_PAGE,
-  SHOW,
-  STAKE,
-  STAKING_PAGE,
-} from '../../utils/constants';
+import {formatRounded, StakingWrapper} from '../../services/staking.wrapper';
+import {ethereum, HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE,} from '../../utils/constants';
 import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
 
 const StakingItem = ({
-  expand = false,
-  activeExpand,
-  setActiveExpand,
-  state = 0,
-  hasChain,
+                       expand = false,
+                       activeExpand,
+                       setActiveExpand,
+                       state = 0,
+                       hasChain,
   dispatch,
   index = -1,
   poolInfo,

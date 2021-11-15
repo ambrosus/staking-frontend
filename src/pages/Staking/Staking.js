@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { ToastContainer, cssTransition } from 'react-toastify';
+import {observer} from 'mobx-react-lite';
+import {cssTransition, ToastContainer} from 'react-toastify';
 import StakingItem from '../../components/StakingItem';
 import appStore from '../../store/app.store';
 import ComingSoonPool from '../../components/ComingSoonPool';
@@ -8,7 +8,7 @@ import ComingSoonPool from '../../components/ComingSoonPool';
 import Header from '../../components/layouts/Header';
 import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
-import useStaking from '../../utils/useStaking';
+import useStaking from '../../hooks/useStaking';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/StakingItem/RenderItems';
 

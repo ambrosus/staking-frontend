@@ -11,17 +11,16 @@ import { ethereum } from './utils/constants';
 const Main = observer(() => {
   useEffect(() => {
     if (ethereum) {
-      ethereum.on('accountsChanged', function () {
-        return window.location.reload();
-      });
+      ethereum.on('accountsChanged', () => window.location.reload());
       ethereum.on('chainChanged', () => window.location.reload());
     }
-    if (!storageService.get('auth')) {
-      appStore.setAuth(false);
-    } else {
+    if (storageService.get('auth')) {
       appStore.setAuth(true);
     }
-    return <div>Loading...</div>;
+    return () => {
+      ethereum.on('accountsChanged', () => null);
+      ethereum.on('chainChanged', () => null);
+    };
   }, [appStore.auth, storageService, ethereum]);
 
   return <RenderRoutes />;

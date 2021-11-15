@@ -5,7 +5,7 @@ import { providers } from 'ethers';
 import storageService from '../services/storage.service';
 import appStore from '../store/app.store';
 import InstallMetamaskAlert from '../pages/Home/components/InstallMetamaskAlert';
-import { ethereum } from './constants';
+import { ethereum } from '../utils/constants';
 
 const useLogIn = () => {
   const history = useHistory();
