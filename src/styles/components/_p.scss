@@ -73,7 +73,7 @@ p {
 
 .m-400 {
   font-style: normal;
-  font-weight: normal;
+  font-weight: 300;
   font-size: 16px;
   line-height: 19px;
   display: flex;
@@ -95,7 +95,7 @@ p {
 
 .l-500 {
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 18px;
   line-height: 21px;
   display: flex;
@@ -132,14 +132,13 @@ p {
 }
 
 .xl-400 {
+  font-family: Halvar Breitschrift, sans-serif;
   font-style: normal;
-  font-weight: 500;
-  font-size: 21px;
-  line-height: 25px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
   display: flex;
   align-items: center;
-  text-align: center;
-  font-feature-settings: 'liga' off;
 }
 
 .xxl-500 {

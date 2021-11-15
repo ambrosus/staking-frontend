@@ -25,7 +25,10 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
               <P size="m-400" style={{ paddingBottom: 5 }}>
                 My Address
               </P>
-              <P size="l-500" style={{ color: '#333333' }}>
+              <P
+                size="l-500"
+                style={{ color: '#333333', fontSize: 16, fontWeight: 400 }}
+              >
                 {account
                   ? ` ${account.substr(0, 9)}...${account.slice(32)}`
                   : '...'}{' '}

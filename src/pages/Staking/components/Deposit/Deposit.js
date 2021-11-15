@@ -31,7 +31,6 @@ import {
 } from '../../../../utils/constants';
 
 import avatarIcon from '../../../../assets/svg/avatar.svg';
-// import infoIcon from '../../../../assets/svg/info.svg';
 
 const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState('');
@@ -196,16 +195,6 @@ const Deposit = observer(({ depositInfo }) => {
             Deposit AMB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
           </span>
           {/* TODO toltip for deposit */}
-          {/* <ReactSVG */}
-          {/*   style={{ paddingTop: 3 }} */}
-          {/*  data-tip */}
-          {/*  data-for="deposit" */}
-          {/*  src={infoIcon} */}
-          {/*  wrapper="span" */}
-          {/* /> */}
-          {/* <ReactTooltip id="deposit" place="top" effect="solid"> */}
-          {/*    {tooltips.deposit} */}
-          {/* </ReactTooltip> */}
         </>
         <P size="s-400">
           <span
@@ -310,13 +299,6 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="deposit-stake-options">
           <div className="flex" style={{ marginBottom: 5 }}>
             {/* TODO toltip for unstake */}
-            {/* <ReactSVG */}
-            {/*  style={{ marginTop: 3 }} */}
-            {/*  data-tip */}
-            {/*  data-for="unstake" */}
-            {/*  src={infoIcon} */}
-            {/*  wrapper="span" */}
-            {/* /> */}
             <P
               size="s-400"
               style={{ color: '#9198BB' }}
@@ -338,10 +320,6 @@ const Deposit = observer(({ depositInfo }) => {
                 AMB
               </span>
             </P>
-
-            {/* TODO <ReactTooltip id="unstake" place="top" effect="solid"> */}
-            {/* {tooltips.unstake} */}
-            {/* </ReactTooltip> */}
           </div>
         </div>
         {withdrawForm}

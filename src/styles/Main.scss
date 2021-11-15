@@ -4,15 +4,12 @@
 @import "./utilites/base";
 @import "./utilites/animations";
 
-// Fonts
 @import "./fonts/fonts";
 
-// Layout
 @import "./layout/layout";
 @import "./layout/header";
 @import "./layout/footer";
 
-// Components
 @import "./components/loader";
 @import "./components/not-supported";
 @import "./components/menu-burger";
@@ -23,8 +20,6 @@
 @import "./components/input";
 @import "./components/modal";
 @import "./components/p";
-
-// Pages
 
 @import "./pages/home";
 @import "./pages/staking";

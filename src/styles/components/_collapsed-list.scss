@@ -65,7 +65,10 @@
   line-height: 25px;
 
   color: white;
-  height: auto !important;
+  height: 30px!important;
+  @media (max-width: 600px) {
+    height: auto !important;
+  }
 
   span {
     height: auto !important;

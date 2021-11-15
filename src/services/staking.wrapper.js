@@ -1,17 +1,17 @@
 /* eslint-disable */
 
 import { contractJsons, pool } from 'ambrosus-node-contracts';
-import { ethers, BigNumber, providers } from 'ethers';
-import { create, all, re } from 'mathjs';
+import { BigNumber, ethers, providers } from 'ethers';
+import { all, create } from 'mathjs';
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
 const TEN = BigNumber.from(10);
-const FIXEDPOINT = TEN.pow(18); // 1.0 ether
-const MINSHOWSTAKE = FIXEDPOINT.div(100); // 0.01 ether
-const THOUSAND = FIXEDPOINT.mul(1000); // 1000 ether
+const FIXEDPOINT = TEN.pow(18);
+const MINSHOWSTAKE = FIXEDPOINT.div(100);
+const THOUSAND = FIXEDPOINT.mul(1000);
 
-const AVERAGING_PERIOD = 7 * 24 * 60 * 60; // 7 days
+const AVERAGING_PERIOD = 7 * 24 * 60 * 60;
 
 const math = create(all, {
   number: 'BigNumber',
@@ -43,15 +43,12 @@ function checkValidNumberString(str) {
     parseFloatToBigNumber(str);
     ret = true;
   } catch (err) {}
-  // console.log('checkValidNumberString:', str, ret);
   return ret;
 }
 
 function parseFloatToBigNumber(str) {
   const mathBn = math.bignumber(str);
-  const ret = ethers.utils.parseEther(math.round(mathBn, 18).toString());
-  // console.log('parseFloatToBigNumber:', str, ret.toString());
-  return ret;
+  return ethers.utils.parseEther(math.round(mathBn, 18).toString());
 }
 
 class StakingWrapper {

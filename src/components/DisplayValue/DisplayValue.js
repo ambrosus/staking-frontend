@@ -13,7 +13,7 @@ const DisplayValue = ({
   value === null ? (
     <span className="skeleton" />
   ) : (
-    <span className="transition1s">
+    <span className="transitions">
       <P style={{ color, whiteSpace: 'nowrap', minWidth: 50 }} size={size}>
         {`${formatThousand(value)} ${symbol}`}
       </P>
