@@ -21,11 +21,11 @@ import StakingItemBody from './StakingItemBody';
 import avatarIcon from '../../assets/svg/avatar.svg';
 
 const StakingItem = ({
-                       expand = false,
-                       activeExpand,
-                       setActiveExpand,
-                       state = 0,
-                       hasChain,
+  expand = false,
+  activeExpand,
+  setActiveExpand,
+  state = 0,
+  hasChain,
   dispatch,
   index = -1,
   poolInfo,
