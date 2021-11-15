@@ -148,7 +148,11 @@ const StakingItem = ({
           }}
           className="item--header__flex__pool"
         >
-          <ReactSVG src={avatarIcon} wrapper="span" />
+          <ReactSVG
+            className="item--header__flex__pool--avatar"
+            src={avatarIcon}
+            wrapper="span"
+          />
           <P
             style={{
               color: pathname === MAIN_PAGE && '#FFFFFF',

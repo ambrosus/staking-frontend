@@ -90,168 +90,176 @@
       @media (max-width: 600px) {
         padding: 10px 10px;
         max-width: 100%;
-      }
-
-      &__flex {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: row;
-        width: 80%;
-        @media (max-width: 600px) {
-          padding-right: 0 !important;
-        }
-
-        &__pool {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          margin-right: 18px;
-          @media (max-width: 600px) {
-            > * {
-              margin: 0 !important;
-            }
-          }
-
-          p {
-            margin-left: 20px;
-            @media (max-width: 600px) {
-              font-size: 12px !important;
-              margin: 0 !important;
-              margin-left: 10px !important;
-            }
-          }
-        }
-
-        &__my-stake {
-          @media (max-width: 600px) {
-            > * {
-              margin: 0 !important;
-            }
-          }
-
-          p {
-            @media (max-width: 600px) {
-              font-size: 12px !important;
-              margin: 0 !important;
-
-            }
-          }
-        }
-
-        &__vault-assets {
-          @media (max-width: 600px) {
-            min-width: 110px!important;
-            max-width: 110px!important;
-            > * {
-              margin: 0 !important;
-
-            }
-          }
-
-          p {
-            @media (max-width: 600px) {
-              font-size: 12px !important;
-              margin: 0 !important;
-
-            }
-          }
-        }
-
-        &__apy {
-          @media (max-width: 600px) {
-            p {
-              font-size: 12px !important;
-            }
-            div {
-              margin: 0 !important;
-            }
-          }
-        }
-
         > div {
-          min-width: 200px;
-          max-width: 200px;
+          max-width: 73px !important;
+          min-width: 16px !important;
+        }
+    }
+
+    &__flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      width: 80%;
+      @media (max-width: 600px) {
+        padding-right: 0 !important;
+      }
+
+      &__pool {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 18px;
+
+        @media (max-width: 600px) {
+          > * {
+            margin: 0 !important;
+          }
+          &--avatar {
+            display: none;
+          }
+        }
+
+        p {
+          margin-left: 20px;
           @media (max-width: 600px) {
-            min-width: 75px;
-            max-width: 75px;
+            font-size: 12px !important;
+            margin: 0 !important;
+            margin-left: 10px !important;
           }
         }
       }
 
-      &--coming-soon-btn {
-        min-width: 160px !important;
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-
-        button {
-          min-width: 160px;
-        }
-      }
-
-      button {
-        max-width: 160px;
-        height: 40px!important;
+      &__my-stake {
         @media (max-width: 600px) {
-          max-width: 60px;
+          > * {
+            margin: 0 !important;
+          }
+        }
+
+        p {
+          @media (max-width: 600px) {
+            font-size: 12px !important;
+            margin: 0 !important;
+
+          }
         }
       }
 
-      > div, button {
-        flex: 1 !important;
+      &__vault-assets {
+        @media (max-width: 600px) {
+          min-width: 110px !important;
+          max-width: 110px !important;
+          > * {
+            margin: 0 !important;
+
+          }
+        }
+
+        p {
+          @media (max-width: 600px) {
+            font-size: 12px !important;
+            margin: 0 !important;
+
+          }
+        }
       }
+
+      &__apy {
+        @media (max-width: 600px) {
+          p {
+            font-size: 12px !important;
+          }
+          div {
+            margin: 0 !important;
+          }
+        }
+      }
+
+      > div {
+        min-width: 200px;
+        max-width: 200px;
+        @media (max-width: 600px) {
+          min-width: 66px;
+          max-width: 66px;
+        }
+      }
+    }
+
+    &--coming-soon-btn {
+      min-width: 160px !important;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
 
       button {
-        @media (max-width: 480px) {
-          margin-left: 0px;
-        }
+        min-width: 160px;
       }
     }
 
-    .item--content {
-      padding: 0 10px;
+    button {
+      max-width: 160px;
+      height: 40px !important;
+      @media (max-width: 600px) {
+        max-width: 60px;
+      }
     }
 
-    .collapsed-content {
-      background: $white;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
+    > div, button {
+      flex: 1 !important;
+    }
 
-      p {
-        font-style: normal !important;
-        font-weight: normal !important;
-        font-size: 16px !important;
-        line-height: 24px !important;
-        /* or 150% */
-
-
-        color: #9C9C9C;
-
-      }
-
-      &__header {
-        @media (max-width: 480px) {
-          width: 100%;
-          flex-direction: column;
-        }
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        white-space: nowrap; /* Запрещаем перенос текста */
-        > p {
-          flex-basis: 45%;
-        }
-
-        button {
-          flex-basis: 35%;
-        }
-      }
-
-      &__body {
+    button {
+      @media (max-width: 480px) {
+        margin-left: 0px;
       }
     }
   }
+
+  .item--content {
+    padding: 0 10px;
+  }
+
+  .collapsed-content {
+    background: $white;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+
+    p {
+      font-style: normal !important;
+      font-weight: normal !important;
+      font-size: 16px !important;
+      line-height: 24px !important;
+      /* or 150% */
+
+
+      color: #9C9C9C;
+
+    }
+
+    &__header {
+      @media (max-width: 480px) {
+        width: 100%;
+        flex-direction: column;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      white-space: nowrap; /* Запрещаем перенос текста */
+      > p {
+        flex-basis: 45%;
+      }
+
+      button {
+        flex-basis: 35%;
+      }
+    }
+
+    &__body {
+    }
+  }
+}
 
 }
 
@@ -475,7 +483,8 @@
     font-family: Proxima Nova, sans-serif !important;
   }
 }
-.percent-btn{
+
+.percent-btn {
   font-family: Halvar Breitschrift, sans-serif;
   font-style: normal;
   font-weight: normal;
