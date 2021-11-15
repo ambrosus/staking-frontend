@@ -86,6 +86,7 @@ export const Header = observer(() => {
     }
     return () => {
       mounted = false;
+      getAmbCourse();
     };
   }, [ethereum]);
 

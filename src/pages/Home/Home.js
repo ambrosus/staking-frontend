@@ -87,6 +87,7 @@ const Home = () => {
   };
   useEffect(() => {
     initEthereumNetwork();
+    return () => initEthereumNetwork();
   }, []);
   const menu = (
     <div className="menu">
@@ -175,7 +176,7 @@ const Home = () => {
               size="xxxl-500"
               style={{
                 paddingBottom: 10,
-                fontFamily: 'Halvar Breit,sans-serif',
+                fontFamily: 'Halvar Breitschrift,sans-serif',
               }}
             >
               Get AMB Rewards. No node needed.

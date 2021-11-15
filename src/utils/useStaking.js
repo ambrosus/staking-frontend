@@ -74,8 +74,7 @@ const useStaking = () => {
     }
     setUserChainId(chainId);
   };
-
-  useEffect(async () => {
+  const getDataFromProvider = async () => {
     if (ethereum && ethereum.isMetaMask) {
       checkEthereumNetwork();
       window.addEventListener('focus', () => {
@@ -136,6 +135,10 @@ const useStaking = () => {
         }
       }
     }
+  };
+  useEffect(() => {
+    getDataFromProvider();
+    return () => getDataFromProvider();
   }, [appStore.refresh]);
 
   return {

@@ -26,7 +26,9 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                 My Address
               </P>
               <P size="l-500" style={{ color: '#333333' }}>
-                {account}
+                {account
+                  ? ` ${account.substr(0, 9)}...${account.slice(32)}`
+                  : '...'}{' '}
                 <ReactSVG
                   data-tip
                   data-for="copy-state"

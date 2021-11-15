@@ -131,6 +131,7 @@ const StakingItem = ({
   };
   useEffect(() => {
     updateState();
+    return () => updateState();
   }, [appStore.refresh]);
 
   const stackHeader = (

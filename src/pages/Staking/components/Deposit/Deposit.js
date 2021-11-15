@@ -115,6 +115,7 @@ const Deposit = observer(({ depositInfo }) => {
         parseFloatToBigNumber(inputValue).lt(THOUSAND),
     );
     refreshProc();
+    return () => refreshProc();
   }, [inputValue, appStore.stakingWrapper, appStore.refresh]);
 
   const withdrawForm = (
