@@ -16,7 +16,7 @@ export const FIFTY_PERCENT = '50%';
 export const SEVENTY_FIVE_PERCENT = '75%';
 export const ONE_HUNDRED_PERCENT = '100%';
 
-export const {ethereum} = window;
+export const { ethereum } = window;
 
 export const menuLinks = [
   {
@@ -76,8 +76,8 @@ export const ambMounthUSD = async (amb) => {
 export const priceInPercent24h = async () => {
   try {
     return await fetch('https://token.ambrosus.io')
-        .then((response) => response.json())
-        .then((data) => data?.data?.percent_change_24h);
+      .then((response) => response.json())
+      .then((data) => data?.data?.percent_change_24h);
   } catch (err) {
     return 0;
   }
@@ -122,7 +122,7 @@ export const notificationMassage = (type, alertText) => {
   }
 };
 
-export const collapsedReducer = (state, {type, index}) => {
+export const collapsedReducer = (state, { type, index }) => {
   const stateCopy = [false];
   switch (type) {
     case 'toggle':
