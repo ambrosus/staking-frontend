@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {BigNumber, providers, utils} from 'ethers';
-import {StakingWrapper} from '../services/staking.wrapper';
-import {collapsedReducer, ethereum} from '../utils/constants';
+import React, { useEffect, useState } from 'react';
+import { BigNumber, providers, utils } from 'ethers';
+import { StakingWrapper } from '../services/staking.wrapper';
+import { collapsedReducer, ethereum } from '../utils/constants';
 import appStore from '../store/app.store';
 import storageService from '../services/storage.service';
 

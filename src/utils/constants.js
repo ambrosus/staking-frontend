@@ -1,5 +1,5 @@
 import React from 'react';
-import {cssTransition, toast} from 'react-toastify';
+import { cssTransition, toast } from 'react-toastify';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,9 +63,11 @@ export const tooltips = {
 
 export const ambMounthUSD = async (amb) => {
   try {
-    const ambPriceInUsd = await fetch('https://token.ambrosus.io')
-      .then((response) => response.json())
-      .then((data) => data?.data?.price_usd);
+    const [ambPriceInUsd] = await Promise.all([
+      fetch('https://token.ambrosus.io')
+        .then((response) => response.json())
+        .then((data) => data?.data?.price_usd),
+    ]);
     const result = amb * parseFloat(ambPriceInUsd, 10);
     return result.toFixed(7);
   } catch (err) {

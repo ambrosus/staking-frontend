@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useHistory} from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
-import {ReactSVG} from 'react-svg';
-import {providers, utils} from 'ethers';
-import {store as alertStore} from 'react-notifications-component';
+import { ReactSVG } from 'react-svg';
+import { providers, utils } from 'ethers';
+import { store as alertStore } from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
 
 import Button from '../Button';
@@ -14,8 +14,15 @@ import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAle
 import useLogIn from '../../hooks/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import {formatRounded, StakingWrapper} from '../../services/staking.wrapper';
-import {ethereum, HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE,} from '../../utils/constants';
+import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
+import {
+  ethereum,
+  HIDE,
+  MAIN_PAGE,
+  SHOW,
+  STAKE,
+  STAKING_PAGE,
+} from '../../utils/constants';
 import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';

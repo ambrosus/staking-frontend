@@ -1,7 +1,7 @@
-import {ReactSVG} from 'react-svg';
-import React, {useEffect, useState} from 'react';
-import {providers, utils} from 'ethers';
-import {observer} from 'mobx-react-lite';
+import { ReactSVG } from 'react-svg';
+import React, { useEffect, useState } from 'react';
+import { providers, utils } from 'ethers';
+import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
@@ -12,22 +12,22 @@ import Withdraw from '../Withdraw';
 import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
-    checkValidNumberString,
-    FIXEDPOINT,
-    formatRounded,
-    MINSHOWSTAKE,
-    parseFloatToBigNumber,
-    THOUSAND,
-    ZERO,
+  checkValidNumberString,
+  FIXEDPOINT,
+  formatRounded,
+  MINSHOWSTAKE,
+  parseFloatToBigNumber,
+  THOUSAND,
+  ZERO,
 } from '../../../../services/staking.wrapper';
 import {
-    ethereum,
-    FIFTY_PERCENT,
-    formatThousand,
-    notificationMassage,
-    ONE_HUNDRED_PERCENT,
-    SEVENTY_FIVE_PERCENT,
-    TWENTY_FIVE_PERCENT,
+  ethereum,
+  FIFTY_PERCENT,
+  formatThousand,
+  notificationMassage,
+  ONE_HUNDRED_PERCENT,
+  SEVENTY_FIVE_PERCENT,
+  TWENTY_FIVE_PERCENT,
 } from '../../../../utils/constants';
 
 import avatarIcon from '../../../../assets/svg/avatar.svg';

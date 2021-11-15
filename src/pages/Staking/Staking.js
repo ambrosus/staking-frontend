@@ -1,6 +1,6 @@
 import React from 'react';
-import {observer} from 'mobx-react-lite';
-import {cssTransition, ToastContainer} from 'react-toastify';
+import { observer } from 'mobx-react-lite';
+import { cssTransition, ToastContainer } from 'react-toastify';
 import StakingItem from '../../components/StakingItem';
 import appStore from '../../store/app.store';
 import ComingSoonPool from '../../components/ComingSoonPool';
