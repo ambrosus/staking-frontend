@@ -52,10 +52,7 @@ const Staking = observer(() => {
           </div>
           <RenderItems>
             {pools
-              .sort(function (a, b) {
-                return a.active - b.active;
-              })
-              .reverse()
+              .sort((a, b) => b.active - a.active)
               .map((item, index) => (
                 <StakingItem
                   dispatch={dispatch}
