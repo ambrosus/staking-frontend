@@ -21,10 +21,8 @@ const Main = observer(() => {
       appStore.setAuth(true);
     }
     return () => {
-      if (ethereum.removeListener) {
-        ethereum.removeListener('chainChanged', handleChange);
-        ethereum.removeListener('accountsChanged', handleChange);
-      }
+      ethereum.removeListener('chainChanged', handleChange);
+      ethereum.removeListener('accountsChanged', handleChange);
     };
   }, [appStore.auth, storageService, ethereum]);
 
