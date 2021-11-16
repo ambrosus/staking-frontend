@@ -231,7 +231,7 @@ const StakingItem = ({
       </Button>
     </div>
   );
-  return poolInfo.active || totalStake.gte(MINSHOWSTAKE) ? (
+  return poolInfo.active || (totalStake && totalStake.gte(MINSHOWSTAKE)) ? (
     <div
       role="presentation"
       className="stack-item"
