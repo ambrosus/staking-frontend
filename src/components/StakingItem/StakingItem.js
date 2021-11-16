@@ -14,11 +14,7 @@ import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAle
 import useLogIn from '../../hooks/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import {
-  formatRounded,
-  StakingWrapper,
-  THOUSAND,
-} from '../../services/staking.wrapper';
+import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
 import {
   ethereum,
   HIDE,
@@ -232,7 +228,7 @@ const StakingItem = ({
       </Button>
     </div>
   );
-  return poolInfo.active || (totalStake && totalStake.mul(10).gte(THOUSAND)) ? (
+  return poolInfo.active ? (
     <div
       role="presentation"
       className="stack-item"

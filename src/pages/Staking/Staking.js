@@ -10,6 +10,8 @@ import NotSupported from '../../components/NotSupported';
 import useStaking from '../../hooks/useStaking';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/StakingItem/RenderItems';
+/*eslint-disable*/
+import { StakingWrapper, THOUSAND } from '../../services/staking.wrapper';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
@@ -30,7 +32,7 @@ const Staking = observer(() => {
     pools,
     changeNetwork,
   } = useStaking();
-
+  const stakingWrapper = new StakingWrapper();
   const infoBlock = (
     <InfoBlock
       account={account}
@@ -52,7 +54,15 @@ const Staking = observer(() => {
           </div>
           <RenderItems>
             {pools
-              .sort((a, b) => b.active - a.active)
+              .filter(async (pool) => {
+                const { totalStakeInAMB } = await stakingWrapper.getPoolData(
+                  pool.index,
+                );
+                return (
+                  pool.active ||
+                  (totalStakeInAMB && totalStakeInAMB.mul(10).gte(THOUSAND))
+                );
+              })
               .map((item, index) => (
                 <StakingItem
                   dispatch={dispatch}
