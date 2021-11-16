@@ -5,10 +5,14 @@ import { useLocation } from 'react-router-dom';
 
 import Button from '../Button';
 import P from '../P';
-import { COMING_SOON, MAIN_PAGE, STAKING_PAGE } from '../../utils/constants';
+import {
+  COMING_SOON,
+  MAIN_PAGE,
+  STAKE,
+  STAKING_PAGE,
+} from '../../utils/constants';
 
 import avatarIcon from '../../assets/svg/coming_soon_pool_icon.svg';
-import { Loader } from '../Loader';
 
 export const ComingSoonPool = ({ poolInfo, loading }) => {
   const location = useLocation();
@@ -44,7 +48,7 @@ export const ComingSoonPool = ({ poolInfo, loading }) => {
       <div className="item--header--coming-soon-btn">
         <Button disabled priority="secondary">
           <P style={{ textTransform: 'uppercase' }} size="m-500">
-            {!loading ? <Loader types="cubes" /> : COMING_SOON}
+            {!loading ? STAKE : COMING_SOON}
           </P>
         </Button>
       </div>

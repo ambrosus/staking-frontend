@@ -51,7 +51,7 @@ const Staking = observer(() => {
             <div style={{ marginRight: -45 }} />
           </div>
           <RenderItems>
-            {pools.sort().map((item, index) => (
+            {pools.map((item, index) => (
               <StakingItem
                 dispatch={dispatch}
                 activeExpand={activeExpand}

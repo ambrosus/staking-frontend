@@ -23,6 +23,8 @@ Loader.propTypes = {
 };
 const SkeletonString = () => <span className="skeleton" />;
 
+const SkeletonBtn = () => <span className="skeleton-btn" />;
+
 const SkeletonPool = () => {
   const history = useHistory();
   const { pathname } = history.location;
@@ -47,4 +49,4 @@ const SkeletonPool = () => {
   );
 };
 
-export { Loader, SkeletonString, SkeletonPool };
+export { Loader, SkeletonString, SkeletonPool, SkeletonBtn };
