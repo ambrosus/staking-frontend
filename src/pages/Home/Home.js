@@ -10,7 +10,6 @@ import StackItem from '../../components/StakingItem';
 import { ethereum, MAIN_PAGE, menuLinks, network } from '../../utils/constants';
 
 import CollapsedList from '../../components/CollapsedList';
-import ComingSoonPool from '../../components/ComingSoonPool';
 import NotSupported from '../../components/NotSupported';
 import { StakingWrapper } from '../../services/staking.wrapper';
 import { Loader } from '../../components/Loader';
@@ -135,17 +134,6 @@ const Home = () => {
                       key={item.contractName}
                       poolInfo={item}
                       expand={false}
-                    />
-                  ),
-              )}
-              {pools.map(
-                (coming) =>
-                  !coming.active && (
-                    <ComingSoonPool
-                      loading
-                      key={coming.contractName}
-                      poolInfo={coming}
-                      lazy
                     />
                   ),
               )}
