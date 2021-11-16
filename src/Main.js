@@ -18,8 +18,12 @@ const Main = observer(() => {
       appStore.setAuth(true);
     }
     return () => {
-      ethereum.on('accountsChanged', () => null);
-      ethereum.on('chainChanged', () => null);
+      if (ethereum.removeListener) {
+        ethereum.removeListener('chainChanged', () => window.location.reload());
+        ethereum.removeListener('accountsChanged', () =>
+          window.location.reload(),
+        );
+      }
     };
   }, [appStore.auth, storageService, ethereum]);
 

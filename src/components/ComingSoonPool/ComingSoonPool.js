@@ -20,7 +20,7 @@ export const ComingSoonPool = ({ poolInfo, loading }) => {
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div
-        className="item--header__flex w-100"
+        className="item--header__flex"
         style={{
           paddingRight: pathname === STAKING_PAGE ? 100 : 200,
           width: '80%',
