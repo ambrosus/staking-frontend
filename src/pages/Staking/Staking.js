@@ -30,7 +30,6 @@ const Staking = observer(() => {
     pools,
     changeNetwork,
   } = useStaking();
-
   const infoBlock = (
     <InfoBlock
       account={account}
@@ -52,6 +51,7 @@ const Staking = observer(() => {
           </div>
           <RenderItems>
             {pools
+              .filter((pool) => pool.active)
               .sort((a, b) => b.active - a.active)
               .map((item, index) => (
                 <StakingItem
