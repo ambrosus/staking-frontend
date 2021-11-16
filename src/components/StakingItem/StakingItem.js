@@ -16,8 +16,8 @@ import DisplayValue from '../DisplayValue';
 
 import {
   formatRounded,
-  MINSHOWSTAKE,
   StakingWrapper,
+  THOUSAND,
 } from '../../services/staking.wrapper';
 import {
   ethereum,
@@ -231,7 +231,7 @@ const StakingItem = ({
       </Button>
     </div>
   );
-  return poolInfo.active || (totalStake && totalStake.gte(MINSHOWSTAKE)) ? (
+  return poolInfo.active || (totalStake && totalStake.mul(10).gte(THOUSAND)) ? (
     <div
       role="presentation"
       className="stack-item"
