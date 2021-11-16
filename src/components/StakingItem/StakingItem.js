@@ -23,6 +23,7 @@ import {
   ethereum,
   HIDE,
   MAIN_PAGE,
+  network,
   SHOW,
   STAKE,
   STAKING_PAGE,
@@ -102,7 +103,7 @@ const StakingItem = ({
           params: [
             {
               chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-              chainName: 'Ambrosus Test',
+              chainName: `${network}`,
               nativeCurrency: {
                 name: 'AMB',
                 symbol: 'AMB',

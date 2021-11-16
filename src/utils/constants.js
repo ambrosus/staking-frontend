@@ -13,7 +13,12 @@ export const SEVENTY_FIVE_PERCENT = '75%';
 export const ONE_HUNDRED_PERCENT = '100%';
 
 export const { ethereum } = window;
+const host = window.location.hostname;
 
+export const network =
+  host.includes('local') || host.includes('dev') || host.includes('test')
+    ? 'Ambrosus (Test net)'
+    : 'Ambrosus (Main net)';
 export const menuLinks = [
   {
     taget: true,
