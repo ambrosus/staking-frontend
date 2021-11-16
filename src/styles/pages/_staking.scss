@@ -30,9 +30,9 @@
     color: #9198BB;
     white-space: nowrap;
     @media (max-width: 600px) {
-      font-size: 12px;
       > div {
-        max-width: 73px !important;
+        font-size: 10px!important;
+        max-width: 38px !important;
         min-width: 35px !important;
       }
     }
@@ -114,9 +114,6 @@
             > * {
               margin: 0 !important;
             }
-            &--avatar {
-              display: none;
-            }
           }
 
           p {
@@ -147,6 +144,13 @@
 
         &__vault-assets {
           @media (max-width: 600px) {
+            div{
+              span{
+                p{
+                  font-size: 10px!important;
+                }
+              }
+            }
             min-width: 110px !important;
             max-width: 110px !important;
             > * {
@@ -167,7 +171,7 @@
         &__apy {
           @media (max-width: 600px) {
             p {
-              font-size: 12px !important;
+              font-size: 10px !important;
             }
             div {
               margin: 0 !important;
@@ -179,7 +183,7 @@
           min-width: 200px;
           max-width: 200px;
           @media (max-width: 600px) {
-            min-width: 71px;
+            min-width: 81px;
             max-width: 71px;
           }
         }

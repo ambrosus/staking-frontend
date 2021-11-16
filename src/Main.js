@@ -9,17 +9,22 @@ import RenderRoutes from './components/RenderRoutes';
 import { ethereum } from './utils/constants';
 
 const Main = observer(() => {
+  const handleChange = () => {
+    window.location.reload();
+  };
   useEffect(() => {
     if (ethereum) {
-      ethereum.on('accountsChanged', () => window.location.reload());
-      ethereum.on('chainChanged', () => window.location.reload());
+      ethereum.on('accountsChanged', handleChange);
+      ethereum.on('chainChanged', handleChange);
     }
     if (storageService.get('auth')) {
       appStore.setAuth(true);
     }
     return () => {
-      ethereum.on('accountsChanged', () => null);
-      ethereum.on('chainChanged', () => null);
+      if (ethereum.removeListener) {
+        ethereum.removeListener('chainChanged', handleChange);
+        ethereum.removeListener('accountsChanged', handleChange);
+      }
     };
   }, [appStore.auth, storageService, ethereum]);
 

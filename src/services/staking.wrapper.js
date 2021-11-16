@@ -11,7 +11,7 @@ const FIXEDPOINT = TEN.pow(18);
 const MINSHOWSTAKE = FIXEDPOINT.div(100);
 const THOUSAND = FIXEDPOINT.mul(1000);
 
-const AVERAGING_PERIOD = 7 * 24 * 60 * 60;
+const AVERAGING_PERIOD = 10 * 24 * 60 * 60;
 
 const math = create(all, {
   number: 'BigNumber',

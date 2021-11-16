@@ -211,7 +211,7 @@ const StakingItem = ({
             style={{
               textTransform: 'uppercase',
               color: poolInfo.active
-                ? pathname === MAIN_PAGE && '#FFF'
+                ? pathname === MAIN_PAGE && '#1ACD8C'
                 : 'rgb(191, 201, 224)',
             }}
             size="l-700"

@@ -113,7 +113,7 @@ const Home = () => {
   const poolsData = pools.length > 0 && (
     <>
       <div
-        className="staking__header Halvar_Breit "
+        className="staking__header"
         style={{
           color: pathname === MAIN_PAGE && '#FFFFFF',
         }}
