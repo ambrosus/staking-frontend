@@ -54,7 +54,8 @@ const Staking = observer(() => {
           </div>
           <RenderItems>
             {pools
-              .filter(async (pool) => {
+                .sort((a, b) => b.active - a.active)
+                .filter(async (pool) => {
                 const { totalStakeInAMB } = await stakingWrapper.getPoolData(
                   pool.index,
                 );
