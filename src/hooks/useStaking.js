@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, providers, utils } from 'ethers';
 import { StakingWrapper } from '../services/staking.wrapper';
-import { ethereum } from '../utils/constants';
+import { ethereum, network } from '../utils/constants';
 import { collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
 import storageService from '../services/storage.service';
@@ -19,7 +19,6 @@ const useStaking = () => {
   const [pools, setPools] = useState([]);
   let provider;
   let signer;
-
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
       provider = new providers.Web3Provider(ethereum);
@@ -37,7 +36,7 @@ const useStaking = () => {
                     chainId: `${utils.hexlify(
                       +process.env.REACT_APP_CHAIN_ID,
                     )}`,
-                    chainName: 'Ambrosus Test',
+                    chainName: `${network}`,
                     nativeCurrency: {
                       name: 'AMB',
                       symbol: 'AMB',

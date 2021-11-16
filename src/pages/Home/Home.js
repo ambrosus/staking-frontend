@@ -7,7 +7,7 @@ import { providers, utils } from 'ethers';
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
 import StackItem from '../../components/StakingItem';
-import { ethereum, MAIN_PAGE, menuLinks } from '../../utils/constants';
+import { ethereum, MAIN_PAGE, menuLinks, network } from '../../utils/constants';
 
 import CollapsedList from '../../components/CollapsedList';
 import ComingSoonPool from '../../components/ComingSoonPool';
@@ -37,7 +37,7 @@ const Home = () => {
               params: [
                 {
                   chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-                  chainName: 'Ambrosus Test',
+                  chainName: `${network}`,
                   nativeCurrency: {
                     name: 'AMB',
                     symbol: 'AMB',
