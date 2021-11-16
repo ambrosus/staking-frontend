@@ -184,8 +184,11 @@ const Home = () => {
             </P>
             <P size="l-500-white">
               Stake your AMB and receive up to
-              <span style={{ color: '#1ACD8C' }}> 35% APY</span> in a few
-              clicks.
+              <span style={{ color: '#1ACD8C', fontWeight: 600 }}>
+                {' '}
+                35% APY
+              </span>{' '}
+              in a few clicks.
             </P>
           </div>
           <MetamaskConnect />
