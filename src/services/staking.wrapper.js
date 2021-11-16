@@ -192,6 +192,8 @@ class StakingWrapper {
         })),
     );
 
+    if (firstReward.timestamp === lastReward.timestamp) return 0;
+
     const dpy = exprDPY.evaluate({
       s1: math.bignumber(firstReward.tokenPrice.toString()),
       s2: math.bignumber(lastReward.tokenPrice.toString()),
