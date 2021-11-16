@@ -135,11 +135,11 @@ const Deposit = observer(({ depositInfo }) => {
             </P>
           </div>
           <div style={{ textTransform: 'uppercase' }}>
-            <DisplayValue size="l-400" value={formatRounded(myStake)} />
+            <DisplayValue size="l-400" value={formatRounded(myStake, 2)} />
           </div>
           <div style={{ textTransform: 'uppercase' }}>
             {' '}
-            <DisplayValue value={formatRounded(totalStake)} size="l-400" />
+            <DisplayValue value={formatRounded(totalStake, 2)} size="l-400" />
           </div>
           <div>
             {' '}
@@ -204,8 +204,8 @@ const Deposit = observer(({ depositInfo }) => {
               color: '#333333',
             }}
           >
-            &nbsp; Available for stake: {formatThousand(formatRounded(balance))}{' '}
-            AMB
+            &nbsp; Available for stake:{' '}
+            {formatThousand(formatRounded(balance, 2))} AMB
           </span>
         </P>
         <div style={{ flexBasis: '90%' }} />

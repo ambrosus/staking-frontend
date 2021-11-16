@@ -189,7 +189,7 @@ const StakingItem = ({
                     ? pathname === MAIN_PAGE && '#FFF'
                     : 'rgb(191, 201, 224)'
                 }
-                value={myStake && formatRounded(myStake)}
+                value={myStake && formatRounded(myStake, 2)}
               />
             </div>
           </div>
@@ -202,7 +202,7 @@ const StakingItem = ({
                   ? pathname === MAIN_PAGE && '#FFF'
                   : 'rgb(191, 201, 224)'
               }
-              value={totalStake && formatRounded(totalStake)}
+              value={totalStake && formatRounded(totalStake, 2)}
             />
           </div>
         </div>
