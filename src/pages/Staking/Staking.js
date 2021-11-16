@@ -51,21 +51,26 @@ const Staking = observer(() => {
             <div style={{ marginRight: -45 }} />
           </div>
           <RenderItems>
-            {pools.map((item, index) => (
-              <StakingItem
-                dispatch={dispatch}
-                activeExpand={activeExpand}
-                setActiveExpand={setActiveExpand}
-                key={item.contractName}
-                index={index}
-                state={state}
-                expand
-                hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                comingSoon={!item?.abi}
-                lazy
-                poolInfo={item}
-              />
-            ))}
+            {pools
+              .sort(function (a, b) {
+                return a.active - b.active;
+              })
+              .reverse()
+              .map((item, index) => (
+                <StakingItem
+                  dispatch={dispatch}
+                  activeExpand={activeExpand}
+                  setActiveExpand={setActiveExpand}
+                  key={item.contractName}
+                  index={index}
+                  state={state}
+                  expand
+                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                  comingSoon={!item?.abi}
+                  lazy
+                  poolInfo={item}
+                />
+              ))}
           </RenderItems>
         </>
       )}
