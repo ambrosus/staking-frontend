@@ -41,8 +41,6 @@ const Footer = observer(() => {
           <a className="terms-of-use" href={pdfFile} target="_blank">
             Terms of use
           </a>{' '}
-          &nbsp;&nbsp;
-          <a href="mailto:info@ambrosus.io">info@ambrosus.io</a>
         </div>
       </div>
     </footer>
