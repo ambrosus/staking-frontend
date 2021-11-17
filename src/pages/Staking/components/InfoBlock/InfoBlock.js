@@ -70,7 +70,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                         size="m-400"
                         style={{ paddingBottom: 5, whiteSpace: 'nowrap' }}
                       >
-                        &nbsp;&nbsp;My total stake&nbsp;&nbsp;
+                        &nbsp;Holdigs&nbsp;
                       </P>
                     </div>
                     <ReactSVG
@@ -105,7 +105,7 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     src={earningsIcon}
                   />
                   <P size="m-400" style={{ paddingBottom: 5 }}>
-                    &nbsp;&nbsp;Earnings &nbsp;&nbsp;
+                    &nbsp;Est. yearly yield&nbsp;
                   </P>
                   <ReactSVG
                     data-tip

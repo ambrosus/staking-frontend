@@ -150,6 +150,14 @@ class StakingWrapper {
       .round(2)
       .done()
       .toFixed(2);
+    const estAR = math
+      .chain(poolAPY)
+      .divide(100)
+      .multiply(myStakeInAMB.toString())
+      .divide(FIXEDPOINT.toString())
+      .round(2)
+      .done()
+      .toFixed(2);
     const poolData = {
       totalStakeInAMB,
       myStakeInAMB,
@@ -157,6 +165,7 @@ class StakingWrapper {
       myStakeInTokens,
       poolAPY,
       estDR,
+      estAR,
     };
 
     return poolData;
