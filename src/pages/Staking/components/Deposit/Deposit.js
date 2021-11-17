@@ -286,6 +286,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
+              depositInfo.contractName === 'Plutus' ||
               !depositInfo.active ||
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).lt(THOUSAND) ||

@@ -1,11 +1,9 @@
-export const ambMountUSD = async (amb) => {
+export const ambPriceInUsd = async (amb) => {
   try {
-    const [ambPriceInUsd] = await Promise.all([
-      fetch('https://token.ambrosus.io')
-        .then((response) => response.json())
-        .then((data) => data?.data?.price_usd),
-    ]);
-    const result = amb * parseFloat(ambPriceInUsd, 10);
+    const ambPrice = await fetch('https://token.ambrosus.io')
+      .then((response) => response.json())
+      .then((data) => data?.data?.price_usd);
+    const result = amb * parseFloat(ambPrice, 10);
     return result.toFixed(7);
   } catch (err) {
     return 0;

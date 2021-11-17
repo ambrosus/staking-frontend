@@ -150,6 +150,14 @@ class StakingWrapper {
       .round(2)
       .done()
       .toFixed(2);
+    const estAR = math
+      .chain(poolAPY)
+      .divide(100)
+      .multiply(myStakeInAMB.toString())
+      .divide(FIXEDPOINT.toString())
+      .round(2)
+      .done()
+      .toFixed(2);
     const poolData = {
       totalStakeInAMB,
       myStakeInAMB,
@@ -157,6 +165,7 @@ class StakingWrapper {
       myStakeInTokens,
       poolAPY,
       estDR,
+      estAR,
     };
 
     return poolData;
@@ -191,6 +200,8 @@ class StakingWrapper {
           tokenPrice: event.args.tokenPrice,
         })),
     );
+
+    if (lastReward.timestamp - firstReward.timestamp < 300 ) return 0;
 
     const dpy = exprDPY.evaluate({
       s1: math.bignumber(firstReward.tokenPrice.toString()),

@@ -92,7 +92,7 @@ export const menuLinks = [
 export const tooltips = {
   earnings: (
     <span>
-      Estimated earnings for the next 24h. <br />
+      Estimated earnings for the next year. <br />
       This function is in early beta, <br />
       the data is for reference only
     </span>

@@ -100,11 +100,11 @@ const useStaking = () => {
           const poolsRewards = [];
           const myTotalStake = [];
           poolsArr.map(async (pool) => {
-            const { estDR, myStakeInAMB } = await stakingWrapper.getPoolData(
+            const { estAR, myStakeInAMB } = await stakingWrapper.getPoolData(
               pool.index,
             );
-            if (estDR) {
-              poolsRewards.push(estDR);
+            if (estAR) {
+              poolsRewards.push(estAR);
               const rewardInAmb =
                 poolsRewards?.length > 0 &&
                 poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
