@@ -19,7 +19,6 @@ import RenderItems from '../../components/StakingItem/RenderItems';
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 
 const Home = () => {
-  const [userChainId, setUserChainId] = useState(false);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [pools, setPools] = useState([]);
   const location = useLocation();
@@ -67,9 +66,6 @@ const Home = () => {
       getPulls();
       const provider = new providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
-      if (chainId) {
-        setUserChainId(chainId);
-      }
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
       }
@@ -130,7 +126,6 @@ const Home = () => {
                 (item) =>
                   item.active && (
                     <StackItem
-                      hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
                       key={item.contractName}
                       poolInfo={item}
                       expand={false}

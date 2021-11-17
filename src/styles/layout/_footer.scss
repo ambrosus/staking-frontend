@@ -49,7 +49,6 @@
   .contact {
     flex-basis: 300px;
     text-align: right;
-
     a {
       text-decoration: none;
 
@@ -59,11 +58,16 @@
     }
 
     @media (max-width: 1024px) {
+      justify-content: space-around;
       margin-top: 20px;
       text-align: center;
     }
   }
-
+.terms-of-use{
+  &:hover {
+    text-decoration: underline;
+  }
+}
   .socials {
     flex-grow: 1;
     text-align: center;
