@@ -11,7 +11,7 @@ import redditIcon from '../../../assets/svg/reddit-icon.svg';
 import telegramIcon from '../../../assets/svg/telegram-icon.svg';
 import twitterIcon from '../../../assets/svg/twitter-icon.svg';
 import linkedinIcon from '../../../assets/svg/linkedin-icon.svg';
-import pdfFile from '../../../Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
+import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 const socialsLinks = [
   {
     url: 'https://github.com/ambrosus',
