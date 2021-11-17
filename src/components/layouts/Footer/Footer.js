@@ -3,14 +3,15 @@ import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 import { useLocation } from 'react-router-dom';
 
+import { MAIN_PAGE } from '../../../utils/constants';
+
 import githubIcon from '../../../assets/svg/github-icon.svg';
 import mediumIcon from '../../../assets/svg/medium-icon.svg';
 import redditIcon from '../../../assets/svg/reddit-icon.svg';
 import telegramIcon from '../../../assets/svg/telegram-icon.svg';
 import twitterIcon from '../../../assets/svg/twitter-icon.svg';
 import linkedinIcon from '../../../assets/svg/linkedin-icon.svg';
-import { MAIN_PAGE } from '../../../utils/constants';
-
+import pdfFile from '../../../Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 const socialsLinks = [
   {
     url: 'https://github.com/ambrosus',
@@ -79,6 +80,11 @@ const Footer = observer(() => {
           <ul className="socials__list">{socials}</ul>
         </div>
 
+        <div>
+          <a href={pdfFile} target="_blank">
+            TERMS OF USE
+          </a>
+        </div>
         <div className="contact">
           <a href="mailto:info@ambrosus.io">info@ambrosus.io</a>
         </div>
