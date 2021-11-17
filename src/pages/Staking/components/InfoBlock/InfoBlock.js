@@ -14,7 +14,13 @@ import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
 import { tooltips } from '../../../../utils/constants';
 
-const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
+const InfoBlock = ({
+  account,
+  totalReward,
+  totalRewardInUsd,
+  totalStakedInUsd,
+  totalStaked,
+}) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   return (
     <div className="info-block ">
@@ -81,11 +87,29 @@ const InfoBlock = ({ account, totalReward, totalRewardInUsd, totalStaked }) => {
                     />
                   </div>
                 </div>
-                <DisplayValue
-                  color="#4A38AE"
-                  size="xl-400"
-                  value={totalStaked && formatRounded(totalStaked, 2)}
-                />
+                <div
+                  style={{
+                    minWidth: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                  }}
+                >
+                  <DisplayValue
+                    size="xl-400"
+                    color="#1ACD8C"
+                    value={totalStaked && formatRounded(totalStaked, 2)}
+                  />
+                  <P size="xl-400" style={{ color: '#4A38AE' }}>
+                    &nbsp; / &nbsp;
+                  </P>
+                  <DisplayValue
+                    size="xl-400"
+                    color="#4A38AE"
+                    value={totalStakedInUsd}
+                    symbol="$"
+                  />
+                </div>
               </div>
               <div className="info-block__stacked--course">
                 <div
@@ -153,5 +177,6 @@ InfoBlock.propTypes = {
   totalReward: PropTypes.any,
   totalStaked: PropTypes.any,
   totalRewardInUsd: PropTypes.any,
+  totalStakedInUsd: PropTypes.number,
 };
 export default React.memo(InfoBlock);
