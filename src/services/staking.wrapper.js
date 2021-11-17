@@ -192,7 +192,7 @@ class StakingWrapper {
         })),
     );
 
-    if (firstReward.timestamp === lastReward.timestamp) return 0;
+    if (lastReward.timestamp - firstReward.timestamp < 300 ) return 0;
 
     const dpy = exprDPY.evaluate({
       s1: math.bignumber(firstReward.tokenPrice.toString()),
