@@ -25,6 +25,7 @@ const Staking = observer(() => {
     correctNetwork,
     totalReward,
     totalRewardInUsd,
+    totalStakedInUsd,
     state,
     dispatch,
     pools,
@@ -32,6 +33,7 @@ const Staking = observer(() => {
   } = useStaking();
   const infoBlock = (
     <InfoBlock
+      totalStakedInUsd={totalStakedInUsd}
       account={account}
       totalReward={totalReward}
       totalRewardInUsd={totalRewardInUsd}
