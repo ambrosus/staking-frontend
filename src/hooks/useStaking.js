@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, providers, utils } from 'ethers';
-import { StakingWrapper } from '../services/staking.wrapper';
+import { formatRounded, StakingWrapper } from '../services/staking.wrapper';
 import { ethereum, network } from '../utils/constants';
 import { collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
@@ -14,6 +14,7 @@ const useStaking = () => {
   const [totalReward, setTotalReward] = useState(0);
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [correctNetwork, setCorrectNetwork] = useState(true);
+  const [totalStakedInUsd, setTotalStakedInUsd] = useState(0);
   const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
@@ -125,6 +126,11 @@ const useStaking = () => {
                   BigNumber.from('0'),
                 );
                 setTotalStaked(totalStakeSum);
+                setTotalStakedInUsd(
+                  totalStakeSum &&
+                    appStore.tokenPrice &&
+                    formatRounded(totalStakeSum) * appStore.tokenPrice,
+                );
               }
             }
           });
@@ -151,6 +157,7 @@ const useStaking = () => {
     pools,
     changeNetwork,
     checkEthereumNetwork,
+    totalStakedInUsd,
   };
 };
 export default useStaking;
