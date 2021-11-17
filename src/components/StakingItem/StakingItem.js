@@ -35,7 +35,6 @@ const StakingItem = ({
   activeExpand,
   setActiveExpand,
   state = 0,
-  hasChain,
   dispatch,
   index = -1,
   poolInfo,
@@ -126,10 +125,7 @@ const StakingItem = ({
         dispatch({ type: 'toggle', index });
       }
     } else {
-      /* eslint-disable-next-line */
-      if (hasChain === true) {
-        logIn();
-      }
+      logIn();
     }
   };
   useEffect(() => {
@@ -271,7 +267,6 @@ StakingItem.propTypes = {
   dispatch: PropTypes.func,
   expand: PropTypes.bool,
   state: PropTypes.array,
-  hasChain: PropTypes.bool,
   index: PropTypes.number,
   activeExpand: PropTypes.number,
   setActiveExpand: PropTypes.func,

@@ -33,14 +33,9 @@ export const MetamaskConnect = observer(() => {
       <P size="m-500">&nbsp;&nbsp;Go to staking</P>
     </div>
   ) : (
-    <div
-      role="presentation"
-      className="connect-btn primary"
-      style={{ display: 'flex' }}
-      onClick={logIn}
-    >
+    <div role="presentation" className="connect-btn primary" onClick={logIn}>
       <ReactSVG src={walletIcon} wrapper="span" />
-      <P style={{ paddingLeft: 10, fontFamily: ' Neue Machina' }} size="m-500">
+      <P style={{ fontFamily: ' Neue Machina' }} size="m-500">
         <span
           style={{
             paddingLeft: 5,
