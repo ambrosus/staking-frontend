@@ -80,12 +80,11 @@ const Footer = observer(() => {
           <ul className="socials__list">{socials}</ul>
         </div>
 
-        <div>
-          <a href={pdfFile} target="_blank">
-            TERMS OF USE
-          </a>
-        </div>
         <div className="contact">
+          <a className="terms-of-use" href={pdfFile} target="_blank">
+            Terms of use
+          </a>{' '}
+          &nbsp;&nbsp;
           <a href="mailto:info@ambrosus.io">info@ambrosus.io</a>
         </div>
       </div>
