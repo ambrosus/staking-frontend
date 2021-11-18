@@ -49,7 +49,7 @@
     }
 
     > div {
-      font-family: Halvar Breitschrift;
+      font-family: Halvar Breitschrift, sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -151,8 +151,6 @@
                 }
               }
             }
-            min-width: 110px !important;
-            max-width: 110px !important;
             > * {
               margin: 0 !important;
 
@@ -183,8 +181,8 @@
           min-width: 200px;
           max-width: 200px;
           @media (max-width: 600px) {
-            min-width: 81px;
-            max-width: 71px;
+            min-width: 91px;
+            max-width: 91px;
           }
         }
       }
@@ -214,7 +212,7 @@
 
       button {
         @media (max-width: 480px) {
-          margin-left: 0px;
+          margin-left: 0;
         }
       }
     }
@@ -330,7 +328,7 @@
           margin-left: 5px !important;
         }
         > div {
-          margin-left: 0px !important;
+          margin-left: 0 !important;
           margin-top: 15px;
         }
       }
