@@ -1,151 +1,116 @@
 import React, { useEffect, useState } from 'react';
-import { BigNumber, providers, utils } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
+
+import { BigNumber, utils } from 'ethers';
 import { formatRounded, StakingWrapper } from '../services/staking.wrapper';
 import { ethereum, network } from '../utils/constants';
 import { collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
-import storageService from '../services/storage.service';
+import { connectorsByName } from '../utils/connectors';
 
 const useStaking = () => {
-  const [account, setAccount] = useState(null);
-  const [userChainId, setUserChainId] = useState(null);
+  const { account, active, activate, chainId, library } = useWeb3React();
+  /*eslint-disable*/
   const [totalStaked, setTotalStaked] = useState(BigNumber.from('0'));
   const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState(0);
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [correctNetwork, setCorrectNetwork] = useState(true);
   const [totalStakedInUsd, setTotalStakedInUsd] = useState(0);
-  const [requestNetworkChange, setRequestNetworkChange] = useState(true);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
-  let provider;
   let signer;
   const changeNetwork = async () => {
     if (ethereum && ethereum.isMetaMask) {
-      provider = new providers.Web3Provider(ethereum);
-      const { chainId } = await provider.getNetwork();
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         setCorrectNetwork(false);
-        setRequestNetworkChange(true);
-        if (requestNetworkChange) {
-          try {
-            ethereum
-              .request({
-                method: 'wallet_addEthereumChain',
-                params: [
-                  {
-                    chainId: `${utils.hexlify(
-                      +process.env.REACT_APP_CHAIN_ID,
-                    )}`,
-                    chainName: `${network}`,
-                    nativeCurrency: {
-                      name: 'AMB',
-                      symbol: 'AMB',
-                      decimals: 18,
-                    },
-                    rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                    blockExplorerUrls: [
-                      `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                    ],
-                  },
+        if (correctNetwork) {
+          ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+                chainName: `${network}`,
+                nativeCurrency: {
+                  name: 'AMB',
+                  symbol: 'AMB',
+                  decimals: 18,
+                },
+                rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+                blockExplorerUrls: [
+                  `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
                 ],
-              })
-              .then((e) => {
-                if (e) {
-                  setCorrectNetwork(true);
-                  setRequestNetworkChange(false);
-                }
-              });
-          } catch (e) {
-            setCorrectNetwork(false);
-          }
+              },
+            ],
+          });
+        } else {
+          setCorrectNetwork(true);
         }
       }
     }
   };
-  const checkEthereumNetwork = async () => {
-    provider = new providers.Web3Provider(ethereum);
-    const { chainId } = await provider.getNetwork();
-    if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-      setCorrectNetwork(false);
-      setRequestNetworkChange(true);
-    } else {
-      setCorrectNetwork(true);
-      setRequestNetworkChange(false);
-    }
-    setUserChainId(chainId);
-  };
   const getDataFromProvider = async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      checkEthereumNetwork();
+    await activate(connectorsByName['Injected']);
+    if (chainId) {
       window.addEventListener('focus', () => {
         changeNetwork();
       });
     }
-    if (correctNetwork && appStore.auth) {
-      provider = new providers.Web3Provider(ethereum);
-      signer = provider !== undefined && provider.getSigner();
-      if (provider !== undefined && signer !== undefined) {
-        const { chainId } = provider && provider.getNetwork();
-        setUserChainId(chainId);
-        if (storageService.get('auth')) {
-          const stakingWrapper = new StakingWrapper(signer);
-          provider.listAccounts().then((accounts) => {
-            const defaultAccount = accounts[0];
-            if (defaultAccount) {
-              setAccount(defaultAccount);
-            }
-          });
-          const poolsArr = await stakingWrapper.getPools();
-          setPools(poolsArr);
-          const poolsRewards = [];
-          const myTotalStake = [];
-          poolsArr.map(async (pool) => {
-            const { estAR, myStakeInAMB } = await stakingWrapper.getPoolData(
-              pool.index,
+    if (correctNetwork && active) {
+      signer = library !== undefined && library.getSigner();
+      if (signer) {
+        const stakingWrapper = new StakingWrapper(signer);
+        const poolsArr = await stakingWrapper.getPools();
+        setPools(poolsArr);
+        const poolsRewards = [];
+        const myTotalStake = [];
+        poolsArr.map(async (pool) => {
+          const { estAR, myStakeInAMB } = await stakingWrapper.getPoolData(
+            pool.index,
+          );
+          if (estAR) {
+            poolsRewards.push(estAR);
+            const rewardInAmb =
+              poolsRewards?.length > 0 &&
+              poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+            setTotalReward(rewardInAmb);
+            const esdSum =
+              appStore.tokenPrice &&
+              poolsRewards?.length > 0 &&
+              poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+            setTotalRewardInUsd(
+              esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
             );
-            if (estAR) {
-              poolsRewards.push(estAR);
-              const rewardInAmb =
-                poolsRewards?.length > 0 &&
-                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-              setTotalReward(rewardInAmb);
-              const esdSum =
-                appStore.tokenPrice &&
-                poolsRewards?.length > 0 &&
-                poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-              setTotalRewardInUsd(
-                esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
+          }
+          if (myStakeInAMB) {
+            myTotalStake.push(myStakeInAMB);
+            if (myTotalStake?.length > 0) {
+              const totalStakeSum = myTotalStake.reduceRight(
+                (acc, curr) => acc.add(curr),
+                BigNumber.from('0'),
+              );
+              setTotalStaked(totalStakeSum);
+              setTotalStakedInUsd(
+                totalStakeSum &&
+                  appStore.tokenPrice &&
+                  formatRounded(totalStakeSum) * appStore.tokenPrice,
               );
             }
-            if (myStakeInAMB) {
-              myTotalStake.push(myStakeInAMB);
-              if (myTotalStake?.length > 0) {
-                const totalStakeSum = myTotalStake.reduceRight(
-                  (acc, curr) => acc.add(curr),
-                  BigNumber.from('0'),
-                );
-                setTotalStaked(totalStakeSum);
-                setTotalStakedInUsd(
-                  totalStakeSum &&
-                    appStore.tokenPrice &&
-                    formatRounded(totalStakeSum) * appStore.tokenPrice,
-                );
-              }
-            }
-          });
-        }
+          }
+        });
       }
     }
   };
   useEffect(() => {
-    getDataFromProvider();
+    if (active && account) {
+      getDataFromProvider();
+    }
     return () => getDataFromProvider();
-  }, [appStore.refresh]);
+  }, [appStore.refresh, active]);
 
   return {
     account,
-    userChainId,
+    userChainId: chainId,
     totalStaked,
     activeExpand,
     setActiveExpand,
@@ -156,7 +121,6 @@ const useStaking = () => {
     dispatch,
     pools,
     changeNetwork,
-    checkEthereumNetwork,
     totalStakedInUsd,
   };
 };

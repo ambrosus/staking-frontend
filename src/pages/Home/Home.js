@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link, useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
-import { providers, utils } from 'ethers';
-
+import { utils } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
+/*eslint-disable*/
 import P from '../../components/P';
 import MetamaskConnect from '../../components/MetamaskConnect';
 import StackItem from '../../components/StakingItem';
@@ -20,57 +21,33 @@ import headerLogoSvg from '../../assets/svg/header-logo.svg';
 
 const Home = () => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
+  const { library, active } = useWeb3React();
   const [pools, setPools] = useState([]);
   const location = useLocation();
   const { pathname } = location;
   const changeNetwork = async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      const provider = new providers.Web3Provider(ethereum);
-      const { chainId } = await provider.getNetwork();
-      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-        try {
-          ethereum
-            .request({
-              method: 'wallet_addEthereumChain',
-              params: [
-                {
-                  chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-                  chainName: `${network}`,
-                  nativeCurrency: {
-                    name: 'AMB',
-                    symbol: 'AMB',
-                    decimals: 18,
-                  },
-                  rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                  blockExplorerUrls: [
-                    `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                  ],
-                },
-              ],
-            })
-            .then((e) => {
-              if (e) {
-                setCorrectNetwork(true);
-              }
-            });
-        } catch (e) {
-          if (e) {
-            setCorrectNetwork(false);
-          }
-        }
-      }
-    }
+    await ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+          chainName: `${network}`,
+          nativeCurrency: {
+            name: 'AMB',
+            symbol: 'AMB',
+            decimals: 18,
+          },
+          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+          blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
+        },
+      ],
+    });
   };
   const initEthereumNetwork = async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      getPulls();
-      const provider = new providers.Web3Provider(ethereum);
-      const { chainId } = await provider.getNetwork();
-      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-        setCorrectNetwork(false);
-      }
-    } else {
-      getPulls();
+    getPulls();
+    if (library && Boolean(library.supportedChainIds)) {
+      console.log('library.supportedChainIds', library.supportedChainIds);
+      setCorrectNetwork(true);
     }
   };
   const getPulls = async () => {
@@ -83,7 +60,7 @@ const Home = () => {
   useEffect(() => {
     initEthereumNetwork();
     return () => initEthereumNetwork();
-  }, []);
+  }, [active]);
   const menu = (
     <div className="menu">
       {menuLinks.map((link) =>

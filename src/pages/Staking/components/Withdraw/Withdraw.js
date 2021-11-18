@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { providers, utils } from 'ethers';
+import { utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
-
+import { useWeb3React } from '@web3-react/core';
+/*eslint-disable*/
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
@@ -16,7 +17,6 @@ import {
   ZERO,
 } from '../../../../services/staking.wrapper';
 import {
-  ethereum,
   FIFTY_PERCENT,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
@@ -33,6 +33,7 @@ const Withdraw = observer(
     hideModal,
     stake,
   }) => {
+    const { library } = useWeb3React();
     const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
 
@@ -40,10 +41,8 @@ const Withdraw = observer(
       if (!checkValidNumberString(inputValue)) {
         return false;
       }
-
-      const provider = new providers.Web3Provider(ethereum, 'any');
-      if (provider) {
-        const signer = provider.getSigner();
+      if (library) {
+        const signer = library.getSigner();
         if (signer && appStore.stakingWrapper !== undefined) {
           const { tokenPriceAMB, myStakeInTokens } =
             await appStore.stakingWrapper.getPoolData(

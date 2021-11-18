@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { cssTransition, ToastContainer } from 'react-toastify';
 import StakingItem from '../../components/StakingItem';
-import appStore from '../../store/app.store';
 
 import Header from '../../components/layouts/Header';
 import Footer from '../../components/layouts/Footer';
@@ -75,9 +74,9 @@ const Staking = observer(() => {
       )}
     </div>
   );
-  return appStore.auth ? (
+  return (
     <>
-      {!correctNetwork && <NotSupported onclick={changeNetwork} />}
+      {correctNetwork && <NotSupported onclick={changeNetwork} />}
       <div className="layout">
         <Header />
         <div className="content">
@@ -90,8 +89,6 @@ const Staking = observer(() => {
         <Footer />
       </div>
     </>
-  ) : (
-    <div>Loading...</div>
   );
 });
 

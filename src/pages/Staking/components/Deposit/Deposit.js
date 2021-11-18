@@ -1,8 +1,9 @@
 import { ReactSVG } from 'react-svg';
 import React, { useEffect, useState } from 'react';
-import { providers, utils } from 'ethers';
+import { utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
-
+import { useWeb3React } from '@web3-react/core';
+/*eslint-disable*/
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
@@ -21,7 +22,6 @@ import {
   ZERO,
 } from '../../../../services/staking.wrapper';
 import {
-  ethereum,
   FIFTY_PERCENT,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
@@ -32,6 +32,7 @@ import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 
 const Deposit = observer(({ depositInfo }) => {
+  const { account, library } = useWeb3React();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
   const [myStake, setMyStake] = useState(ZERO);
@@ -40,7 +41,6 @@ const Deposit = observer(({ depositInfo }) => {
   const [APYOfPool, setAPYOfPool] = useState('');
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
-  let provider;
   const checkoutPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
       return false;
@@ -86,17 +86,11 @@ const Deposit = observer(({ depositInfo }) => {
     return true;
   };
   const refreshProc = async () => {
-    provider = new providers.Web3Provider(ethereum);
-    if (provider !== undefined) {
-      provider.listAccounts().then((accounts) => {
-        const defaultAccount = accounts[0];
-        if (defaultAccount) {
-          provider.getBalance(defaultAccount).then((balanceObj) => {
-            setBalance(balanceObj);
-          });
-        }
+    if (library && account) {
+      library.getBalance(account).then((balanceObj) => {
+        setBalance(balanceObj);
       });
-      const singer = provider.getSigner();
+      const singer = library.getSigner();
       if (singer && appStore.stakingWrapper !== undefined) {
         const { totalStakeInAMB, myStakeInAMB, poolAPY } =
           await appStore.stakingWrapper.getPoolData(depositInfo.index);

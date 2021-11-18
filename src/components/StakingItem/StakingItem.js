@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { providers, utils } from 'ethers';
 import { store as alertStore } from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
-
+import { useWeb3React } from '@web3-react/core';
+/*eslint-disable*/
 import Button from '../Button';
 import P from '../P';
 import Deposit from '../../pages/Staking/components/Deposit';
@@ -19,7 +19,6 @@ import {
   ethereum,
   HIDE,
   MAIN_PAGE,
-  network,
   SHOW,
   STAKE,
   STAKING_PAGE,
@@ -39,80 +38,56 @@ const StakingItem = ({
   index = -1,
   poolInfo,
 }) => {
+  const { library, active } = useWeb3React();
   const [myStake, setMyStake] = useState(null);
   const [totalStake, setTotalStake] = useState(null);
   const [APYOfPool, setAPYOfPool] = useState('');
   const history = useHistory();
   const { pathname } = history.location;
   const { logIn } = useLogIn();
-  let provider;
 
   const updateState = async () => {
-    try {
-      if (appStore.auth) {
-        if (ethereum && ethereum.isMetaMask) {
-          provider = new providers.Web3Provider(ethereum);
-        } else {
-          alertStore.addNotification({
-            content: InstallMetamaskAlert,
-            container: 'bottom-right',
-            animationIn: ['animated', 'fadeIn'],
-            animationOut: ['animated', 'fadeOut'],
-          });
-        }
-      }
-      const loggedInRefresh = async () => {
-        if (provider) {
-          const singer = provider.getSigner();
-          if (singer) {
-            const wrapper = new StakingWrapper(singer);
-            appStore.setStakingWrapper(wrapper);
-            if (appStore.stakingWrapper !== undefined) {
-              const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-                await appStore.stakingWrapper.getPoolData(poolInfo.index);
-              if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-                setMyStake(myStakeInAMB);
-                setAPYOfPool(poolAPY);
-                setTotalStake(totalStakeInAMB);
-              }
-            }
-          }
-        }
-      };
-      const loggedOutRefresh = async () => {
-        const stakingWrapper = new StakingWrapper();
-        const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
-          poolInfo.index,
-        );
-        if (poolAPY && totalStakeInAMB) {
-          setAPYOfPool(poolAPY);
-          setTotalStake(totalStakeInAMB);
-        }
-      };
-      const refreshProc = provider ? loggedInRefresh : loggedOutRefresh;
-      refreshProc();
-    } catch (switchError) {
-      if (switchError.code === 4902) {
-        ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-              chainName: `${network}`,
-              nativeCurrency: {
-                name: 'AMB',
-                symbol: 'AMB',
-                decimals: 18,
-              },
-              rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-              blockExplorerUrls: [
-                `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-              ],
-            },
-          ],
+    if (active) {
+      if (ethereum && ethereum.isMetaMask) {
+      } else {
+        alertStore.addNotification({
+          content: InstallMetamaskAlert,
+          container: 'bottom-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
         });
       }
     }
+    const loggedInRefresh = async () => {
+      if (library) {
+        const singer = library.getSigner();
+        if (singer) {
+          const wrapper = new StakingWrapper(singer);
+          appStore.setStakingWrapper(wrapper);
+          if (appStore.stakingWrapper !== undefined) {
+            const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+              await appStore.stakingWrapper.getPoolData(poolInfo.index);
+            if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+              setMyStake(myStakeInAMB);
+              setAPYOfPool(poolAPY);
+              setTotalStake(totalStakeInAMB);
+            }
+          }
+        }
+      }
+    };
+    const loggedOutRefresh = async () => {
+      const stakingWrapper = new StakingWrapper();
+      const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
+        poolInfo.index,
+      );
+      if (poolAPY && totalStakeInAMB) {
+        setAPYOfPool(poolAPY);
+        setTotalStake(totalStakeInAMB);
+      }
+    };
+    const refreshProc = library ? loggedInRefresh : loggedOutRefresh;
+    refreshProc();
   };
   const stakeBtnHandler = () => {
     if (expand !== false) {
@@ -247,7 +222,7 @@ const StakingItem = ({
             <div className="item--content">
               <div className="line" />
               <div className="collapsed-content">
-                {appStore.auth && (
+                {active && (
                   <div className="collapsed-content__body">
                     <Deposit depositInfo={poolInfo} />
                   </div>

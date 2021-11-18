@@ -3,10 +3,9 @@ import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
-import { providers } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
 
 import P from '../../P';
-import storageService from '../../../services/storage.service';
 import appStore from '../../../store/app.store';
 import { ethereum, menuLinks } from '../../../utils/constants';
 import { ambPriceInUsd, priceInPercent24h } from '../../../API/API';
@@ -14,13 +13,14 @@ import { ambPriceInUsd, priceInPercent24h } from '../../../API/API';
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
 import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
+import { connectorsByName } from '../../../utils/connectors';
+/*eslint-disable*/
 
 export const Header = observer(() => {
   const [usdPrice, setUsdPrice] = useState(0);
   const [percentChange24h, setPercentChange24h] = useState(0);
-  const [account, setAccount] = useState(null);
+  const { account, activate, active, deactivate } = useWeb3React();
   const history = useHistory();
-
   const getAmbCourse = async () => {
     const priceInUsd = await ambPriceInUsd(1);
     if (priceInUsd) {
@@ -33,63 +33,23 @@ export const Header = observer(() => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     let mounted = true;
     if (mounted) {
-      getAmbCourse();
-      if (storageService.get('auth') === true) {
-        if (typeof ethereum !== 'undefined') {
-          ethereum.on('disconnect', () => {
-            storageService.set('auth', false);
-            appStore.setAuth(false);
-            if (!storageService.get('auth')) {
-              history.push('/');
-            }
-          });
-          const provider = new providers.Web3Provider(ethereum);
-          provider
-            .listAccounts()
-            .then((accounts) => {
-              const defaultAccount = accounts[0];
-              if (defaultAccount) {
-                setAccount(defaultAccount);
-                storageService.set('auth', true);
-              } else {
-                storageService.set('auth', false);
-                appStore.setAuth(false);
-                if (!storageService.get('auth')) {
-                  history.push('/');
-                }
-              }
-            })
-            .catch((e) => {
-              if (e) {
-                storageService.set('auth', false);
-                appStore.setAuth(false);
-                if (!storageService.get('auth')) {
-                  history.push('/');
-                }
-              }
-            });
-        }
-      } else {
-        storageService.set('auth', false);
-        appStore.setAuth(false);
-        if (!storageService.get('auth')) {
-          history.push('/');
-        }
+      if (ethereum && ethereum.isMetaMask) {
+        await activate(connectorsByName['Injected']);
+        getAmbCourse();
       }
     }
     return () => {
       mounted = false;
       getAmbCourse();
     };
-  }, [ethereum]);
+  }, [active]);
 
   const logOut = async () => {
-    storageService.set('auth', false);
-    appStore.setAuth(false);
-    if (!storageService.get('auth')) {
+    deactivate();
+    if (!active) {
       history.push('/');
     }
   };
@@ -160,14 +120,12 @@ export const Header = observer(() => {
         )}
       </div>
       <div className="login">
-        {account && (
-          <div role="presentation" className="header__btn" onClick={logOut}>
-            <ReactSVG src={loginIcon} wrapper="span" />
-            <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
-              Log Out
-            </P>
-          </div>
-        )}
+        <div role="presentation" className="header__btn" onClick={logOut}>
+          <ReactSVG src={loginIcon} wrapper="span" />
+          <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
+            Log Out
+          </P>
+        </div>
       </div>
     </div>
   );
