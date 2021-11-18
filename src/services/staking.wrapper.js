@@ -185,8 +185,7 @@ class StakingWrapper {
 
     const sortedPoolRewards = rewardEvents
       .filter((event) => event.args.pool === poolAddr)
-      .sort((a, b) => a.args.tokenPrice.lte(b.args.tokenPrice));
-
+      .sort((a, b) => a.args.tokenPrice.sub(b.args.tokenPrice).toNumber());
     if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
 
     const [firstReward, lastReward] = await Promise.all(
