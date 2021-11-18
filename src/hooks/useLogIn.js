@@ -9,13 +9,22 @@ import { connectorsByName } from '../utils/connectors';
 
 const useLogIn = () => {
   const history = useHistory();
-  const { activate } = useWeb3React();
+  const { activate, active, connector } = useWeb3React();
 
   const logIn = async () => {
     if (ethereum && ethereum.isMetaMask) {
-      activate(connectorsByName['Injected'])
+      return await ethereum
+        .request({
+          method: 'wallet_requestPermissions',
+          params: [
+            {
+              eth_accounts: {},
+            },
+          ],
+        })
         .then(async (e) => {
           if (e) {
+            await activate(!active && connectorsByName['Injected']);
             history.push('/staking');
           }
         })
@@ -32,6 +41,7 @@ const useLogIn = () => {
         animationOut: ['animated', 'fadeOut'],
       });
     }
+    console.log(active);
   };
   return { logIn };
 };

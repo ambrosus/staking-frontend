@@ -1,11 +1,12 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
-import P from '../P';
-import { CONNECT_TEXT } from '../../utils/constants';
 
-import walletIcon from '../../assets/svg/wallet.svg';
-import useLogIn from '../../hooks/useLogIn';
+import P from '../../../../components/P';
+import { CONNECT_TEXT } from '../../../../utils/constants';
+
+import walletIcon from '../../../../assets/svg/wallet.svg';
+import useLogIn from '../../../../hooks/useLogIn';
 
 export const MetamaskConnect = observer(() => {
   const { logIn } = useLogIn();

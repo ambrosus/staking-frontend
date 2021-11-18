@@ -49,9 +49,7 @@ export const Header = observer(() => {
 
   const logOut = async () => {
     deactivate();
-    if (!active) {
-      history.push('/');
-    }
+    history.push('/');
   };
 
   const menu = (
