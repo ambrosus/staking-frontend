@@ -158,7 +158,7 @@ class StakingWrapper {
       .round(2)
       .done()
       .toFixed(2);
-    const poolData = {
+    return {
       totalStakeInAMB,
       myStakeInAMB,
       tokenPriceAMB,
@@ -167,8 +167,6 @@ class StakingWrapper {
       estDR,
       estAR,
     };
-
-    return poolData;
   }
 
   async _getDPY(index = null) {
@@ -185,7 +183,15 @@ class StakingWrapper {
 
     const sortedPoolRewards = rewardEvents
       .filter((event) => event.args.pool === poolAddr)
-      .sort((a, b) => a.args.tokenPrice.sub(b.args.tokenPrice).toNumber());
+      .sort((a, b) => {
+        if (a.args.tokenPrice.gt(b.args.tokenPrice)) {
+          return 1;
+        }
+        if (a.args.tokenPrice.lt(b.args.tokenPrice)) {
+          return -1;
+        }
+        return 0;
+      });
     if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
 
     const [firstReward, lastReward] = await Promise.all(
@@ -202,14 +208,12 @@ class StakingWrapper {
 
     if (lastReward.timestamp - firstReward.timestamp < 300) return 0;
 
-    const dpy = exprDPY.evaluate({
+    return exprDPY.evaluate({
       s1: math.bignumber(firstReward.tokenPrice.toString()),
       s2: math.bignumber(lastReward.tokenPrice.toString()),
       t1: firstReward.timestamp,
       t2: lastReward.timestamp,
     });
-
-    return dpy;
   }
 }
 
