@@ -209,7 +209,15 @@ const StakingItem = ({
             }}
             size="l-700"
           >
-            {APYOfPool ? `${APYOfPool}%` : <span className="skeleton" />}
+            {APYOfPool ? (
+              <span className="mobile-display-wrap">
+                {poolInfo.contractName === 'Plutus'
+                  ? 'Offline soon'
+                  : `${APYOfPool}%`}
+              </span>
+            ) : (
+              <span className="skeleton" />
+            )}
           </P>
         </div>
       </div>
