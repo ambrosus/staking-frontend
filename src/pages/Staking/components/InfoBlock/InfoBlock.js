@@ -76,7 +76,7 @@ const InfoBlock = ({
                         size="m-400"
                         style={{ paddingBottom: 5, whiteSpace: 'nowrap' }}
                       >
-                        &nbsp;Holdigs&nbsp;
+                        &nbsp;Holdings&nbsp;
                       </P>
                     </div>
                     <ReactSVG
