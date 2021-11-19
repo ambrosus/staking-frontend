@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {utils} from 'ethers';
-import {observer} from 'mobx-react-lite';
-import {useWeb3React} from '@web3-react/core';
+import { utils } from 'ethers';
+import { observer } from 'mobx-react-lite';
+import { useWeb3React } from '@web3-react/core';
 /*eslint-disable*/
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
@@ -15,28 +15,33 @@ import {
   parseFloatToBigNumber,
   ZERO,
 } from '../../../../services/staking.wrapper';
-import {FIFTY_PERCENT, ONE_HUNDRED_PERCENT, SEVENTY_FIVE_PERCENT, TWENTY_FIVE_PERCENT,} from '../../../../config';
-import {formatThousand, notificationMassage} from '../../../../utils/helpers';
+import {
+  FIFTY_PERCENT,
+  ONE_HUNDRED_PERCENT,
+  SEVENTY_FIVE_PERCENT,
+  TWENTY_FIVE_PERCENT,
+} from '../../../../config';
+import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(
-    ({
-       withdrawContractInfo = {
-         abi: [],
-       },
-       hideModal,
-       stake,
-     }) => {
-      const {library} = useWeb3React();
-      const [inputValue, setInputValue] = useState('');
-      const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
+  ({
+    withdrawContractInfo = {
+      abi: [],
+    },
+    hideModal,
+    stake,
+  }) => {
+    const { library } = useWeb3React();
+    const [inputValue, setInputValue] = useState('');
+    const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
 
-      const withdrawPayment = async () => {
-        if (!checkValidNumberString(inputValue)) {
-          return false;
-        }
-        if (library) {
-          const signer = library.getSigner();
+    const withdrawPayment = async () => {
+      if (!checkValidNumberString(inputValue)) {
+        return false;
+      }
+      if (library) {
+        const signer = library.getSigner();
         if (signer && appStore.stakingWrapper !== undefined) {
           const { tokenPriceAMB, myStakeInTokens } =
             await appStore.stakingWrapper.getPoolData(
@@ -205,12 +210,12 @@ const Withdraw = observer(
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-options">
           <div>
-            <Paragraph size="s-400" style={{color: '#9198BB'}}>
-              <span style={{fontFamily: ' Proxima Nova', fontSize: 14}}>
+            <Paragraph size="s-400" style={{ color: '#9198BB' }}>
+              <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
                 Estimated stake after withdraw:{' '}
                 {afterWithdraw && afterWithdraw.lt(0)
-                    ? 0
-                    : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
+                  ? 0
+                  : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
                 AMB
               </span>
             </Paragraph>

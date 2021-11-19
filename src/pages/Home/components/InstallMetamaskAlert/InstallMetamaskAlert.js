@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import Modal from '../../../../components/Modal';
 import mmLogoIcon from '../../../../assets/svg/download-extension.png';
@@ -7,16 +7,16 @@ export default function InstallMetamaskAlert() {
   const [closeModal, setCloseModal] = useState(true);
 
   return (
-      <Modal isShowing={closeModal} hide={() => setCloseModal(false)}>
-          <div
-              style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-              }}
-          >
-              <img
+    <Modal isShowing={closeModal} hide={() => setCloseModal(false)}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <img
           alt="MetaMast extension"
           className="download-block__img"
           src={mmLogoIcon}

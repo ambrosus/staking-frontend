@@ -3,6 +3,7 @@
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { BigNumber, ethers, providers } from 'ethers';
 import { all, create } from 'mathjs';
+import { headContractAddress } from 'ambrosus-node-contracts/config/config';
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
@@ -19,8 +20,6 @@ const math = create(all, {
 });
 
 const exprDPY = math.compile('(s2 / s1) ^ (86400 / (t2 - t1)) - 1');
-
-const headContractAddress = '0x0000000000000000000000000000000000000F10';
 
 function formatRounded(bigNumber, digits = 18) {
   if (!bigNumber || !BigNumber.isBigNumber(bigNumber)) {
@@ -103,7 +102,11 @@ class StakingWrapper {
 
     return Promise.all(
       this._pools.map(async (_pool, index) => {
-        const info = await Promise.all([_pool.name(), _pool.active()]);
+        const info = await Promise.all([
+          _pool.name(),
+          _pool.active(),
+          _pool.totalStake(),
+        ]);
         return {
           index,
           contractName: info[0],
@@ -111,6 +114,7 @@ class StakingWrapper {
           abi: pool.abi,
           active: info[1],
           contract: _pool,
+          totalStake: info[2],
         };
       }),
     );

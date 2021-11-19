@@ -31,7 +31,7 @@ export const network =
     : 'Ambrosus (Main net)';
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
+  supportedChainIds: [1, 2, 3, 4, +process.env.REACT_APP_CHAIN_ID],
 });
 
 const ConnectorNames = {
@@ -95,7 +95,7 @@ export const menuLinks = [
   },
   {
     target: false,
-    href: '/staking',
+    href: STAKING_PAGE,
     title: 'Staking',
     route: true,
   },

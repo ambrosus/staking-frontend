@@ -1,26 +1,26 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {ReactSVG} from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 
 import Paragraph from '../../../../components/Paragraph';
-import {Loader} from '../../../../components/Loader';
-import {formatRounded} from '../../../../services/staking.wrapper';
+import { Loader } from '../../../../components/Loader';
+import { formatRounded } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
-import {tooltips} from '../../../../config';
+import { tooltips } from '../../../../config';
 
 const InfoBlock = ({
-                     account,
-                     totalReward,
-                     totalRewardInUsd,
-                     totalStakedInUsd,
-                     totalStaked,
-                   }) => {
+  account,
+  totalReward,
+  totalRewardInUsd,
+  totalStakedInUsd,
+  totalStaked,
+}) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
 
   return (
@@ -29,23 +29,23 @@ const InfoBlock = ({
         {account ? (
           <>
             <div className="info-block__address">
-              <Paragraph size="m-400" style={{paddingBottom: 5}}>
+              <Paragraph size="m-400" style={{ paddingBottom: 5 }}>
                 My Address
               </Paragraph>
               <Paragraph
-                  size="l-500"
-                  style={{color: '#333333', fontSize: 16, fontWeight: 400}}
+                size="l-500"
+                style={{ color: '#333333', fontSize: 16, fontWeight: 400 }}
               >
                 {account
-                    ? ` ${account.substr(0, 9)}...${account.slice(32)}`
-                    : '...'}{' '}
+                  ? ` ${account.substr(0, 9)}...${account.slice(32)}`
+                  : '...'}{' '}
                 <ReactSVG
-                    data-tip
-                    data-for="copy-state"
-                    onClick={onCopy}
-                    src={copyIcon}
-                    wrapper="span"
-                    style={{marginLeft: 20, cursor: 'pointer'}}
+                  data-tip
+                  data-for="copy-state"
+                  onClick={onCopy}
+                  src={copyIcon}
+                  wrapper="span"
+                  style={{ marginLeft: 20, cursor: 'pointer' }}
                 />
               </Paragraph>
               {!isCopied ? (
@@ -67,15 +67,15 @@ const InfoBlock = ({
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                       <ReactSVG
-                          style={{
-                            paddingTop: 1,
-                          }}
-                          src={pieChartOutlineIcon}
-                          wrapper="span"
+                        style={{
+                          paddingTop: 1,
+                        }}
+                        src={pieChartOutlineIcon}
+                        wrapper="span"
                       />
                       <Paragraph
-                          size="m-400"
-                          style={{paddingBottom: 5, whiteSpace: 'nowrap'}}
+                        size="m-400"
+                        style={{ paddingBottom: 5, whiteSpace: 'nowrap' }}
                       >
                         &nbsp;Holdings&nbsp;
                       </Paragraph>
@@ -97,18 +97,18 @@ const InfoBlock = ({
                   }}
                 >
                   <DisplayValue
-                      size="xl-400"
-                      color="#1ACD8C"
-                      value={totalStaked && formatRounded(totalStaked, 2)}
+                    size="xl-400"
+                    color="#1ACD8C"
+                    value={totalStaked && formatRounded(totalStaked, 2)}
                   />
-                  <Paragraph size="xl-400" style={{color: '#4A38AE'}}>
+                  <Paragraph size="xl-400" style={{ color: '#4A38AE' }}>
                     &nbsp; / &nbsp;
                   </Paragraph>
                   <DisplayValue
-                      size="xl-400"
-                      color="#4A38AE"
-                      value={totalStakedInUsd}
-                      symbol="$"
+                    size="xl-400"
+                    color="#4A38AE"
+                    value={totalStakedInUsd}
+                    symbol="$"
                   />
                 </div>
               </div>
@@ -124,19 +124,19 @@ const InfoBlock = ({
                     {tooltips.earnings}
                   </ReactTooltip>
                   <ReactSVG
-                      style={{
-                        paddingTop: 0,
-                      }}
-                      src={earningsIcon}
+                    style={{
+                      paddingTop: 0,
+                    }}
+                    src={earningsIcon}
                   />
-                  <Paragraph size="m-400" style={{paddingBottom: 5}}>
+                  <Paragraph size="m-400" style={{ paddingBottom: 5 }}>
                     &nbsp;Est. yearly yield&nbsp;
                   </Paragraph>
                   <ReactSVG
-                      data-tip
-                      data-for="earnings"
-                      src={errorOutlineIcon}
-                      wrapper="span"
+                    data-tip
+                    data-for="earnings"
+                    src={errorOutlineIcon}
+                    wrapper="span"
                   />
                 </div>
 
@@ -149,18 +149,18 @@ const InfoBlock = ({
                   }}
                 >
                   <DisplayValue
-                      size="xl-400"
-                      color="#1ACD8C"
-                      value={totalReward}
+                    size="xl-400"
+                    color="#1ACD8C"
+                    value={totalReward}
                   />
-                  <Paragraph size="xl-400" style={{color: '#4A38AE'}}>
+                  <Paragraph size="xl-400" style={{ color: '#4A38AE' }}>
                     &nbsp; / &nbsp;
                   </Paragraph>
                   <DisplayValue
-                      size="xl-400"
-                      color="#4A38AE"
-                      value={totalRewardInUsd}
-                      symbol="$"
+                    size="xl-400"
+                    color="#4A38AE"
+                    value={totalRewardInUsd}
+                    symbol="$"
                   />
                 </div>
               </div>

@@ -1,9 +1,10 @@
 import { cssTransition, toast } from 'react-toastify';
 import { utils } from 'ethers';
 
+import { ethereum, network } from '../config';
+
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { ethereum, network } from '../config';
 
 export const notificationMassage = (type, alertText) => {
   const bounce = cssTransition({
