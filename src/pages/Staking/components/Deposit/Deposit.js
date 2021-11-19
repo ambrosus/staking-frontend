@@ -144,7 +144,10 @@ const Deposit = observer(({ depositInfo }) => {
           <div>
             {' '}
             <P style={{ textTransform: 'uppercase' }} size="l-700">
-              {APYOfPool}%
+              {depositInfo.active === false &&
+              depositInfo.totalStake.gte(FIXEDPOINT)
+                ? 'Offline'
+                : `${APYOfPool}%`}
             </P>
           </div>
         </div>
@@ -286,7 +289,6 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
-              depositInfo.contractName === 'Plutus' ||
               !depositInfo.active ||
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).lt(THOUSAND) ||

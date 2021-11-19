@@ -214,9 +214,8 @@ const StakingItem = ({
           >
             {APYOfPool ? (
               <span className="mobile-display-wrap">
-                {poolInfo.contractName === 'Plutus' ||
-                (poolInfo.active === false &&
-                  poolInfo.totalStake.gte(FIXEDPOINT))
+                {poolInfo.active === false &&
+                poolInfo.totalStake.gte(FIXEDPOINT)
                   ? 'Offline'
                   : `${APYOfPool}%`}
               </span>
