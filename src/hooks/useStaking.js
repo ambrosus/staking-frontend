@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-import { BigNumber, utils } from 'ethers';
+import { BigNumber } from 'ethers';
 import { formatRounded, StakingWrapper } from '../services/staking.wrapper';
-import { ethereum, network } from '../utils/constants';
-import { collapsedReducer } from '../utils/helpers';
+import { ethereum } from '../utils/constants';
+import { changeNetwork, collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
 import { connectorsByName } from '../utils/connectors';
 
@@ -13,7 +13,6 @@ const useStaking = () => {
   /*eslint-disable*/
   const [totalStaked, setTotalStaked] = useState(BigNumber.from('0'));
   const [activeExpand, setActiveExpand] = useState(-1);
-  const [requestNetworkChange, setRequestNetworkChange] = useState(false);
   const [totalReward, setTotalReward] = useState(0);
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [correctNetwork, setCorrectNetwork] = useState(true);
@@ -21,31 +20,9 @@ const useStaking = () => {
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
   let signer;
-  const changeNetwork = async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-        setCorrectNetwork(false);
-        return         setRequestNetworkChange(true);
 
-      }
-    }
-  };
-  const checkEthereumNetwork = async () => {
-    const { chainId } = await library.getNetwork();
-    if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-      setCorrectNetwork(false);
-    } else {
-      setCorrectNetwork(true);
-    }
-  };
   const getDataFromProvider = async () => {
     await activate(connectorsByName['Injected']);
-    checkEthereumNetwork()
-    if (chainId) {
-      window.addEventListener('focus', () => {
-        changeNetwork();
-      });
-    }
     if (correctNetwork && active) {
       signer = library !== undefined && library.getSigner();
       if (signer) {
@@ -92,53 +69,30 @@ const useStaking = () => {
     }
   };
   useEffect(() => {
-    if (requestNetworkChange) {
-      try {
-        ethereum
-            .request({
-              method: 'wallet_addEthereumChain',
-              params: [
-                {
-                  chainId: `${utils.hexlify(
-                      +process.env.REACT_APP_CHAIN_ID,
-                  )}`,
-                  chainName: `${network}`,
-                  nativeCurrency: {
-                    name: 'AMB',
-                    symbol: 'AMB',
-                    decimals: 18,
-                  },
-                  rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-                  blockExplorerUrls: [
-                    `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-                  ],
-                },
-              ],
-            })
-            .then((e) => {
-              if (e) {
-                setCorrectNetwork(true);
-                setRequestNetworkChange(false);
-              }
-            });
-      } catch (e) {
-        setCorrectNetwork(false);
+    if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+      setCorrectNetwork(false);
+    } else {
+      setCorrectNetwork(true);
+    }
+    if (ethereum && ethereum.isMetaMask) {
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        window.addEventListener('focus', () => {
+          changeNetwork();
+        });
       }
     }
-
     if (active && account) {
       getDataFromProvider();
     }
     return () => getDataFromProvider();
-  }, [appStore.refresh, active]);
+  }, [appStore.refresh, chainId, active]);
 
   return {
     account,
-    userChainId: chainId,
+    chainId,
     totalStaked,
     activeExpand,
     setActiveExpand,
-    correctNetwork,
     totalReward,
     totalRewardInUsd,
     state,

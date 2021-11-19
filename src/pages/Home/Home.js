@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link, useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
-import { utils } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 /*eslint-disable*/
 import P from '../../components/P';
-import MetamaskConnect from '../../components/MetamaskConnect';
+import MetamaskConnect from './components/MetamaskConnect';
 import StackItem from '../../components/StakingItem';
 import { ethereum, MAIN_PAGE, menuLinks, network } from '../../utils/constants';
 
@@ -18,38 +17,19 @@ import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/StakingItem/RenderItems';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
+import { changeNetwork } from '../../utils/helpers';
+import appStore from '../../store/app.store';
+import { connectorsByName } from '../../utils/connectors';
 
 const Home = () => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
-  const { library, active } = useWeb3React();
+
+  const { activate, chainId, active } = useWeb3React();
+
   const [pools, setPools] = useState([]);
   const location = useLocation();
   const { pathname } = location;
-  const changeNetwork = async () => {
-    await ethereum.request({
-      method: 'wallet_addEthereumChain',
-      params: [
-        {
-          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-          chainName: `${network}`,
-          nativeCurrency: {
-            name: 'AMB',
-            symbol: 'AMB',
-            decimals: 18,
-          },
-          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-          blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
-        },
-      ],
-    });
-  };
-  const initEthereumNetwork = async () => {
-    getPulls();
-    if (library && Boolean(library.supportedChainIds)) {
-      console.log('library.supportedChainIds', library.supportedChainIds);
-      setCorrectNetwork(true);
-    }
-  };
+
   const getPulls = async () => {
     const stakingWrapper = new StakingWrapper();
     const poolsArr = stakingWrapper && (await stakingWrapper.getPools());
@@ -58,9 +38,13 @@ const Home = () => {
     }
   };
   useEffect(() => {
-    initEthereumNetwork();
-    return () => initEthereumNetwork();
-  }, [active]);
+    getPulls();
+    if (chainId && chainId !== +process.env.REACT_APP_CHAIN_ID) {
+      setCorrectNetwork(false);
+    } else {
+      setCorrectNetwork(true);
+    }
+  }, [active, appStore.refresh]);
   const menu = (
     <div className="menu">
       {menuLinks.map((link) =>

@@ -1,7 +1,10 @@
 import { cssTransition, toast } from 'react-toastify';
+import { utils } from 'ethers';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { ethereum, network } from './constants';
+import appStore from '../store/app.store';
 
 export const notificationMassage = (type, alertText) => {
   const bounce = cssTransition({
@@ -70,4 +73,25 @@ export const formatThousand = (num) => {
     return `${Math.abs(Number(num) / 1.0e3).toFixed(2)}k`;
   }
   return Number(num).toFixed(2);
+};
+
+export const changeNetwork = async () => {
+  await ethereum
+    .request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+          chainName: `${network}`,
+          nativeCurrency: {
+            name: 'AMB',
+            symbol: 'AMB',
+            decimals: 18,
+          },
+          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+          blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
+        },
+      ],
+    })
+    .then(appStore.setRefresh());
 };

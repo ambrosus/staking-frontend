@@ -17,11 +17,10 @@ const bounce = cssTransition({
 const Staking = observer(() => {
   const {
     account,
-    userChainId,
+    chainId,
     totalStaked,
     activeExpand,
     setActiveExpand,
-    correctNetwork,
     totalReward,
     totalRewardInUsd,
     totalStakedInUsd,
@@ -63,7 +62,7 @@ const Staking = observer(() => {
                   index={index}
                   state={state}
                   expand
-                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
+                  hasChain={+process.env.REACT_APP_CHAIN_ID === chainId}
                   comingSoon={!item?.abi}
                   lazy
                   poolInfo={item}
@@ -76,7 +75,9 @@ const Staking = observer(() => {
   );
   return (
     <>
-      {correctNetwork && <NotSupported onclick={changeNetwork} />}
+      {chainId !== +process.env.REACT_APP_CHAIN_ID && (
+        <NotSupported onclick={changeNetwork} />
+      )}
       <div className="layout">
         <Header />
         <div className="content">
