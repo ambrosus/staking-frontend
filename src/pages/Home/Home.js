@@ -50,14 +50,14 @@ const Home = () => {
                   >
                     {link.title}
                   </Paragraph>
-          </Link>
-        ) : (
-          <a target={link.target && '_blank'} href={link.href} key={link.href}>
-            <Paragraph size="xs-500">{link.title}</Paragraph>
-          </a>
-        ),
-      )}
-    </div>
+                </Link>
+            ) : (
+                <a target={link.target && '_blank'} href={link.href} key={link.href}>
+                  <Paragraph size="xs-500">{link.title}</Paragraph>
+                </a>
+            ),
+        )}
+      </div>
   );
 
   const poolsData = pools.length > 0 && (

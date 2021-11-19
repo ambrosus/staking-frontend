@@ -13,7 +13,7 @@ const DisplayValue = ({
   value === null ? (
     <span className="skeleton" />
   ) : (
-      <span className="transitions">
+    <span className="transitions">
       <Paragraph
           style={{color, whiteSpace: 'nowrap', minWidth: 50}}
           size={size}

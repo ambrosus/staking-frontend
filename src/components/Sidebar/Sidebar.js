@@ -12,32 +12,32 @@ const Sidebar = (props) => {
 
     return (
         <Menu {...props}>
-      <a target="_blank" href="https://ambrosus.io/">
-          <Paragraph
-              style={{
-                  color: pathname === STAKING_PAGE ? '#4A38AE' : '#FFFFFF',
-              }}
-              size="xs-500"
-          >
-              Main
-          </Paragraph>
-      </a>
-      <a target="_blank" href="https://explorer.ambrosus.io/">
-          <Paragraph size="xs-500">Explorer</Paragraph>
-      </a>
-      <Link to="/staking" onClick={logIn}>
-          <Paragraph
-              style={{
-                  color: pathname === STAKING_PAGE ? '#4A38AE' : '#9198BB',
-              }}
-              size="xs-500"
-          >
-              Staking
-          </Paragraph>
-      </Link>
-      <a href="https://amb.to/" target="_blank">
-          <Paragraph size="xs-500">amb.to</Paragraph>
-      </a>
+            <a target="_blank" href="https://ambrosus.io/">
+                <Paragraph
+                    style={{
+                        color: pathname === STAKING_PAGE ? '#4A38AE' : '#FFFFFF',
+                    }}
+                    size="xs-500"
+                >
+                    Main
+                </Paragraph>
+            </a>
+            <a target="_blank" href="https://explorer.ambrosus.io/">
+                <Paragraph size="xs-500">Explorer</Paragraph>
+            </a>
+            <Link to="/staking" onClick={logIn}>
+                <Paragraph
+                    style={{
+                        color: pathname === STAKING_PAGE ? '#4A38AE' : '#9198BB',
+                    }}
+                    size="xs-500"
+                >
+                    Staking
+                </Paragraph>
+            </Link>
+            <a href="https://amb.to/" target="_blank">
+                <Paragraph size="xs-500">amb.to</Paragraph>
+            </a>
     </Menu>
   );
 };

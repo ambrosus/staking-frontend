@@ -26,11 +26,11 @@ const StakingItem = ({
                        expand = false,
                        activeExpand,
                        setActiveExpand,
-  state = 0,
-  dispatch,
-  index = -1,
-  poolInfo,
-}) => {
+                       state = 0,
+                       dispatch,
+                       index = -1,
+                       poolInfo,
+                     }) => {
   const { library, active } = useWeb3React();
   const [myStake, setMyStake] = useState(null);
   const [totalStake, setTotalStake] = useState(null);

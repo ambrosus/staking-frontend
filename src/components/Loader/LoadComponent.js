@@ -10,13 +10,13 @@ const Loader = ({ types = 'spokes' }) => {
   const location = useLocation();
   const { pathname } = location;
 
-    return (
-    <div className="loader">
-      <ReactLoading
-        type={types}
-        color={pathname !== MAIN_PAGE ? '#4A38AE' : '#2EDB9C'}
-      />
-    </div>
+  return (
+      <div className="loader">
+          <ReactLoading
+              type={types}
+              color={pathname !== MAIN_PAGE ? '#4A38AE' : '#2EDB9C'}
+          />
+      </div>
   );
 };
 Loader.propTypes = {

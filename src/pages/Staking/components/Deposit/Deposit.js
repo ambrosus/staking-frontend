@@ -34,8 +34,8 @@ const Deposit = observer(({depositInfo}) => {
   const [balance, setBalance] = useState(ZERO);
   const [totalStake, setTotalStake] = useState(ZERO);
   const [APYOfPool, setAPYOfPool] = useState('');
-  const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
-    useModal();
+  const {isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm} =
+      useModal();
 
   const checkoutPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
@@ -140,7 +140,7 @@ const Deposit = observer(({depositInfo}) => {
           </div>
         </div>
         <div className="space" />
-        <div className="line" />
+        <div className="line"/>
         <div
             style={{
               display: 'flex',

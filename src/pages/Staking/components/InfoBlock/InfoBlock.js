@@ -16,11 +16,11 @@ import {tooltips} from '../../../../config';
 
 const InfoBlock = ({
                      account,
-  totalReward,
-  totalRewardInUsd,
-  totalStakedInUsd,
-  totalStaked,
-}) => {
+                     totalReward,
+                     totalRewardInUsd,
+                     totalStakedInUsd,
+                     totalStaked,
+                   }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
 
   return (

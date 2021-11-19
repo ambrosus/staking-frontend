@@ -13,16 +13,16 @@ const Paragraph = ({size, className, children, ...props}) => (
             'l-500-white': size === 'l-500-white',
             'l-700': size === 'l-700',
             'm-500': size === 'm-500',
-      'm-400': size === 'm-400',
-      'xs-400': size === 'xs-400',
-      'xs-500': size === 'xs-500',
-      's-400': size === 's-400',
-      's-500': size === 's-500',
-    })}
-    {...props}
-  >
-    {children}
-  </p>
+            'm-400': size === 'm-400',
+            'xs-400': size === 'xs-400',
+            'xs-500': size === 'xs-500',
+            's-400': size === 's-400',
+            's-500': size === 's-500',
+        })}
+        {...props}
+    >
+        {children}
+    </p>
 );
 
 Paragraph.propTypes = {

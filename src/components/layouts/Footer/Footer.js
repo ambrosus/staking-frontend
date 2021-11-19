@@ -12,14 +12,14 @@ const Footer = observer(() => {
     const {pathname} = location;
 
     const socials = socialsLinks.map((social) => (
-    <li className="socials__list__link" key={social.url}>
-      <a href={social.url} target="_blank" rel="noopener noreferrer">
-        <ReactSVG wrapper="span" src={social.icon} />
-      </a>
-    </li>
-  ));
+        <li className="socials__list__link" key={social.url}>
+            <a href={social.url} target="_blank" rel="noopener noreferrer">
+                <ReactSVG wrapper="span" src={social.icon}/>
+            </a>
+        </li>
+    ));
 
-  return (
+    return (
     <footer
       className="footer"
       style={{

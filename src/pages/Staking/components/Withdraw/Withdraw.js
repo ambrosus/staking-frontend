@@ -27,16 +27,16 @@ const Withdraw = observer(
        hideModal,
        stake,
      }) => {
-    const { library } = useWeb3React();
-    const [inputValue, setInputValue] = useState('');
-    const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
+      const {library} = useWeb3React();
+      const [inputValue, setInputValue] = useState('');
+      const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
 
-    const withdrawPayment = async () => {
-      if (!checkValidNumberString(inputValue)) {
-        return false;
-      }
-      if (library) {
-        const signer = library.getSigner();
+      const withdrawPayment = async () => {
+        if (!checkValidNumberString(inputValue)) {
+          return false;
+        }
+        if (library) {
+          const signer = library.getSigner();
         if (signer && appStore.stakingWrapper !== undefined) {
           const { tokenPriceAMB, myStakeInTokens } =
             await appStore.stakingWrapper.getPoolData(
