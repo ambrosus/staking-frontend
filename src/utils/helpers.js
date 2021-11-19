@@ -60,14 +60,16 @@ export const collapsedReducer = (state, { type, index }) => {
 };
 
 export const formatThousand = (num) => {
-  if (Math.abs(Number(num)) >= 1.0e9) {
-    return `${Math.abs(Number(num) / 1.0e9).toFixed(2)}b`;
+  // eslint-disable-next-line no-param-reassign
+  num = Number(num);
+  if (Math.abs(num) >= 1e9) {
+    return `${Math.abs(num / 1e9).toFixed(2)}B`;
   }
-  if (Math.abs(Number(num)) >= 1.0e6) {
-    return `${Math.abs(Number(num) / 1.0e6).toFixed(2)}m`;
+  if (Math.abs(num) >= 1e6) {
+    return `${Math.abs(num / 1e6).toFixed(2)}M`;
   }
-  if (Math.abs(Number(num)) > 1.0e3) {
-    return `${Math.abs(Number(num) / 1.0e3).toFixed(2)}k`;
+  if (Math.abs(num) > 1e3) {
+    return `${Math.abs(num / 1e3).toFixed(2)}K`;
   }
-  return Number(num).toFixed(2);
+  return num.toFixed(2);
 };
