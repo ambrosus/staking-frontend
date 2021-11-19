@@ -295,7 +295,7 @@ const Deposit = observer(({ depositInfo }) => {
             onclick={checkoutPayment}
           >
             <P size="m-500">
-              {!depositInfo.active ? 'Pool is no active' : ' Stake'}
+              {!depositInfo.active ? 'Pool is offline' : ' Stake'}
             </P>
           </Button>
         </div>
