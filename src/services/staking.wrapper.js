@@ -103,7 +103,7 @@ class StakingWrapper {
 
     return Promise.all(
       this._pools.map(async (_pool, index) => {
-        const info = await Promise.all([_pool.name(), _pool.active()]);
+        const info = await Promise.all([_pool.name(), _pool.active(), _pool.totalStake()]);
         return {
           index,
           contractName: info[0],
@@ -111,6 +111,7 @@ class StakingWrapper {
           abi: pool.abi,
           active: info[1],
           contract: _pool,
+          totalStake: info[2],
         };
       }),
     );
