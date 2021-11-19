@@ -29,7 +29,6 @@ import {
   STAKE,
   STAKING_PAGE,
 } from '../../utils/constants';
-import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
 
@@ -136,106 +135,6 @@ const StakingItem = ({
     return () => updateState();
   }, [appStore.refresh]);
 
-  const stackHeader = (
-    <div className="item--header" role="presentation">
-      <div
-        className="item--header__flex"
-        style={{
-          paddingRight: pathname === STAKING_PAGE ? 100 : 100,
-        }}
-      >
-        <div
-          style={{
-            marginRight: pathname === STAKING_PAGE ? 10 : '',
-            color:
-              pathname === MAIN_PAGE &&
-              !myStake &&
-              !poolInfo.active &&
-              'rgb(191 201 224)',
-          }}
-          className="item--header__flex__pool"
-        >
-          <ReactSVG
-            className="item--header__flex__pool--avatar"
-            src={avatarIcon}
-            wrapper="span"
-          />
-          <P
-            style={{
-              color: poolInfo.active
-                ? pathname === MAIN_PAGE && '#FFF'
-                : 'rgb(191, 201, 224)',
-            }}
-            size="l-500"
-          >
-            {poolInfo?.contractName.substring(0, 8)}
-          </P>
-        </div>
-        {pathname === STAKING_PAGE && (
-          <div
-            style={{
-              marginRight: pathname === STAKING_PAGE ? 10 : '',
-            }}
-            className="item--header__flex__my-stake"
-          >
-            <div style={{ width: 150 }}>
-              <DisplayValue
-                color={
-                  poolInfo.active
-                    ? pathname === MAIN_PAGE && '#FFF'
-                    : 'rgb(191, 201, 224)'
-                }
-                value={myStake && formatRounded(myStake, 2)}
-              />
-            </div>
-          </div>
-        )}
-        <div className="item--header__flex__vault-assets">
-          <div style={{ width: 150 }}>
-            <DisplayValue
-              color={
-                poolInfo.active
-                  ? pathname === MAIN_PAGE && '#FFF'
-                  : 'rgb(191, 201, 224)'
-              }
-              value={totalStake && formatRounded(totalStake, 2)}
-            />
-          </div>
-        </div>
-        <div className="item--header__flex__apy">
-          <P
-            style={{
-              textTransform: 'uppercase',
-              color: poolInfo.active
-                ? pathname === MAIN_PAGE && '#1ACD8C'
-                : 'rgb(191, 201, 224)',
-            }}
-            size="l-700"
-          >
-            {APYOfPool ? (
-              <span className="mobile-display-wrap">
-                {poolInfo.active === false &&
-                poolInfo.totalStake.gte(FIXEDPOINT)
-                  ? 'Offline'
-                  : `${APYOfPool}%`}
-              </span>
-            ) : (
-              <span className="skeleton" />
-            )}
-          </P>
-        </div>
-      </div>
-      <Button
-        type={pathname === MAIN_PAGE ? 'green' : 'primary'}
-        onclick={stakeBtnHandler}
-      >
-        <P style={{ textTransform: 'uppercase' }} size="m-500">
-          {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
-          {!expand && STAKE}
-        </P>
-      </Button>
-    </div>
-  );
   return (
     <div
       role="presentation"
@@ -250,25 +149,118 @@ const StakingItem = ({
           'rgb(191 201 224)',
       }}
     >
-      <StakingItemBody>
-        {stackHeader}
-        {pathname === STAKING_PAGE && (
-          <Collapse
-            isOpen={state[index] ? activeExpand === index : state[index]}
+      <div className="item--header" role="presentation">
+        <div
+          className="item--header__flex"
+          style={{
+            paddingRight: pathname === STAKING_PAGE ? 100 : 100,
+          }}
+        >
+          <div
+            style={{
+              marginRight: pathname === STAKING_PAGE ? 10 : '',
+              color:
+                pathname === MAIN_PAGE &&
+                !myStake &&
+                !poolInfo.active &&
+                'rgb(191 201 224)',
+            }}
+            className="item--header__flex__pool"
           >
-            <div className="item--content">
-              <div className="line" />
-              <div className="collapsed-content">
-                {appStore.auth && (
-                  <div className="collapsed-content__body">
-                    <Deposit depositInfo={poolInfo} />
-                  </div>
-                )}
+            <ReactSVG
+              className="item--header__flex__pool--avatar"
+              src={avatarIcon}
+              wrapper="span"
+            />
+            <P
+              style={{
+                color: poolInfo.active
+                  ? pathname === MAIN_PAGE && '#FFF'
+                  : 'rgb(191, 201, 224)',
+              }}
+              size="l-500"
+            >
+              {poolInfo?.contractName.substring(0, 8)}
+            </P>
+          </div>
+          {pathname === STAKING_PAGE && (
+            <div
+              style={{
+                marginRight: pathname === STAKING_PAGE ? 10 : '',
+              }}
+              className="item--header__flex__my-stake"
+            >
+              <div style={{ width: 150 }}>
+                <DisplayValue
+                  color={
+                    poolInfo.active
+                      ? pathname === MAIN_PAGE && '#FFF'
+                      : 'rgb(191, 201, 224)'
+                  }
+                  value={myStake && formatRounded(myStake, 2)}
+                />
               </div>
             </div>
-          </Collapse>
-        )}
-      </StakingItemBody>
+          )}
+          <div className="item--header__flex__vault-assets">
+            <div style={{ width: 150 }}>
+              <DisplayValue
+                color={
+                  poolInfo.active
+                    ? pathname === MAIN_PAGE && '#FFF'
+                    : 'rgb(191, 201, 224)'
+                }
+                value={totalStake && formatRounded(totalStake, 2)}
+              />
+            </div>
+          </div>
+          <div className="item--header__flex__apy">
+            <P
+              style={{
+                textTransform: 'uppercase',
+                color: poolInfo.active
+                  ? pathname === MAIN_PAGE && '#1ACD8C'
+                  : 'rgb(191, 201, 224)',
+              }}
+              size="l-700"
+            >
+              {APYOfPool ? (
+                <span className="mobile-display-wrap">
+                  {poolInfo.active === false &&
+                  poolInfo.totalStake.gte(FIXEDPOINT)
+                    ? 'Offline'
+                    : `${APYOfPool}%`}
+                </span>
+              ) : (
+                <span className="skeleton" />
+              )}
+            </P>
+          </div>
+        </div>
+        <Button
+          type={pathname === MAIN_PAGE ? 'green' : 'primary'}
+          onclick={stakeBtnHandler}
+        >
+          <P style={{ textTransform: 'uppercase' }} size="m-500">
+            {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
+            {!expand && STAKE}
+          </P>
+        </Button>
+      </div>
+      {pathname === STAKING_PAGE && (
+        <Collapse isOpen={state[index] ? activeExpand === index : state[index]}>
+          <div className="item--content">
+            <div className="line" />
+            <div className="collapsed-content">
+              {appStore.auth && (
+                <div className="collapsed-content__body">
+                  <Deposit depositInfo={poolInfo} />
+                </div>
+              )}
+            </div>
+          </div>
+        </Collapse>
+      )}
     </div>
   );
 };
