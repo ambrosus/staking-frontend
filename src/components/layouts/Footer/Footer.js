@@ -3,7 +3,7 @@ import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 import { useLocation } from 'react-router-dom';
 
-import { MAIN_PAGE, socialsLinks } from '../../../utils/constants';
+import { MAIN_PAGE, socialsLinks } from '../../../config';
 
 import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 

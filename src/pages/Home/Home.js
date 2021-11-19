@@ -3,12 +3,9 @@ import { ReactSVG } from 'react-svg';
 import { Link, useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
-/*eslint-disable*/
 import P from '../../components/P';
 import MetamaskConnect from './components/MetamaskConnect';
 import StackItem from '../../components/StakingItem';
-import { ethereum, MAIN_PAGE, menuLinks, network } from '../../utils/constants';
-
 import CollapsedList from '../../components/CollapsedList';
 import NotSupported from '../../components/NotSupported';
 import { StakingWrapper } from '../../services/staking.wrapper';
@@ -18,33 +15,30 @@ import RenderItems from '../../components/StakingItem/RenderItems';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import { changeNetwork } from '../../utils/helpers';
-import appStore from '../../store/app.store';
-import { connectorsByName } from '../../utils/connectors';
+import { ethereum, MAIN_PAGE, menuLinks } from '../../config';
 
 const Home = () => {
   const [correctNetwork, setCorrectNetwork] = useState(true);
-
-  const { activate, chainId, active } = useWeb3React();
-
+  const { active, chainId } = useWeb3React();
   const [pools, setPools] = useState([]);
   const location = useLocation();
   const { pathname } = location;
 
   const getPulls = async () => {
-    const stakingWrapper = new StakingWrapper();
-    const poolsArr = stakingWrapper && (await stakingWrapper.getPools());
-    if (poolsArr) {
-      setPools(poolsArr);
+    if (ethereum && ethereum.isMetaMask) {
+      const stakingWrapper = new StakingWrapper();
+      setPools(await stakingWrapper.getPools());
     }
   };
+
   useEffect(() => {
     getPulls();
-    if (chainId && chainId !== +process.env.REACT_APP_CHAIN_ID) {
+    if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
       setCorrectNetwork(false);
     } else {
       setCorrectNetwork(true);
     }
-  }, [active, appStore.refresh]);
+  }, [active, chainId]);
   const menu = (
     <div className="menu">
       {menuLinks.map((link) =>
@@ -59,7 +53,7 @@ const Home = () => {
             </P>
           </Link>
         ) : (
-          <a target={link.taget && '_blank'} href={link.href} key={link.href}>
+          <a target={link.target && '_blank'} href={link.href} key={link.href}>
             <P size="xs-500">{link.title}</P>
           </a>
         ),

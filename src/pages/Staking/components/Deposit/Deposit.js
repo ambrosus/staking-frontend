@@ -26,7 +26,7 @@ import {
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
-} from '../../../../utils/constants';
+} from '../../../../config';
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 
 import avatarIcon from '../../../../assets/svg/avatar.svg';

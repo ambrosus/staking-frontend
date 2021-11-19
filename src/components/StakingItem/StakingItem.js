@@ -22,7 +22,7 @@ import {
   SHOW,
   STAKE,
   STAKING_PAGE,
-} from '../../utils/constants';
+} from '../../config';
 import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';

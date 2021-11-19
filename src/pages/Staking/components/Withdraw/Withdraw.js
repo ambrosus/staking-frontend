@@ -8,7 +8,6 @@ import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import P from '../../../../components/P';
 import ButtonGroup from '../../../../components/ButtonGroup';
-
 import {
   checkValidNumberString,
   FIXEDPOINT,
@@ -21,7 +20,7 @@ import {
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
-} from '../../../../utils/constants';
+} from '../../../../config';
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 

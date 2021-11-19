@@ -12,7 +12,7 @@ import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
-import { tooltips } from '../../../../utils/constants';
+import { tooltips } from '../../../../config';
 
 const InfoBlock = ({
   account,

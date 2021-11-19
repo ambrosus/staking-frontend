@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Home from '../../pages/Home';
 import Staking from '../../pages/Staking';
 import Footer from '../layouts/Footer';
-import { MAIN_PAGE, STAKING_PAGE } from '../../utils/constants';
+import { MAIN_PAGE, STAKING_PAGE } from '../../config';
 
 const RenderRoutes = observer(() => (
   <BrowserRouter>

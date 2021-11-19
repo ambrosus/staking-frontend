@@ -3,8 +3,7 @@ import { store as alertStore } from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
 
 import InstallMetamaskAlert from '../pages/Home/components/InstallMetamaskAlert';
-import { ethereum, STAKING_PAGE } from '../utils/constants';
-import { connectorsByName } from '../utils/connectors';
+import { ethereum, STAKING_PAGE, connectorsByName } from '../config';
 
 const useLogIn = () => {
   const history = useHistory();

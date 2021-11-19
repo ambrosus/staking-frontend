@@ -1,10 +1,13 @@
 import React from 'react';
+import { InjectedConnector } from '@web3-react/injected-connector';
+
 import githubIcon from '../assets/svg/github-icon.svg';
 import mediumIcon from '../assets/svg/medium-icon.svg';
 import redditIcon from '../assets/svg/reddit-icon.svg';
 import telegramIcon from '../assets/svg/telegram-icon.svg';
 import twitterIcon from '../assets/svg/twitter-icon.svg';
 import linkedinIcon from '../assets/svg/linkedin-icon.svg';
+
 export const STAKING_PAGE = '/staking';
 export const MAIN_PAGE = '/';
 export const CONNECT_TEXT = 'Connect Your Wallet';
@@ -16,14 +19,29 @@ export const TWENTY_FIVE_PERCENT = '25%';
 export const FIFTY_PERCENT = '50%';
 export const SEVENTY_FIVE_PERCENT = '75%';
 export const ONE_HUNDRED_PERCENT = '100%';
+export const AMBROSUS_TOKEN_URL = 'https://token.ambrosus.io';
 
 export const { ethereum } = window;
+
 const host = window.location.hostname;
 
 export const network =
   host.includes('local') || host.includes('dev') || host.includes('test')
     ? 'Ambrosus (Test net)'
     : 'Ambrosus (Main net)';
+
+export const injected = new InjectedConnector({
+  supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
+});
+
+const ConnectorNames = {
+  Injected: 'Injected',
+};
+
+export const connectorsByName = {
+  [ConnectorNames.Injected]: injected,
+};
+
 export const socialsLinks = [
   {
     url: 'https://github.com/ambrosus',
@@ -64,25 +82,25 @@ export const socialsLinks = [
 
 export const menuLinks = [
   {
-    taget: true,
+    target: true,
     href: 'https://ambrosus.io/',
     title: 'Main',
     route: false,
   },
   {
-    taget: true,
+    target: true,
     href: 'https://explorer.ambrosus.io/',
     title: 'Explorer',
     route: false,
   },
   {
-    taget: false,
+    target: false,
     href: '/staking',
     title: 'Staking',
     route: true,
   },
   {
-    taget: true,
+    target: true,
     href: 'https://amb.to/',
     title: 'amb.to',
     route: false,

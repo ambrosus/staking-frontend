@@ -3,10 +3,9 @@ import { useWeb3React } from '@web3-react/core';
 
 import { BigNumber } from 'ethers';
 import { formatRounded, StakingWrapper } from '../services/staking.wrapper';
-import { ethereum } from '../utils/constants';
+import { ethereum, connectorsByName } from '../config';
 import { changeNetwork, collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
-import { connectorsByName } from '../utils/connectors';
 
 const useStaking = () => {
   const { account, active, activate, chainId, library } = useWeb3React();

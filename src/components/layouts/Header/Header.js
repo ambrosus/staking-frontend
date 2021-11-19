@@ -7,13 +7,12 @@ import { useWeb3React } from '@web3-react/core';
 
 import P from '../../P';
 import appStore from '../../../store/app.store';
-import { ethereum, menuLinks } from '../../../utils/constants';
-import { ambPriceInUsd, priceInPercent24h } from '../../../API/API';
+import { ethereum, menuLinks, connectorsByName } from '../../../config';
+import { ambPriceInUsd, priceInPercent24h } from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
 import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
-import { connectorsByName } from '../../../utils/connectors';
 /*eslint-disable*/
 
 export const Header = observer(() => {
@@ -66,7 +65,7 @@ export const Header = observer(() => {
             </P>
           </Link>
         ) : (
-          <a target={link.taget && '_blank'} href={link.href} key={link.href}>
+          <a target={link.target && '_blank'} href={link.href} key={link.href}>
             <P size="xs-500">{link.title}</P>
           </a>
         ),
