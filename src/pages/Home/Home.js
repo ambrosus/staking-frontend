@@ -1,65 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { ReactSVG } from 'react-svg';
-import { Link, useLocation } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {ReactSVG} from 'react-svg';
+import {Link, useLocation} from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
-import { useWeb3React } from '@web3-react/core';
-import P from '../../components/P';
+import {useWeb3React} from '@web3-react/core';
+import Paragraph from '../../components/Paragraph';
 import MetamaskConnect from './components/MetamaskConnect';
-import StackItem from '../../components/StakingItem';
+import StackItem from '../../components/StakingItem/StakingItem';
 import CollapsedList from '../../components/CollapsedList';
-import NotSupported from '../../components/NotSupported';
-import { StakingWrapper } from '../../services/staking.wrapper';
-import { Loader } from '../../components/Loader';
+import {StakingWrapper} from '../../services/staking.wrapper';
+import {Loader} from '../../components/Loader';
 import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/StakingItem/RenderItems';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
-import { changeNetwork } from '../../utils/helpers';
-import { ethereum, MAIN_PAGE, menuLinks } from '../../config';
+import {MAIN_PAGE, menuLinks} from '../../config';
 
 const Home = () => {
-  const [correctNetwork, setCorrectNetwork] = useState(true);
-  const { active, chainId } = useWeb3React();
+  const {active, chainId} = useWeb3React();
   const [pools, setPools] = useState([]);
   const location = useLocation();
-  const { pathname } = location;
+  const {pathname} = location;
 
   const getPulls = async () => {
-    if (ethereum && ethereum.isMetaMask) {
-      const stakingWrapper = new StakingWrapper();
-      setPools(await stakingWrapper.getPools());
+    const stakingWrapper = new StakingWrapper();
+    const poolsArr = stakingWrapper && (await stakingWrapper.getPools());
+    if (poolsArr) {
+      setPools(poolsArr);
     }
   };
 
+  const start = async () => {
+    await getPulls();
+  };
+
   useEffect(() => {
-    getPulls();
-    if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-      setCorrectNetwork(false);
-    } else {
-      setCorrectNetwork(true);
-    }
+    start();
+    return () => start();
   }, [active, chainId]);
+
   const menu = (
-    <div className="menu">
-      {menuLinks.map((link) =>
-        link.route ? (
-          <Link to={link.href} className="menu__bold" key={link.href}>
-            <P
-              style={{ color: 'white', fontWeight: '500' }}
-              className="active"
-              size="xs-500"
-            >
-              {link.title}
-            </P>
+      <div className="menu">
+        {menuLinks.map((link) =>
+            link.route ? (
+                <Link to={link.href} className="menu__bold" key={link.href}>
+                  <Paragraph
+                      style={{color: 'white', fontWeight: '500'}}
+                      className="active"
+                      size="xs-500"
+                  >
+                    {link.title}
+                  </Paragraph>
           </Link>
         ) : (
           <a target={link.target && '_blank'} href={link.href} key={link.href}>
-            <P size="xs-500">{link.title}</P>
+            <Paragraph size="xs-500">{link.title}</Paragraph>
           </a>
         ),
       )}
     </div>
   );
+
   const poolsData = pools.length > 0 && (
     <>
       <div
@@ -93,9 +93,9 @@ const Home = () => {
       </div>
     </>
   );
+
   return (
     <>
-      {!correctNetwork && <NotSupported onclick={() => changeNetwork()} />}
       <div className="home" id="home">
         <Sidebar pageWrapId="root" outerContainerId="root" />
         <ReactNotifications />
@@ -111,25 +111,25 @@ const Home = () => {
         </div>
         <div className="home__top--info">
           <div className="info-text">
-            <P
-              size="xxxl-500"
-              style={{
-                paddingBottom: 10,
-                fontFamily: 'Halvar Breitschrift,sans-serif',
-              }}
+            <Paragraph
+                size="xxxl-500"
+                style={{
+                  paddingBottom: 10,
+                  fontFamily: 'Halvar Breitschrift,sans-serif',
+                }}
             >
               Get AMB Rewards. No node needed.
-            </P>
-            <P size="l-500-white">
+            </Paragraph>
+            <Paragraph size="l-500-white">
               Stake your AMB and receive up to
-              <span style={{ color: '#1ACD8C', fontWeight: 600 }}>
+              <span style={{color: '#1ACD8C', fontWeight: 600}}>
                 {' '}
                 35% APY
               </span>{' '}
               in a few clicks.
-            </P>
+            </Paragraph>
           </div>
-          <MetamaskConnect />
+          <MetamaskConnect/>
         </div>
         <div className="staking">
           {poolsData}

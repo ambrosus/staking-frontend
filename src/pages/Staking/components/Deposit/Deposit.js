@@ -1,12 +1,12 @@
-import { ReactSVG } from 'react-svg';
-import React, { useEffect, useState } from 'react';
-import { utils } from 'ethers';
-import { observer } from 'mobx-react-lite';
-import { useWeb3React } from '@web3-react/core';
+import {ReactSVG} from 'react-svg';
+import React, {useEffect, useState} from 'react';
+import {utils} from 'ethers';
+import {observer} from 'mobx-react-lite';
+import {useWeb3React} from '@web3-react/core';
 /*eslint-disable*/
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
-import P from '../../../../components/P';
+import Paragraph from '../../../../components/Paragraph';
 import useModal from '../../../../hooks/useModal';
 import Modal from '../../../../components/Modal';
 import Withdraw from '../Withdraw';
@@ -21,18 +21,13 @@ import {
   THOUSAND,
   ZERO,
 } from '../../../../services/staking.wrapper';
-import {
-  FIFTY_PERCENT,
-  ONE_HUNDRED_PERCENT,
-  SEVENTY_FIVE_PERCENT,
-  TWENTY_FIVE_PERCENT,
-} from '../../../../config';
-import { formatThousand, notificationMassage } from '../../../../utils/helpers';
+import {FIFTY_PERCENT, ONE_HUNDRED_PERCENT, SEVENTY_FIVE_PERCENT, TWENTY_FIVE_PERCENT,} from '../../../../config';
+import {formatThousand, notificationMassage} from '../../../../utils/helpers';
 
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 
-const Deposit = observer(({ depositInfo }) => {
-  const { account, library } = useWeb3React();
+const Deposit = observer(({depositInfo}) => {
+  const {account, library} = useWeb3React();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
   const [myStake, setMyStake] = useState(ZERO);
@@ -41,6 +36,7 @@ const Deposit = observer(({ depositInfo }) => {
   const [APYOfPool, setAPYOfPool] = useState('');
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
+
   const checkoutPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
       return false;
@@ -85,6 +81,7 @@ const Deposit = observer(({ depositInfo }) => {
 
     return true;
   };
+
   const refreshProc = async () => {
     if (library && account) {
       library.getBalance(account).then((balanceObj) => {
@@ -122,11 +119,11 @@ const Deposit = observer(({ depositInfo }) => {
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="modal--modal-body__header">
           <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <ReactSVG src={avatarIcon} wrapper="span" />
-            <P size="l-500">
+            <ReactSVG src={avatarIcon} wrapper="span"/>
+            <Paragraph size="l-500">
               &nbsp;&nbsp;&nbsp;&nbsp;{' '}
               {depositInfo?.contractName.substring(0, 8)}
-            </P>
+            </Paragraph>
           </div>
           <div style={{ textTransform: 'uppercase' }}>
             <DisplayValue size="l-400" value={formatRounded(myStake, 2)} />
@@ -137,40 +134,40 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
           <div>
             {' '}
-            <P style={{ textTransform: 'uppercase' }} size="l-700">
+            <Paragraph style={{textTransform: 'uppercase'}} size="l-700">
               {APYOfPool}%
-            </P>
+            </Paragraph>
           </div>
         </div>
         <div className="space" />
         <div className="line" />
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
         >
-          <P size="xxl-500">
-            <span style={{ fontWeight: 'normal', fontSize: 20 }}>
+          <Paragraph size="xxl-500">
+            <span style={{fontWeight: 'normal', fontSize: 20}}>
               Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
-          </P>
-          <P size="s-400" style={{ fontWeight: 500, fontSize: 12 }}>
+          </Paragraph>
+          <Paragraph size="s-400" style={{fontWeight: 500, fontSize: 12}}>
             <span
-              style={{
-                fontFamily: ' Proxima Nova',
-                fontSize: 14,
-                fontWeight: 600,
-              }}
+                style={{
+                  fontFamily: ' Proxima Nova',
+                  fontSize: 14,
+                  fontWeight: 600,
+                }}
             >
               Available for withdraw:{' '}
               {myStake && myStake.gte(MINSHOWSTAKE)
-                ? formatThousand(formatRounded(myStake, 2))
-                : 0}{' '}
+                  ? formatThousand(formatRounded(myStake, 2))
+                  : 0}{' '}
               AMB
             </span>
-          </P>
+          </Paragraph>
         </div>
         <Withdraw
           withdrawContractInfo={depositInfo}
@@ -180,29 +177,30 @@ const Deposit = observer(({ depositInfo }) => {
       </>
     </Modal>
   );
+
   return (
     <>
       <div className="collapsed-content__header">
         <>
-          <span style={{ fontWeight: 'normal', fontSize: 20 }}>
+          <span style={{fontWeight: 'normal', fontSize: 20}}>
             Deposit AMB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
           </span>
           {/* TODO toltip for deposit */}
         </>
-        <P size="s-400">
+        <Paragraph size="s-400">
           <span
-            style={{
-              fontWeight: 600,
-              fontSize: 14,
-              fontFamily: ' Proxima Nova',
-              color: '#333333',
-            }}
+              style={{
+                fontWeight: 600,
+                fontSize: 14,
+                fontFamily: ' Proxima Nova',
+                color: '#333333',
+              }}
           >
             &nbsp; Available for stake:{' '}
             {formatThousand(formatRounded(balance, 2))} AMB
           </span>
-        </P>
-        <div style={{ flexBasis: '90%' }} />
+        </Paragraph>
+        <div style={{flexBasis: '90%'}}/>
       </div>
       <div className="deposit">
         <div className="deposit-heading">
@@ -288,36 +286,39 @@ const Deposit = observer(({ depositInfo }) => {
             }
             onclick={checkoutPayment}
           >
-            <P size="m-500">
+            <Paragraph size="m-500">
               {!depositInfo.active ? 'Pool is no active' : ' Stake'}
-            </P>
+            </Paragraph>
           </Button>
         </div>
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-options">
           <div className="flex" style={{ marginBottom: 5 }}>
             {/* TODO toltip for unstake */}
-            <P
-              size="s-400"
-              style={{ color: '#9198BB' }}
-              role="presentation"
-              onClick={toggleWithdrawForm}
+            <Paragraph
+                size="s-400"
+                style={{color: '#9198BB'}}
+                role="presentation"
+                onClick={toggleWithdrawForm}
             >
               &nbsp;{' '}
-              <u style={{ cursor: 'pointer', color: '#4A38AE' }}>Unstake</u>
+              <u style={{cursor: 'pointer', color: '#4A38AE'}}>Unstake</u>
               &nbsp;&nbsp;&nbsp;&nbsp;
-            </P>
+            </Paragraph>
           </div>
-          <div style={{ marginBottom: 5 }}>
-            <P size="s-400-gray" style={{ color: '#9198BB', marginLeft: 10 }}>
-              <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
+          <div style={{marginBottom: 5}}>
+            <Paragraph
+                size="s-400-gray"
+                style={{color: '#9198BB', marginLeft: 10}}
+            >
+              <span style={{fontFamily: ' Proxima Nova', fontSize: 14}}>
                 Available for withdraw:{' '}
                 {myStake && myStake.gte(MINSHOWSTAKE)
-                  ? formatThousand(formatRounded(myStake, 2))
-                  : 0}{' '}
+                    ? formatThousand(formatRounded(myStake, 2))
+                    : 0}{' '}
                 AMB
               </span>
-            </P>
+            </Paragraph>
           </div>
         </div>
         {withdrawForm}

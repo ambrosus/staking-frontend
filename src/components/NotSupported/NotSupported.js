@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import P from '../P';
+import Paragraph from '../Paragraph';
 
 const NotSupported = ({ onclick }) => {
   const host = window.location.hostname;
@@ -8,19 +8,20 @@ const NotSupported = ({ onclick }) => {
     host.includes('local') || host.includes('dev') || host.includes('test')
       ? 'Testnet'
       : 'Mainnet';
+
   return (
     <div className="not-supported">
-      <P>
+      <Paragraph>
         {' '}
         Ambrosus is not supported on this network. Please &nbsp;
         <span
-          className="switch-text"
-          role="presentation"
-          onClick={() => onclick()}
+            className="switch-text"
+            role="presentation"
+            onClick={() => onclick()}
         >
           switch to {network}
         </span>
-      </P>
+      </Paragraph>
     </div>
   );
 };

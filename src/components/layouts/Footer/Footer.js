@@ -1,16 +1,17 @@
 import React from 'react';
-import { ReactSVG } from 'react-svg';
-import { observer } from 'mobx-react-lite';
-import { useLocation } from 'react-router-dom';
+import {ReactSVG} from 'react-svg';
+import {observer} from 'mobx-react-lite';
+import {useLocation} from 'react-router-dom';
 
-import { MAIN_PAGE, socialsLinks } from '../../../config';
+import {MAIN_PAGE, socialsLinks} from '../../../config';
 
 import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 
 const Footer = observer(() => {
-  const location = useLocation();
-  const { pathname } = location;
-  const socials = socialsLinks.map((social) => (
+    const location = useLocation();
+    const {pathname} = location;
+
+    const socials = socialsLinks.map((social) => (
     <li className="socials__list__link" key={social.url}>
       <a href={social.url} target="_blank" rel="noopener noreferrer">
         <ReactSVG wrapper="span" src={social.icon} />

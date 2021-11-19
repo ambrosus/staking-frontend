@@ -11,6 +11,7 @@ const Button = ({
   buttonStyles,
 }) => {
   const cssClasses = className('btn', priority, type);
+
   return (
     <button
       type="button"
@@ -23,6 +24,7 @@ const Button = ({
     </button>
   );
 };
+
 Button.propTypes = {
   disabled: PropTypes.any,
   onclick: PropTypes.func,

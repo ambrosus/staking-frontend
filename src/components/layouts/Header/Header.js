@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { ReactSVG } from 'react-svg';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
-import { observer } from 'mobx-react-lite';
-import { useWeb3React } from '@web3-react/core';
+import React, {useEffect, useState} from 'react';
+import {ReactSVG} from 'react-svg';
+import {Link} from 'react-router-dom';
+import {useHistory} from 'react-router';
+import {observer} from 'mobx-react-lite';
+import {useWeb3React} from '@web3-react/core';
 
-import P from '../../P';
+import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
-import { ethereum, menuLinks, connectorsByName } from '../../../config';
-import { ambPriceInUsd, priceInPercent24h } from '../../../api';
+import {connectorsByName, ethereum, menuLinks} from '../../../config';
+import {ambPriceInUsd, priceInPercent24h} from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
@@ -18,8 +18,9 @@ import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
 export const Header = observer(() => {
   const [usdPrice, setUsdPrice] = useState(0);
   const [percentChange24h, setPercentChange24h] = useState(0);
-  const { account, activate, active, deactivate } = useWeb3React();
+  const {account, activate, active, deactivate} = useWeb3React();
   const history = useHistory();
+
   const getAmbCourse = async () => {
     const priceInUsd = await ambPriceInUsd(1);
     if (priceInUsd) {
@@ -56,17 +57,17 @@ export const Header = observer(() => {
       {menuLinks.map((link) =>
         link.route ? (
           <Link to={link.href} className="menu__bold" key={link.href}>
-            <P
-              style={{ color: '#4A38AE', fontWeight: '600' }}
-              className="active"
-              size="xs-500"
+            <Paragraph
+                style={{color: '#4A38AE', fontWeight: '600'}}
+                className="active"
+                size="xs-500"
             >
               {link.title}
-            </P>
+            </Paragraph>
           </Link>
         ) : (
           <a target={link.target && '_blank'} href={link.href} key={link.href}>
-            <P size="xs-500">{link.title}</P>
+            <Paragraph size="xs-500">{link.title}</Paragraph>
           </a>
         ),
       )}
@@ -81,47 +82,47 @@ export const Header = observer(() => {
       </div>
       <div className="header__items">
         <div className="amb-curse">
-          <P size="xs-400" style={{ color: '#333333' }}>
+          <Paragraph size="xs-400" style={{color: '#333333'}}>
             AMB Price{' '}
             <b>
               {' '}
               {usdPrice ? (
-                <span style={{ color: '#333333' }}>
+                  <span style={{color: '#333333'}}>
                   {' '}
-                  $&nbsp;{Number(usdPrice).toFixed(4)}
+                    $&nbsp;{Number(usdPrice).toFixed(4)}
                 </span>
               ) : (
-                <span>...</span>
+                  <span>...</span>
               )}
             </b>
             &nbsp;&nbsp;
             <span
-              style={{ color: percentChange24h > 0 ? '#1ACD8C' : '#9198BB' }}
+                style={{color: percentChange24h > 0 ? '#1ACD8C' : '#9198BB'}}
             >
               {percentChange24h}%
             </span>
-          </P>
+          </Paragraph>
         </div>
         {menu}
         {account && (
           <div className="wallet-connect">
             {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
             {account && (
-              <P size="xs-400">
-                {account
-                  ? ` ${account.substr(0, 9)}...${account.slice(32)}`
-                  : '...'}
-              </P>
+                <Paragraph size="xs-400">
+                  {account
+                      ? ` ${account.substr(0, 9)}...${account.slice(32)}`
+                      : '...'}
+                </Paragraph>
             )}
           </div>
         )}
       </div>
       <div className="login">
         <div role="presentation" className="header__btn" onClick={logOut}>
-          <ReactSVG src={loginIcon} wrapper="span" />
-          <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
+          <ReactSVG src={loginIcon} wrapper="span"/>
+          <Paragraph size="xs-500" style={{color: '#BFC9E0', paddingLeft: 5}}>
             Log Out
-          </P>
+          </Paragraph>
         </div>
       </div>
     </div>

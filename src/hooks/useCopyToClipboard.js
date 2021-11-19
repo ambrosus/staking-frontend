@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
 export const copyToClipboard = (text) => {
   const el = document.createElement('textarea');
@@ -32,6 +32,7 @@ const useCopyToClipboard = ({ text, successDuration }) => {
     }
     return () => timer !== undefined && clearTimeout(timer);
   }, [isCopied, successDuration]);
+
   useEffect(() => () => setIsCopied(false), [text]);
 
   return { isCopied, onCopy: handleCopyToClipboard };

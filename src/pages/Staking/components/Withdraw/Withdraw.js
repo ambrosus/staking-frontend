@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { utils } from 'ethers';
-import { observer } from 'mobx-react-lite';
-import { useWeb3React } from '@web3-react/core';
+import {utils} from 'ethers';
+import {observer} from 'mobx-react-lite';
+import {useWeb3React} from '@web3-react/core';
 /*eslint-disable*/
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
-import P from '../../../../components/P';
+import Paragraph from '../../../../components/Paragraph';
 import ButtonGroup from '../../../../components/ButtonGroup';
 import {
   checkValidNumberString,
@@ -15,23 +15,18 @@ import {
   parseFloatToBigNumber,
   ZERO,
 } from '../../../../services/staking.wrapper';
-import {
-  FIFTY_PERCENT,
-  ONE_HUNDRED_PERCENT,
-  SEVENTY_FIVE_PERCENT,
-  TWENTY_FIVE_PERCENT,
-} from '../../../../config';
-import { formatThousand, notificationMassage } from '../../../../utils/helpers';
+import {FIFTY_PERCENT, ONE_HUNDRED_PERCENT, SEVENTY_FIVE_PERCENT, TWENTY_FIVE_PERCENT,} from '../../../../config';
+import {formatThousand, notificationMassage} from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(
-  ({
-    withdrawContractInfo = {
-      abi: [],
-    },
-    hideModal,
-    stake,
-  }) => {
+    ({
+       withdrawContractInfo = {
+         abi: [],
+       },
+       hideModal,
+       stake,
+     }) => {
     const { library } = useWeb3React();
     const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
@@ -103,6 +98,7 @@ const Withdraw = observer(
       stake &&
       checkValidNumberString(inputValue) &&
       setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)));
+
     useEffect(() => {
       calculateSumAfterWithdraw();
       return () => {
@@ -197,36 +193,38 @@ const Withdraw = observer(
               }
               onclick={() => withdrawPayment()}
             >
-              <P size="m-500">Withdraw</P>
+              <Paragraph size="m-500">Withdraw</Paragraph>
             </Button>
           </div>
           <div className="close-btn">
             <Button type="secondary" onclick={hideModal}>
-              <P size="m-500">Close</P>
+              <Paragraph size="m-500">Close</Paragraph>
             </Button>
           </div>
         </ButtonGroup>
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-options">
           <div>
-            <P size="s-400" style={{ color: '#9198BB' }}>
-              <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
+            <Paragraph size="s-400" style={{color: '#9198BB'}}>
+              <span style={{fontFamily: ' Proxima Nova', fontSize: 14}}>
                 Estimated stake after withdraw:{' '}
                 {afterWithdraw && afterWithdraw.lt(0)
-                  ? 0
-                  : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
+                    ? 0
+                    : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
                 AMB
               </span>
-            </P>
+            </Paragraph>
           </div>
         </div>
       </div>
     );
   },
 );
+
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
   stake: PropTypes.any,
   withdrawContractInfo: PropTypes.any,
 };
+
 export default React.memo(Withdraw);

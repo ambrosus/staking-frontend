@@ -1,8 +1,8 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { formatThousand } from '../../utils/helpers';
+import {formatThousand} from '../../utils/helpers';
 
-import P from '../P';
+import Paragraph from '../Paragraph';
 
 const DisplayValue = ({
   symbol = 'AMB',
@@ -13,10 +13,13 @@ const DisplayValue = ({
   value === null ? (
     <span className="skeleton" />
   ) : (
-    <span className="transitions">
-      <P style={{ color, whiteSpace: 'nowrap', minWidth: 50 }} size={size}>
+      <span className="transitions">
+      <Paragraph
+          style={{color, whiteSpace: 'nowrap', minWidth: 50}}
+          size={size}
+      >
         {`${formatThousand(value)} ${symbol}`}
-      </P>
+      </Paragraph>
     </span>
   );
 DisplayValue.propTypes = {

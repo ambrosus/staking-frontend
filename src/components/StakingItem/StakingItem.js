@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import React, {useEffect, useState} from 'react';
+import {useHistory} from 'react-router';
 import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg';
-import { store as alertStore } from 'react-notifications-component';
+import {ReactSVG} from 'react-svg';
+import {store as alertStore} from 'react-notifications-component';
 import Collapse from '@kunukn/react-collapse';
-import { useWeb3React } from '@web3-react/core';
+import {useWeb3React} from '@web3-react/core';
 /*eslint-disable*/
 import Button from '../Button';
-import P from '../P';
+import Paragraph from '../Paragraph';
 import Deposit from '../../pages/Staking/components/Deposit';
 import appStore from '../../store/app.store';
 import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
 import useLogIn from '../../hooks/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
-import {
-  ethereum,
-  HIDE,
-  MAIN_PAGE,
-  SHOW,
-  STAKE,
-  STAKING_PAGE,
-} from '../../config';
+import {formatRounded, StakingWrapper} from '../../services/staking.wrapper';
+import {ethereum, HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE,} from '../../config';
 import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
@@ -30,9 +23,9 @@ import ComingSoonPool from '../ComingSoonPool';
 // import { SkeletonPool } from '../Loader';
 
 const StakingItem = ({
-  expand = false,
-  activeExpand,
-  setActiveExpand,
+                       expand = false,
+                       activeExpand,
+                       setActiveExpand,
   state = 0,
   dispatch,
   index = -1,
@@ -58,6 +51,7 @@ const StakingItem = ({
         });
       }
     }
+
     const loggedInRefresh = async () => {
       if (library) {
         const singer = library.getSigner();
@@ -76,6 +70,7 @@ const StakingItem = ({
         }
       }
     };
+
     const loggedOutRefresh = async () => {
       const stakingWrapper = new StakingWrapper();
       const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
@@ -89,6 +84,7 @@ const StakingItem = ({
     const refreshProc = library ? loggedInRefresh : loggedOutRefresh;
     refreshProc();
   };
+
   const stakeBtnHandler = () => {
     if (expand !== false) {
       setActiveExpand(index);
@@ -103,6 +99,7 @@ const StakingItem = ({
       logIn();
     }
   };
+
   useEffect(() => {
     updateState();
     return () => updateState();
@@ -128,20 +125,20 @@ const StakingItem = ({
           className="item--header__flex__pool"
         >
           <ReactSVG
-            className="item--header__flex__pool--avatar"
-            src={avatarIcon}
-            wrapper="span"
+              className="item--header__flex__pool--avatar"
+              src={avatarIcon}
+              wrapper="span"
           />
-          <P
-            style={{
-              color: poolInfo.active
-                ? pathname === MAIN_PAGE && '#FFF'
-                : 'rgb(191, 201, 224)',
-            }}
-            size="l-500"
+          <Paragraph
+              style={{
+                color: poolInfo.active
+                    ? pathname === MAIN_PAGE && '#FFF'
+                    : 'rgb(191, 201, 224)',
+              }}
+              size="l-500"
           >
             {poolInfo?.contractName.substring(0, 8)}
-          </P>
+          </Paragraph>
         </div>
         {pathname === STAKING_PAGE && (
           <div
@@ -175,38 +172,39 @@ const StakingItem = ({
           </div>
         </div>
         <div className="item--header__flex__apy">
-          <P
-            style={{
-              textTransform: 'uppercase',
-              color: poolInfo.active
-                ? pathname === MAIN_PAGE && '#1ACD8C'
-                : 'rgb(191, 201, 224)',
-            }}
-            size="l-700"
+          <Paragraph
+              style={{
+                textTransform: 'uppercase',
+                color: poolInfo.active
+                    ? pathname === MAIN_PAGE && '#1ACD8C'
+                    : 'rgb(191, 201, 224)',
+              }}
+              size="l-700"
           >
             {APYOfPool ? (
-              <span className="mobile-display-wrap">
+                <span className="mobile-display-wrap">
                 {poolInfo.contractName === 'Plutus'
-                  ? 'Offline soon'
-                  : `${APYOfPool}%`}
+                    ? 'Offline soon'
+                    : `${APYOfPool}%`}
               </span>
             ) : (
-              <span className="skeleton" />
+                <span className="skeleton"/>
             )}
-          </P>
+          </Paragraph>
         </div>
       </div>
       <Button
         type={pathname === MAIN_PAGE ? 'green' : 'primary'}
         onclick={stakeBtnHandler}
       >
-        <P style={{ textTransform: 'uppercase' }} size="m-500">
+        <Paragraph style={{textTransform: 'uppercase'}} size="m-500">
           {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
           {!expand && STAKE}
-        </P>
+        </Paragraph>
       </Button>
     </div>
   );
+
   return poolInfo.active ? (
     <div
       role="presentation"

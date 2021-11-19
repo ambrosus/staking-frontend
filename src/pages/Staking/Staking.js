@@ -1,7 +1,7 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { cssTransition, ToastContainer } from 'react-toastify';
-import StakingItem from '../../components/StakingItem';
+import {observer} from 'mobx-react-lite';
+import {cssTransition, ToastContainer} from 'react-toastify';
+import StakingItem from '../../components/StakingItem/StakingItem';
 
 import Header from '../../components/layouts/Header';
 import Footer from '../../components/layouts/Footer';
@@ -14,6 +14,7 @@ const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
   exit: 'animate__animated animate__bounceOut',
 });
+
 const Staking = observer(() => {
   const {
     account,
@@ -29,6 +30,7 @@ const Staking = observer(() => {
     pools,
     changeNetwork,
   } = useStaking();
+
   const infoBlock = (
     <InfoBlock
       totalStakedInUsd={totalStakedInUsd}
@@ -38,6 +40,7 @@ const Staking = observer(() => {
       totalStaked={totalStaked}
     />
   );
+
   const stakingBody = (
     <div className="staking wrapper">
       {pools.length > 0 && (
@@ -73,6 +76,7 @@ const Staking = observer(() => {
       )}
     </div>
   );
+
   return (
     <>
       {chainId !== +process.env.REACT_APP_CHAIN_ID && (

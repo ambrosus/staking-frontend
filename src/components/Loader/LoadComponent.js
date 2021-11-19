@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactLoading from 'react-loading';
-import { useHistory } from 'react-router';
+import {useHistory} from 'react-router';
 import * as PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
-import { MAIN_PAGE } from '../../config';
+import {MAIN_PAGE} from '../../config';
 
 const Loader = ({ types = 'spokes' }) => {
   const location = useLocation();
   const { pathname } = location;
-  return (
+
+    return (
     <div className="loader">
       <ReactLoading
         type={types}
