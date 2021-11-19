@@ -32,8 +32,6 @@ import {
 import StakingItemBody from './StakingItemBody';
 
 import avatarIcon from '../../assets/svg/avatar.svg';
-import ComingSoonPool from '../ComingSoonPool';
-// import { SkeletonPool } from '../Loader';
 
 const StakingItem = ({
   expand = false,
@@ -239,7 +237,7 @@ const StakingItem = ({
       </Button>
     </div>
   );
-  return poolInfo.active ? (
+  return (
     <div
       role="presentation"
       className="stack-item"
@@ -273,8 +271,6 @@ const StakingItem = ({
         )}
       </StakingItemBody>
     </div>
-  ) : (
-    <ComingSoonPool loading={!!myStake} poolInfo={poolInfo} lazy />
   );
 };
 StakingItem.propTypes = {
