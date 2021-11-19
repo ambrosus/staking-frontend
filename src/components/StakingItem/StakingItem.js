@@ -14,7 +14,12 @@ import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAle
 import useLogIn from '../../hooks/useLogIn';
 import DisplayValue from '../DisplayValue';
 
-import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
+import {
+  FIXEDPOINT,
+  formatRounded,
+  StakingWrapper,
+} from '../../services/staking.wrapper';
+
 import {
   ethereum,
   HIDE,
@@ -211,8 +216,9 @@ const StakingItem = ({
           >
             {APYOfPool ? (
               <span className="mobile-display-wrap">
-                {poolInfo.contractName === 'Plutus'
-                  ? 'Offline soon'
+                {poolInfo.active === false &&
+                poolInfo.totalStake.gte(FIXEDPOINT)
+                  ? 'Offline'
                   : `${APYOfPool}%`}
               </span>
             ) : (

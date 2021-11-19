@@ -10,6 +10,7 @@ import NotSupported from '../../components/NotSupported';
 import useStaking from '../../hooks/useStaking';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/StakingItem/RenderItems';
+import { FIXEDPOINT } from '../../services/staking.wrapper';
 
 const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
@@ -53,7 +54,7 @@ const Staking = observer(() => {
           </div>
           <RenderItems>
             {pools
-              .filter((pool) => pool.active)
+              .filter((pool) => pool.active || pool.totalStake.gte(FIXEDPOINT))
               .sort((a, b) => b.active - a.active)
               .map((item, index) => (
                 <StakingItem
