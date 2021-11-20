@@ -49,7 +49,7 @@ const Deposit = observer(({ depositInfo }) => {
     const overrides = {
       value: parseFloatToBigNumber(inputValue),
       gasPrice: utils.parseUnits('20', 'gwei'),
-      gasLimit: 1000000,
+      gasLimit: 8000000,
     };
 
     await depositInfo.contract.stake(overrides).then(async (tx) => {
