@@ -12,8 +12,8 @@ import { changeNetwork, collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
 
 const useStaking = () => {
-  const { account, active, activate, chainId, library } = useWeb3React();
-  /*eslint-disable*/
+  const { account, active, activate, chainId, library, deactivate } =
+    useWeb3React();
   const [totalStaked, setTotalStaked] = useState(null);
   const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState(null);
@@ -25,10 +25,10 @@ const useStaking = () => {
   let signer;
 
   const getDataFromProvider = async () => {
-    await activate(connectorsByName['Injected']);
     signer = library !== undefined && library.getSigner();
     if (signer) {
       const stakingWrapper = new StakingWrapper(signer);
+      appStore.setStakingWrapper(stakingWrapper);
       const poolsArr = await stakingWrapper.getPools();
       setPools(poolsArr);
       const poolsRewards = [];
@@ -76,8 +76,12 @@ const useStaking = () => {
     }
   };
 
+  const checkNetwork = async () => {
+    await changeNetwork();
+  };
   useEffect(() => {
     mounted.current = true;
+    activate(connectorsByName.Injected);
     if (mounted.current) {
       getDataFromProvider();
       if (ethereum && ethereum.isMetaMask) {
@@ -85,12 +89,15 @@ const useStaking = () => {
           chainId !== undefined &&
           chainId !== +process.env.REACT_APP_CHAIN_ID
         ) {
-          window.addEventListener('focus', async () => {
-            await changeNetwork();
-          });
+          window.addEventListener('focus', checkNetwork);
         }
       }
     }
+    return () => {
+      getDataFromProvider();
+      deactivate();
+      window.removeEventListener('focus', checkNetwork);
+    };
   }, [appStore.refresh, chainId, active, account]);
 
   return {

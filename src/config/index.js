@@ -25,6 +25,7 @@ export const AMBROSUS_TOKEN_URL = 'https://token.ambrosus.io';
 export const { ethereum } = window;
 
 const host = window.location.hostname;
+
 export const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
   exit: 'animate__animated animate__bounceOut',

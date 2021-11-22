@@ -114,80 +114,6 @@ const Deposit = observer(({ depositInfo }) => {
     return () => refreshProc();
   }, [inputValue, appStore.stakingWrapper, appStore.refresh]);
 
-  const withdrawForm = (
-    <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
-      <>
-        <div className="modal--modal-body__header">
-          <div>Pool</div>
-          <div>My Stake</div>
-          <div>Total pool stake</div>
-          <div>APY</div>
-        </div>
-        <div className="space" style={{ marginBottom: 5 }} />
-        <div className="modal--modal-body__header">
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <ReactSVG src={avatarIcon} wrapper="span" />
-            <Paragraph size="l-500">
-              &nbsp;&nbsp;&nbsp;&nbsp;{' '}
-              {depositInfo?.contractName.substring(0, 8)}
-            </Paragraph>
-          </div>
-          <div style={{ textTransform: 'uppercase' }}>
-            <DisplayValue size="l-400" value={formatRounded(myStake, 2)} />
-          </div>
-          <div style={{ textTransform: 'uppercase' }}>
-            {' '}
-            <DisplayValue value={formatRounded(totalStake, 2)} size="l-400" />
-          </div>
-          <div>
-            {' '}
-            <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
-              {depositInfo.active === false &&
-              depositInfo.totalStake.gte(FIXEDPOINT)
-                ? 'Offline'
-                : `${APYOfPool}%`}
-            </Paragraph>
-          </div>
-        </div>
-        <div className="space" />
-        <div className="line" />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Paragraph size="xxl-500">
-            <span style={{ fontWeight: 'normal', fontSize: 20 }}>
-              Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-          </Paragraph>
-          <Paragraph size="s-400" style={{ fontWeight: 500, fontSize: 12 }}>
-            <span
-              style={{
-                fontFamily: ' Proxima Nova',
-                fontSize: 14,
-                fontWeight: 600,
-              }}
-            >
-              Available for withdraw:{' '}
-              {myStake && myStake.gte(MINSHOWSTAKE)
-                ? formatThousand(formatRounded(myStake, 2))
-                : 0}{' '}
-              AMB
-            </span>
-          </Paragraph>
-        </div>
-        <Withdraw
-          withdrawContractInfo={depositInfo}
-          stake={myStake}
-          hideModal={toggleWithdrawForm}
-        />
-      </>
-    </Modal>
-  );
-
   return (
     <>
       <div className="collapsed-content__header">
@@ -330,7 +256,80 @@ const Deposit = observer(({ depositInfo }) => {
             </Paragraph>
           </div>
         </div>
-        {withdrawForm}
+        <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
+          <>
+            <div className="modal--modal-body__header">
+              <div>Pool</div>
+              <div>My Stake</div>
+              <div>Total pool stake</div>
+              <div>APY</div>
+            </div>
+            <div className="space" style={{ marginBottom: 5 }} />
+            <div className="modal--modal-body__header">
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <ReactSVG src={avatarIcon} wrapper="span" />
+                <Paragraph size="l-500">
+                  &nbsp;&nbsp;&nbsp;&nbsp;{' '}
+                  {depositInfo?.contractName.substring(0, 8)}
+                </Paragraph>
+              </div>
+              <div style={{ textTransform: 'uppercase' }}>
+                <DisplayValue size="l-400" value={formatRounded(myStake, 2)} />
+              </div>
+              <div style={{ textTransform: 'uppercase' }}>
+                {' '}
+                <DisplayValue
+                  value={formatRounded(totalStake, 2)}
+                  size="l-400"
+                />
+              </div>
+              <div>
+                {' '}
+                <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
+                  {depositInfo.active === false &&
+                  depositInfo.totalStake.gte(FIXEDPOINT)
+                    ? 'Offline'
+                    : `${APYOfPool}%`}
+                </Paragraph>
+              </div>
+            </div>
+            <div className="space" />
+            <div className="line" />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Paragraph size="xxl-500">
+                <span style={{ fontWeight: 'normal', fontSize: 20 }}>
+                  Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+              </Paragraph>
+              <Paragraph size="s-400" style={{ fontWeight: 500, fontSize: 12 }}>
+                <span
+                  style={{
+                    fontFamily: ' Proxima Nova',
+                    fontSize: 14,
+                    fontWeight: 600,
+                  }}
+                >
+                  Available for withdraw:{' '}
+                  {myStake && myStake.gte(MINSHOWSTAKE)
+                    ? formatThousand(formatRounded(myStake, 2))
+                    : 0}{' '}
+                  AMB
+                </span>
+              </Paragraph>
+            </div>
+            <Withdraw
+              withdrawContractInfo={depositInfo}
+              stake={myStake}
+              hideModal={toggleWithdrawForm}
+            />
+          </>
+        </Modal>
       </div>
     </>
   );

@@ -113,25 +113,29 @@ const StakingItemBody = ({
             </div>
           </div>
           <div className="item--header__flex__apy">
-            <Paragraph
-              style={{
-                textTransform: 'uppercase',
-                color: poolInfo.active
-                  ? pathname === MAIN_PAGE && '#1ACD8C'
-                  : 'rgb(191, 201, 224)',
-              }}
-              size="l-700"
-            >
-              {APYOfPool ? (
-                <span className="mobile-display-wrap">
-                  {poolInfo.contractName === 'Plutus'
-                    ? 'Offline soon'
-                    : `${APYOfPool}%`}
-                </span>
-              ) : (
-                <span className="skeleton" />
-              )}
-            </Paragraph>
+            {APYOfPool && poolInfo.contractName === 'Plutus' ? (
+              <Paragraph
+                style={{
+                  color: poolInfo.active
+                    ? pathname === MAIN_PAGE && '#1ACD8C'
+                    : 'rgb(191, 201, 224)',
+                }}
+                size="l-700"
+              >
+                <span className="transitions">Offline soon</span>
+              </Paragraph>
+            ) : (
+              <DisplayValue
+                color={
+                  poolInfo.active
+                    ? pathname === MAIN_PAGE && '#1ACD8C'
+                    : 'rgb(191, 201, 224)'
+                }
+                size="l-700"
+                symbol="%"
+                value={APYOfPool}
+              />
+            )}
           </div>
         </div>
         <Button

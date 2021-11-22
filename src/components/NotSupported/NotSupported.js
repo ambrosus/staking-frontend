@@ -4,7 +4,7 @@ import Paragraph from '../Paragraph';
 import { network } from '../../config';
 
 const NotSupported = ({ onclick }) => {
-  const net = network ? 'Testnet' : 'Mainnet';
+  const net = !network ? 'Testnet' : 'Mainnet';
   return (
     <div className="not-supported">
       <Paragraph>

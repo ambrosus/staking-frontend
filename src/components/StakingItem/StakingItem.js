@@ -22,25 +22,20 @@ const StakingItem = ({
   const { library } = useWeb3React();
   const [myStake, setMyStake] = useState(null);
   const [totalStake, setTotalStake] = useState(null);
-  const [APYOfPool, setAPYOfPool] = useState('');
+  const [APYOfPool, setAPYOfPool] = useState(null);
   const history = useHistory();
   const { pathname } = history.location;
 
   const updateState = async () => {
     const loggedInRefresh = async () => {
       if (library) {
-        const singer = library.getSigner();
-        if (singer) {
-          const wrapper = new StakingWrapper(singer);
-          appStore.setStakingWrapper(wrapper);
-          if (appStore.stakingWrapper !== undefined) {
-            const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-              await appStore.stakingWrapper.getPoolData(poolInfo.index);
-            if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-              setMyStake(myStakeInAMB);
-              setAPYOfPool(poolAPY);
-              setTotalStake(totalStakeInAMB);
-            }
+        if (appStore.stakingWrapper !== undefined) {
+          const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+            await appStore.stakingWrapper.getPoolData(poolInfo.index);
+          if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+            setMyStake(myStakeInAMB);
+            setAPYOfPool(poolAPY);
+            setTotalStake(totalStakeInAMB);
           }
         }
       }

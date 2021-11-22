@@ -19,7 +19,6 @@ import { ambPriceInUsd, priceInPercent24h } from '../../../api';
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
 import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
-/*eslint-disable*/
 
 export const Header = observer(() => {
   const [usdPrice, setUsdPrice] = useState(0);

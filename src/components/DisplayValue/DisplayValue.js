@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatThousand } from '../../utils/helpers';
 
 import Paragraph from '../Paragraph';
-import { useDebounce } from '../../hooks';
 
 const DisplayValue = ({
   symbol = 'AMB',
   value,
   size = 'l-400',
   color = '#333333',
-}) => {
-  const [showValue, setShowValue] = useState(false);
-  useDebounce(() => setShowValue(true), 1500, [value]);
-  return !showValue ? (
+}) =>
+  value === null ? (
     <span className="skeleton" />
   ) : (
     <span className="transitions">
@@ -25,7 +22,7 @@ const DisplayValue = ({
       </Paragraph>
     </span>
   );
-};
+
 DisplayValue.propTypes = {
   value: PropTypes.any,
   size: PropTypes.string,
