@@ -1,20 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { cssTransition, ToastContainer } from 'react-toastify';
-import StakingItem from '../../components/StakingItem/StakingItem';
+import { ToastContainer } from 'react-toastify';
 
+import StakingItem from '../../components/StakingItem/StakingItem';
 import Header from '../../components/layouts/Header';
 import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
-import useStaking from '../../hooks/useStaking';
+import { useStaking, useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/StakingItem/RenderItems';
 import { FIXEDPOINT } from '../../services/staking.wrapper';
-
-const bounce = cssTransition({
-  enter: 'animate__animated animate__bounceIn',
-  exit: 'animate__animated animate__bounceOut',
-});
+import { bounce } from '../../config';
 
 const Staking = observer(() => {
   const {
@@ -31,6 +27,8 @@ const Staking = observer(() => {
     pools,
     changeNetwork,
   } = useStaking();
+  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
+  useTimeout(() => setCheckNetworkChain(true), 1500);
 
   const infoBlock = (
     <InfoBlock
@@ -44,7 +42,7 @@ const Staking = observer(() => {
 
   return (
     <>
-      {chainId !== undefined && chainId !== +process.env.REACT_APP_CHAIN_ID && (
+      {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
         <NotSupported onclick={changeNetwork} />
       )}
       <div className="layout">
@@ -64,7 +62,10 @@ const Staking = observer(() => {
                   </div>
                   <RenderItems>
                     {pools
-                        .filter((pool) => pool.active || pool.totalStake.gte(FIXEDPOINT))
+                      .filter(
+                        (pool) =>
+                          pool.active || pool.totalStake.gte(FIXEDPOINT),
+                      )
                       .sort((a, b) => b.active - a.active)
                       .map((item, index) => (
                         <StakingItem
@@ -91,7 +92,7 @@ const Staking = observer(() => {
         <Footer />
       </div>
     </>
-  )
+  );
 });
 
 export default React.memo(Staking);

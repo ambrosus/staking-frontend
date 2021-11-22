@@ -1,5 +1,6 @@
 import React from 'react';
 import { InjectedConnector } from '@web3-react/injected-connector';
+import { cssTransition } from 'react-toastify';
 
 import githubIcon from '../assets/svg/github-icon.svg';
 import mediumIcon from '../assets/svg/medium-icon.svg';
@@ -24,11 +25,16 @@ export const AMBROSUS_TOKEN_URL = 'https://token.ambrosus.io';
 export const { ethereum } = window;
 
 const host = window.location.hostname;
-
+export const bounce = cssTransition({
+  enter: 'animate__animated animate__bounceIn',
+  exit: 'animate__animated animate__bounceOut',
+});
 export const network =
-  host.includes('local') || host.includes('dev') || host.includes('test')
-    ? 'Ambrosus (Test net)'
-    : 'Ambrosus (Main net)';
+  host.includes('local') || host.includes('dev') || host.includes('test');
+
+export const transactionGasLimit = 8000000;
+
+export const transactionGasPrice = 20;
 
 export const injected = new InjectedConnector({
   supportedChainIds: [1, 2, 3, 4, +process.env.REACT_APP_CHAIN_ID],

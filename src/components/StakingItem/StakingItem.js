@@ -10,8 +10,6 @@ import { StakingWrapper } from '../../services/staking.wrapper';
 import { ethereum, MAIN_PAGE } from '../../config';
 import StakingItemBody from './StakingItemBody';
 
-import ComingSoonPool from '../ComingSoonPool';
-
 const StakingItem = ({
   expand = false,
   activeExpand,
@@ -75,7 +73,8 @@ const StakingItem = ({
     return () => updateState();
   }, [appStore.refresh]);
 
-  return poolInfo.active ? <div
+  return (
+    <div
       role="presentation"
       className="stack-item"
       style={{
@@ -101,6 +100,7 @@ const StakingItem = ({
         index={index}
       />
     </div>
+  );
 };
 
 StakingItem.propTypes = {

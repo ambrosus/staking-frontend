@@ -43,7 +43,7 @@ export const Header = observer(() => {
     let mounted = true;
     if (mounted) {
       if (ethereum && ethereum.isMetaMask) {
-        await activate(connectorsByName['Injected']);
+        await activate(connectorsByName.Injected);
         getAmbCourse();
       }
     }

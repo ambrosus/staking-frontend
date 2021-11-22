@@ -1,9 +1,9 @@
 import { ReactSVG } from 'react-svg';
 import React, { useEffect, useState } from 'react';
-import { utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-/*eslint-disable*/
+import { utils } from 'ethers';
+
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import Paragraph from '../../../../components/Paragraph';
@@ -23,6 +23,8 @@ import {
 } from '../../../../services/staking.wrapper';
 import {
   FIFTY_PERCENT,
+  transactionGasPrice,
+  transactionGasLimit,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
@@ -49,8 +51,8 @@ const Deposit = observer(({ depositInfo }) => {
 
     const overrides = {
       value: parseFloatToBigNumber(inputValue),
-      gasPrice: utils.parseUnits('20', 'gwei'),
-      gasLimit: 8000000,
+      gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
+      gasLimit: transactionGasLimit,
     };
 
     await depositInfo.contract.stake(overrides).then(async (tx) => {
@@ -142,8 +144,8 @@ const Deposit = observer(({ depositInfo }) => {
             <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
               {depositInfo.active === false &&
               depositInfo.totalStake.gte(FIXEDPOINT)
-                  ? 'Offline'
-                  : `${APYOfPool}%`}
+                ? 'Offline'
+                : `${APYOfPool}%`}
             </Paragraph>
           </div>
         </div>

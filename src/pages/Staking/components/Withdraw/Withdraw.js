@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-/*eslint-disable*/
+import { utils } from 'ethers';
+
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import Paragraph from '../../../../components/Paragraph';
@@ -17,6 +17,8 @@ import {
 } from '../../../../services/staking.wrapper';
 import {
   FIFTY_PERCENT,
+  transactionGasLimit,
+  transactionGasPrice,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
@@ -54,8 +56,8 @@ const Withdraw = observer(
           const value =
             formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
           const overrides = {
-            gasPrice: utils.parseUnits('20', 'gwei'),
-            gasLimit: 8000000,
+            gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
+            gasLimit: transactionGasLimit,
           };
           await withdrawContractInfo.contract
             .unstake(value, overrides)

@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
 import { BigNumber } from 'ethers';
-import { formatRounded, StakingWrapper } from '../services/staking.wrapper';
+import {
+  FIXEDPOINT,
+  formatRounded,
+  StakingWrapper,
+} from '../services/staking.wrapper';
 import { connectorsByName, ethereum } from '../config';
 import { changeNetwork, collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
@@ -10,14 +14,14 @@ import appStore from '../store/app.store';
 const useStaking = () => {
   const { account, active, activate, chainId, library } = useWeb3React();
   /*eslint-disable*/
-  const [totalStaked, setTotalStaked] = useState(BigNumber.from('0'));
+  const [totalStaked, setTotalStaked] = useState(null);
   const [activeExpand, setActiveExpand] = useState(-1);
-  const [totalReward, setTotalReward] = useState(0);
+  const [totalReward, setTotalReward] = useState(null);
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
   const [totalStakedInUsd, setTotalStakedInUsd] = useState(null);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
-  const mounted = useRef(null);
+  const mounted = useRef(false);
   let signer;
 
   const getDataFromProvider = async () => {
@@ -38,13 +42,16 @@ const useStaking = () => {
           const rewardInAmb =
             poolsRewards?.length > 0 &&
             poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-          setTotalReward(rewardInAmb);
+          setTotalReward(rewardInAmb > 0 && rewardInAmb);
           const esdSum =
             appStore.tokenPrice &&
             poolsRewards?.length > 0 &&
             poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
           setTotalRewardInUsd(
-            esdSum && appStore.tokenPrice && esdSum * appStore.tokenPrice,
+            esdSum &&
+              appStore.tokenPrice &&
+              esdSum > 0 &&
+              esdSum * appStore.tokenPrice,
           );
         }
         if (myStakeInAMB) {
@@ -54,10 +61,13 @@ const useStaking = () => {
               (acc, curr) => acc.add(curr),
               BigNumber.from('0'),
             );
-            setTotalStaked(totalStakeSum);
+            setTotalStaked(
+              totalStakeSum && totalStakeSum.gte(FIXEDPOINT) && totalStakeSum,
+            );
             setTotalStakedInUsd(
               totalStakeSum &&
                 appStore.tokenPrice &&
+                totalStakeSum.gte(FIXEDPOINT) &&
                 formatRounded(totalStakeSum) * appStore.tokenPrice,
             );
           }

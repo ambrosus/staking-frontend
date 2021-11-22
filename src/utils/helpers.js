@@ -1,17 +1,12 @@
-import { cssTransition, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { utils } from 'ethers';
 
-import { ethereum, network } from '../config';
+import { bounce, ethereum, network } from '../config';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const notificationMassage = (type, alertText) => {
-  const bounce = cssTransition({
-    enter: 'animate__animated animate__bounceIn',
-    exit: 'animate__animated animate__bounceOut',
-  });
-
   if (type === 'SUCCESS') {
     toast.success(alertText, {
       position: 'top-right',
@@ -83,7 +78,7 @@ export const changeNetwork = async () => {
     params: [
       {
         chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-        chainName: `${network}`,
+        chainName: `${network ? 'Ambrosus (Test net)' : 'Ambrosus (Main net)'}`,
         nativeCurrency: {
           name: 'AMB',
           symbol: 'AMB',
