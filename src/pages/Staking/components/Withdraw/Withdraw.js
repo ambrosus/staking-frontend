@@ -55,7 +55,7 @@ const Withdraw = observer(
             formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
           const overrides = {
             gasPrice: utils.parseUnits('20', 'gwei'),
-            gasLimit: 1000000,
+            gasLimit: 8000000,
           };
           await withdrawContractInfo.contract
             .unstake(value, overrides)

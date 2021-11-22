@@ -75,8 +75,7 @@ const StakingItem = ({
     return () => updateState();
   }, [appStore.refresh]);
 
-  return poolInfo.active ? (
-    <div
+  return poolInfo.active ? <div
       role="presentation"
       className="stack-item"
       style={{
@@ -102,9 +101,6 @@ const StakingItem = ({
         index={index}
       />
     </div>
-  ) : (
-    <ComingSoonPool loading={!!myStake} poolInfo={poolInfo} lazy />
-  );
 };
 
 StakingItem.propTypes = {

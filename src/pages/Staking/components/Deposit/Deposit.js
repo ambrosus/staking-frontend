@@ -50,7 +50,7 @@ const Deposit = observer(({ depositInfo }) => {
     const overrides = {
       value: parseFloatToBigNumber(inputValue),
       gasPrice: utils.parseUnits('20', 'gwei'),
-      gasLimit: 1000000,
+      gasLimit: 8000000,
     };
 
     await depositInfo.contract.stake(overrides).then(async (tx) => {
@@ -140,7 +140,10 @@ const Deposit = observer(({ depositInfo }) => {
           <div>
             {' '}
             <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
-              {APYOfPool}%
+              {depositInfo.active === false &&
+              depositInfo.totalStake.gte(FIXEDPOINT)
+                  ? 'Offline'
+                  : `${APYOfPool}%`}
             </Paragraph>
           </div>
         </div>
@@ -283,7 +286,6 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
-              depositInfo.contractName === 'Plutus' ||
               !depositInfo.active ||
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
@@ -292,7 +294,7 @@ const Deposit = observer(({ depositInfo }) => {
             onclick={checkoutPayment}
           >
             <Paragraph size="m-500">
-              {!depositInfo.active ? 'Pool is no active' : ' Stake'}
+              {!depositInfo.active ? 'Pool is offline' : ' Stake'}
             </Paragraph>
           </Button>
         </div>
