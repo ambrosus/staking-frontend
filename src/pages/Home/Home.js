@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
 import Paragraph from '../../components/Paragraph';
@@ -13,7 +13,8 @@ import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/StakingItem/RenderItems';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
-import { MAIN_PAGE, menuLinks } from '../../config';
+import { MAIN_PAGE } from '../../config';
+import Menu from './components/Menu';
 
 const Home = () => {
   const { active, chainId } = useWeb3React();
@@ -38,28 +39,6 @@ const Home = () => {
     return () => start();
   }, [active, chainId]);
 
-  const menu = (
-    <div className="menu">
-      {menuLinks.map((link) =>
-        link.route ? (
-          <Link to={link.href} className="menu__bold" key={link.href}>
-            <Paragraph
-              style={{ color: 'white', fontWeight: '500' }}
-              className="active"
-              size="xs-500"
-            >
-              {link.title}
-            </Paragraph>
-          </Link>
-        ) : (
-          <a target={link.target && '_blank'} href={link.href} key={link.href}>
-            <Paragraph size="xs-500">{link.title}</Paragraph>
-          </a>
-        ),
-      )}
-    </div>
-  );
-
   return (
     <>
       <div className="home" id="home">
@@ -72,7 +51,7 @@ const Home = () => {
             <div className="logo">
               <ReactSVG src={headerLogoSvg} wrapper="span" />
             </div>
-            {menu}
+            <Menu />
           </div>
         </div>
         <div className="home__top--info">
