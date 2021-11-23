@@ -20,7 +20,6 @@ export const TWENTY_FIVE_PERCENT = '25%';
 export const FIFTY_PERCENT = '50%';
 export const SEVENTY_FIVE_PERCENT = '75%';
 export const ONE_HUNDRED_PERCENT = '100%';
-export const AMBROSUS_TOKEN_URL = 'https://token.ambrosus.io';
 
 export const { ethereum } = window;
 
@@ -142,4 +141,15 @@ export default {
   socialsLinks,
   menuLinks,
   tooltips,
+  STAKING_PAGE,
+  MAIN_PAGE,
+  CONNECT_TEXT,
+  HIDE,
+  SHOW,
+  STAKE,
+  COMING_SOON,
+  TWENTY_FIVE_PERCENT,
+  FIFTY_PERCENT,
+  SEVENTY_FIVE_PERCENT,
+  ONE_HUNDRED_PERCENT,
 };

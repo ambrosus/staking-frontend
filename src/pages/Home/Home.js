@@ -22,21 +22,16 @@ const Home = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  const getPulls = async () => {
+  const getPools = async () => {
     const stakingWrapper = new StakingWrapper();
     const poolsArr = stakingWrapper && (await stakingWrapper.getPools());
-    if (poolsArr) {
+    if (poolsArr.length > 0) {
       setPools(poolsArr);
     }
   };
 
-  const start = async () => {
-    await getPulls();
-  };
-
   useEffect(() => {
-    start();
-    return () => start();
+    getPools();
   }, [active, chainId]);
 
   return (

@@ -4,12 +4,11 @@ import { ToastContainer } from 'react-toastify';
 
 import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
-import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
 import { useStaking, useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/RenderItems';
-import { FIXEDPOINT } from '../../services/staking.wrapper';
+import { FIXED_POINT } from '../../services/staking.wrapper';
 import { bounce } from '../../config';
 
 const Staking = observer(() => {
@@ -60,7 +59,7 @@ const Staking = observer(() => {
                     {pools
                       .filter(
                         (pool) =>
-                          pool.active || pool.totalStake.gte(FIXEDPOINT),
+                          pool.active || pool.totalStake.gte(FIXED_POINT),
                       )
                       .sort((a, b) => b.active - a.active)
                       .map((item, index) => (
@@ -85,7 +84,6 @@ const Staking = observer(() => {
             <ToastContainer transition={bounce} />
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

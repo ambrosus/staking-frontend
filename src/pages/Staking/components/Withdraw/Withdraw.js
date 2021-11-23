@@ -10,7 +10,7 @@ import Paragraph from '../../../../components/Paragraph';
 import ButtonGroup from '../../../../components/ButtonGroup';
 import {
   checkValidNumberString,
-  FIXEDPOINT,
+  FIXED_POINT,
   formatRounded,
   parseFloatToBigNumber,
   ZERO,
@@ -51,7 +51,7 @@ const Withdraw = observer(
             );
 
           const decimal = parseFloatToBigNumber(inputValue)
-            .mul(FIXEDPOINT)
+            .mul(FIXED_POINT)
             .div(tokenPriceAMB);
           const value =
             formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
@@ -195,7 +195,7 @@ const Withdraw = observer(
                 !checkValidNumberString(inputValue) ||
                 parseFloatToBigNumber(inputValue).eq(0) ||
                 parseFloatToBigNumber(inputValue).gt(
-                  stake.add(FIXEDPOINT.div(2)),
+                  stake.add(FIXED_POINT.div(2)),
                 )
               }
               onclick={() => withdrawPayment()}

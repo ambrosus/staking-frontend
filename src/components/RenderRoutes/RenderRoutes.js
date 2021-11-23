@@ -11,19 +11,11 @@ import { MAIN_PAGE, STAKING_PAGE } from '../../config';
 const RenderRoutes = observer(() => (
   <BrowserRouter>
     <Switch>
-      <Route
-        path={MAIN_PAGE}
-        exact
-        render={() => (
-          <>
-            <Home />
-            <Footer />
-          </>
-        )}
-      />
+      <Route path={MAIN_PAGE} exact render={() => <Home />} />
       <Route path={STAKING_PAGE} exact render={() => <Staking />} />
       <Redirect to={MAIN_PAGE} />
     </Switch>
+    <Footer />
   </BrowserRouter>
 ));
 

@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 
 import { BigNumber } from 'ethers';
 import {
-  FIXEDPOINT,
+  FIXED_POINT,
   formatRounded,
   StakingWrapper,
 } from '../services/staking.wrapper';
@@ -61,12 +61,12 @@ const useStaking = () => {
               BigNumber.from('0'),
             );
             setTotalStaked(
-              totalStakeSum && totalStakeSum.gte(FIXEDPOINT) && totalStakeSum,
+              totalStakeSum && totalStakeSum.gte(FIXED_POINT) && totalStakeSum,
             );
             setTotalStakedInUsd(
               totalStakeSum &&
                 appStore.tokenPrice &&
-                totalStakeSum.gte(FIXEDPOINT) &&
+                totalStakeSum.gte(FIXED_POINT) &&
                 formatRounded(totalStakeSum) * appStore.tokenPrice,
             );
           }

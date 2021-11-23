@@ -8,9 +8,9 @@ import { headContractAddress } from 'ambrosus-node-contracts/config/config';
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
 const TEN = BigNumber.from(10);
-const FIXEDPOINT = TEN.pow(18);
-const MINSHOWSTAKE = FIXEDPOINT.div(100);
-const THOUSAND = FIXEDPOINT.mul(1000);
+const FIXED_POINT = TEN.pow(18);
+const MIN_SHOW_STAKE = FIXED_POINT.div(100);
+const THOUSAND = FIXED_POINT.mul(1000);
 
 const AVERAGING_PERIOD = 10 * 24 * 60 * 60;
 
@@ -137,7 +137,7 @@ class StakingWrapper {
         poolContract.viewStake(),
         this._getDPY(index),
       ]);
-    const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXEDPOINT);
+    const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
     const poolAPY = math
       .chain(poolDPY)
       .add(1)
@@ -150,7 +150,7 @@ class StakingWrapper {
     const estDR = math
       .chain(poolDPY)
       .multiply(myStakeInAMB.toString())
-      .divide(FIXEDPOINT.toString())
+      .divide(FIXED_POINT.toString())
       .round(2)
       .done()
       .toFixed(2);
@@ -158,7 +158,7 @@ class StakingWrapper {
       .chain(poolAPY)
       .divide(100)
       .multiply(myStakeInAMB.toString())
-      .divide(FIXEDPOINT.toString())
+      .divide(FIXED_POINT.toString())
       .round(2)
       .done()
       .toFixed(2);
@@ -229,7 +229,7 @@ export {
   ZERO,
   ONE,
   TEN,
-  FIXEDPOINT,
-  MINSHOWSTAKE,
+  FIXED_POINT,
+  MIN_SHOW_STAKE,
   THOUSAND,
 };

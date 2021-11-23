@@ -14,9 +14,9 @@ import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
   checkValidNumberString,
-  FIXEDPOINT,
+  FIXED_POINT,
   formatRounded,
-  MINSHOWSTAKE,
+  MIN_SHOW_STAKE,
   parseFloatToBigNumber,
   THOUSAND,
   ZERO,
@@ -200,7 +200,7 @@ const Deposit = observer(({ depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(balance.div(FIXEDPOINT).toString())
+                  setInputValue(balance.div(FIXED_POINT).toString())
                 }
               >
                 <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}
@@ -247,7 +247,7 @@ const Deposit = observer(({ depositInfo }) => {
             >
               <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
                 Available for withdraw:{' '}
-                {myStake && myStake.gte(MINSHOWSTAKE)
+                {myStake && myStake.gte(MIN_SHOW_STAKE)
                   ? formatThousand(formatRounded(myStake, 2))
                   : 0}{' '}
                 AMB
@@ -286,7 +286,7 @@ const Deposit = observer(({ depositInfo }) => {
                 {' '}
                 <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
                   {depositInfo.active === false &&
-                  depositInfo.totalStake.gte(FIXEDPOINT)
+                  depositInfo.totalStake.gte(FIXED_POINT)
                     ? 'Offline'
                     : `${APYOfPool}%`}
                 </Paragraph>
@@ -315,7 +315,7 @@ const Deposit = observer(({ depositInfo }) => {
                   }}
                 >
                   Available for withdraw:{' '}
-                  {myStake && myStake.gte(MINSHOWSTAKE)
+                  {myStake && myStake.gte(MIN_SHOW_STAKE)
                     ? formatThousand(formatRounded(myStake, 2))
                     : 0}{' '}
                   AMB
