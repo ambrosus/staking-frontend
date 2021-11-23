@@ -12,8 +12,7 @@ import { changeNetwork, collapsedReducer } from '../utils/helpers';
 import appStore from '../store/app.store';
 
 const useStaking = () => {
-  const { account, active, activate, chainId, library, deactivate } =
-    useWeb3React();
+  const { account, active, activate, chainId, library } = useWeb3React();
   const [totalStaked, setTotalStaked] = useState(null);
   const [activeExpand, setActiveExpand] = useState(-1);
   const [totalReward, setTotalReward] = useState(null);
@@ -26,7 +25,7 @@ const useStaking = () => {
 
   const getDataFromProvider = async () => {
     signer = library !== undefined && library.getSigner();
-    if (signer) {
+    if (signer && active) {
       const stakingWrapper = new StakingWrapper(signer);
       appStore.setStakingWrapper(stakingWrapper);
       const poolsArr = await stakingWrapper.getPools();
@@ -40,12 +39,12 @@ const useStaking = () => {
         if (estAR) {
           poolsRewards.push(estAR);
           const rewardInAmb =
-            poolsRewards?.length > 0 &&
+            poolsRewards.length > 0 &&
             poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
           setTotalReward(rewardInAmb > 0 && rewardInAmb);
           const esdSum =
             appStore.tokenPrice &&
-            poolsRewards?.length > 0 &&
+            poolsRewards.length > 0 &&
             poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
           setTotalRewardInUsd(
             esdSum &&
@@ -56,7 +55,7 @@ const useStaking = () => {
         }
         if (myStakeInAMB) {
           myTotalStake.push(myStakeInAMB);
-          if (myTotalStake?.length > 0) {
+          if (myTotalStake.length > 0) {
             const totalStakeSum = myTotalStake.reduceRight(
               (acc, curr) => acc.add(curr),
               BigNumber.from('0'),
@@ -80,8 +79,8 @@ const useStaking = () => {
     await changeNetwork();
   };
   useEffect(() => {
-    mounted.current = true;
     activate(connectorsByName.Injected);
+    mounted.current = true;
     if (mounted.current) {
       getDataFromProvider();
       if (ethereum && ethereum.isMetaMask) {
@@ -95,10 +94,9 @@ const useStaking = () => {
     }
     return () => {
       getDataFromProvider();
-      deactivate();
       window.removeEventListener('focus', checkNetwork);
     };
-  }, [appStore.refresh, chainId, active, account]);
+  }, [appStore.refresh, chainId, account]);
 
   return {
     account,

@@ -21,6 +21,7 @@ import {
   THOUSAND,
   ZERO,
 } from '../../../../services/staking.wrapper';
+import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import {
   FIFTY_PERCENT,
   transactionGasPrice,
@@ -29,8 +30,6 @@ import {
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
-import { formatThousand, notificationMassage } from '../../../../utils/helpers';
-
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 
 const Deposit = observer(({ depositInfo }) => {
@@ -270,7 +269,7 @@ const Deposit = observer(({ depositInfo }) => {
                 <ReactSVG src={avatarIcon} wrapper="span" />
                 <Paragraph size="l-500">
                   &nbsp;&nbsp;&nbsp;&nbsp;{' '}
-                  {depositInfo?.contractName.substring(0, 8)}
+                  {depositInfo.contractName.substring(0, 8)}
                 </Paragraph>
               </div>
               <div style={{ textTransform: 'uppercase' }}>

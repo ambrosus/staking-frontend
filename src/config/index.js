@@ -130,3 +130,16 @@ export const tooltips = {
   deposit: `-`,
   unstake: `-`,
 };
+
+export default {
+  ethereum,
+  bounce,
+  network,
+  transactionGasLimit,
+  transactionGasPrice,
+  injected,
+  connectorsByName,
+  socialsLinks,
+  menuLinks,
+  tooltips,
+};

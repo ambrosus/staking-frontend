@@ -10,7 +10,7 @@ const useLogIn = () => {
   const { activate } = useWeb3React();
 
   const logIn = async () => {
-    if (ethereum?.isMetaMask === undefined) {
+    if (ethereum.isMetaMask === undefined) {
       return alertStore.addNotification({
         content: InstallMetamaskAlert,
         container: 'bottom-right',

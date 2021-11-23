@@ -5,12 +5,12 @@ import ReactNotifications from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
 import Paragraph from '../../components/Paragraph';
 import MetamaskConnect from './components/MetamaskConnect';
-import StackItem from '../../components/StakingItem/StakingItem';
+import StakingItem from '../../components/StakingItem';
 import CollapsedList from '../../components/CollapsedList';
 import { StakingWrapper } from '../../services/staking.wrapper';
 import { Loader } from '../../components/Loader';
 import Sidebar from '../../components/Sidebar';
-import RenderItems from '../../components/StakingItem/RenderItems';
+import RenderItems from '../../components/RenderItems';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import { MAIN_PAGE } from '../../config';
@@ -97,7 +97,7 @@ const Home = () => {
                       {pools.map(
                         (item) =>
                           item.active && (
-                            <StackItem
+                            <StakingItem
                               key={item.contractName}
                               poolInfo={item}
                               expand={false}

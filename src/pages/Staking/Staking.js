@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 
-import StakingItem from '../../components/StakingItem/StakingItem';
+import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
 import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
 import { useStaking, useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
-import RenderItems from '../../components/StakingItem/RenderItems';
+import RenderItems from '../../components/RenderItems';
 import { FIXEDPOINT } from '../../services/staking.wrapper';
 import { bounce } from '../../config';
 
@@ -30,16 +30,6 @@ const Staking = observer(() => {
   const [checkNetworkChain, setCheckNetworkChain] = useState(false);
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
-  const infoBlock = (
-    <InfoBlock
-      totalStakedInUsd={totalStakedInUsd}
-      account={account}
-      totalReward={totalReward}
-      totalRewardInUsd={totalRewardInUsd}
-      totalStaked={totalStaked}
-    />
-  );
-
   return (
     <>
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
@@ -49,7 +39,13 @@ const Staking = observer(() => {
         <Header />
         <div className="content">
           <div className="page">
-            {infoBlock}
+            <InfoBlock
+              totalStakedInUsd={totalStakedInUsd}
+              account={account}
+              totalReward={totalReward}
+              totalRewardInUsd={totalRewardInUsd}
+              totalStaked={totalStaked}
+            />
             <div className="staking wrapper">
               {pools.length > 0 && (
                 <>
@@ -77,7 +73,7 @@ const Staking = observer(() => {
                           state={state}
                           expand
                           hasChain={+process.env.REACT_APP_CHAIN_ID === chainId}
-                          comingSoon={!item?.abi}
+                          comingSoon={!item.abi}
                           lazy
                           poolInfo={item}
                         />

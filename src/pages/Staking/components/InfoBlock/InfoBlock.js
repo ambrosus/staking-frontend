@@ -178,6 +178,6 @@ InfoBlock.propTypes = {
   totalReward: PropTypes.any,
   totalStaked: PropTypes.any,
   totalRewardInUsd: PropTypes.any,
-  totalStakedInUsd: PropTypes.number,
+  totalStakedInUsd: PropTypes.any,
 };
 export default React.memo(InfoBlock);

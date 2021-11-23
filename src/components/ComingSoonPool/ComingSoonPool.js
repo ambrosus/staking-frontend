@@ -36,7 +36,7 @@ const ComingSoonPool = ({ poolInfo, loading }) => {
             }}
             size="l-500"
           >
-            {poolInfo?.contractName}
+            {poolInfo.contractName}
           </Paragraph>
         </div>
       </div>

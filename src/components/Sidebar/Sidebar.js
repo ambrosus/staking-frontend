@@ -2,7 +2,7 @@ import React from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import { Link, useLocation } from 'react-router-dom';
 import Paragraph from '../Paragraph';
-import useLogIn from '../../hooks/useLogIn';
+import { useLogIn } from '../../hooks';
 import { STAKING_PAGE } from '../../config';
 
 const Sidebar = (props) => {
