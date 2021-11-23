@@ -24,7 +24,7 @@ Block.propTypes = {
   isOpen: PropTypes.bool,
   lastElement: PropTypes.bool,
   onToggle: PropTypes.func,
-  title: PropTypes.string,
+  title: PropTypes.any,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
