@@ -33,7 +33,7 @@ const StakingItem = ({
   index = -1,
   poolInfo,
 }) => {
-  const { library } = useWeb3React();
+  const { library, account } = useWeb3React();
   const [myStake, setMyStake] = useState(null);
   const [totalStake, setTotalStake] = useState(null);
   const [APYOfPool, setAPYOfPool] = useState(null);
@@ -42,6 +42,7 @@ const StakingItem = ({
   const { active } = useWeb3React();
   const { logIn } = useLogIn();
   let signer;
+  let stakingWrapper;
   const stakeBtnHandler = () => {
     if (expand !== false) {
       setActiveExpand(index);
@@ -57,35 +58,45 @@ const StakingItem = ({
     }
   };
 
-  const updateState = async () => {
-    const loggedInRefresh = async () => {
-      signer = library.getSigner();
-      const stakingWrapper = new StakingWrapper(signer);
-      const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-        await stakingWrapper.getPoolData(poolInfo.index);
-      if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-        setMyStake(myStakeInAMB);
-        setAPYOfPool(poolAPY);
-        setTotalStake(totalStakeInAMB);
-      }
-    };
-
-    const loggedOutRefresh = async () => {
-      const stakingWrapper = new StakingWrapper();
-      const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
-        poolInfo.index,
-      );
-      if (poolAPY && totalStakeInAMB) {
-        setAPYOfPool(poolAPY);
-        setTotalStake(totalStakeInAMB);
-      }
-    };
-    const refreshProc = library ? loggedInRefresh : loggedOutRefresh;
-    refreshProc();
-  };
-
   useEffect(() => {
-    updateState();
+    (() => {
+      const loggedInRefresh = async () => {
+        signer = library.getSigner();
+        if (appStore.stakingWrapper !== undefined) {
+          const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+            await appStore.stakingWrapper.getPoolData(poolInfo.index);
+          if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+            setMyStake(myStakeInAMB);
+            setAPYOfPool(poolAPY);
+            setTotalStake(totalStakeInAMB);
+          }
+        } else {
+          stakingWrapper = new StakingWrapper(signer);
+          appStore.setStakingWrapper(stakingWrapper);
+          const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+            await appStore.stakingWrapper.getPoolData(poolInfo.index);
+          if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+            setMyStake(myStakeInAMB);
+            setAPYOfPool(poolAPY);
+            setTotalStake(totalStakeInAMB);
+          }
+        }
+      };
+
+      const loggedOutRefresh = async () => {
+        stakingWrapper = new StakingWrapper();
+        const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
+          poolInfo.index,
+        );
+        if (poolAPY && totalStakeInAMB) {
+          setAPYOfPool(poolAPY);
+          setTotalStake(totalStakeInAMB);
+        }
+      };
+      const refreshProc =
+        pathname === STAKING_PAGE ? loggedInRefresh : loggedOutRefresh;
+      refreshProc();
+    })();
     if (ethereum && !ethereum.isMetaMask) {
       alertStore.addNotification({
         content: InstallMetamaskAlert,
@@ -94,8 +105,7 @@ const StakingItem = ({
         animationOut: ['animated', 'fadeOut'],
       });
     }
-    return () => updateState();
-  }, [appStore.refresh]);
+  }, [appStore.refresh, account]);
 
   return (
     <div
@@ -222,7 +232,12 @@ const StakingItem = ({
               <div className="collapsed-content">
                 {active && (
                   <div className="collapsed-content__body">
-                    <Deposit depositInfo={poolInfo} />
+                    <Deposit
+                      myStake={myStake}
+                      totalStake={totalStake}
+                      APYOfPool={APYOfPool}
+                      depositInfo={poolInfo}
+                    />
                   </div>
                 )}
               </div>

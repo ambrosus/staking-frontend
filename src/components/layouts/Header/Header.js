@@ -7,13 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 
 import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
-import {
-  connectorsByName,
-  ethereum,
-  MAIN_PAGE,
-  menuLinks,
-  STAKING_PAGE,
-} from '../../../config';
+import { ethereum, MAIN_PAGE, menuLinks, STAKING_PAGE } from '../../../config';
 import { ambPriceInUsd, priceInPercent24h } from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
@@ -23,7 +17,7 @@ import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
 export const Header = observer(() => {
   const [usdPrice, setUsdPrice] = useState(0);
   const [percentChange24h, setPercentChange24h] = useState(0);
-  const { account, activate, active, deactivate } = useWeb3React();
+  const { account, deactivate } = useWeb3React();
   const history = useHistory();
 
   const getAmbCourse = async () => {
@@ -38,19 +32,11 @@ export const Header = observer(() => {
     }
   };
 
-  useEffect(async () => {
-    let mounted = true;
-    if (mounted) {
-      if (ethereum && ethereum.isMetaMask) {
-        await activate(connectorsByName.Injected);
-        getAmbCourse();
-      }
-    }
-    return () => {
-      mounted = false;
+  useEffect(() => {
+    if (ethereum && ethereum.isMetaMask) {
       getAmbCourse();
-    };
-  }, [active]);
+    }
+  }, []);
 
   const logOut = async () => {
     deactivate();

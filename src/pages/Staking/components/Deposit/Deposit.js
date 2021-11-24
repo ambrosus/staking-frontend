@@ -1,8 +1,9 @@
 import { ReactSVG } from 'react-svg';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import { utils } from 'ethers';
+import * as PropTypes from 'prop-types';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
@@ -32,14 +33,11 @@ import {
 } from '../../../../config';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 
-const Deposit = observer(({ depositInfo }) => {
+const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
   const { account, library } = useWeb3React();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
-  const [myStake, setMyStake] = useState(ZERO);
   const [balance, setBalance] = useState(ZERO);
-  const [totalStake, setTotalStake] = useState(ZERO);
-  const [APYOfPool, setAPYOfPool] = useState('');
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
 
@@ -93,25 +91,19 @@ const Deposit = observer(({ depositInfo }) => {
       library.getBalance(account).then((balanceObj) => {
         setBalance(balanceObj);
       });
-      const singer = library.getSigner();
-      if (singer && appStore.stakingWrapper !== undefined) {
-        const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-          await appStore.stakingWrapper.getPoolData(depositInfo.index);
-        setMyStake(myStakeInAMB);
-        setTotalStake(totalStakeInAMB);
-        setAPYOfPool(poolAPY);
-      }
     }
   };
+  const validateInput = useCallback(
+    () =>
+      !checkValidNumberString(inputValue) ||
+      parseFloatToBigNumber(inputValue).lt(THOUSAND),
+    [inputValue],
+  );
 
   useEffect(() => {
-    setInputError(
-      !checkValidNumberString(inputValue) ||
-        parseFloatToBigNumber(inputValue).lt(THOUSAND),
-    );
+    setInputError(validateInput());
     refreshProc();
-    return () => refreshProc();
-  }, [inputValue, appStore.stakingWrapper, appStore.refresh]);
+  }, [inputValue, appStore.refresh, account]);
 
   return (
     <>
@@ -273,12 +265,15 @@ const Deposit = observer(({ depositInfo }) => {
                 </Paragraph>
               </div>
               <div style={{ textTransform: 'uppercase' }}>
-                <DisplayValue size="l-400" value={formatRounded(myStake, 2)} />
+                <DisplayValue
+                  size="l-400"
+                  value={myStake && formatRounded(myStake, 2)}
+                />
               </div>
               <div style={{ textTransform: 'uppercase' }}>
                 {' '}
                 <DisplayValue
-                  value={formatRounded(totalStake, 2)}
+                  value={totalStake && formatRounded(totalStake, 2)}
                   size="l-400"
                 />
               </div>
@@ -333,4 +328,11 @@ const Deposit = observer(({ depositInfo }) => {
     </>
   );
 });
+
+Deposit.propTypes = {
+  myStake: PropTypes.any,
+  totalStake: PropTypes.any,
+  APYOfPool: PropTypes.any,
+  depositInfo: PropTypes.any,
+};
 export default React.memo(Deposit);

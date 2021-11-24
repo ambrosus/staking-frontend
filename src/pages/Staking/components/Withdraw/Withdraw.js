@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
@@ -101,10 +101,13 @@ const Withdraw = observer(
       return true;
     };
 
-    const calculateSumAfterWithdraw = () =>
-      stake &&
-      checkValidNumberString(inputValue) &&
-      setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)));
+    const calculateSumAfterWithdraw = useCallback(
+      () =>
+        stake &&
+        checkValidNumberString(inputValue) &&
+        setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue))),
+      [inputValue],
+    );
 
     useEffect(() => {
       calculateSumAfterWithdraw();
