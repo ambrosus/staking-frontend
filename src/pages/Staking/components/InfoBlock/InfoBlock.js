@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import { BigNumber } from 'ethers';
+import { observer } from 'mobx-react-lite';
 
 import Paragraph from '../../../../components/Paragraph';
 import {
@@ -18,7 +19,7 @@ import DisplayValue from '../../../../components/DisplayValue';
 import { tooltips } from '../../../../config';
 import appStore from '../../../../store/app.store';
 
-const InfoBlock = ({ poolsArr, account }) => {
+const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
   const [totalReward, setTotalReward] = useState(null);
   const [totalStaked, setTotalStaked] = useState(null);
@@ -26,6 +27,7 @@ const InfoBlock = ({ poolsArr, account }) => {
   const [totalStakedInUsd, setTotalStakedInUsd] = useState(null);
   let poolsRewards = [];
   let myTotalStake = [];
+
   useEffect(() => {
     (async () => {
       if (appStore.stakingWrapper !== undefined && poolsArr.length > 0) {
@@ -74,7 +76,8 @@ const InfoBlock = ({ poolsArr, account }) => {
         });
       }
     })();
-  }, [account]);
+  }, [appStore.refresh, account]);
+
   return (
     <div className="info-block ">
       <div className="wrapper">
@@ -220,7 +223,7 @@ const InfoBlock = ({ poolsArr, account }) => {
       </div>
     </div>
   );
-};
+});
 InfoBlock.propTypes = {
   poolsArr: PropTypes.array,
   account: PropTypes.string,
