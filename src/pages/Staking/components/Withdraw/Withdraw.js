@@ -237,4 +237,4 @@ Withdraw.propTypes = {
   withdrawContractInfo: PropTypes.any,
 };
 
-export default React.memo(Withdraw);
+export default Withdraw;

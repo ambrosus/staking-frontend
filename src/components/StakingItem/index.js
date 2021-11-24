@@ -57,47 +57,47 @@ const StakingItem = ({
       logIn();
     }
   };
-
   useEffect(() => {
-    (() => {
-      const loggedInRefresh = async () => {
-        signer = library.getSigner();
-        if (appStore.stakingWrapper !== undefined) {
-          const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-            await appStore.stakingWrapper.getPoolData(poolInfo.index);
-          if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-            setMyStake(myStakeInAMB);
-            setAPYOfPool(poolAPY);
-            setTotalStake(totalStakeInAMB);
+    if (ethereum && ethereum.isMetaMask) {
+      (() => {
+        const loggedInRefresh = async () => {
+          signer = library.getSigner();
+          if (appStore.stakingWrapper !== undefined) {
+            const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+              await appStore.stakingWrapper.getPoolData(poolInfo.index);
+            if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+              setMyStake(myStakeInAMB);
+              setAPYOfPool(poolAPY);
+              setTotalStake(totalStakeInAMB);
+            }
+          } else {
+            stakingWrapper = new StakingWrapper(signer);
+            appStore.setStakingWrapper(stakingWrapper);
+            const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+              await appStore.stakingWrapper.getPoolData(poolInfo.index);
+            if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+              setMyStake(myStakeInAMB);
+              setAPYOfPool(poolAPY);
+              setTotalStake(totalStakeInAMB);
+            }
           }
-        } else {
-          stakingWrapper = new StakingWrapper(signer);
-          appStore.setStakingWrapper(stakingWrapper);
-          const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-            await appStore.stakingWrapper.getPoolData(poolInfo.index);
-          if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-            setMyStake(myStakeInAMB);
-            setAPYOfPool(poolAPY);
-            setTotalStake(totalStakeInAMB);
-          }
-        }
-      };
+        };
 
-      const loggedOutRefresh = async () => {
-        stakingWrapper = new StakingWrapper();
-        const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
-          poolInfo.index,
-        );
-        if (poolAPY && totalStakeInAMB) {
-          setAPYOfPool(poolAPY);
-          setTotalStake(totalStakeInAMB);
-        }
-      };
-      const refreshProc =
-        pathname === STAKING_PAGE ? loggedInRefresh : loggedOutRefresh;
-      refreshProc();
-    })();
-    if (ethereum && !ethereum.isMetaMask) {
+        const loggedOutRefresh = async () => {
+          stakingWrapper = new StakingWrapper();
+          const { totalStakeInAMB, poolAPY } = await stakingWrapper.getPoolData(
+            poolInfo.index,
+          );
+          if (poolAPY && totalStakeInAMB) {
+            setAPYOfPool(poolAPY);
+            setTotalStake(totalStakeInAMB);
+          }
+        };
+        const refreshProc =
+          pathname === STAKING_PAGE ? loggedInRefresh : loggedOutRefresh;
+        refreshProc();
+      })();
+    } else {
       alertStore.addNotification({
         content: InstallMetamaskAlert,
         container: 'bottom-right',
@@ -105,7 +105,7 @@ const StakingItem = ({
         animationOut: ['animated', 'fadeOut'],
       });
     }
-  }, [appStore.refresh, account]);
+  }, [account]);
 
   return (
     <div

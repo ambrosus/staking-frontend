@@ -16,13 +16,14 @@ import { Loader } from '../../components/Loader';
 import { changeNetwork, collapsedReducer } from '../../utils/helpers';
 
 const Staking = observer(() => {
-  const { account, activate, chainId, library } = useWeb3React();
+  const { account, active, activate, chainId, library } = useWeb3React();
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState([]);
+  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
   let signer;
   let stakingWrapper;
-
+  console.log('********STAKING********');
   const getDataFromProvider = async () => {
     signer = library !== undefined && library.getSigner();
     if (signer) {
@@ -42,6 +43,7 @@ const Staking = observer(() => {
     await changeNetwork();
   };
   useEffect(() => {
+    console.log('********STAKING useEffect******** ');
     activate(connectorsByName.Injected);
     getDataFromProvider();
     if (ethereum && ethereum.isMetaMask) {
@@ -52,10 +54,10 @@ const Staking = observer(() => {
         window.addEventListener('focus', checkNetwork);
       }
     }
-  }, [appStore.refresh, chainId, account]);
+  }, [appStore.refresh, active === true]);
 
-  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
   useTimeout(() => setCheckNetworkChain(true), 1500);
+
   return (
     <>
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
@@ -66,7 +68,7 @@ const Staking = observer(() => {
         <div className="content">
           <div className="page">
             {appStore.stakingWrapper !== undefined && pools.length > 0 ? (
-              <>
+              <RenderItems update={appStore.refresh}>
                 <InfoBlock account={account} poolsArr={pools} />
                 <div className="staking wrapper">
                   <>
@@ -77,36 +79,32 @@ const Staking = observer(() => {
                       <div>APY</div>
                       <div style={{ marginRight: -45 }} />
                     </div>
-                    <RenderItems>
-                      {pools
-                        .filter(
-                          (pool) =>
-                            pool.active || pool.totalStake.gte(FIXED_POINT),
-                        )
-                        .sort((a, b) => b.active - a.active)
-                        .map((item, index) => (
-                          <StakingItem
-                            dispatch={dispatch}
-                            activeExpand={activeExpand}
-                            setActiveExpand={setActiveExpand}
-                            key={item.contractName}
-                            index={index}
-                            state={state}
-                            expand
-                            hasChain={
-                              +process.env.REACT_APP_CHAIN_ID === chainId
-                            }
-                            comingSoon={!item.abi}
-                            lazy
-                            poolInfo={item}
-                          />
-                        ))}
-                    </RenderItems>
+                    {pools
+                      .filter(
+                        (pool) =>
+                          pool.active || pool.totalStake.gte(FIXED_POINT),
+                      )
+                      .sort((a, b) => b.active - a.active)
+                      .map((item, index) => (
+                        <StakingItem
+                          dispatch={dispatch}
+                          activeExpand={activeExpand}
+                          setActiveExpand={setActiveExpand}
+                          key={item.contractName}
+                          index={index}
+                          state={state}
+                          expand
+                          hasChain={+process.env.REACT_APP_CHAIN_ID === chainId}
+                          comingSoon={!item.abi}
+                          lazy
+                          poolInfo={item}
+                        />
+                      ))}
                   </>
                 </div>
-              </>
+              </RenderItems>
             ) : (
-              <div style={{ paddingTop: 40 }}>
+              <div style={{ paddingTop: 100 }}>
                 <Loader types="spokes" />
               </div>
             )}
@@ -118,4 +116,4 @@ const Staking = observer(() => {
   );
 });
 
-export default React.memo(Staking);
+export default Staking;

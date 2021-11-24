@@ -103,7 +103,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
   useEffect(() => {
     setInputError(validateInput());
     refreshProc();
-  }, [inputValue, appStore.refresh, account]);
+  }, [inputValue, account]);
 
   return (
     <>
@@ -335,4 +335,4 @@ Deposit.propTypes = {
   APYOfPool: PropTypes.any,
   depositInfo: PropTypes.any,
 };
-export default React.memo(Deposit);
+export default Deposit;

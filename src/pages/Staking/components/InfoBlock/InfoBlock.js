@@ -24,12 +24,13 @@ const InfoBlock = ({ poolsArr, account }) => {
   const [totalStaked, setTotalStaked] = useState(null);
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
   const [totalStakedInUsd, setTotalStakedInUsd] = useState(null);
-
+  let poolsRewards = [];
+  let myTotalStake = [];
   useEffect(() => {
     (async () => {
       if (appStore.stakingWrapper !== undefined && poolsArr.length > 0) {
-        const poolsRewards = [];
-        const myTotalStake = [];
+        poolsRewards = [];
+        myTotalStake = [];
         poolsArr.map(async (pool) => {
           const { estAR, myStakeInAMB } =
             await appStore.stakingWrapper.getPoolData(pool.index);
@@ -73,7 +74,7 @@ const InfoBlock = ({ poolsArr, account }) => {
         });
       }
     })();
-  }, [appStore.refresh, account]);
+  }, [account]);
   return (
     <div className="info-block ">
       <div className="wrapper">
@@ -224,4 +225,4 @@ InfoBlock.propTypes = {
   poolsArr: PropTypes.array,
   account: PropTypes.string,
 };
-export default React.memo(InfoBlock);
+export default InfoBlock;
