@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { providers, utils } from 'ethers';
 import { observer } from 'mobx-react-lite';
+import { useWeb3React } from '@web3-react/core';
+import { utils } from 'ethers';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
-import P from '../../../../components/P';
+import Paragraph from '../../../../components/Paragraph';
 import ButtonGroup from '../../../../components/ButtonGroup';
-
 import {
   checkValidNumberString,
-  FIXEDPOINT,
+  FIXED_POINT,
   formatRounded,
   parseFloatToBigNumber,
   ZERO,
 } from '../../../../services/staking.wrapper';
 import {
-  ethereum,
   FIFTY_PERCENT,
+  transactionGasLimit,
+  transactionGasPrice,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
-} from '../../../../utils/constants';
+} from '../../../../config';
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 
@@ -33,6 +34,7 @@ const Withdraw = observer(
     hideModal,
     stake,
   }) => {
+    const { library } = useWeb3React();
     const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
 
@@ -40,10 +42,8 @@ const Withdraw = observer(
       if (!checkValidNumberString(inputValue)) {
         return false;
       }
-
-      const provider = new providers.Web3Provider(ethereum, 'any');
-      if (provider) {
-        const signer = provider.getSigner();
+      if (library) {
+        const signer = library.getSigner();
         if (signer && appStore.stakingWrapper !== undefined) {
           const { tokenPriceAMB, myStakeInTokens } =
             await appStore.stakingWrapper.getPoolData(
@@ -51,13 +51,13 @@ const Withdraw = observer(
             );
 
           const decimal = parseFloatToBigNumber(inputValue)
-            .mul(FIXEDPOINT)
+            .mul(FIXED_POINT)
             .div(tokenPriceAMB);
           const value =
             formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
           const overrides = {
-            gasPrice: utils.parseUnits('20', 'gwei'),
-            gasLimit: 8000000,
+            gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
+            gasLimit: transactionGasLimit,
           };
           await withdrawContractInfo.contract
             .unstake(value, overrides)
@@ -105,6 +105,7 @@ const Withdraw = observer(
       stake &&
       checkValidNumberString(inputValue) &&
       setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue)));
+
     useEffect(() => {
       calculateSumAfterWithdraw();
       return () => {
@@ -194,24 +195,24 @@ const Withdraw = observer(
                 !checkValidNumberString(inputValue) ||
                 parseFloatToBigNumber(inputValue).eq(0) ||
                 parseFloatToBigNumber(inputValue).gt(
-                  stake.add(FIXEDPOINT.div(2)),
+                  stake.add(FIXED_POINT.div(2)),
                 )
               }
               onclick={() => withdrawPayment()}
             >
-              <P size="m-500">Withdraw</P>
+              <Paragraph size="m-500">Withdraw</Paragraph>
             </Button>
           </div>
           <div className="close-btn">
             <Button type="secondary" onclick={hideModal}>
-              <P size="m-500">Close</P>
+              <Paragraph size="m-500">Close</Paragraph>
             </Button>
           </div>
         </ButtonGroup>
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-options">
           <div>
-            <P size="s-400" style={{ color: '#9198BB' }}>
+            <Paragraph size="s-400" style={{ color: '#9198BB' }}>
               <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
                 Estimated stake after withdraw:{' '}
                 {afterWithdraw && afterWithdraw.lt(0)
@@ -219,16 +220,18 @@ const Withdraw = observer(
                   : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
                 AMB
               </span>
-            </P>
+            </Paragraph>
           </div>
         </div>
       </div>
     );
   },
 );
+
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
   stake: PropTypes.any,
   withdrawContractInfo: PropTypes.any,
 };
+
 export default React.memo(Withdraw);

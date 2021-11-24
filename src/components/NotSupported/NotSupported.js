@@ -1,16 +1,13 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import P from '../P';
+import Paragraph from '../Paragraph';
+import { network } from '../../config';
 
 const NotSupported = ({ onclick }) => {
-  const host = window.location.hostname;
-  const network =
-    host.includes('local') || host.includes('dev') || host.includes('test')
-      ? 'Testnet'
-      : 'Mainnet';
+  const net = !network ? 'Testnet' : 'Mainnet';
   return (
     <div className="not-supported">
-      <P>
+      <Paragraph>
         {' '}
         Ambrosus is not supported on this network. Please &nbsp;
         <span
@@ -18,9 +15,9 @@ const NotSupported = ({ onclick }) => {
           role="presentation"
           onClick={() => onclick()}
         >
-          switch to {network}
+          switch to {net}
         </span>
-      </P>
+      </Paragraph>
     </div>
   );
 };

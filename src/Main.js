@@ -1,32 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { Web3Provider } from '@ethersproject/providers';
+import { BrowserRouter } from 'react-router-dom';
+import { Web3ReactProvider } from '@web3-react/core';
 
-import storageService from './services/storage.service';
-import appStore from './store/app.store';
-
-import './styles/Main.scss';
 import RenderRoutes from './components/RenderRoutes';
-import { ethereum } from './utils/constants';
+import './styles/Main.scss';
 
-const Main = observer(() => {
-  const handleChange = () => {
-    window.location.reload();
-  };
-  useEffect(() => {
-    if (ethereum) {
-      ethereum.on('accountsChanged', handleChange);
-      ethereum.on('chainChanged', handleChange);
-    }
-    if (storageService.get('auth')) {
-      appStore.setAuth(true);
-    }
-    return () => {
-      ethereum.removeListener('chainChanged', handleChange);
-      ethereum.removeListener('accountsChanged', handleChange);
-    };
-  }, [appStore.auth, storageService, ethereum]);
-
-  return <RenderRoutes />;
-});
+const getLibrary = (provider) => {
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 8000;
+  return library;
+};
+const Main = observer(() => (
+  <Web3ReactProvider getLibrary={getLibrary}>
+    <BrowserRouter>
+      <RenderRoutes />
+    </BrowserRouter>
+  </Web3ReactProvider>
+));
 
 export default Main;

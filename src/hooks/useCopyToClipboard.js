@@ -32,6 +32,7 @@ const useCopyToClipboard = ({ text, successDuration }) => {
     }
     return () => timer !== undefined && clearTimeout(timer);
   }, [isCopied, successDuration]);
+
   useEffect(() => () => setIsCopied(false), [text]);
 
   return { isCopied, onCopy: handleCopyToClipboard };

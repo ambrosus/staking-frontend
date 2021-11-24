@@ -1,1 +1,2 @@
-export { default } from './ComingSoonPool';
+import ComingSoonPool from './ComingSoonPool';
+export { ComingSoonPool };

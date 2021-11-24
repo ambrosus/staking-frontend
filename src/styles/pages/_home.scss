@@ -151,7 +151,7 @@ z-index: 0;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding: 18px 6px 0px 18px;
+        padding: 18px 6px 0 18px;
 
         .logo {
           svg {
@@ -197,7 +197,7 @@ z-index: 0;
           }
 
           p {
-            margin-top: 0px;
+            margin-top: 0;
             padding: 10px 25px;
             font-style: normal !important;
             font-weight: normal !important;
@@ -245,57 +245,64 @@ z-index: 0;
   }
 }
 
-.download-block {
-  width: 70%;
-  position: relative;
-  z-index: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.download-metamask{
   display: flex;
-  padding: 40px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 1px 1px 8px 1px #dbdbdb;
-  @media (max-width: 480px) {
-    padding: 10px;
-  }
 
-  .blue-button-solid.large-button {
-    display: inline-block;
-    margin-top: 0;
-    padding: 12px 20px;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    -ms-grid-row-align: center;
-    align-self: center;
-    border-radius: 40px;
-    font-size: 16px;
-  }
+  .download-block {
+    width: 70%;
+    position: relative;
+    z-index: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 40px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 1px 1px 8px 1px #dbdbdb;
+    @media (max-width: 480px) {
+      padding: 10px;
+    }
 
-  .blue-button-solid {
-    display: block;
-    margin-right: 10px;
-    border-radius: 40px;
-    background-color: #037dd6;
-    font-size: 14px;
-    font-weight: 400;
-  }
+    .blue-button-solid.large-button {
+      display: inline-block;
+      margin-top: 0;
+      padding: 12px 20px;
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+      border-radius: 40px;
+      font-size: 16px;
+    }
 
-  .w-button {
-    display: inline-block;
-    padding: 9px 15px;
-    background-color: #3898EC;
-    color: white;
-    border: 0;
-    line-height: inherit;
-    text-decoration: none;
-    cursor: pointer;
-    border-radius: 0;
+    .blue-button-solid {
+      display: block;
+      margin-right: 10px;
+      border-radius: 40px;
+      background-color: #037dd6;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .w-button {
+      display: inline-block;
+      padding: 9px 15px;
+      background-color: #3898EC;
+      color: white;
+      border: 0;
+      line-height: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 0;
+    }
   }
 }

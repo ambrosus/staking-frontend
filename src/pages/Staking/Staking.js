@@ -1,29 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { cssTransition, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+
 import StakingItem from '../../components/StakingItem';
-import appStore from '../../store/app.store';
-
 import Header from '../../components/layouts/Header';
-import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
-import useStaking from '../../hooks/useStaking';
+import { useStaking, useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
-import RenderItems from '../../components/StakingItem/RenderItems';
-import { FIXEDPOINT } from '../../services/staking.wrapper';
+import RenderItems from '../../components/RenderItems';
+import { FIXED_POINT } from '../../services/staking.wrapper';
+import { bounce } from '../../config';
 
-const bounce = cssTransition({
-  enter: 'animate__animated animate__bounceIn',
-  exit: 'animate__animated animate__bounceOut',
-});
 const Staking = observer(() => {
   const {
     account,
-    userChainId,
+    chainId,
     totalStaked,
     activeExpand,
     setActiveExpand,
-    correctNetwork,
     totalReward,
     totalRewardInUsd,
     totalStakedInUsd,
@@ -32,67 +26,66 @@ const Staking = observer(() => {
     pools,
     changeNetwork,
   } = useStaking();
-  const infoBlock = (
-    <InfoBlock
-      totalStakedInUsd={totalStakedInUsd}
-      account={account}
-      totalReward={totalReward}
-      totalRewardInUsd={totalRewardInUsd}
-      totalStaked={totalStaked}
-    />
-  );
-  const stakingBody = (
-    <div className="staking wrapper">
-      {pools.length > 0 && (
-        <>
-          <div className="staking__header">
-            <div>Pool</div>
-            <div>My Stake</div>
-            <div>Total pool stake</div>
-            <div>APY</div>
-            <div style={{ marginRight: -45 }} />
-          </div>
-          <RenderItems>
-            {pools
-              .filter((pool) => pool.active || pool.totalStake.gte(FIXEDPOINT))
-              .sort((a, b) => b.active - a.active)
-              .map((item, index) => (
-                <StakingItem
-                  dispatch={dispatch}
-                  activeExpand={activeExpand}
-                  setActiveExpand={setActiveExpand}
-                  key={item.contractName}
-                  index={index}
-                  state={state}
-                  expand
-                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                  comingSoon={!item?.abi}
-                  lazy
-                  poolInfo={item}
-                />
-              ))}
-          </RenderItems>
-        </>
-      )}
-    </div>
-  );
-  return appStore.auth ? (
+  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
+  useTimeout(() => setCheckNetworkChain(true), 1500);
+
+  return (
     <>
-      {!correctNetwork && <NotSupported onclick={changeNetwork} />}
+      {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
+        <NotSupported onclick={changeNetwork} />
+      )}
       <div className="layout">
         <Header />
         <div className="content">
           <div className="page">
-            {infoBlock}
-            {stakingBody}
+            <InfoBlock
+              totalStakedInUsd={totalStakedInUsd}
+              account={account}
+              totalReward={totalReward}
+              totalRewardInUsd={totalRewardInUsd}
+              totalStaked={totalStaked}
+            />
+            <div className="staking wrapper">
+              {pools.length > 0 && (
+                <>
+                  <div className="staking__header">
+                    <div>Pool</div>
+                    <div>My Stake</div>
+                    <div>Total pool stake</div>
+                    <div>APY</div>
+                    <div style={{ marginRight: -45 }} />
+                  </div>
+                  <RenderItems>
+                    {pools
+                      .filter(
+                        (pool) =>
+                          pool.active || pool.totalStake.gte(FIXED_POINT),
+                      )
+                      .sort((a, b) => b.active - a.active)
+                      .map((item, index) => (
+                        <StakingItem
+                          dispatch={dispatch}
+                          activeExpand={activeExpand}
+                          setActiveExpand={setActiveExpand}
+                          key={item.contractName}
+                          index={index}
+                          state={state}
+                          expand
+                          hasChain={+process.env.REACT_APP_CHAIN_ID === chainId}
+                          comingSoon={!item.abi}
+                          lazy
+                          poolInfo={item}
+                        />
+                      ))}
+                  </RenderItems>
+                </>
+              )}
+            </div>
             <ToastContainer transition={bounce} />
           </div>
         </div>
-        <Footer />
       </div>
     </>
-  ) : (
-    <div>Loading...</div>
   );
 });
 

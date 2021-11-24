@@ -4,11 +4,12 @@ import { useHistory } from 'react-router';
 import * as PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
-import { MAIN_PAGE } from '../../utils/constants';
+import { MAIN_PAGE } from '../../config';
 
 const Loader = ({ types = 'spokes' }) => {
   const location = useLocation();
   const { pathname } = location;
+
   return (
     <div className="loader">
       <ReactLoading

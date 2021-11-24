@@ -3,13 +3,18 @@ import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
-import { providers } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
 
-import P from '../../P';
-import storageService from '../../../services/storage.service';
+import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
-import { ethereum, menuLinks } from '../../../utils/constants';
-import { ambPriceInUsd, priceInPercent24h } from '../../../API/API';
+import {
+  connectorsByName,
+  ethereum,
+  MAIN_PAGE,
+  menuLinks,
+  STAKING_PAGE,
+} from '../../../config';
+import { ambPriceInUsd, priceInPercent24h } from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
@@ -18,7 +23,7 @@ import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
 export const Header = observer(() => {
   const [usdPrice, setUsdPrice] = useState(0);
   const [percentChange24h, setPercentChange24h] = useState(0);
-  const [account, setAccount] = useState(null);
+  const { account, activate, active, deactivate } = useWeb3React();
   const history = useHistory();
 
   const getAmbCourse = async () => {
@@ -33,65 +38,23 @@ export const Header = observer(() => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     let mounted = true;
     if (mounted) {
-      getAmbCourse();
-      if (storageService.get('auth') === true) {
-        if (typeof ethereum !== 'undefined') {
-          ethereum.on('disconnect', () => {
-            storageService.set('auth', false);
-            appStore.setAuth(false);
-            if (!storageService.get('auth')) {
-              history.push('/');
-            }
-          });
-          const provider = new providers.Web3Provider(ethereum);
-          provider
-            .listAccounts()
-            .then((accounts) => {
-              const defaultAccount = accounts[0];
-              if (defaultAccount) {
-                setAccount(defaultAccount);
-                storageService.set('auth', true);
-              } else {
-                storageService.set('auth', false);
-                appStore.setAuth(false);
-                if (!storageService.get('auth')) {
-                  history.push('/');
-                }
-              }
-            })
-            .catch((e) => {
-              if (e) {
-                storageService.set('auth', false);
-                appStore.setAuth(false);
-                if (!storageService.get('auth')) {
-                  history.push('/');
-                }
-              }
-            });
-        }
-      } else {
-        storageService.set('auth', false);
-        appStore.setAuth(false);
-        if (!storageService.get('auth')) {
-          history.push('/');
-        }
+      if (ethereum && ethereum.isMetaMask) {
+        await activate(connectorsByName.Injected);
+        getAmbCourse();
       }
     }
     return () => {
       mounted = false;
       getAmbCourse();
     };
-  }, [ethereum]);
+  }, [active]);
 
   const logOut = async () => {
-    storageService.set('auth', false);
-    appStore.setAuth(false);
-    if (!storageService.get('auth')) {
-      history.push('/');
-    }
+    deactivate();
+    history.push(MAIN_PAGE);
   };
 
   const menu = (
@@ -99,17 +62,17 @@ export const Header = observer(() => {
       {menuLinks.map((link) =>
         link.route ? (
           <Link to={link.href} className="menu__bold" key={link.href}>
-            <P
+            <Paragraph
               style={{ color: '#4A38AE', fontWeight: '600' }}
               className="active"
               size="xs-500"
             >
               {link.title}
-            </P>
+            </Paragraph>
           </Link>
         ) : (
-          <a target={link.taget && '_blank'} href={link.href} key={link.href}>
-            <P size="xs-500">{link.title}</P>
+          <a target={link.target && '_blank'} href={link.href} key={link.href}>
+            <Paragraph size="xs-500">{link.title}</Paragraph>
           </a>
         ),
       )}
@@ -118,13 +81,13 @@ export const Header = observer(() => {
   return (
     <div className="header">
       <div className="header__logo">
-        <Link to="/staking">
+        <Link to={STAKING_PAGE}>
           <ReactSVG src={headerLogoSvg} wrapper="span" />
         </Link>
       </div>
       <div className="header__items">
         <div className="amb-curse">
-          <P size="xs-400" style={{ color: '#333333' }}>
+          <Paragraph size="xs-400" style={{ color: '#333333' }}>
             AMB Price{' '}
             <b>
               {' '}
@@ -143,31 +106,29 @@ export const Header = observer(() => {
             >
               {percentChange24h}%
             </span>
-          </P>
+          </Paragraph>
         </div>
         {menu}
         {account && (
           <div className="wallet-connect">
             {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
             {account && (
-              <P size="xs-400">
+              <Paragraph size="xs-400">
                 {account
                   ? ` ${account.substr(0, 9)}...${account.slice(32)}`
                   : '...'}
-              </P>
+              </Paragraph>
             )}
           </div>
         )}
       </div>
       <div className="login">
-        {account && (
-          <div role="presentation" className="header__btn" onClick={logOut}>
-            <ReactSVG src={loginIcon} wrapper="span" />
-            <P size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
-              Log Out
-            </P>
-          </div>
-        )}
+        <div role="presentation" className="header__btn" onClick={logOut}>
+          <ReactSVG src={loginIcon} wrapper="span" />
+          <Paragraph size="xs-500" style={{ color: '#BFC9E0', paddingLeft: 5 }}>
+            Log Out
+          </Paragraph>
+        </div>
       </div>
     </div>
   );

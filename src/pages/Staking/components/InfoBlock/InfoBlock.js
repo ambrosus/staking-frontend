@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 
-import P from '../../../../components/P';
+import Paragraph from '../../../../components/Paragraph';
 import { Loader } from '../../../../components/Loader';
 import { formatRounded } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
@@ -12,7 +12,7 @@ import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
-import { tooltips } from '../../../../utils/constants';
+import { tooltips } from '../../../../config';
 
 const InfoBlock = ({
   account,
@@ -22,16 +22,17 @@ const InfoBlock = ({
   totalStaked,
 }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
+
   return (
     <div className="info-block ">
       <div className="wrapper">
         {account ? (
           <>
             <div className="info-block__address">
-              <P size="m-400" style={{ paddingBottom: 5 }}>
+              <Paragraph size="m-400" style={{ paddingBottom: 5 }}>
                 My Address
-              </P>
-              <P
+              </Paragraph>
+              <Paragraph
                 size="l-500"
                 style={{ color: '#333333', fontSize: 16, fontWeight: 400 }}
               >
@@ -46,7 +47,7 @@ const InfoBlock = ({
                   wrapper="span"
                   style={{ marginLeft: 20, cursor: 'pointer' }}
                 />
-              </P>
+              </Paragraph>
               {!isCopied ? (
                 <ReactTooltip id="copy-state" place="top" effect="solid">
                   {tooltips.copyState.notCopied}
@@ -72,12 +73,12 @@ const InfoBlock = ({
                         src={pieChartOutlineIcon}
                         wrapper="span"
                       />
-                      <P
+                      <Paragraph
                         size="m-400"
                         style={{ paddingBottom: 5, whiteSpace: 'nowrap' }}
                       >
                         &nbsp;Holdings&nbsp;
-                      </P>
+                      </Paragraph>
                     </div>
                     <ReactSVG
                       data-tip
@@ -100,9 +101,9 @@ const InfoBlock = ({
                     color="#1ACD8C"
                     value={totalStaked && formatRounded(totalStaked, 2)}
                   />
-                  <P size="xl-400" style={{ color: '#4A38AE' }}>
+                  <Paragraph size="xl-400" style={{ color: '#4A38AE' }}>
                     &nbsp; / &nbsp;
-                  </P>
+                  </Paragraph>
                   <DisplayValue
                     size="xl-400"
                     color="#4A38AE"
@@ -128,9 +129,9 @@ const InfoBlock = ({
                     }}
                     src={earningsIcon}
                   />
-                  <P size="m-400" style={{ paddingBottom: 5 }}>
+                  <Paragraph size="m-400" style={{ paddingBottom: 5 }}>
                     &nbsp;Est. yearly yield&nbsp;
-                  </P>
+                  </Paragraph>
                   <ReactSVG
                     data-tip
                     data-for="earnings"
@@ -152,9 +153,9 @@ const InfoBlock = ({
                     color="#1ACD8C"
                     value={totalReward}
                   />
-                  <P size="xl-400" style={{ color: '#4A38AE' }}>
+                  <Paragraph size="xl-400" style={{ color: '#4A38AE' }}>
                     &nbsp; / &nbsp;
-                  </P>
+                  </Paragraph>
                   <DisplayValue
                     size="xl-400"
                     color="#4A38AE"
@@ -177,6 +178,6 @@ InfoBlock.propTypes = {
   totalReward: PropTypes.any,
   totalStaked: PropTypes.any,
   totalRewardInUsd: PropTypes.any,
-  totalStakedInUsd: PropTypes.number,
+  totalStakedInUsd: PropTypes.any,
 };
 export default React.memo(InfoBlock);
