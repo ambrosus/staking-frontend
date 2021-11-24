@@ -134,7 +134,7 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={stake && stake.eq(0)}
+                disabled={stake.eq(0)}
                 onclick={() =>
                   stake && setInputValue(formatRounded(stake.div(4), 2))
                 }
@@ -147,7 +147,7 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={stake && stake.eq(0)}
+                disabled={stake.eq(0)}
                 onclick={() =>
                   stake && setInputValue(formatRounded(stake.div(2), 2))
                 }
@@ -160,7 +160,7 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={stake && stake.eq(0)}
+                disabled={stake.eq(0)}
                 onclick={() =>
                   stake && setInputValue(formatRounded(stake.mul(3).div(4), 2))
                 }
@@ -173,7 +173,7 @@ const Withdraw = observer(
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
-                disabled={stake && stake.eq(0)}
+                disabled={stake.eq(0)}
                 onclick={() => setInputValue(stake && formatRounded(stake, 2))}
               >
                 <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>
@@ -218,7 +218,7 @@ const Withdraw = observer(
             <Paragraph size="s-400" style={{ color: '#9198BB' }}>
               <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
                 Estimated stake after withdraw:{' '}
-                {afterWithdraw && afterWithdraw.lt(0)
+                {afterWithdraw.lt(0)
                   ? 0
                   : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
                 AMB

@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
-import { store as alertStore } from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
 import Collapse from '@kunukn/react-collapse';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 
-import InstallMetamaskAlert from '../../pages/Home/components/InstallMetamaskAlert';
 import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
 import appStore from '../../store/app.store';
-import {
-  ethereum,
-  HIDE,
-  MAIN_PAGE,
-  SHOW,
-  STAKE,
-  STAKING_PAGE,
-} from '../../config';
+import { HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE } from '../../config';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
@@ -35,7 +26,7 @@ const StakingItem = observer(
     index = -1,
     poolInfo,
   }) => {
-    const { library, account } = useWeb3React();
+    const { library } = useWeb3React();
     const [myStake, setMyStake] = useState(null);
     const [totalStake, setTotalStake] = useState(null);
     const [APYOfPool, setAPYOfPool] = useState(null);
@@ -45,6 +36,7 @@ const StakingItem = observer(
     const { logIn } = useLogIn();
     let signer;
     let stakingWrapper;
+
     const stakeBtnHandler = () => {
       if (expand !== false) {
         setActiveExpand(index);
@@ -61,10 +53,10 @@ const StakingItem = observer(
     };
 
     useEffect(() => {
-      if (ethereum && ethereum.isMetaMask) {
+      let mounted = true;
+      if (mounted) {
         (() => {
           const loggedInRefresh = async () => {
-            signer = library.getSigner();
             if (appStore.stakingWrapper !== undefined) {
               const { totalStakeInAMB, myStakeInAMB, poolAPY } =
                 await appStore.stakingWrapper.getPoolData(poolInfo.index);
@@ -74,14 +66,17 @@ const StakingItem = observer(
                 setTotalStake(totalStakeInAMB);
               }
             } else {
-              stakingWrapper = new StakingWrapper(signer);
-              appStore.setStakingWrapper(stakingWrapper);
-              const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-                await appStore.stakingWrapper.getPoolData(poolInfo.index);
-              if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-                setMyStake(myStakeInAMB);
-                setAPYOfPool(poolAPY);
-                setTotalStake(totalStakeInAMB);
+              signer = library.getSigner();
+              if (signer !== undefined) {
+                stakingWrapper = new StakingWrapper(signer);
+                appStore.setStakingWrapper(stakingWrapper);
+                const { totalStakeInAMB, myStakeInAMB, poolAPY } =
+                  await appStore.stakingWrapper.getPoolData(poolInfo.index);
+                if (totalStakeInAMB && myStakeInAMB && poolAPY) {
+                  setMyStake(myStakeInAMB);
+                  setAPYOfPool(poolAPY);
+                  setTotalStake(totalStakeInAMB);
+                }
               }
             }
           };
@@ -99,15 +94,11 @@ const StakingItem = observer(
             pathname === STAKING_PAGE ? loggedInRefresh : loggedOutRefresh;
           refreshProc();
         })();
-      } else {
-        alertStore.addNotification({
-          content: InstallMetamaskAlert,
-          container: 'bottom-right',
-          animationIn: ['animated', 'fadeIn'],
-          animationOut: ['animated', 'fadeOut'],
-        });
       }
-    }, [appStore.refresh, account]);
+      return () => {
+        mounted = false;
+      };
+    }, [appStore.refresh]);
 
     return (
       <div

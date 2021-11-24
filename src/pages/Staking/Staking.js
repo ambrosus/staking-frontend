@@ -41,10 +41,13 @@ const Staking = observer(() => {
 
   useEffect(() => {
     activate(connectorsByName.Injected);
-    getDataFromProvider();
-    if (ethereum && ethereum.isMetaMask) {
-      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-        window.addEventListener('focus', changeNetwork);
+    const mounted = true;
+    if (mounted) {
+      getDataFromProvider();
+      if (ethereum?.isMetaMask) {
+        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+          window.addEventListener('focus', changeNetwork);
+        }
       }
     }
   }, [appStore.refresh, active]);

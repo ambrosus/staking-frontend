@@ -87,7 +87,7 @@ const Home = () => {
               </div>
               <div className="staking__pools Halvar_Breit">
                 <RenderItems>
-                  {pools && pools.length && (
+                  {pools.length && (
                     <>
                       {pools.map(
                         (item) =>

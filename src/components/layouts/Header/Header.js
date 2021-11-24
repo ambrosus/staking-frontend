@@ -33,7 +33,7 @@ export const Header = observer(() => {
   };
 
   useEffect(() => {
-    if (ethereum && ethereum.isMetaMask) {
+    if (ethereum?.isMetaMask) {
       getAmbCourse();
     }
   }, []);
