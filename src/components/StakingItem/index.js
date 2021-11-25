@@ -26,7 +26,7 @@ const StakingItem = observer(
     index = -1,
     poolInfo,
   }) => {
-    const { library } = useWeb3React();
+    const { library, account } = useWeb3React();
     const [myStake, setMyStake] = useState(null);
     const [totalStake, setTotalStake] = useState(null);
     const [APYOfPool, setAPYOfPool] = useState(null);
@@ -98,7 +98,7 @@ const StakingItem = observer(
       return () => {
         mounted = false;
       };
-    }, [appStore.refresh]);
+    }, [appStore.refresh, account]);
 
     return (
       <div

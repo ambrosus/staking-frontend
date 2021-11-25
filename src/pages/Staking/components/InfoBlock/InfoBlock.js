@@ -67,7 +67,8 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     if (appStore.stakingWrapper !== undefined && poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
-      poolsArr.forEach((pool) => {
+      for (let i = 0; i < poolsArr.length; i += 1) {
+        const pool = poolsArr[i];
         (async () => {
           const { estAR, myStakeInAMB } =
             await appStore.stakingWrapper.getPoolData(pool.index);
@@ -78,7 +79,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
             totalStakeCalculateHandler(myStakeInAMB);
           }
         })();
-      });
+      }
     }
   };
 
