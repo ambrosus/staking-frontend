@@ -27,9 +27,9 @@ const StakingItem = observer(
     poolInfo,
   }) => {
     const { library, account } = useWeb3React();
-    const [myStake, setMyStake] = useState(null);
-    const [totalStake, setTotalStake] = useState(null);
-    const [APYOfPool, setAPYOfPool] = useState(null);
+    const [myStake, setMyStake] = useState(() => null);
+    const [totalStake, setTotalStake] = useState(() => null);
+    const [APYOfPool, setAPYOfPool] = useState(() => null);
     const history = useHistory();
     const { pathname } = history.location;
     const { active } = useWeb3React();
@@ -61,9 +61,9 @@ const StakingItem = observer(
               const { totalStakeInAMB, myStakeInAMB, poolAPY } =
                 await appStore.stakingWrapper.getPoolData(poolInfo.index);
               if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-                setMyStake(myStakeInAMB);
-                setAPYOfPool(poolAPY);
-                setTotalStake(totalStakeInAMB);
+                setMyStake(() => myStakeInAMB);
+                setAPYOfPool(() => poolAPY);
+                setTotalStake(() => totalStakeInAMB);
               }
             } else {
               signer = library.getSigner();
@@ -73,9 +73,9 @@ const StakingItem = observer(
                 const { totalStakeInAMB, myStakeInAMB, poolAPY } =
                   await appStore.stakingWrapper.getPoolData(poolInfo.index);
                 if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-                  setMyStake(myStakeInAMB);
-                  setAPYOfPool(poolAPY);
-                  setTotalStake(totalStakeInAMB);
+                  setMyStake(() => myStakeInAMB);
+                  setAPYOfPool(() => poolAPY);
+                  setTotalStake(() => totalStakeInAMB);
                 }
               }
             }
@@ -86,8 +86,8 @@ const StakingItem = observer(
             const { totalStakeInAMB, poolAPY } =
               await stakingWrapper.getPoolData(poolInfo.index);
             if (poolAPY && totalStakeInAMB) {
-              setAPYOfPool(poolAPY);
-              setTotalStake(totalStakeInAMB);
+              setAPYOfPool(() => poolAPY);
+              setTotalStake(() => totalStakeInAMB);
             }
           };
           const refreshProc =

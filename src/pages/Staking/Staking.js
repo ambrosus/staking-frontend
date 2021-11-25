@@ -17,10 +17,10 @@ import { changeNetwork, collapsedReducer } from '../../utils/helpers';
 
 const Staking = observer(() => {
   const { account, active, activate, chainId, library } = useWeb3React();
-  const [activeExpand, setActiveExpand] = useState(-1);
+  const [activeExpand, setActiveExpand] = useState(() => -1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
-  const [pools, setPools] = useState([]);
-  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
+  const [pools, setPools] = useState(() => []);
+  const [checkNetworkChain, setCheckNetworkChain] = useState(() => false);
   let signer;
   let stakingWrapper;
 
@@ -29,12 +29,12 @@ const Staking = observer(() => {
     if (signer) {
       if (appStore.stakingWrapper !== undefined) {
         const poolsArr = await appStore.stakingWrapper.getPools();
-        setPools(poolsArr);
+        setPools(() => poolsArr);
       } else {
         stakingWrapper = new StakingWrapper(signer);
         appStore.setStakingWrapper(stakingWrapper);
         const poolsArr = await appStore.stakingWrapper.getPools();
-        setPools(poolsArr);
+        setPools(() => poolsArr);
       }
     }
   };
@@ -52,7 +52,7 @@ const Staking = observer(() => {
     }
   }, [appStore.refresh, active]);
 
-  useTimeout(() => setCheckNetworkChain(true), 1500);
+  useTimeout(() => setCheckNetworkChain(() => true), 1500);
 
   return (
     <>

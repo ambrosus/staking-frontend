@@ -33,13 +33,14 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     const rewardInAmb =
       poolsRewards.length > 0 &&
       poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-    setTotalReward(rewardInAmb > 0 && rewardInAmb);
+    setTotalReward(() => rewardInAmb > 0 && rewardInAmb);
     const esdSum =
       appStore.tokenPrice &&
       poolsRewards.length > 0 &&
       poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
     setTotalRewardInUsd(
-      esdSum &&
+      () =>
+        esdSum &&
         appStore.tokenPrice &&
         esdSum > 0 &&
         esdSum * appStore.tokenPrice,
@@ -53,9 +54,10 @@ const InfoBlock = observer(({ poolsArr, account }) => {
         (acc, curr) => acc.add(curr),
         BigNumber.from('0'),
       );
-      setTotalStaked(totalStakeSum.gte(FIXED_POINT) && totalStakeSum);
+      setTotalStaked(() => totalStakeSum.gte(FIXED_POINT) && totalStakeSum);
       setTotalStakedInUsd(
-        totalStakeSum &&
+        () =>
+          totalStakeSum &&
           appStore.tokenPrice &&
           totalStakeSum.gte(FIXED_POINT) &&
           formatRounded(totalStakeSum) * appStore.tokenPrice,
