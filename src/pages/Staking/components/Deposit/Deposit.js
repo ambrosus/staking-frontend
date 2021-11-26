@@ -86,13 +86,6 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
     return true;
   };
 
-  const refreshProc = async () => {
-    if (library && account) {
-      library.getBalance(account).then((balanceObj) => {
-        setBalance(balanceObj);
-      });
-    }
-  };
   const validateInput = useCallback(
     () =>
       !checkValidNumberString(inputValue) ||
@@ -102,7 +95,11 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
 
   useEffect(() => {
     setInputError(validateInput());
-    refreshProc();
+    if (library && account) {
+      library.getBalance(account).then((balanceObj) => {
+        setBalance(balanceObj);
+      });
+    }
   }, [inputValue, account]);
 
   return (
