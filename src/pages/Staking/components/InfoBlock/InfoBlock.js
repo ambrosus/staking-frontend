@@ -1,9 +1,11 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import * as PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import { BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
+import { StakingWrapper} from "../../../../services/staking.wrapper";
 
 import Paragraph from '../../../../components/Paragraph';
 import {
@@ -81,6 +83,15 @@ const InfoBlock = observer(({ poolsArr, account }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (signer) {
+      appStore.getPooldata(signer)
+    }
+    const wrap = StakingWrapper.getInstance();
+    const pool = wrap.getPools();
+    pool.then(data => console.log('pool------------------------------->>>>', data))
+  }, [signer])
 
   useEffect(() => {
     const mounted = true;

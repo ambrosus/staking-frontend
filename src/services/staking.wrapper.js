@@ -51,6 +51,8 @@ function parseFloatToBigNumber(str) {
 }
 
 class StakingWrapper {
+  static instance = null;
+
   constructor(providerOrSigner = null) {
     if (!providerOrSigner) {
       providerOrSigner = new providers.JsonRpcProvider(
@@ -60,6 +62,7 @@ class StakingWrapper {
     this._providerOrSigner = providerOrSigner;
 
     this._initPromise = this._initialize();
+    console.log('this.headContract', this.headContract);
   }
 
   async _initialize() {
@@ -88,6 +91,13 @@ class StakingWrapper {
       contractJsons.poolsStore.abi,
       this._providerOrSigner,
     );
+  }
+
+  static getInstance() {
+    if (StakingWrapper.instance === null) {
+      StakingWrapper.instance = new StakingWrapper();
+    }
+    return this.instance;
   }
 
   async getPools() {
@@ -125,9 +135,7 @@ class StakingWrapper {
       throw new Error('no pool index provided');
     }
     await this._initPromise;
-
     if (!this._pools) await this.getPools();
-
     const poolContract = this._pools[index];
 
     const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens, poolDPY] =

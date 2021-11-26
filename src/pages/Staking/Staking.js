@@ -29,8 +29,10 @@ const Staking = observer(() => {
     if (signer) {
       if (appStore.stakingWrapper !== undefined) {
         const poolsArr = await appStore.stakingWrapper.getPools();
+        console.log('1', poolsArr);
         setPools(poolsArr);
       } else {
+        console.log('2');
         stakingWrapper = new StakingWrapper(signer);
         appStore.setStakingWrapper(stakingWrapper);
         const poolsArr = await appStore.stakingWrapper.getPools();

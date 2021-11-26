@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
@@ -80,7 +81,7 @@ const StakingItem = observer(
               }
             }
           };
-
+          appStore.wer;
           const loggedOutRefresh = async () => {
             stakingWrapper = new StakingWrapper();
             const { totalStakeInAMB, poolAPY } =
