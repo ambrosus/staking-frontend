@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
-import { useWeb3React } from '@web3-react/core';
 import Paragraph from '../../components/Paragraph';
 import MetamaskConnect from './components/MetamaskConnect';
 import StakingItem from '../../components/StakingItem';
 import CollapsedList from '../../components/CollapsedList';
-import { StakingWrapper } from '../../services/staking.wrapper';
 import { Loader } from '../../components/Loader';
 import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/RenderItems';
@@ -15,24 +13,21 @@ import RenderItems from '../../components/RenderItems';
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import { MAIN_PAGE } from '../../config';
 import Menu from './components/Menu';
+import appStore from '../../store/app.store';
 
 const Home = () => {
-  const { active, chainId } = useWeb3React();
   const [pools, setPools] = useState([]);
   const location = useLocation();
   const { pathname } = location;
 
   const getPools = async () => {
-    const stakingWrapper = new StakingWrapper();
-    const poolsArr = stakingWrapper && (await stakingWrapper.getPools());
-    if (poolsArr.length > 0) {
-      setPools(poolsArr);
-    }
+    await appStore.updatePoolData();
+    setPools(() => appStore.poolsData.length > 0 && appStore.poolsData);
   };
 
   useEffect(() => {
     getPools();
-  }, [active, chainId]);
+  }, []);
 
   return (
     <>

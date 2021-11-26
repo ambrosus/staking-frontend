@@ -9,7 +9,7 @@ import './styles/Main.scss';
 
 const getLibrary = (provider) => {
   const library = new Web3Provider(provider);
-  library.pollingInterval = 20000;
+  library.pollingInterval = 4000;
   return library;
 };
 const Main = observer(() => (

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { useWeb3React } from '@web3-react/core';
 import { utils } from 'ethers';
 
 import Input from '../../../../components/Input';
@@ -13,6 +12,7 @@ import {
   FIXED_POINT,
   formatRounded,
   parseFloatToBigNumber,
+  StakingWrapper,
   ZERO,
 } from '../../../../services/staking.wrapper';
 import {
@@ -34,70 +34,61 @@ const Withdraw = observer(
     hideModal,
     stake,
   }) => {
-    const { library } = useWeb3React();
     const [inputValue, setInputValue] = useState('');
     const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
-
     const withdrawPayment = async () => {
       if (!checkValidNumberString(inputValue)) {
         return false;
       }
-      if (library) {
-        const signer = library.getSigner();
-        if (signer && appStore.stakingWrapper !== undefined) {
-          const { tokenPriceAMB, myStakeInTokens } =
-            await appStore.stakingWrapper.getPoolData(
-              withdrawContractInfo.index,
-            );
+      const { tokenPriceAMB, myStakeInTokens } =
+        await StakingWrapper.instance.getPoolData(withdrawContractInfo.index);
 
-          const decimal = parseFloatToBigNumber(inputValue)
-            .mul(FIXED_POINT)
-            .div(tokenPriceAMB);
-          const value =
-            formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
-          const overrides = {
-            gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
-            gasLimit: transactionGasLimit,
-          };
-          await withdrawContractInfo.contract
-            .unstake(value, overrides)
-            .then(async (tx) => {
-              if (tx) {
+      const decimal = parseFloatToBigNumber(inputValue)
+        .mul(FIXED_POINT)
+        .div(tokenPriceAMB);
+      const value =
+        formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
+      const overrides = {
+        gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
+        gasLimit: transactionGasLimit,
+      };
+      await withdrawContractInfo.contract
+        .unstake(value, overrides)
+        .then(async (tx) => {
+          if (tx) {
+            notificationMassage(
+              'PENDING',
+              `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                60,
+              )} pending.`,
+            );
+            setInputValue('');
+            await tx
+              .wait()
+              .then(async (result) => {
                 notificationMassage(
-                  'PENDING',
-                  `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                    60,
-                  )} pending.`,
+                  'SUCCESS',
+                  `Transaction ${result.transactionHash.substr(
+                    0,
+                    6,
+                  )}...${result.transactionHash.slice(60)} success!`,
                 );
+                await appStore.updatePoolData();
                 setInputValue('');
-                await tx
-                  .wait()
-                  .then((result) => {
-                    notificationMassage(
-                      'SUCCESS',
-                      `Transaction ${result.transactionHash.substr(
-                        0,
-                        6,
-                      )}...${result.transactionHash.slice(60)} success!`,
-                    );
-                    appStore.setRefresh();
-                    setInputValue('');
-                  })
-                  .catch((e) => {
-                    if (e) {
-                      notificationMassage(
-                        'ERROR',
-                        `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                          60,
-                        )} failed!`,
-                      );
-                      setInputValue('');
-                    }
-                  });
-              }
-            });
-        }
-      }
+              })
+              .catch((e) => {
+                if (e) {
+                  notificationMassage(
+                    'ERROR',
+                    `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
+                      60,
+                    )} failed!`,
+                  );
+                  setInputValue('');
+                }
+              });
+          }
+        });
       return true;
     };
 

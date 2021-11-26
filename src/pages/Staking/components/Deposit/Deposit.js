@@ -60,7 +60,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
         );
         await tx
           .wait()
-          .then((result) => {
+          .then(async (result) => {
             notificationMassage(
               'SUCCESS',
               `Transaction ${result.transactionHash.substr(
@@ -68,7 +68,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                 6,
               )}...${result.transactionHash.slice(60)} success!`,
             );
-            appStore.setRefresh();
+            await appStore.updatePoolData();
             setInputValue('');
           })
           .catch(() => {

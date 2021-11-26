@@ -5,8 +5,7 @@ import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import { BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
-import { StakingWrapper} from "../../../../services/staking.wrapper";
-
+import { StakingWrapper } from '../../../../services/staking.wrapper';
 import Paragraph from '../../../../components/Paragraph';
 import {
   FIXED_POINT,
@@ -32,25 +31,27 @@ const InfoBlock = observer(({ poolsArr, account }) => {
 
   const totalRewardCalculateHandler = (estd) => {
     poolsRewards.push(estd);
-    const rewardInAmb =
-      poolsRewards.length > 0 &&
-      poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-    setTotalReward(rewardInAmb > 0 && rewardInAmb);
-    const esdSum =
-      appStore.tokenPrice &&
-      poolsRewards.length > 0 &&
-      poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-    setTotalRewardInUsd(
-      esdSum &&
+    if (poolsRewards.length === poolsArr.length) {
+      const rewardInAmb =
+        poolsRewards.length > 0 &&
+        poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+      setTotalReward(rewardInAmb > 0 && rewardInAmb);
+      const esdSum =
         appStore.tokenPrice &&
-        esdSum > 0 &&
-        esdSum * appStore.tokenPrice,
-    );
+        poolsRewards.length > 0 &&
+        poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+      setTotalRewardInUsd(
+        esdSum &&
+          appStore.tokenPrice &&
+          esdSum > 0 &&
+          esdSum * appStore.tokenPrice,
+      );
+    }
   };
 
   const totalStakeCalculateHandler = (stake) => {
     myTotalStake.push(stake);
-    if (myTotalStake.length > 0) {
+    if (myTotalStake.length === poolsArr.length) {
       const totalStakeSum = myTotalStake.reduceRight(
         (acc, curr) => acc.add(curr),
         BigNumber.from('0'),
@@ -66,38 +67,24 @@ const InfoBlock = observer(({ poolsArr, account }) => {
   };
 
   const getInfo = async () => {
-    if (appStore.stakingWrapper !== undefined && poolsArr.length > 0) {
+    if (poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
-      poolsArr.forEach((pool) => {
-        (async () => {
-          const { estAR, myStakeInAMB } =
-            await appStore.stakingWrapper.getPoolData(pool.index);
-          if (estAR) {
-            totalRewardCalculateHandler(estAR);
-          }
-          if (myStakeInAMB) {
-            totalStakeCalculateHandler(myStakeInAMB);
-          }
-        })();
-      });
+      for (const pool of poolsArr) {
+        const { estAR, myStakeInAMB } =
+          await StakingWrapper.instance.getPoolData(pool.index);
+        if (estAR) {
+          totalRewardCalculateHandler(estAR);
+        }
+        if (myStakeInAMB) {
+          totalStakeCalculateHandler(myStakeInAMB);
+        }
+      }
     }
   };
 
   useEffect(() => {
-    if (signer) {
-      appStore.getPooldata(signer)
-    }
-    const wrap = StakingWrapper.getInstance();
-    const pool = wrap.getPools();
-    pool.then(data => console.log('pool------------------------------->>>>', data))
-  }, [signer])
-
-  useEffect(() => {
-    const mounted = true;
-    if (mounted) {
-      getInfo();
-    }
+    getInfo();
   }, [appStore.refresh, account]);
 
   return (

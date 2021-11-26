@@ -4,6 +4,7 @@ import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { BigNumber, ethers, providers } from 'ethers';
 import { all, create } from 'mathjs';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
+import { ethereum } from '../config';
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
@@ -62,7 +63,6 @@ class StakingWrapper {
     this._providerOrSigner = providerOrSigner;
 
     this._initPromise = this._initialize();
-    console.log('this.headContract', this.headContract);
   }
 
   async _initialize() {
@@ -94,9 +94,15 @@ class StakingWrapper {
   }
 
   static getInstance() {
-    if (StakingWrapper.instance === null) {
+    console.log('StakingWrapper.getInstance init');
+    if (ethereum !== undefined) {
+      const provider = new providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      StakingWrapper.instance = new StakingWrapper(signer);
+    } else {
       StakingWrapper.instance = new StakingWrapper();
     }
+
     return this.instance;
   }
 
