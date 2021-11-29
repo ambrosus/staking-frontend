@@ -12,7 +12,7 @@ const FIXED_POINT = TEN.pow(18);
 const MIN_SHOW_STAKE = FIXED_POINT.div(100);
 const THOUSAND = FIXED_POINT.mul(1000);
 
-const AVERAGING_PERIOD = 10 * 24 * 60 * 60;
+const AVERAGING_PERIOD = 7 * 24 * 60 * 60; // 7 days
 
 const math = create(all, {
   number: 'BigNumber',
@@ -50,15 +50,10 @@ function parseFloatToBigNumber(str) {
   return ethers.utils.parseEther(math.round(mathBn, 18).toString());
 }
 
-class StakingWrapperSingleton {
+class StakingWrapper {
   static privateInstance = null;
 
-  constructor(providerOrSigner = null) {
-    console.log('StakingWrapper constructor');
-    if (!providerOrSigner) {
-      /* eslint-disable-next-line */
-      providerOrSigner = new JsonRpcProvider(process.env.REACT_APP_RPC_URL);
-    }
+  constructor(providerOrSigner) {
     this.providerOrSigner = providerOrSigner;
 
     this.privateInitPromise = this.privateInitialize();
@@ -92,21 +87,21 @@ class StakingWrapperSingleton {
     );
   }
 
-  static getInstance() {
-    if (window.location.pathname !== '/') {
-      if (ethereum !== undefined) {
-        const provider = new providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        StakingWrapperSingleton.privateInstance = new StakingWrapperSingleton(
-          signer,
-        );
-        console.log('StakingWrapper(signer)');
-      }
+  static createInstance(loggedIn = false) {
+    console.log('## createInstance', loggedIn);
+    if (loggedIn) {
+      const provider = new providers.Web3Provider(ethereum);
+      this.privateInstance = new StakingWrapper(provider.getSigner());
     } else {
-      StakingWrapperSingleton.privateInstance = new StakingWrapperSingleton();
-      console.log('StakingWrapper()');
+      this.privateInstance = new StakingWrapper(
+        new JsonRpcProvider(process.env.REACT_APP_RPC_URL),
+      );
     }
+    return this.privateInstance;
+  }
 
+  static getInstance() {
+    console.log('## getInstance');
     return this.privateInstance;
   }
 
@@ -153,7 +148,7 @@ class StakingWrapperSingleton {
         poolContract.totalStake(),
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
-        this.privateGetDPY(index),
+        this.privateGetDPY(this.pools[index].address),
       ]);
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
     const poolAPY = math
@@ -191,10 +186,8 @@ class StakingWrapperSingleton {
     };
   }
 
-  async privateGetDPY(index = null) {
+  async privateGetDPY(poolAddr) {
     await this.privateInitPromise;
-
-    const poolAddr = this.pools[index].address;
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
@@ -239,11 +232,13 @@ class StakingWrapperSingleton {
   }
 }
 
-const StakingWrapper = StakingWrapperSingleton.getInstance();
+const createStakingWrapper = StakingWrapper.createInstance;
+const getStakingWrapper = StakingWrapper.getInstance;
 
-export default StakingWrapper;
 export {
   StakingWrapper,
+  createStakingWrapper,
+  getStakingWrapper,
   formatRounded,
   parseFloatToBigNumber,
   checkValidNumberString,

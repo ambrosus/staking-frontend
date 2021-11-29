@@ -24,7 +24,9 @@ export class AppStore {
 
   async updatePoolData() {
     console.log('updatePoolData');
-    const inst = StakingWrapper;
+    const inst = StakingWrapper.createInstance(
+      window.location.pathname !== '/',
+    );
     const pools = await inst.getPools();
     console.log(pools);
     runInAction(() => {
