@@ -5,7 +5,7 @@ import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 
 import RenderRoutes from './components/RenderRoutes';
 import './styles/Main.scss';
-import getLibrary from './utils/helpers';
+import { getLibrary } from './utils/helpers';
 import { NetworkContextName } from './config';
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);

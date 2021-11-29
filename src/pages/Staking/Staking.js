@@ -33,13 +33,12 @@ const Staking = observer(() => {
 
   useEffect(() => {
     console.log('Staking render useEffect');
+    getDataFromProvider();
     if (ethereum?.isMetaMask) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         window.addEventListener('focus', changeNetwork);
       }
     }
-
-    getDataFromProvider();
   }, []);
 
   return (

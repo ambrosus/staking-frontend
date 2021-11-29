@@ -1,22 +1,21 @@
 import { toast } from 'react-toastify';
 import { utils } from 'ethers';
 import { Web3Provider } from '@ethersproject/providers';
-import ms from 'ms.macro';
 import { bounce, ethereum, network, SupportedChainId } from '../config';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NETWORK_POLLING_INTERVALS = {
-  [SupportedChainId.MAINNET]: ms`1s`,
-  [SupportedChainId.ROPSTEN]: ms`1s`,
-  [SupportedChainId.RINKEBY]: ms`1s`,
-  [SupportedChainId.GOERLI]: ms`1s`,
-  [SupportedChainId.KOVAN]: ms`1s`,
-  [SupportedChainId.AMBROSUS]: ms`1s`,
+  [SupportedChainId.MAINNET]: 1000,
+  [SupportedChainId.ROPSTEN]: 1000,
+  [SupportedChainId.RINKEBY]: 1000,
+  [SupportedChainId.GOERLI]: 1000,
+  [SupportedChainId.KOVAN]: 1000,
+  [SupportedChainId.AMBROSUS]: 1000,
 };
 
-export default function getLibrary(provider) {
+export const getLibrary = (provider) => {
   const library = new Web3Provider(
     provider,
     /* eslint-disable-next-line */
@@ -37,7 +36,7 @@ export default function getLibrary(provider) {
     }
   });
   return library;
-}
+};
 
 export const notificationMassage = (type, alertText) => {
   if (type === 'SUCCESS') {

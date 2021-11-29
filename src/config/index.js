@@ -51,7 +51,7 @@ export const SupportedChainId = {
 };
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 2, 3, 4, 42, +process.env.REACT_APP_CHAIN_ID],
+  supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
 });
 
 const ConnectorNames = {

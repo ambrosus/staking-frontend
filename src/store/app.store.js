@@ -28,7 +28,6 @@ export class AppStore {
       window.location.pathname !== '/',
     );
     const pools = await inst.getPools();
-    console.log(pools);
     runInAction(() => {
       this.poolsData = pools;
       // TODO => make update with mobx
