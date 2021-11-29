@@ -60,7 +60,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
         );
         await tx
           .wait()
-          .then(async (result) => {
+          .then((result) => {
             notificationMassage(
               'SUCCESS',
               `Transaction ${result.transactionHash.substr(
@@ -68,8 +68,8 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                 6,
               )}...${result.transactionHash.slice(60)} success!`,
             );
-            await appStore.updatePoolData();
-            setInputValue('');
+            appStore.setRefresh();
+            setInputValue(() => '');
           })
           .catch(() => {
             notificationMassage(
@@ -78,7 +78,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                 60,
               )} failed!`,
             );
-            setInputValue('');
+            setInputValue(() => '');
           });
       }
     });
@@ -86,6 +86,13 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
     return true;
   };
 
+  const refreshProc = async () => {
+    if (library && account) {
+      library.getBalance(account).then((balanceObj) => {
+        setBalance(() => balanceObj);
+      });
+    }
+  };
   const validateInput = useCallback(
     () =>
       !checkValidNumberString(inputValue) ||
@@ -94,12 +101,8 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
   );
 
   useEffect(() => {
-    setInputError(validateInput());
-    if (library && account) {
-      library.getBalance(account).then((balanceObj) => {
-        setBalance(balanceObj);
-      });
-    }
+    setInputError(() => validateInput());
+    refreshProc();
   }, [inputValue, account]);
 
   return (
@@ -153,7 +156,9 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatRounded(balance.div(4), 2))}
+                onclick={() =>
+                  setInputValue(() => formatRounded(balance.div(4), 2))
+                }
               >
                 <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>{' '}
               </Button>
@@ -164,7 +169,9 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                 priority="secondary"
                 type="outline"
                 disabled={balance.isZero()}
-                onclick={() => setInputValue(formatRounded(balance.div(2), 2))}
+                onclick={() =>
+                  setInputValue(() => formatRounded(balance.div(2), 2))
+                }
               >
                 <span className="percent-btn">{FIFTY_PERCENT}</span>{' '}
               </Button>
@@ -176,7 +183,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(formatRounded(balance.mul(3).div(4), 2))
+                  setInputValue(() => formatRounded(balance.mul(3).div(4), 2))
                 }
               >
                 <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>{' '}
@@ -189,7 +196,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(balance.div(FIXED_POINT).toString())
+                  setInputValue(() => balance.div(FIXED_POINT).toString())
                 }
               >
                 <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}
