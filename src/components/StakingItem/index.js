@@ -58,7 +58,9 @@ const StakingItem = observer(
         setTotalStake(totalStakeInAMB);
       }
     };
-    useEffect(getPoolData, [appStore.refresh]);
+    useEffect(() => {
+      getPoolData();
+    }, [appStore.refresh]);
 
     return (
       <div
