@@ -5,35 +5,26 @@ import NotSupported from '../NotSupported';
 class ErrorBoundary extends React.PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {
-      hasError: false,
-    };
+    this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(err) {
-    if (err) {
-      console.log('ErrorBoundary', err);
-      this.setState({
-        hasError: true,
-      });
-    }
+  static getDerivedStateFromError() {
+    return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
     if (error) {
-      console.log('ErrorBoundary errorInfo', errorInfo);
-      console.log('ErrorBoundary error', error);
       this.setState({
         hasError: true,
       });
     }
+    console.log(error, errorInfo);
   }
 
   render() {
     return (
       <>
-        {!this.state.hasError && (
+        {this.state.hasError && (
           <NotSupported>
             Network connection failed. Please try again later
           </NotSupported>
