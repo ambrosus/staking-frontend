@@ -5,6 +5,7 @@ import { bounce, ethereum, network, SupportedChainId } from '../config';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import appStore from '../store/app.store';
 
 const NETWORK_POLLING_INTERVALS = {
   [SupportedChainId.MAINNET]: 1000,
@@ -105,20 +106,24 @@ export const formatThousand = (num) => {
 };
 
 export const changeNetwork = async () => {
-  await ethereum.request({
-    method: 'wallet_addEthereumChain',
-    params: [
-      {
-        chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-        chainName: `${network ? 'Ambrosus (Test net)' : 'Ambrosus (Main net)'}`,
-        nativeCurrency: {
-          name: 'AMB',
-          symbol: 'AMB',
-          decimals: 18,
+  await ethereum
+    .request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+          chainName: `${
+            network ? 'Ambrosus (Test net)' : 'Ambrosus (Main net)'
+          }`,
+          nativeCurrency: {
+            name: 'AMB',
+            symbol: 'AMB',
+            decimals: 18,
+          },
+          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+          blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
         },
-        rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-        blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
-      },
-    ],
-  });
+      ],
+    })
+    .then(() => appStore.setRefresh());
 };

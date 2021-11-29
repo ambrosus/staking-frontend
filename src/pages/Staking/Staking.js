@@ -24,21 +24,34 @@ const Staking = observer(() => {
   const [checkNetworkChain, setCheckNetworkChain] = useState(() => false);
 
   const getDataFromProvider = async () => {
-    await activate(connectorsByName.Injected);
     await appStore.updatePoolData();
     setPools(() => appStore.poolsData.length > 0 && toJS(appStore.poolsData));
   };
+
+  const handleChainChanged = () => window.location.reload();
+  const handleAccountsChanged = () => window.location.reload();
+  const handleNetworkChanged = () => window.location.reload();
 
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
   useEffect(() => {
     console.log('Staking render useEffect');
+    activate(connectorsByName.Injected);
     getDataFromProvider();
     if (ethereum?.isMetaMask) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         window.addEventListener('focus', changeNetwork);
       }
     }
+    ethereum.on('chainChanged', handleChainChanged);
+    ethereum.on('accountsChanged', handleAccountsChanged);
+    ethereum.on('networkChanged', handleNetworkChanged);
+
+    return () => {
+      ethereum.removeListener('chainChanged', handleChainChanged);
+      ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      ethereum.removeListener('networkChanged', handleNetworkChanged);
+    };
   }, []);
 
   return (
