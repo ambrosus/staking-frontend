@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NotSupported from '../NotSupported';
 
 class ErrorBoundary extends React.PureComponent {
   constructor(props) {
@@ -32,7 +33,11 @@ class ErrorBoundary extends React.PureComponent {
   render() {
     return (
       <>
-        {this.state.hasError && alert('Error')}
+        {!this.state.hasError && (
+          <NotSupported>
+            Network connection failed. Please try again later
+          </NotSupported>
+        )}
         {this.props.children}
       </>
     );
