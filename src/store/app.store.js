@@ -23,21 +23,17 @@ export class AppStore {
   }
 
   async updatePoolData() {
-    try {
-      console.log('updatePoolData');
-      const inst = StakingWrapper;
-      const pools = await inst.getPools();
-      console.log(pools);
-      runInAction(() => {
-        this.poolsData = pools;
-        // TODO => make update with mobx
-        this.setRefresh();
-      });
-    } catch (e) {
-      if (e) {
-        throw new Error('I crashed!');
-      }
-    }
+    console.log('updatePoolData');
+    const inst = StakingWrapper.createInstance(
+      window.location.pathname !== '/',
+    );
+    const pools = await inst.getPools();
+    console.log(pools);
+    runInAction(() => {
+      this.poolsData = pools;
+      // TODO => make update with mobx
+      this.setRefresh();
+    });
   }
 
   setTokenPrice(price) {

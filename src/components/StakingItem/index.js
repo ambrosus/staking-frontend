@@ -51,7 +51,7 @@ const StakingItem = observer(
 
     const getPoolData = async () => {
       const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-        await StakingWrapper.getPoolData(poolInfo.index);
+        await StakingWrapper.getInstance().getPoolData(poolInfo.index);
       if (totalStakeInAMB && myStakeInAMB && poolAPY) {
         setMyStake(myStakeInAMB);
         setAPYOfPool(poolAPY);
