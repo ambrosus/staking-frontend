@@ -2,7 +2,6 @@ import { ReactSVG } from 'react-svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-import { utils } from 'ethers';
 import * as PropTypes from 'prop-types';
 
 import Input from '../../../../components/Input';
@@ -14,19 +13,20 @@ import Withdraw from '../Withdraw';
 import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
+  StakingWrapper,
   checkValidNumberString,
-  FIXED_POINT,
-  formatRounded,
-  MIN_SHOW_STAKE,
   parseFloatToBigNumber,
+  formatRounded,
+  FIXED_POINT,
+  MIN_SHOW_STAKE,
   THOUSAND,
   ZERO,
 } from '../../../../services/staking.wrapper';
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import {
   FIFTY_PERCENT,
-  transactionGasPrice,
-  transactionGasLimit,
+  // transactionGasPrice,
+  // transactionGasLimit,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
@@ -46,42 +46,34 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
       return false;
     }
 
-    const overrides = {
-      value: parseFloatToBigNumber(inputValue),
-      gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
-      gasLimit: transactionGasLimit,
-    };
+    const tx = await StakingWrapper.getInstance().stake(
+      depositInfo.index,
+      inputValue,
+    );
 
-    await depositInfo.contract.stake(overrides).then(async (tx) => {
-      if (tx) {
-        notificationMassage(
-          'PENDING',
-          `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(60)} pending.`,
-        );
-        await tx
-          .wait()
-          .then((result) => {
-            notificationMassage(
-              'SUCCESS',
-              `Transaction ${result.transactionHash.substr(
-                0,
-                6,
-              )}...${result.transactionHash.slice(60)} success!`,
-            );
-            appStore.setRefresh();
-            setInputValue(() => '');
-          })
-          .catch(() => {
-            notificationMassage(
-              'ERROR',
-              `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                60,
-              )} failed!`,
-            );
-            setInputValue(() => '');
-          });
+    console.log('stake', tx);
+
+    let result = false;
+    if (tx) {
+      setInputValue(() => '');
+
+      const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+      notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+      try {
+        await tx.wait();
+        notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+        result = true;
+      } catch (err) {
+        notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
       }
-    });
+
+      if (result) {
+        // await appStore.updatePoolData();
+        appStore.setRefresh();
+      }
+    } else {
+      // todo: ?????
+    }
 
     return true;
   };

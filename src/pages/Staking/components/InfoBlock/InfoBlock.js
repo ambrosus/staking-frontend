@@ -71,8 +71,9 @@ const InfoBlock = observer(({ poolsArr, account }) => {
       poolsRewards = [];
       myTotalStake = [];
       poolsArr.forEach(async (pool) => {
-        const { estAR, myStakeInAMB } =
-          await StakingWrapper.getInstance().getPoolData(pool.index);
+        const ins = StakingWrapper.getInstance();
+        console.log('getInfo', ins);
+        const { estAR, myStakeInAMB } = await ins.getPoolData(pool.index);
         if (estAR) {
           totalRewardCalculateHandler(estAR);
         }

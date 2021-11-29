@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { utils } from 'ethers';
+// import { utils } from 'ethers';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
@@ -17,8 +17,8 @@ import {
 } from '../../../../services/staking.wrapper';
 import {
   FIFTY_PERCENT,
-  transactionGasLimit,
-  transactionGasPrice,
+  // transactionGasLimit,
+  // transactionGasPrice,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
@@ -40,58 +40,38 @@ const Withdraw = observer(
       if (!checkValidNumberString(inputValue)) {
         return false;
       }
-      const { tokenPriceAMB, myStakeInTokens } =
-        await StakingWrapper.getInstance().getPoolData(
-          withdrawContractInfo.index,
-        );
 
-      const decimal = parseFloatToBigNumber(inputValue)
-        .mul(FIXED_POINT)
-        .div(tokenPriceAMB);
-      const value =
-        formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
-      const overrides = {
-        gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
-        gasLimit: transactionGasLimit,
-      };
-      await withdrawContractInfo.contract
-        .unstake(value, overrides)
-        .then(async (tx) => {
-          if (tx) {
-            notificationMassage(
-              'PENDING',
-              `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                60,
-              )} pending.`,
-            );
-            setInputValue('');
-            await tx
-              .wait()
-              .then(async (result) => {
-                notificationMassage(
-                  'SUCCESS',
-                  `Transaction ${result.transactionHash.substr(
-                    0,
-                    6,
-                  )}...${result.transactionHash.slice(60)} success!`,
-                );
-                await appStore.updatePoolData();
-                setInputValue('');
-              })
-              .catch((e) => {
-                if (e) {
-                  notificationMassage(
-                    'ERROR',
-                    `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                      60,
-                    )} failed!`,
-                  );
-                  setInputValue('');
-                }
-              });
-          }
-        });
-      return true;
+      const tx = await StakingWrapper.getInstance().unstake(
+        withdrawContractInfo.index,
+        inputValue,
+        formatRounded(stake, 2) === inputValue, // ugly hack - check 100%
+      );
+
+      console.log('withdraw', tx);
+
+      let result = false;
+      if (tx) {
+        setInputValue('');
+
+        const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+        notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+        try {
+          await tx.wait();
+          notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+          result = true;
+        } catch (err) {
+          notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
+        }
+
+        if (result) {
+          // await appStore.updatePoolData();
+          appStore.setRefresh();
+        }
+      } else {
+        // todo: ?????
+      }
+
+      return result;
     };
 
     const calculateSumAfterWithdraw = useCallback(

@@ -3,7 +3,7 @@ import { BigNumber, ethers, providers } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { all, create } from 'mathjs';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
-import { ethereum } from '../config';
+import { ethereum, transactionGasLimit, transactionGasPrice } from '../config';
 
 const ZERO = BigNumber.from(0);
 const ONE = BigNumber.from(1);
@@ -136,6 +136,7 @@ class StakingWrapper {
   }
 
   async getPoolData(index) {
+    console.log('getPoolData', index);
     if (typeof index !== 'number') {
       throw new Error('no pool index provided');
     }
@@ -151,6 +152,21 @@ class StakingWrapper {
         this.privateGetDPY(this.pools[index].address),
       ]);
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
+
+    const { poolAPY, estDR, estAR } = this.privateGetAPY(poolDPY, myStakeInAMB);
+
+    return {
+      totalStakeInAMB,
+      myStakeInAMB,
+      tokenPriceAMB,
+      myStakeInTokens,
+      poolAPY,
+      estDR,
+      estAR,
+    };
+  }
+
+  privateGetAPY(poolDPY, myStakeInAMB) {
     const poolAPY = math
       .chain(poolDPY)
       .add(1)
@@ -175,15 +191,8 @@ class StakingWrapper {
       .round(2)
       .done()
       .toFixed(2);
-    return {
-      totalStakeInAMB,
-      myStakeInAMB,
-      tokenPriceAMB,
-      myStakeInTokens,
-      poolAPY,
-      estDR,
-      estAR,
-    };
+
+    return { poolAPY, estDR, estAR };
   }
 
   async privateGetDPY(poolAddr) {
@@ -229,6 +238,61 @@ class StakingWrapper {
       t1: firstReward.timestamp,
       t2: lastReward.timestamp,
     });
+  }
+
+  async stake(index, value) {
+    const overrides = {
+      value: parseFloatToBigNumber(value),
+      gasPrice: transactionGasPrice,
+      gasLimit: transactionGasLimit,
+    };
+
+    const poolContract = this.pools[index];
+
+    console.log('.stake', index, value);
+
+    try {
+      overrides.gasLimit = await poolContract.estimateGas.stake(overrides);
+      console.log('gasLimit', overrides.gasLimit.toString());
+    } catch (err) {
+      console.log('stake error', err);
+      return null;
+    }
+
+    return poolContract.stake(overrides);
+  }
+
+  async unstake(index, value, fullUnstake = false) {
+    const { tokenPriceAMB, myStakeInTokens } =
+      await StakingWrapper.getInstance().getPoolData(index);
+
+    const calculatedTokens = parseFloatToBigNumber(value)
+      .mul(FIXED_POINT)
+      .div(tokenPriceAMB);
+
+    const overrides = {
+      gasPrice: transactionGasPrice,
+      gasLimit: transactionGasLimit,
+    };
+
+    const poolContract = this.pools[index];
+
+    const tokens = fullUnstake ? myStakeInTokens : calculatedTokens;
+
+    console.log('unstake', index, value, fullUnstake, tokens.toString());
+
+    try {
+      overrides.gasLimit = await poolContract.estimateGas.unstake(
+        tokens,
+        overrides,
+      );
+      console.log('gasLimit', overrides.gasLimit.toString());
+    } catch (err) {
+      console.log('unstake error', err);
+      return null;
+    }
+
+    return poolContract.unstake(tokens, overrides);
   }
 }
 
