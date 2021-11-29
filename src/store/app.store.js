@@ -24,7 +24,7 @@ export class AppStore {
 
   async updatePoolData() {
     console.log('updatePoolData');
-    const inst = StakingWrapper.getInstance();
+    const inst = StakingWrapper;
     const pools = await inst.getPools();
     console.log(pools);
     runInAction(() => {

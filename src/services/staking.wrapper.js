@@ -52,8 +52,8 @@ function parseFloatToBigNumber(str) {
   return ethers.utils.parseEther(math.round(mathBn, 18).toString());
 }
 
-class StakingWrapper {
-  static instance = null;
+class StakingWrapperSingleton {
+  static privateInstance = null;
 
   constructor(providerOrSigner = null) {
     console.log('StakingWrapper constructor');
@@ -63,10 +63,10 @@ class StakingWrapper {
     }
     this.providerOrSigner = providerOrSigner;
 
-    this.initPromise = this.initialize();
+    this.privateInitPromise = this.privateInitialize();
   }
 
-  async initialize() {
+  async privateInitialize() {
     this.headContract = new ethers.Contract(
       headContractAddress,
       contractJsons.head.abi,
@@ -99,19 +99,21 @@ class StakingWrapper {
       if (ethereum !== undefined) {
         const provider = new providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        StakingWrapper.instance = new StakingWrapper(signer);
+        StakingWrapperSingleton.privateInstance = new StakingWrapperSingleton(
+          signer,
+        );
         console.log('StakingWrapper(signer)');
       }
     } else {
-      StakingWrapper.instance = new StakingWrapper();
+      StakingWrapperSingleton.privateInstance = new StakingWrapperSingleton();
       console.log('StakingWrapper()');
     }
 
-    return this.instance;
+    return this.privateInstance;
   }
 
   async getPools() {
-    await this.initPromise;
+    await this.privateInitPromise;
 
     const poolsCount = await this.poolsStore.getPoolsCount();
     const poolsAddrs = await this.poolsStore.getPools(0, poolsCount);
@@ -144,7 +146,7 @@ class StakingWrapper {
     if (typeof index !== 'number') {
       throw new Error('no pool index provided');
     }
-    await this.initPromise;
+    await this.privateInitPromise;
     if (!this.pools) await this.getPools();
     const poolContract = this.pools[index];
 
@@ -153,7 +155,7 @@ class StakingWrapper {
         poolContract.totalStake(),
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
-        this.getDPY(index),
+        this.privateGetDPY(index),
       ]);
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
     const poolAPY = math
@@ -191,8 +193,8 @@ class StakingWrapper {
     };
   }
 
-  async getDPY(index = null) {
-    await this.initPromise;
+  async privateGetDPY(index = null) {
+    await this.privateInitPromise;
 
     const poolAddr = this.pools[index].address;
 
@@ -239,6 +241,9 @@ class StakingWrapper {
   }
 }
 
+const StakingWrapper = StakingWrapperSingleton.getInstance();
+
+export default StakingWrapper;
 export {
   StakingWrapper,
   formatRounded,
