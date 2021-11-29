@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
+import { toJS } from 'mobx';
 
 import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
@@ -9,50 +10,49 @@ import NotSupported from '../../components/NotSupported';
 import { useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/RenderItems';
-import { FIXED_POINT, StakingWrapper } from '../../services/staking.wrapper';
+import { FIXED_POINT } from '../../services/staking.wrapper';
 import { bounce, connectorsByName, ethereum } from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
 import { changeNetwork, collapsedReducer } from '../../utils/helpers';
 
 const Staking = observer(() => {
-  const { account, active, activate, chainId, library } = useWeb3React();
+  const { account, activate, chainId } = useWeb3React();
   const [activeExpand, setActiveExpand] = useState(() => -1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState(() => []);
   const [checkNetworkChain, setCheckNetworkChain] = useState(() => false);
-  let signer;
-  let stakingWrapper;
 
   const getDataFromProvider = async () => {
-    signer = library !== undefined && library.getSigner();
-    if (signer) {
-      if (appStore.stakingWrapper !== undefined) {
-        const poolsArr = await appStore.stakingWrapper.getPools();
-        setPools(() => poolsArr);
-      } else {
-        stakingWrapper = new StakingWrapper(signer);
-        appStore.setStakingWrapper(stakingWrapper);
-        const poolsArr = await appStore.stakingWrapper.getPools();
-        setPools(() => poolsArr);
-      }
-    }
+    await appStore.updatePoolData();
+    setPools(() => appStore.poolsData.length > 0 && toJS(appStore.poolsData));
   };
 
+  const handleChainChanged = () => window.location.reload();
+  const handleAccountsChanged = () => window.location.reload();
+  const handleNetworkChanged = () => window.location.reload();
+
+  useTimeout(() => setCheckNetworkChain(true), 1500);
+
   useEffect(() => {
+    console.log('Staking render useEffect');
     activate(connectorsByName.Injected);
-    const mounted = true;
-    if (mounted) {
-      getDataFromProvider();
-      if (ethereum?.isMetaMask) {
-        if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
-          window.addEventListener('focus', changeNetwork);
-        }
+    getDataFromProvider();
+    if (ethereum?.isMetaMask) {
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        window.addEventListener('focus', changeNetwork);
       }
     }
-  }, [appStore.refresh, active]);
+    ethereum.on('chainChanged', handleChainChanged);
+    ethereum.on('accountsChanged', handleAccountsChanged);
+    ethereum.on('networkChanged', handleNetworkChanged);
 
-  useTimeout(() => setCheckNetworkChain(() => true), 1500);
+    return () => {
+      ethereum.removeListener('chainChanged', handleChainChanged);
+      ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      ethereum.removeListener('networkChanged', handleNetworkChanged);
+    };
+  }, []);
 
   return (
     <>
@@ -63,7 +63,7 @@ const Staking = observer(() => {
         <Header />
         <div className="content">
           <div className="page">
-            {appStore.stakingWrapper !== undefined && pools.length > 0 ? (
+            {pools.length > 0 ? (
               <RenderItems>
                 <InfoBlock account={account} poolsArr={pools} />
                 <div className="staking wrapper">

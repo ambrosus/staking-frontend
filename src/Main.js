@@ -1,23 +1,23 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Web3Provider } from '@ethersproject/providers';
 import { BrowserRouter } from 'react-router-dom';
-import { Web3ReactProvider } from '@web3-react/core';
+import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 
 import RenderRoutes from './components/RenderRoutes';
 import './styles/Main.scss';
+import { getLibrary } from './utils/helpers';
+import { NetworkContextName } from './config';
 
-const getLibrary = (provider) => {
-  const library = new Web3Provider(provider);
-  library.pollingInterval = 20000;
-  return library;
-};
+const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
+
 const Main = observer(() => (
-  <Web3ReactProvider getLibrary={getLibrary}>
-    <BrowserRouter>
-      <RenderRoutes />
-    </BrowserRouter>
-  </Web3ReactProvider>
+  <BrowserRouter>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ProviderNetwork getLibrary={getLibrary}>
+        <RenderRoutes />
+      </Web3ProviderNetwork>
+    </Web3ReactProvider>
+  </BrowserRouter>
 ));
 
 export default Main;

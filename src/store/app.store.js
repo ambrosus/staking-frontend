@@ -1,10 +1,18 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { runInAction, makeAutoObservable } from 'mobx';
+import { StakingWrapper } from '../services/staking.wrapper';
 
 export class AppStore {
-  constructor() {
-    this.tokenPrice = undefined;
-    this.refresh = false;
-    this.stakingWrapper = undefined;
+  poolsData = [];
+
+  tokenPrice = undefined;
+
+  refresh = false;
+
+  constructor(poolsData, tokenPrice, refresh) {
+    this.poolsData = poolsData;
+    this.tokenPrice = tokenPrice;
+    this.refresh = refresh;
+    this.updatePoolData = this.updatePoolData.bind(this);
     makeAutoObservable(this);
   }
 
@@ -14,9 +22,16 @@ export class AppStore {
     });
   }
 
-  setStakingWrapper(wrap) {
+  async updatePoolData() {
+    console.log('updatePoolData');
+    const inst = StakingWrapper.createInstance(
+      window.location.pathname !== '/',
+    );
+    const pools = await inst.getPools();
     runInAction(() => {
-      this.stakingWrapper = wrap;
+      this.poolsData = pools;
+      // TODO => make update with mobx
+      this.setRefresh();
     });
   }
 

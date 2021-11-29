@@ -1,10 +1,43 @@
 import { toast } from 'react-toastify';
 import { utils } from 'ethers';
-
-import { bounce, ethereum, network } from '../config';
+import { Web3Provider } from '@ethersproject/providers';
+import { bounce, ethereum, network, SupportedChainId } from '../config';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import appStore from '../store/app.store';
+
+const NETWORK_POLLING_INTERVALS = {
+  [SupportedChainId.MAINNET]: 1000,
+  [SupportedChainId.ROPSTEN]: 1000,
+  [SupportedChainId.RINKEBY]: 1000,
+  [SupportedChainId.GOERLI]: 1000,
+  [SupportedChainId.KOVAN]: 1000,
+  [SupportedChainId.AMBROSUS]: 1000,
+};
+
+export const getLibrary = (provider) => {
+  const library = new Web3Provider(
+    provider,
+    /* eslint-disable-next-line */
+    typeof provider.chainId === 'number'
+      ? provider.chainId
+      : /* eslint-disable-next-line */
+      typeof provider.chainId === 'string'
+      ? /* eslint-disable-next-line */
+        parseInt(provider.chainId)
+      : 'any',
+  );
+  library.pollingInterval = 15000;
+  /* eslint-disable-next-line */
+  library.detectNetwork().then((network) => {
+    const networkPollingInterval = NETWORK_POLLING_INTERVALS[network.chainId];
+    if (networkPollingInterval) {
+      library.pollingInterval = networkPollingInterval;
+    }
+  });
+  return library;
+};
 
 export const notificationMassage = (type, alertText) => {
   if (type === 'SUCCESS') {
@@ -73,20 +106,24 @@ export const formatThousand = (num) => {
 };
 
 export const changeNetwork = async () => {
-  await ethereum.request({
-    method: 'wallet_addEthereumChain',
-    params: [
-      {
-        chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-        chainName: `${network ? 'Ambrosus (Test net)' : 'Ambrosus (Main net)'}`,
-        nativeCurrency: {
-          name: 'AMB',
-          symbol: 'AMB',
-          decimals: 18,
+  await ethereum
+    .request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+          chainName: `${
+            network ? 'Ambrosus (Test net)' : 'Ambrosus (Main net)'
+          }`,
+          nativeCurrency: {
+            name: 'AMB',
+            symbol: 'AMB',
+            decimals: 18,
+          },
+          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+          blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
         },
-        rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-        blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
-      },
-    ],
-  });
+      ],
+    })
+    .then(() => appStore.setRefresh());
 };

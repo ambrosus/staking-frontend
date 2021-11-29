@@ -9,6 +9,7 @@ import Paragraph from '../../../../components/Paragraph';
 import {
   FIXED_POINT,
   formatRounded,
+  StakingWrapper,
 } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
@@ -21,43 +22,43 @@ import appStore from '../../../../store/app.store';
 
 const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const [totalReward, setTotalReward] = useState(null);
-  const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
-  const [totalStaked, setTotalStaked] = useState(null);
-  const [totalStakedInUsd, setTotalStakedInUsd] = useState(null);
+  const [totalReward, setTotalReward] = useState(() => null);
+  const [totalRewardInUsd, setTotalRewardInUsd] = useState(() => null);
+  const [totalStaked, setTotalStaked] = useState(() => null);
+  const [totalStakedInUsd, setTotalStakedInUsd] = useState(() => null);
   let poolsRewards = [];
   let myTotalStake = [];
 
   const totalRewardCalculateHandler = (estd) => {
     poolsRewards.push(estd);
-    const rewardInAmb =
-      poolsRewards.length > 0 &&
-      poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-    setTotalReward(() => rewardInAmb > 0 && rewardInAmb);
-    const esdSum =
-      appStore.tokenPrice &&
-      poolsRewards.length > 0 &&
-      poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-    setTotalRewardInUsd(
-      () =>
-        esdSum &&
+    if (poolsRewards.length === poolsArr.length) {
+      const rewardInAmb =
+        poolsRewards.length > 0 &&
+        poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+      setTotalReward(rewardInAmb > 0 && rewardInAmb);
+      const esdSum =
         appStore.tokenPrice &&
-        esdSum > 0 &&
-        esdSum * appStore.tokenPrice,
-    );
+        poolsRewards.length > 0 &&
+        poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
+      setTotalRewardInUsd(
+        esdSum &&
+          appStore.tokenPrice &&
+          esdSum > 0 &&
+          esdSum * appStore.tokenPrice,
+      );
+    }
   };
 
   const totalStakeCalculateHandler = (stake) => {
     myTotalStake.push(stake);
-    if (myTotalStake.length > 0) {
+    if (myTotalStake.length === poolsArr.length) {
       const totalStakeSum = myTotalStake.reduceRight(
         (acc, curr) => acc.add(curr),
         BigNumber.from('0'),
       );
-      setTotalStaked(() => totalStakeSum.gte(FIXED_POINT) && totalStakeSum);
+      setTotalStaked(totalStakeSum.gte(FIXED_POINT) && totalStakeSum);
       setTotalStakedInUsd(
-        () =>
-          totalStakeSum &&
+        totalStakeSum &&
           appStore.tokenPrice &&
           totalStakeSum.gte(FIXED_POINT) &&
           formatRounded(totalStakeSum) * appStore.tokenPrice,
@@ -66,31 +67,25 @@ const InfoBlock = observer(({ poolsArr, account }) => {
   };
 
   const getInfo = async () => {
-    if (appStore.stakingWrapper !== undefined && poolsArr.length > 0) {
+    if (poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
-      for (let i = 0; i < poolsArr.length; i += 1) {
-        const pool = poolsArr[i];
-        (async () => {
-          const { estAR, myStakeInAMB } =
-            await appStore.stakingWrapper.getPoolData(pool.index);
-          if (estAR) {
-            totalRewardCalculateHandler(estAR);
-          }
-          if (myStakeInAMB) {
-            totalStakeCalculateHandler(myStakeInAMB);
-          }
-        })();
-      }
+      poolsArr.forEach(async (pool) => {
+        const { estAR, myStakeInAMB } =
+          await StakingWrapper.getInstance().getPoolData(pool.index);
+        if (estAR) {
+          totalRewardCalculateHandler(estAR);
+        }
+        if (myStakeInAMB) {
+          totalStakeCalculateHandler(myStakeInAMB);
+        }
+      });
     }
   };
 
   useEffect(() => {
-    const mounted = true;
-    if (mounted) {
-      getInfo();
-    }
-  }, [appStore.refresh, account]);
+    getInfo();
+  }, [appStore.refresh]);
 
   return (
     <div className="info-block ">

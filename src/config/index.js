@@ -1,6 +1,7 @@
 import React from 'react';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { cssTransition } from 'react-toastify';
+import { Web3Provider } from '@ethersproject/providers';
 
 import githubIcon from '../assets/svg/github-icon.svg';
 import mediumIcon from '../assets/svg/medium-icon.svg';
@@ -20,6 +21,7 @@ export const TWENTY_FIVE_PERCENT = '25%';
 export const FIFTY_PERCENT = '50%';
 export const SEVENTY_FIVE_PERCENT = '75%';
 export const ONE_HUNDRED_PERCENT = '100%';
+export const NetworkContextName = 'NETWORK';
 
 export const { ethereum } = window;
 
@@ -29,15 +31,27 @@ export const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
   exit: 'animate__animated animate__bounceOut',
 });
+
 export const network =
   host.includes('local') || host.includes('dev') || host.includes('test');
+
+export const provider = ethereum ? new Web3Provider(ethereum) : null;
 
 export const transactionGasLimit = 8000000;
 
 export const transactionGasPrice = 20;
 
+export const SupportedChainId = {
+  MAINNET: 1,
+  ROPSTEN: 3,
+  RINKEBY: 4,
+  GOERLI: 5,
+  KOVAN: 42,
+  AMBROSUS: process.env.REACT_APP_CHAIN_ID,
+};
+
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 2, 3, 4, +process.env.REACT_APP_CHAIN_ID],
+  supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
 });
 
 const ConnectorNames = {
@@ -258,4 +272,5 @@ export default {
   FIFTY_PERCENT,
   SEVENTY_FIVE_PERCENT,
   ONE_HUNDRED_PERCENT,
+  provider,
 };
