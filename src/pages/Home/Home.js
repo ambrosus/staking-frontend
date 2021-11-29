@@ -16,13 +16,13 @@ import Menu from './components/Menu';
 import appStore from '../../store/app.store';
 
 const Home = () => {
-  const [pools, setPools] = useState([]);
+  const [pools, setPools] = useState(() => []);
   const location = useLocation();
   const { pathname } = location;
 
   const getPools = async () => {
     await appStore.updatePoolData();
-    setPools(() => appStore.poolsData.length > 0 && appStore.poolsData);
+    if (appStore.poolsData.length > 0) setPools(() => appStore.poolsData);
   };
 
   useEffect(() => {
@@ -82,20 +82,18 @@ const Home = () => {
               </div>
               <div className="staking__pools Halvar_Breit">
                 <RenderItems>
-                  {pools.length && (
-                    <>
-                      {pools.map(
-                        (item) =>
-                          item.active && (
-                            <StakingItem
-                              key={item.contractName}
-                              poolInfo={item}
-                              expand={false}
-                            />
-                          ),
-                      )}
-                    </>
-                  )}
+                  <>
+                    {pools.map(
+                      (item) =>
+                        item.active && (
+                          <StakingItem
+                            key={item.contractName}
+                            poolInfo={item}
+                            expand={false}
+                          />
+                        ),
+                    )}
+                  </>
                 </RenderItems>
               </div>
             </>

@@ -240,11 +240,7 @@
         font-style: normal !important;
         font-weight: normal !important;
         font-size: 16px !important;
-        /* or 150% */
-
-
         color: #9C9C9C;
-
       }
 
       &__header {
@@ -255,7 +251,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        white-space: nowrap; /* Запрещаем перенос текста */
+        white-space: nowrap;
         > p {
           flex-basis: 45%;
         }

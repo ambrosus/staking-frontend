@@ -1,10 +1,43 @@
 import { toast } from 'react-toastify';
 import { utils } from 'ethers';
-
-import { bounce, ethereum, network } from '../config';
+import { Web3Provider } from '@ethersproject/providers';
+import ms from 'ms.macro';
+import { bounce, ethereum, network, SupportedChainId } from '../config';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+
+const NETWORK_POLLING_INTERVALS = {
+  [SupportedChainId.MAINNET]: ms`1s`,
+  [SupportedChainId.ROPSTEN]: ms`1s`,
+  [SupportedChainId.RINKEBY]: ms`1s`,
+  [SupportedChainId.GOERLI]: ms`1s`,
+  [SupportedChainId.KOVAN]: ms`1s`,
+  [SupportedChainId.AMBROSUS]: ms`1s`,
+};
+
+export default function getLibrary(provider) {
+  const library = new Web3Provider(
+    provider,
+    /* eslint-disable-next-line */
+    typeof provider.chainId === 'number'
+      ? provider.chainId
+      : /* eslint-disable-next-line */
+      typeof provider.chainId === 'string'
+      ? /* eslint-disable-next-line */
+        parseInt(provider.chainId)
+      : 'any',
+  );
+  library.pollingInterval = 15000;
+  /* eslint-disable-next-line */
+  library.detectNetwork().then((network) => {
+    const networkPollingInterval = NETWORK_POLLING_INTERVALS[network.chainId];
+    if (networkPollingInterval) {
+      library.pollingInterval = networkPollingInterval;
+    }
+  });
+  return library;
+}
 
 export const notificationMassage = (type, alertText) => {
   if (type === 'SUCCESS') {

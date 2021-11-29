@@ -1,7 +1,6 @@
-/* eslint-disable */
-
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { BigNumber, ethers, providers } from 'ethers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { all, create } from 'mathjs';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
 import { ethereum } from '../config';
@@ -26,14 +25,14 @@ function formatRounded(bigNumber, digits = 18) {
   if (!bigNumber || !BigNumber.isBigNumber(bigNumber)) {
     throw new Error('not a BigNumber');
   }
-  digits = Math.floor(digits);
-  if (digits < 0 || digits > 18) {
+  const digitsCopy = Math.floor(digits);
+  if (digitsCopy < 0 || digitsCopy > 18) {
     throw new Error('digits out of range');
   }
   const mathBn = math.bignumber(ethers.utils.formatEther(bigNumber));
-  return math.format(mathBn.round(digits), {
+  return math.format(mathBn.round(digitsCopy), {
     notation: 'fixed',
-    precision: digits,
+    precision: digitsCopy,
   });
 }
 
@@ -42,7 +41,9 @@ function checkValidNumberString(str) {
   try {
     parseFloatToBigNumber(str);
     ret = true;
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
   return ret;
 }
 
@@ -55,81 +56,84 @@ class StakingWrapper {
   static instance = null;
 
   constructor(providerOrSigner = null) {
+    console.log('StakingWrapper constructor');
     if (!providerOrSigner) {
-      providerOrSigner = new providers.JsonRpcProvider(
-        process.env.REACT_APP_RPC_URL,
-      );
+      /* eslint-disable-next-line */
+      providerOrSigner = new JsonRpcProvider(process.env.REACT_APP_RPC_URL);
     }
-    this._providerOrSigner = providerOrSigner;
+    this.providerOrSigner = providerOrSigner;
 
-    this._initPromise = this._initialize();
+    this.initPromise = this.initialize();
   }
 
-  async _initialize() {
+  async initialize() {
     this.headContract = new ethers.Contract(
       headContractAddress,
       contractJsons.head.abi,
-      this._providerOrSigner,
+      this.providerOrSigner,
     );
     const contextContract = new ethers.Contract(
       await this.headContract.context(),
       contractJsons.context.abi,
-      this._providerOrSigner,
+      this.providerOrSigner,
     );
     const storageCatalogueContr = new ethers.Contract(
       await contextContract.storageCatalogue(),
       contractJsons.storageCatalogue.abi,
-      this._providerOrSigner,
+      this.providerOrSigner,
     );
     this.poolEventsEmitter = new ethers.Contract(
       await storageCatalogueContr.poolEventsEmitter(),
       contractJsons.poolEventsEmitter.abi,
-      this._providerOrSigner,
+      this.providerOrSigner,
     );
     this.poolsStore = new ethers.Contract(
       await storageCatalogueContr.poolsStore(),
       contractJsons.poolsStore.abi,
-      this._providerOrSigner,
+      this.providerOrSigner,
     );
   }
 
   static getInstance() {
-    console.log('StakingWrapper.getInstance init');
-    if (ethereum !== undefined) {
-      const provider = new providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      StakingWrapper.instance = new StakingWrapper(signer);
+    if (window.location.pathname !== '/') {
+      if (ethereum !== undefined) {
+        const provider = new providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        StakingWrapper.instance = new StakingWrapper(signer);
+        console.log('StakingWrapper(signer)');
+      }
     } else {
       StakingWrapper.instance = new StakingWrapper();
+      console.log('StakingWrapper()');
     }
 
     return this.instance;
   }
 
   async getPools() {
-    await this._initPromise;
+    await this.initPromise;
 
     const poolsCount = await this.poolsStore.getPoolsCount();
     const poolsAddrs = await this.poolsStore.getPools(0, poolsCount);
-    this._pools = poolsAddrs.map(
+    this.pools = poolsAddrs.map(
       (poolAddr) =>
-        new ethers.Contract(poolAddr, pool.abi, this._providerOrSigner),
+        new ethers.Contract(poolAddr, pool.abi, this.providerOrSigner),
     );
 
     return Promise.all(
-      this._pools.map(async (_pool, index) => {
+      this.pools.map(async (poolItem, index) => {
         const info = await Promise.all([
-          _pool.name(),
-          _pool.active(),
-          _pool.totalStake(),
+          poolItem.name(),
+          poolItem.active(),
+          poolItem.totalStake(),
         ]);
         return {
           index,
           contractName: info[0],
-          address: _pool.address,
-          abi: pool.abi,
+          address: poolItem.address,
+          abi: poolItem.abi,
           active: info[1],
-          contract: _pool,
+          contract: poolItem,
           totalStake: info[2],
         };
       }),
@@ -140,16 +144,16 @@ class StakingWrapper {
     if (typeof index !== 'number') {
       throw new Error('no pool index provided');
     }
-    await this._initPromise;
-    if (!this._pools) await this.getPools();
-    const poolContract = this._pools[index];
+    await this.initPromise;
+    if (!this.pools) await this.getPools();
+    const poolContract = this.pools[index];
 
     const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens, poolDPY] =
       await Promise.all([
         poolContract.totalStake(),
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
-        this._getDPY(index),
+        this.getDPY(index),
       ]);
     const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
     const poolAPY = math
@@ -187,10 +191,10 @@ class StakingWrapper {
     };
   }
 
-  async _getDPY(index = null) {
-    await this._initPromise;
+  async getDPY(index = null) {
+    await this.initPromise;
 
-    const poolAddr = this._pools[index].address;
+    const poolAddr = this.pools[index].address;
 
     const rewardEvents = await this.poolEventsEmitter.queryFilter(
       this.poolEventsEmitter.filters.PoolReward(null, null, null),
@@ -214,7 +218,7 @@ class StakingWrapper {
 
     const [firstReward, lastReward] = await Promise.all(
       sortedPoolRewards
-        .filter((_, index, array) => index === 0 || index === array.length - 1)
+        .filter((_, idx, array) => idx === 0 || idx === array.length - 1)
         .map(async (event) => ({
           blockNumber: event.blockNumber,
           timestamp: (await event.getBlock()).timestamp,

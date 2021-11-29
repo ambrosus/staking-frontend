@@ -15,8 +15,8 @@ import loginIcon from '../../../assets/svg/login.svg';
 import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
 
 export const Header = observer(() => {
-  const [usdPrice, setUsdPrice] = useState(0);
-  const [percentChange24h, setPercentChange24h] = useState(0);
+  const [usdPrice, setUsdPrice] = useState(() => 0);
+  const [percentChange24h, setPercentChange24h] = useState(() => 0);
   const { account, deactivate } = useWeb3React();
   const history = useHistory();
 

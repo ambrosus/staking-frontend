@@ -1,15 +1,15 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import * as PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import { BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
-import { StakingWrapper } from '../../../../services/staking.wrapper';
+
 import Paragraph from '../../../../components/Paragraph';
 import {
   FIXED_POINT,
   formatRounded,
+  StakingWrapper,
 } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
@@ -22,10 +22,10 @@ import appStore from '../../../../store/app.store';
 
 const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const [totalReward, setTotalReward] = useState(null);
-  const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
-  const [totalStaked, setTotalStaked] = useState(null);
-  const [totalStakedInUsd, setTotalStakedInUsd] = useState(null);
+  const [totalReward, setTotalReward] = useState(() => null);
+  const [totalRewardInUsd, setTotalRewardInUsd] = useState(() => null);
+  const [totalStaked, setTotalStaked] = useState(() => null);
+  const [totalStakedInUsd, setTotalStakedInUsd] = useState(() => null);
   let poolsRewards = [];
   let myTotalStake = [];
 
@@ -70,7 +70,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     if (poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
-      for (const pool of poolsArr) {
+      poolsArr.forEach(async (pool) => {
         const { estAR, myStakeInAMB } =
           await StakingWrapper.instance.getPoolData(pool.index);
         if (estAR) {
@@ -79,7 +79,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
         if (myStakeInAMB) {
           totalStakeCalculateHandler(myStakeInAMB);
         }
-      }
+      });
     }
   };
 

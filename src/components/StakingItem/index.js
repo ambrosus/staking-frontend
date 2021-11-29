@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
@@ -27,9 +26,9 @@ const StakingItem = observer(
     index = -1,
     poolInfo,
   }) => {
-    const [myStake, setMyStake] = useState(null);
-    const [totalStake, setTotalStake] = useState(null);
-    const [APYOfPool, setAPYOfPool] = useState(null);
+    const [myStake, setMyStake] = useState(() => null);
+    const [totalStake, setTotalStake] = useState(() => null);
+    const [APYOfPool, setAPYOfPool] = useState(() => null);
     const history = useHistory();
     const { pathname } = history.location;
     const { active } = useWeb3React();

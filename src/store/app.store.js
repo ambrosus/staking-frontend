@@ -12,6 +12,7 @@ export class AppStore {
     this.poolsData = poolsData;
     this.tokenPrice = tokenPrice;
     this.refresh = refresh;
+    this.updatePoolData = this.updatePoolData.bind(this);
     makeAutoObservable(this);
   }
 
@@ -22,11 +23,14 @@ export class AppStore {
   }
 
   async updatePoolData() {
-    this.setRefresh();
+    console.log('updatePoolData');
     const inst = StakingWrapper.getInstance();
     const pools = await inst.getPools();
+    console.log(pools);
     runInAction(() => {
       this.poolsData = pools;
+      // TODO => make update with mobx
+      this.setRefresh();
     });
   }
 

@@ -34,8 +34,8 @@ const Withdraw = observer(
     hideModal,
     stake,
   }) => {
-    const [inputValue, setInputValue] = useState('');
-    const [afterWithdraw, setAfterWithdraw] = useState(stake || ZERO);
+    const [inputValue, setInputValue] = useState(() => '');
+    const [afterWithdraw, setAfterWithdraw] = useState(() => stake || ZERO);
     const withdrawPayment = async () => {
       if (!checkValidNumberString(inputValue)) {
         return false;

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Modal from '../../../../components/Modal';
 
 export default function FromPhoneDeviseEnter() {
-  const [closeModal, setCloseModal] = useState(true);
+  const [closeModal, setCloseModal] = useState(() => true);
 
   return (
     <Modal isShowing={closeModal} hide={() => setCloseModal(false)}>
