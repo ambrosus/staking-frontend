@@ -51,16 +51,14 @@ const StakingItem = observer(
 
     const getPoolData = async () => {
       const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-        await StakingWrapper.instance.getPoolData(poolInfo.index);
+        await StakingWrapper.getPoolData(poolInfo.index);
       if (totalStakeInAMB && myStakeInAMB && poolAPY) {
         setMyStake(myStakeInAMB);
         setAPYOfPool(poolAPY);
         setTotalStake(totalStakeInAMB);
       }
     };
-    useEffect(() => {
-      getPoolData();
-    }, [appStore.refresh]);
+    useEffect(getPoolData, [appStore.refresh]);
 
     return (
       <div

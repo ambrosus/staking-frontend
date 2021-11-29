@@ -41,7 +41,7 @@ const Withdraw = observer(
         return false;
       }
       const { tokenPriceAMB, myStakeInTokens } =
-        await StakingWrapper.instance.getPoolData(withdrawContractInfo.index);
+        await StakingWrapper.getPoolData(withdrawContractInfo.index);
 
       const decimal = parseFloatToBigNumber(inputValue)
         .mul(FIXED_POINT)
