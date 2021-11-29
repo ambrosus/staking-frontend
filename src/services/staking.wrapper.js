@@ -37,14 +37,12 @@ function formatRounded(bigNumber, digits = 18) {
 }
 
 function checkValidNumberString(str) {
-  let ret = false;
   try {
     parseFloatToBigNumber(str);
-    ret = true;
+    return true;
   } catch (err) {
-    console.log(err);
+    return false;
   }
-  return ret;
 }
 
 function parseFloatToBigNumber(str) {
