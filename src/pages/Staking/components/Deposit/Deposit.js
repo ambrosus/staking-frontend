@@ -13,7 +13,6 @@ import Withdraw from '../Withdraw';
 import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
-  StakingWrapper,
   checkValidNumberString,
   parseFloatToBigNumber,
   formatRounded,
@@ -21,12 +20,11 @@ import {
   MIN_SHOW_STAKE,
   THOUSAND,
   ZERO,
-} from '../../../../services/staking.wrapper';
+} from '../../../../services/numbers';
+import StakingWrapper from '../../../../services/staking.wrapper';
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import {
   FIFTY_PERCENT,
-  // transactionGasPrice,
-  // transactionGasLimit,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
@@ -46,10 +44,7 @@ const Deposit = observer(({ depositInfo }) => {
       return false;
     }
     console.log(depositInfo);
-    const tx = await StakingWrapper.getInstance().stake(
-      depositInfo.index,
-      inputValue,
-    );
+    const tx = await StakingWrapper.stake(depositInfo, inputValue);
 
     console.log('stake', tx);
 
@@ -67,15 +62,15 @@ const Deposit = observer(({ depositInfo }) => {
         notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
       }
 
-      if (result) {
-        // await appStore.updatePoolData();
-        appStore.setRefresh();
-      }
+      // if (result) {
+      await appStore.updatePoolData();
+      // appStore.setRefresh();
+      // }
     } else {
       // todo: ?????
     }
 
-    return true;
+    return result;
   };
 
   const refreshProc = async () => {
@@ -274,8 +269,8 @@ const Deposit = observer(({ depositInfo }) => {
                 {' '}
                 <DisplayValue
                   value={
-                    depositInfo.totalStake &&
-                    formatRounded(depositInfo.totalStake, 2)
+                    depositInfo.totalStakeInAMB &&
+                    formatRounded(depositInfo.totalStakeInAMB, 2)
                   }
                   size="l-400"
                 />
@@ -284,7 +279,7 @@ const Deposit = observer(({ depositInfo }) => {
                 {' '}
                 <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
                   {depositInfo.active === false &&
-                  depositInfo.totalStake.gte(FIXED_POINT)
+                  depositInfo.totalStakeInAMB.gte(FIXED_POINT)
                     ? 'Offline'
                     : `${depositInfo.poolAPY}%`}
                 </Paragraph>

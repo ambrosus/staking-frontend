@@ -6,7 +6,7 @@ import { ReactSVG } from 'react-svg';
 import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
 import clearIcon from '../../assets/svg/clear.svg';
 
-import { checkValidNumberString } from '../../services/staking.wrapper';
+import { checkValidNumberString } from '../../services/numbers';
 
 const Input = ({
   onchange,

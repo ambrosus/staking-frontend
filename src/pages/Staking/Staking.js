@@ -10,7 +10,7 @@ import NotSupported from '../../components/NotSupported';
 import { useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/RenderItems';
-import { FIXED_POINT } from '../../services/staking.wrapper';
+import { FIXED_POINT } from '../../services/numbers';
 import { bounce, connectorsByName, ethereum } from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
@@ -78,7 +78,7 @@ const Staking = observer(() => {
                     {pools
                       .filter(
                         (pool) =>
-                          pool.active || pool.totalStake.gte(FIXED_POINT),
+                          pool.active || pool.totalStakeInAMB.gte(FIXED_POINT),
                       )
                       .sort((a, b) => b.active - a.active)
                       .map((item, index) => (

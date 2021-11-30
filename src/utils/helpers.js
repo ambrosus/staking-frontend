@@ -1,6 +1,5 @@
 import { toast } from 'react-toastify';
-import { utils } from 'ethers';
-import { Web3Provider } from '@ethersproject/providers';
+import { utils, providers } from 'ethers';
 import { bounce, ethereum, network, SupportedChainId } from '../config';
 
 import 'animate.css/animate.min.css';
@@ -17,7 +16,7 @@ const NETWORK_POLLING_INTERVALS = {
 };
 
 export const getLibrary = (provider) => {
-  const library = new Web3Provider(
+  const library = new providers.Web3Provider(
     provider,
     /* eslint-disable-next-line */
     typeof provider.chainId === 'number'

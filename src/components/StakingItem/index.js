@@ -6,7 +6,7 @@ import Collapse from '@kunukn/react-collapse';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 
-import { formatRounded } from '../../services/staking.wrapper';
+import { formatRounded } from '../../services/numbers';
 import appStore from '../../store/app.store';
 import { HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE } from '../../config';
 import avatarIcon from '../../assets/svg/avatar.svg';
@@ -129,8 +129,8 @@ const StakingItem = observer(
                         : 'rgb(191, 201, 224)'
                     }
                     value={
-                      poolInfo.totalStake &&
-                      formatRounded(poolInfo.totalStake, 2)
+                      poolInfo.totalStakeInAMB &&
+                      formatRounded(poolInfo.totalStakeInAMB, 2)
                     }
                   />
                 </div>
