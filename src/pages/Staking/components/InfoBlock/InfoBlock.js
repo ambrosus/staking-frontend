@@ -9,7 +9,6 @@ import Paragraph from '../../../../components/Paragraph';
 import {
   FIXED_POINT,
   formatRounded,
-  StakingWrapper,
 } from '../../../../services/staking.wrapper';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
@@ -67,13 +66,12 @@ const InfoBlock = observer(({ poolsArr, account }) => {
   };
 
   const getInfo = async () => {
+    // todo: do refresh here
     if (poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
       poolsArr.forEach(async (pool) => {
-        const ins = StakingWrapper.getInstance();
-        console.log('getInfo', ins);
-        const { estAR, myStakeInAMB } = await ins.getPoolData(pool.index);
+        const { estAR, myStakeInAMB } = pool;
         if (estAR) {
           totalRewardCalculateHandler(estAR);
         }

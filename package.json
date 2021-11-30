@@ -9,6 +9,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "ambrosus-node-contracts": "^0.0.88",
     "animate.css": "^4.1.1",
+    "async-mutex": "^0.3.2",
     "classnames": "^2.3.1",
     "ethereum-block-by-date": "^1.4.2",
     "ethers": "^5.4.6",

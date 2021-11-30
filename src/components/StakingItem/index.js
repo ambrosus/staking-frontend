@@ -6,7 +6,7 @@ import Collapse from '@kunukn/react-collapse';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 
-import { formatRounded, StakingWrapper } from '../../services/staking.wrapper';
+import { formatRounded } from '../../services/staking.wrapper';
 import appStore from '../../store/app.store';
 import { HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE } from '../../config';
 import avatarIcon from '../../assets/svg/avatar.svg';
@@ -50,8 +50,7 @@ const StakingItem = observer(
     };
 
     const getPoolData = async () => {
-      const { totalStakeInAMB, myStakeInAMB, poolAPY } =
-        await StakingWrapper.getInstance().getPoolData(poolInfo.index);
+      const { totalStakeInAMB, myStakeInAMB, poolAPY } = poolInfo;
       if (totalStakeInAMB && myStakeInAMB && poolAPY) {
         setMyStake(myStakeInAMB);
         setAPYOfPool(poolAPY);
