@@ -6,10 +6,7 @@ import { BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Paragraph from '../../../../components/Paragraph';
-import {
-  FIXED_POINT,
-  formatRounded,
-} from '../../../../services/staking.wrapper';
+import { FIXED_POINT, formatRounded } from '../../../../services/numbers';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';

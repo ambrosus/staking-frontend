@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { all, create } from 'mathjs';
 
 const ZERO = BigNumber.from(0);
@@ -13,4 +13,44 @@ const math = create(all, {
   precision: 64,
 });
 
-export { math, ZERO, ONE, TEN, FIXED_POINT, THOUSAND, MIN_SHOW_STAKE };
+function formatRounded(bigNumber, digits = 18) {
+  if (!bigNumber || !BigNumber.isBigNumber(bigNumber)) {
+    throw new Error('not a BigNumber');
+  }
+  const digitsCopy = Math.floor(digits);
+  if (digitsCopy < 0 || digitsCopy > 18) {
+    throw new Error('digits out of range');
+  }
+  const mathBn = math.bignumber(utils.formatEther(bigNumber));
+  return math.format(mathBn.round(digitsCopy), {
+    notation: 'fixed',
+    precision: digitsCopy,
+  });
+}
+
+function checkValidNumberString(str) {
+  try {
+    parseFloatToBigNumber(str);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function parseFloatToBigNumber(str) {
+  const mathBn = math.bignumber(str);
+  return utils.parseEther(math.round(mathBn, 18).toString());
+}
+
+export {
+  math,
+  ZERO,
+  ONE,
+  TEN,
+  FIXED_POINT,
+  THOUSAND,
+  MIN_SHOW_STAKE,
+  formatRounded,
+  checkValidNumberString,
+  parseFloatToBigNumber,
+};
