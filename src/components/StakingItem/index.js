@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { useWeb3React } from '@web3-react/core';
@@ -26,9 +26,6 @@ const StakingItem = observer(
     index = -1,
     poolInfo,
   }) => {
-    const [myStake, setMyStake] = useState(() => null);
-    const [totalStake, setTotalStake] = useState(() => null);
-    const [APYOfPool, setAPYOfPool] = useState(() => null);
     const history = useHistory();
     const { pathname } = history.location;
     const { active } = useWeb3React();
@@ -49,17 +46,7 @@ const StakingItem = observer(
       }
     };
 
-    const getPoolData = () => {
-      const { totalStakeInAMB, myStakeInAMB, poolAPY } = poolInfo;
-      if (totalStakeInAMB && myStakeInAMB && poolAPY) {
-        setMyStake(myStakeInAMB);
-        setAPYOfPool(poolAPY);
-        setTotalStake(totalStakeInAMB);
-      }
-    };
-    useEffect(() => {
-      getPoolData();
-    }, [appStore.refresh]);
+    useEffect(() => {}, [appStore.refresh]);
 
     return (
       <div
@@ -71,7 +58,7 @@ const StakingItem = observer(
             pathname === MAIN_PAGE && '0px 6px 10px rgba(0, 0, 0, 0.25)',
           color:
             pathname === MAIN_PAGE &&
-            !myStake &&
+            !poolInfo.myStakeInAMB &&
             !poolInfo.active &&
             'rgb(191 201 224)',
         }}
@@ -89,7 +76,7 @@ const StakingItem = observer(
                   marginRight: pathname === STAKING_PAGE ? 10 : '',
                   color:
                     pathname === MAIN_PAGE &&
-                    !myStake &&
+                    !poolInfo.myStakeInAMB &&
                     !poolInfo.active &&
                     'rgb(191 201 224)',
                 }}
@@ -125,7 +112,10 @@ const StakingItem = observer(
                           ? pathname === MAIN_PAGE && '#FFF'
                           : 'rgb(191, 201, 224)'
                       }
-                      value={myStake && formatRounded(myStake, 2)}
+                      value={
+                        poolInfo.myStakeInAMB &&
+                        formatRounded(poolInfo.myStakeInAMB, 2)
+                      }
                     />
                   </div>
                 </div>
@@ -138,12 +128,15 @@ const StakingItem = observer(
                         ? pathname === MAIN_PAGE && '#FFF'
                         : 'rgb(191, 201, 224)'
                     }
-                    value={totalStake && formatRounded(totalStake, 2)}
+                    value={
+                      poolInfo.totalStake &&
+                      formatRounded(poolInfo.totalStake, 2)
+                    }
                   />
                 </div>
               </div>
               <div className="item--header__flex__apy">
-                {APYOfPool && poolInfo.contractName === 'Plutus' ? (
+                {poolInfo.poolAPY && poolInfo.contractName === 'Plutus' ? (
                   <Paragraph
                     style={{
                       color: poolInfo.active
@@ -163,7 +156,7 @@ const StakingItem = observer(
                     }
                     size="l-700"
                     symbol="%"
-                    value={APYOfPool}
+                    value={poolInfo.poolAPY}
                   />
                 )}
               </div>
@@ -188,12 +181,7 @@ const StakingItem = observer(
                 <div className="collapsed-content">
                   {active && (
                     <div className="collapsed-content__body">
-                      <Deposit
-                        myStake={myStake}
-                        totalStake={totalStake}
-                        APYOfPool={APYOfPool}
-                        depositInfo={poolInfo}
-                      />
+                      <Deposit depositInfo={poolInfo} />
                     </div>
                   )}
                 </div>

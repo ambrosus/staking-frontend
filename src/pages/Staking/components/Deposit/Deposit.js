@@ -45,7 +45,7 @@ const Deposit = observer(({ depositInfo }) => {
     if (!checkValidNumberString(inputValue)) {
       return false;
     }
-
+    console.log(depositInfo);
     const tx = await StakingWrapper.getInstance().stake(
       depositInfo.index,
       inputValue,
@@ -333,8 +333,6 @@ const Deposit = observer(({ depositInfo }) => {
 });
 
 Deposit.propTypes = {
-  totalStake: PropTypes.any,
-  APYOfPool: PropTypes.any,
   depositInfo: PropTypes.any,
 };
 export default Deposit;
