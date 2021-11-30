@@ -29,6 +29,7 @@ export class AppStore {
     const poolsData = await NewStakingWrapper.getPools(
       window.location.pathname !== '/',
     );
+    console.log('poolsData', poolsData);
     runInAction(() => {
       this.poolsData = poolsData;
       // TODO => make update with mobx

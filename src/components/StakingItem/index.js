@@ -49,7 +49,7 @@ const StakingItem = observer(
       }
     };
 
-    const getPoolData = async () => {
+    const getPoolData = () => {
       const { totalStakeInAMB, myStakeInAMB, poolAPY } = poolInfo;
       if (totalStakeInAMB && myStakeInAMB && poolAPY) {
         setMyStake(myStakeInAMB);

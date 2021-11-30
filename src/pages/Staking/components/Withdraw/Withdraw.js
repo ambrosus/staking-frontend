@@ -32,19 +32,20 @@ const Withdraw = observer(
       abi: [],
     },
     hideModal,
-    stake,
   }) => {
     const [inputValue, setInputValue] = useState(() => '');
-    const [afterWithdraw, setAfterWithdraw] = useState(() => stake || ZERO);
+    const [afterWithdraw, setAfterWithdraw] = useState(
+      () => withdrawContractInfo.myStakeInAMB || ZERO,
+    );
     const withdrawPayment = async () => {
       if (!checkValidNumberString(inputValue)) {
         return false;
       }
 
       const tx = await StakingWrapper.getInstance().unstake(
-        withdrawContractInfo.index,
+        +withdrawContractInfo.index,
         inputValue,
-        formatRounded(stake, 2) === inputValue, // ugly hack - check 100%
+        formatRounded(withdrawContractInfo.myStakeInAMB, 2) === inputValue, // ugly hack - check 100%
       );
 
       console.log('withdraw', tx);
@@ -76,9 +77,13 @@ const Withdraw = observer(
 
     const calculateSumAfterWithdraw = useCallback(
       () =>
-        stake &&
+        withdrawContractInfo.myStakeInAMB &&
         checkValidNumberString(inputValue) &&
-        setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue))),
+        setAfterWithdraw(
+          withdrawContractInfo.myStakeInAMB.sub(
+            parseFloatToBigNumber(inputValue),
+          ),
+        ),
       [inputValue],
     );
 
@@ -87,7 +92,7 @@ const Withdraw = observer(
       return () => {
         calculateSumAfterWithdraw();
       };
-    }, [inputValue, stake]);
+    }, [inputValue, withdrawContractInfo.myStakeInAMB]);
 
     return (
       <div className="deposit">
@@ -107,9 +112,12 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={stake.eq(0)}
+                disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
                 onclick={() =>
-                  stake && setInputValue(formatRounded(stake.div(4), 2))
+                  withdrawContractInfo.myStakeInAMB &&
+                  setInputValue(
+                    formatRounded(withdrawContractInfo.myStakeInAMB.div(4), 2),
+                  )
                 }
               >
                 <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>
@@ -120,9 +128,12 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={stake.eq(0)}
+                disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
                 onclick={() =>
-                  stake && setInputValue(formatRounded(stake.div(2), 2))
+                  withdrawContractInfo.myStakeInAMB &&
+                  setInputValue(
+                    formatRounded(withdrawContractInfo.myStakeInAMB.div(2), 2),
+                  )
                 }
               >
                 <span className="percent-btn">{FIFTY_PERCENT}</span>
@@ -133,9 +144,15 @@ const Withdraw = observer(
                 buttonStyles={{ height: 48 }}
                 priority="secondary"
                 type="outline"
-                disabled={stake.eq(0)}
+                disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
                 onclick={() =>
-                  stake && setInputValue(formatRounded(stake.mul(3).div(4), 2))
+                  withdrawContractInfo.myStakeInAMB &&
+                  setInputValue(
+                    formatRounded(
+                      withdrawContractInfo.myStakeInAMB.mul(3).div(4),
+                      2,
+                    ),
+                  )
                 }
               >
                 <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>
@@ -146,8 +163,13 @@ const Withdraw = observer(
                 priority="secondary"
                 buttonStyles={{ height: 48 }}
                 type="outline"
-                disabled={stake.eq(0)}
-                onclick={() => setInputValue(stake && formatRounded(stake, 2))}
+                disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+                onclick={() =>
+                  setInputValue(
+                    withdrawContractInfo.myStakeInAMB &&
+                      formatRounded(withdrawContractInfo.myStakeInAMB, 2),
+                  )
+                }
               >
                 <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>
               </Button>
@@ -171,10 +193,10 @@ const Withdraw = observer(
                 !checkValidNumberString(inputValue) ||
                 parseFloatToBigNumber(inputValue).eq(0) ||
                 parseFloatToBigNumber(inputValue).gt(
-                  stake.add(FIXED_POINT.div(2)),
+                  withdrawContractInfo.myStakeInAMB.add(FIXED_POINT.div(2)),
                 )
               }
-              onclick={() => withdrawPayment()}
+              onclick={withdrawPayment}
             >
               <Paragraph size="m-500">Withdraw</Paragraph>
             </Button>
@@ -206,7 +228,6 @@ const Withdraw = observer(
 
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
-  stake: PropTypes.any,
   withdrawContractInfo: PropTypes.any,
 };
 

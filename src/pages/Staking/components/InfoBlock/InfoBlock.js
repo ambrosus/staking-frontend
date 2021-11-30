@@ -70,7 +70,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     if (poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
-      poolsArr.forEach(async (pool) => {
+      poolsArr.forEach((pool) => {
         const { estAR, myStakeInAMB } = pool;
         if (estAR) {
           totalRewardCalculateHandler(estAR);
