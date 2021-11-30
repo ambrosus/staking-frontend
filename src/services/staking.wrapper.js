@@ -4,7 +4,7 @@ import { headContractAddress } from 'ambrosus-node-contracts/config/config';
 import { ethereum, transactionGasLimit, transactionGasPrice } from '../config';
 import { math, FIXED_POINT, parseFloatToBigNumber } from './numbers';
 
-const AVERAGING_PERIOD = 7 * 24 * 60 * 60; // 7 days
+const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
 
 const dailyPercentageYieldExpression = math.compile(
   '(price2 / price1) ^ (86400 / (time2 - time1)) - 1',
@@ -49,27 +49,47 @@ export default class StakingWrapper {
       contractJsons.storageCatalogue.abi,
       this.privateProvider,
     );
+    const [poolEventsEmitterAddr, poolsStoreAddr] = await Promise.all([
+      storageCatalogueContr.poolEventsEmitter(),
+      storageCatalogueContr.poolsStore(),
+    ]);
     this.poolEventsEmitter = new ethers.Contract(
-      await storageCatalogueContr.poolEventsEmitter(),
+      poolEventsEmitterAddr,
       contractJsons.poolEventsEmitter.abi,
       this.privateProvider,
     );
     this.poolsStore = new ethers.Contract(
-      await storageCatalogueContr.poolsStore(),
+      poolsStoreAddr,
       contractJsons.poolsStore.abi,
       this.privateProvider,
     );
-    // this.getRewardEvents(); // prefetch events
     xxxLog('StakingWrapper done');
   })();
 
-  static async getRewardEvents() {
+  static async getRewardEvents(from, to) {
+    const blocks = 20000;
+    const eventsPromises = [];
+    for (let xFrom = from; xFrom < to; xFrom += blocks) {
+      const xTo = Math.min(xFrom + blocks - 1, to);
+      eventsPromises.push(
+        this.poolEventsEmitter.queryFilter(
+          this.poolEventsEmitter.filters.PoolReward(null, null, null),
+          xFrom,
+          xTo,
+        ),
+      );
+    }
+    const eventsArrays = await Promise.all(eventsPromises);
+    return eventsArrays.flatMap((arr) => arr);
+  }
+
+  static async updateRewardEvents() {
     const currentBlockNumber = await this.privateProvider.getBlockNumber();
     if (currentBlockNumber > this.privateLastBlock) {
       const startBlockNumber =
         currentBlockNumber - Math.floor(AVERAGING_PERIOD / 5);
-      const rewardEvents = await this.poolEventsEmitter.queryFilter(
-        this.poolEventsEmitter.filters.PoolReward(null, null, null),
+
+      const rewardEvents = await this.getRewardEvents(
         this.privateLastBlock ? this.privateLastBlock + 1 : startBlockNumber,
         currentBlockNumber,
       );
@@ -93,6 +113,7 @@ export default class StakingWrapper {
   }
 
   static async getPools(loggedIn = false) {
+    xxxLog('## getPools');
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(ethereum).getSigner()
       : this.privateProvider;
@@ -101,7 +122,7 @@ export default class StakingWrapper {
 
     const [poolsAddrs] = await Promise.all([
       this.getPoolsXX(),
-      this.getRewardEvents(),
+      this.updateRewardEvents(),
     ]);
 
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
@@ -132,10 +153,8 @@ export default class StakingWrapper {
         index,
         contractName,
         address: poolAddr,
-        // abi: pool.abi,
         active,
         contract: poolContract,
-        // totalStake: totalStakeInAMB,
         totalStakeInAMB,
         tokenPriceAMB,
         myStakeInTokens,
@@ -149,8 +168,6 @@ export default class StakingWrapper {
   }
 
   static async privateGetDPY(poolAddr) {
-    // await this.privateStaticConstructorPromise;
-
     const rewardEvents = this.privateRewardEvents;
     if (!rewardEvents || rewardEvents.length < 2) return 0;
 
@@ -220,13 +237,13 @@ export default class StakingWrapper {
 
     const poolContract = poolInfo.contract;
 
-    console.log('.stake', poolInfo.index, value);
+    xxxLog('.stake', poolInfo.index, value);
 
     try {
       overrides.gasLimit = await poolContract.estimateGas.stake(overrides);
-      console.log('gasLimit', overrides.gasLimit.toString());
+      xxxLog('gasLimit', overrides.gasLimit.toString());
     } catch (err) {
-      console.log('stake error', err);
+      xxxLog('stake error', err);
       return null;
     }
 
@@ -234,7 +251,7 @@ export default class StakingWrapper {
   }
 
   static async unstake(poolInfo, value, fullUnstake = false) {
-    console.log('unstake', poolInfo.contractName, value, fullUnstake);
+    xxxLog('unstake', poolInfo.contractName, value, fullUnstake);
 
     const poolContract = poolInfo.contract;
     const [tokenPriceAMB, myStakeInTokens] = await Promise.all([
@@ -246,7 +263,7 @@ export default class StakingWrapper {
       ? myStakeInTokens
       : parseFloatToBigNumber(value).mul(FIXED_POINT).div(tokenPriceAMB);
 
-    console.log(
+    xxxLog(
       'unstake ##',
       poolInfo.index,
       value,
@@ -265,9 +282,9 @@ export default class StakingWrapper {
         tokens,
         overrides,
       );
-      console.log('gasLimit', overrides.gasLimit.toString());
+      xxxLog('gasLimit', overrides.gasLimit.toString());
     } catch (err) {
-      console.log('unstake error', err);
+      xxxLog('unstake error', err);
       return null;
     }
 
