@@ -146,7 +146,7 @@ const StakingItem = observer(
                     }}
                     size="l-700"
                   >
-                    <span className="transitions">Offline soon</span>
+                    <span className="transitions">OFFLINE</span>
                   </Paragraph>
                 ) : (
                   <DisplayValue

@@ -276,7 +276,7 @@ const Deposit = observer(({ depositInfo }) => {
                 {' '}
                 <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
                   {isPoolActive === false && totalStakeInAmber.gte(FIXED_POINT)
-                    ? 'Offline'
+                    ? 'OFFLINE'
                     : `${poolAPYPercent}%`}
                 </Paragraph>
               </div>
