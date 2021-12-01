@@ -28,10 +28,6 @@ const Staking = observer(() => {
     setPools(() => appStore.poolsData.length > 0 && toJS(appStore.poolsData));
   };
 
-  const handleChainChanged = () => window.location.reload();
-  const handleAccountsChanged = () => window.location.reload();
-  const handleNetworkChanged = () => window.location.reload();
-
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
   useEffect(() => {
@@ -43,16 +39,7 @@ const Staking = observer(() => {
         window.addEventListener('focus', changeNetwork);
       }
     }
-    ethereum.on('chainChanged', handleChainChanged);
-    ethereum.on('accountsChanged', handleAccountsChanged);
-    ethereum.on('networkChanged', handleNetworkChanged);
-
-    return () => {
-      ethereum.removeListener('chainChanged', handleChainChanged);
-      ethereum.removeListener('accountsChanged', handleAccountsChanged);
-      ethereum.removeListener('networkChanged', handleNetworkChanged);
-    };
-  }, [appStore.poolsData]);
+  }, [appStore.refresh]);
 
   return (
     <>

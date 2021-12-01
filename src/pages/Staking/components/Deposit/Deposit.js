@@ -11,7 +11,7 @@ import useModal from '../../../../hooks/useModal';
 import Modal from '../../../../components/Modal';
 import Withdraw from '../Withdraw';
 import DisplayValue from '../../../../components/DisplayValue';
-// import appStore from '../../../../store/app.store';
+import appStore from '../../../../store/app.store';
 import {
   checkValidNumberString,
   parseFloatToBigNumber,
@@ -30,7 +30,6 @@ import {
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
-
 const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();
   const [inputValue, setInputValue] = useState(() => '');
@@ -70,7 +69,7 @@ const Deposit = observer(({ depositInfo }) => {
 
     // if (result) {
     // await appStore.updatePoolData();
-    // appStore.setRefresh();
+    appStore.setRefresh();
     // }
 
     return result;
