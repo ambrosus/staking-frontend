@@ -15,14 +15,17 @@ const Main = () => {
   const handleNetworkChanged = () => window.location.reload();
 
   useEffect(() => {
-    ethereum.on('chainChanged', handleChainChanged);
-    ethereum.on('accountsChanged', handleAccountsChanged);
-    ethereum.on('networkChanged', handleNetworkChanged);
-
+    if (ethereum) {
+      ethereum.on('chainChanged', handleChainChanged);
+      ethereum.on('accountsChanged', handleAccountsChanged);
+      ethereum.on('networkChanged', handleNetworkChanged);
+    }
     return () => {
-      ethereum.removeListener('chainChanged', handleChainChanged);
-      ethereum.removeListener('accountsChanged', handleAccountsChanged);
-      ethereum.removeListener('networkChanged', handleNetworkChanged);
+      if (ethereum && ethereum.removeListener) {
+        ethereum.removeListener('chainChanged', handleChainChanged);
+        ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        ethereum.removeListener('networkChanged', handleNetworkChanged);
+      }
     };
   });
 
