@@ -43,7 +43,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
 
     console.log('withdraw', tx);
 
-    if (tx) {
+    if (!tx) {
       notificationMassage('ERROR', `Failed to create transaction.`);
     }
 
