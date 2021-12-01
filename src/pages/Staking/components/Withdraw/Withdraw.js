@@ -105,7 +105,10 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               onclick={() =>
                 withdrawContractInfo.myStakeInAMB &&
                 setInputValue(
-                  formatRounded(withdrawContractInfo.myStakeInAMB.div(4), 2),
+                  withdrawContractInfo.myStakeInAMB
+                    .div(4)
+                    .div(FIXED_POINT)
+                    .toString(),
                 )
               }
             >
@@ -121,7 +124,10 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               onclick={() =>
                 withdrawContractInfo.myStakeInAMB &&
                 setInputValue(
-                  formatRounded(withdrawContractInfo.myStakeInAMB.div(2), 2),
+                  withdrawContractInfo.myStakeInAMB
+                    .div(2)
+                    .div(FIXED_POINT)
+                    .toString(),
                 )
               }
             >
@@ -137,10 +143,11 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               onclick={() =>
                 withdrawContractInfo.myStakeInAMB &&
                 setInputValue(
-                  formatRounded(
-                    withdrawContractInfo.myStakeInAMB.mul(3).div(4),
-                    2,
-                  ),
+                  withdrawContractInfo.myStakeInAMB
+                    .mul(3)
+                    .div(4)
+                    .div(FIXED_POINT)
+                    .toString(),
                 )
               }
             >
