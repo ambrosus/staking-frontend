@@ -19,12 +19,16 @@ const Main = () => {
       ethereum.on('chainChanged', handleChainChanged);
       ethereum.on('accountsChanged', handleAccountsChanged);
       ethereum.on('networkChanged', handleNetworkChanged);
+    } else {
+      // todo: handle error
     }
     return () => {
-      if (ethereum && ethereum.removeListener) {
+      if (ethereum.removeListener) {
         ethereum.removeListener('chainChanged', handleChainChanged);
         ethereum.removeListener('accountsChanged', handleAccountsChanged);
         ethereum.removeListener('networkChanged', handleNetworkChanged);
+      } else {
+        // todo: handle error
       }
     };
   }, []);
