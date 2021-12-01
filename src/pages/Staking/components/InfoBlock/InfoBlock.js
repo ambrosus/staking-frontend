@@ -6,11 +6,7 @@ import { BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
 
 import Paragraph from '../../../../components/Paragraph';
-import {
-  FIXED_POINT,
-  formatRounded,
-  StakingWrapper,
-} from '../../../../services/staking.wrapper';
+import { formatRounded } from '../../../../services/numbers';
 import earningsIcon from '../../../../assets/svg/last24h.svg';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
@@ -56,23 +52,22 @@ const InfoBlock = observer(({ poolsArr, account }) => {
         (acc, curr) => acc.add(curr),
         BigNumber.from('0'),
       );
-      setTotalStaked(totalStakeSum.gte(FIXED_POINT) && totalStakeSum);
+      setTotalStaked(totalStakeSum);
       setTotalStakedInUsd(
         totalStakeSum &&
           appStore.tokenPrice &&
-          totalStakeSum.gte(FIXED_POINT) &&
           formatRounded(totalStakeSum) * appStore.tokenPrice,
       );
     }
   };
 
   const getInfo = async () => {
+    // todo: do refresh here ++
     if (poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
-      poolsArr.forEach(async (pool) => {
-        const { estAR, myStakeInAMB } =
-          await StakingWrapper.getInstance().getPoolData(pool.index);
+      poolsArr.forEach((pool) => {
+        const { estAR, myStakeInAMB } = pool;
         if (estAR) {
           totalRewardCalculateHandler(estAR);
         }
@@ -85,7 +80,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
 
   useEffect(() => {
     getInfo();
-  }, [appStore.refresh]);
+  }, [poolsArr]);
 
   return (
     <div className="info-block ">

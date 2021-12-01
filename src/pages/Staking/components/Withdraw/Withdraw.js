@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { utils } from 'ethers';
+// import { utils } from 'ethers';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
@@ -9,16 +9,14 @@ import Paragraph from '../../../../components/Paragraph';
 import ButtonGroup from '../../../../components/ButtonGroup';
 import {
   checkValidNumberString,
-  FIXED_POINT,
-  formatRounded,
   parseFloatToBigNumber,
-  StakingWrapper,
+  formatRounded,
+  FIXED_POINT,
   ZERO,
-} from '../../../../services/staking.wrapper';
+} from '../../../../services/numbers';
+import StakingWrapper from '../../../../services/staking.wrapper';
 import {
   FIFTY_PERCENT,
-  transactionGasLimit,
-  transactionGasPrice,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
@@ -26,207 +24,197 @@ import {
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 
-const Withdraw = observer(
-  ({
-    withdrawContractInfo = {
-      abi: [],
-    },
-    hideModal,
-    stake,
-  }) => {
-    const [inputValue, setInputValue] = useState(() => '');
-    const [afterWithdraw, setAfterWithdraw] = useState(() => stake || ZERO);
-    const withdrawPayment = async () => {
-      if (!checkValidNumberString(inputValue)) {
-        return false;
-      }
-      const { tokenPriceAMB, myStakeInTokens } =
-        await StakingWrapper.getInstance().getPoolData(
-          withdrawContractInfo.index,
-        );
+const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
+  const [inputValue, setInputValue] = useState(() => '');
+  const [afterWithdraw, setAfterWithdraw] = useState(
+    () => withdrawContractInfo.myStakeInAMB || ZERO,
+  );
+  const withdrawPayment = async () => {
+    if (!checkValidNumberString(inputValue)) {
+      return false;
+    }
 
-      const decimal = parseFloatToBigNumber(inputValue)
-        .mul(FIXED_POINT)
-        .div(tokenPriceAMB);
-      const value =
-        formatRounded(stake, 2) === inputValue ? myStakeInTokens : decimal;
-      const overrides = {
-        gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
-        gasLimit: transactionGasLimit,
-      };
-      await withdrawContractInfo.contract
-        .unstake(value, overrides)
-        .then(async (tx) => {
-          if (tx) {
-            notificationMassage(
-              'PENDING',
-              `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                60,
-              )} pending.`,
-            );
-            setInputValue('');
-            await tx
-              .wait()
-              .then(async (result) => {
-                notificationMassage(
-                  'SUCCESS',
-                  `Transaction ${result.transactionHash.substr(
-                    0,
-                    6,
-                  )}...${result.transactionHash.slice(60)} success!`,
-                );
-                await appStore.updatePoolData();
-                setInputValue('');
-              })
-              .catch((e) => {
-                if (e) {
-                  notificationMassage(
-                    'ERROR',
-                    `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                      60,
-                    )} failed!`,
-                  );
-                  setInputValue('');
-                }
-              });
-          }
-        });
-      return true;
-    };
-
-    const calculateSumAfterWithdraw = useCallback(
-      () =>
-        stake &&
-        checkValidNumberString(inputValue) &&
-        setAfterWithdraw(stake.sub(parseFloatToBigNumber(inputValue))),
-      [inputValue],
+    const tx = await StakingWrapper.unstake(
+      withdrawContractInfo,
+      inputValue,
+      formatRounded(withdrawContractInfo.myStakeInAMB, 2) === inputValue, // ugly hack - check 100%
     );
 
-    useEffect(() => {
-      calculateSumAfterWithdraw();
-      return () => {
-        calculateSumAfterWithdraw();
-      };
-    }, [inputValue, stake]);
+    console.log('withdraw', tx);
 
-    return (
-      <div className="deposit">
-        <div className="deposit-heading">
-          <span style={{ fontSeight: 'normal', fontSize: 14 }}>Amount</span>
-        </div>
-        <div className="deposit-actions">
-          <Input
-            onchange={setInputValue}
-            iconLeft
-            placeholder="0"
-            value={inputValue}
-          />
-          <div className="deposit-actions__buttons">
-            <div>
-              <Button
-                buttonStyles={{ height: 48 }}
-                priority="secondary"
-                type="outline"
-                disabled={stake.eq(0)}
-                onclick={() =>
-                  stake && setInputValue(formatRounded(stake.div(4), 2))
-                }
-              >
-                <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>
-              </Button>
-            </div>
-            <div>
-              <Button
-                buttonStyles={{ height: 48 }}
-                priority="secondary"
-                type="outline"
-                disabled={stake.eq(0)}
-                onclick={() =>
-                  stake && setInputValue(formatRounded(stake.div(2), 2))
-                }
-              >
-                <span className="percent-btn">{FIFTY_PERCENT}</span>
-              </Button>
-            </div>
-            <div>
-              <Button
-                buttonStyles={{ height: 48 }}
-                priority="secondary"
-                type="outline"
-                disabled={stake.eq(0)}
-                onclick={() =>
-                  stake && setInputValue(formatRounded(stake.mul(3).div(4), 2))
-                }
-              >
-                <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>
-              </Button>
-            </div>
-            <div>
-              <Button
-                priority="secondary"
-                buttonStyles={{ height: 48 }}
-                type="outline"
-                disabled={stake.eq(0)}
-                onclick={() => setInputValue(stake && formatRounded(stake, 2))}
-              >
-                <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className="space" />
-        <ButtonGroup>
-          <div style={{ width: 665 }}>
+    if (tx) {
+      notificationMassage('ERROR', `Failed to create transaction.`);
+    }
+
+    setInputValue('');
+
+    const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+    notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+    try {
+      await tx.wait();
+      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+    } catch (err) {
+      notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
+      return false;
+    }
+
+    appStore.setRefresh();
+
+    return true;
+  };
+
+  const calculateSumAfterWithdraw = useCallback(
+    () =>
+      withdrawContractInfo.myStakeInAMB &&
+      checkValidNumberString(inputValue) &&
+      setAfterWithdraw(
+        withdrawContractInfo.myStakeInAMB.sub(
+          parseFloatToBigNumber(inputValue),
+        ),
+      ),
+    [inputValue],
+  );
+
+  useEffect(() => {
+    calculateSumAfterWithdraw();
+    return () => {
+      calculateSumAfterWithdraw();
+    };
+  }, [inputValue, withdrawContractInfo.myStakeInAMB]);
+
+  return (
+    <div className="deposit">
+      <div className="deposit-heading">
+        <span style={{ fontWeight: 'normal', fontSize: 14 }}>Amount</span>
+      </div>
+      <div className="deposit-actions">
+        <Input
+          onchange={setInputValue}
+          iconLeft
+          placeholder="0"
+          value={inputValue}
+        />
+        <div className="deposit-actions__buttons">
+          <div>
             <Button
-              buttonStyles={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                flexBasis: '257%',
-                marginRight: 20,
-              }}
-              type="green"
-              disabled={
-                !checkValidNumberString(inputValue) ||
-                parseFloatToBigNumber(inputValue).eq(0) ||
-                parseFloatToBigNumber(inputValue).gt(
-                  stake.add(FIXED_POINT.div(2)),
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              onclick={() =>
+                withdrawContractInfo.myStakeInAMB &&
+                setInputValue(
+                  formatRounded(withdrawContractInfo.myStakeInAMB.div(4), 2),
                 )
               }
-              onclick={() => withdrawPayment()}
             >
-              <Paragraph size="m-500">Withdraw</Paragraph>
+              <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>
             </Button>
           </div>
-          <div className="close-btn">
-            <Button type="secondary" onclick={hideModal}>
-              <Paragraph size="m-500">Close</Paragraph>
-            </Button>
-          </div>
-        </ButtonGroup>
-        <div className="space" style={{ marginBottom: 5 }} />
-        <div className="deposit-stake-options">
           <div>
-            <Paragraph size="s-400" style={{ color: '#9198BB' }}>
-              <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
-                Estimated stake after withdraw:{' '}
-                {afterWithdraw.lt(0)
-                  ? 0
-                  : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
-                AMB
-              </span>
-            </Paragraph>
+            <Button
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              onclick={() =>
+                withdrawContractInfo.myStakeInAMB &&
+                setInputValue(
+                  formatRounded(withdrawContractInfo.myStakeInAMB.div(2), 2),
+                )
+              }
+            >
+              <span className="percent-btn">{FIFTY_PERCENT}</span>
+            </Button>
+          </div>
+          <div>
+            <Button
+              buttonStyles={{ height: 48 }}
+              priority="secondary"
+              type="outline"
+              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              onclick={() =>
+                withdrawContractInfo.myStakeInAMB &&
+                setInputValue(
+                  formatRounded(
+                    withdrawContractInfo.myStakeInAMB.mul(3).div(4),
+                    2,
+                  ),
+                )
+              }
+            >
+              <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>
+            </Button>
+          </div>
+          <div>
+            <Button
+              priority="secondary"
+              buttonStyles={{ height: 48 }}
+              type="outline"
+              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              onclick={() =>
+                setInputValue(
+                  withdrawContractInfo.myStakeInAMB &&
+                    formatRounded(withdrawContractInfo.myStakeInAMB, 2),
+                )
+              }
+            >
+              <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>
+            </Button>
           </div>
         </div>
       </div>
-    );
-  },
-);
+      <div className="space" />
+      <ButtonGroup>
+        <div style={{ width: 665 }}>
+          <Button
+            buttonStyles={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              flexBasis: '257%',
+              marginRight: 20,
+            }}
+            type="green"
+            disabled={
+              !checkValidNumberString(inputValue) ||
+              parseFloatToBigNumber(inputValue).eq(0) ||
+              parseFloatToBigNumber(inputValue).gt(
+                withdrawContractInfo.myStakeInAMB.add(FIXED_POINT.div(2)),
+              )
+            }
+            onclick={withdrawPayment}
+          >
+            <Paragraph size="m-500">Withdraw</Paragraph>
+          </Button>
+        </div>
+        <div className="close-btn">
+          <Button type="secondary" onclick={hideModal}>
+            <Paragraph size="m-500">Close</Paragraph>
+          </Button>
+        </div>
+      </ButtonGroup>
+      <div className="space" style={{ marginBottom: 5 }} />
+      <div className="deposit-stake-options">
+        <div>
+          <Paragraph size="s-400" style={{ color: '#9198BB' }}>
+            <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
+              Estimated stake after withdraw:{' '}
+              {afterWithdraw.lt(0)
+                ? 0
+                : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
+              AMB
+            </span>
+          </Paragraph>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 Withdraw.propTypes = {
   hideModal: PropTypes.func,
-  stake: PropTypes.any,
   withdrawContractInfo: PropTypes.any,
 };
 

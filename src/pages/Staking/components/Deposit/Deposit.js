@@ -2,7 +2,6 @@ import { ReactSVG } from 'react-svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-import { utils } from 'ethers';
 import * as PropTypes from 'prop-types';
 
 import Input from '../../../../components/Input';
@@ -15,29 +14,34 @@ import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
   checkValidNumberString,
-  FIXED_POINT,
-  formatRounded,
-  MIN_SHOW_STAKE,
   parseFloatToBigNumber,
+  formatRounded,
+  FIXED_POINT,
+  MIN_SHOW_STAKE,
   THOUSAND,
   ZERO,
-} from '../../../../services/staking.wrapper';
+} from '../../../../services/numbers';
+import StakingWrapper from '../../../../services/staking.wrapper';
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
 import {
   FIFTY_PERCENT,
-  transactionGasPrice,
-  transactionGasLimit,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
-
-const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
+const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();
   const [inputValue, setInputValue] = useState(() => '');
   const [inputError, setInputError] = useState(() => false);
   const [balance, setBalance] = useState(() => ZERO);
+  const {
+    myStakeInAMB: myStakeInAmber,
+    active: isPoolActive,
+    contractName: poolName,
+    totalStakeInAMB: totalStakeInAmber,
+    poolAPY: poolAPYPercent,
+  } = depositInfo;
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
 
@@ -46,42 +50,28 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
       return false;
     }
 
-    const overrides = {
-      value: parseFloatToBigNumber(inputValue),
-      gasPrice: utils.parseUnits(`${transactionGasPrice}`, 'gwei'),
-      gasLimit: transactionGasLimit,
-    };
+    console.log(depositInfo);
 
-    await depositInfo.contract.stake(overrides).then(async (tx) => {
-      if (tx) {
-        notificationMassage(
-          'PENDING',
-          `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(60)} pending.`,
-        );
-        await tx
-          .wait()
-          .then((result) => {
-            notificationMassage(
-              'SUCCESS',
-              `Transaction ${result.transactionHash.substr(
-                0,
-                6,
-              )}...${result.transactionHash.slice(60)} success!`,
-            );
-            appStore.setRefresh();
-            setInputValue(() => '');
-          })
-          .catch(() => {
-            notificationMassage(
-              'ERROR',
-              `Transaction ${tx.hash.substr(0, 6)}...${tx.hash.slice(
-                60,
-              )} failed!`,
-            );
-            setInputValue(() => '');
-          });
-      }
-    });
+    const tx = await StakingWrapper.stake(depositInfo, inputValue);
+    console.log('stake', tx);
+
+    if (!tx) {
+      notificationMassage('ERROR', `Failed to create transaction.`);
+    }
+
+    setInputValue(() => '');
+
+    const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+    notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+    try {
+      await tx.wait();
+      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+    } catch (err) {
+      notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
+      return false;
+    }
+
+    appStore.setRefresh();
 
     return true;
   };
@@ -103,7 +93,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
   useEffect(() => {
     setInputError(() => validateInput());
     refreshProc();
-  }, [inputValue, account]);
+  }, [inputValue, account, depositInfo]);
 
   return (
     <>
@@ -132,10 +122,10 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
       <div className="deposit">
         <div className="deposit-heading">
           {' '}
-          <span style={{ fontSeight: 'normal', fontSize: 14 }}>Amount</span>
+          <span style={{ fontWeight: 'normal', fontSize: 14 }}>Amount</span>
           {inputValue && inputError && (
             <span
-              style={{ fontSeight: 'normal', fontSize: 12, color: '#FF6767' }}
+              style={{ fontWeight: 'normal', fontSize: 12, color: '#FF6767' }}
             >
               &nbsp;&nbsp;&nbsp;&nbsp; Min amount for stake = 1000 AMB
             </span>
@@ -209,7 +199,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
           <Button
             type="green"
             disabled={
-              !depositInfo.active ||
+              !isPoolActive ||
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
               parseFloatToBigNumber(inputValue).gt(balance)
@@ -217,7 +207,7 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
             onclick={checkoutPayment}
           >
             <Paragraph size="m-500">
-              {!depositInfo.active ? 'Pool is offline' : ' Stake'}
+              {!isPoolActive ? 'Pool is offline' : ' Stake'}
             </Paragraph>
           </Button>
         </div>
@@ -243,8 +233,8 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
             >
               <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
                 Available for withdraw:{' '}
-                {myStake && myStake.gte(MIN_SHOW_STAKE)
-                  ? formatThousand(formatRounded(myStake, 2))
+                {myStakeInAmber && myStakeInAmber.gte(MIN_SHOW_STAKE)
+                  ? formatThousand(formatRounded(myStakeInAmber, 2))
                   : 0}{' '}
                 AMB
               </span>
@@ -264,30 +254,30 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <ReactSVG src={avatarIcon} wrapper="span" />
                 <Paragraph size="l-500">
-                  &nbsp;&nbsp;&nbsp;&nbsp;{' '}
-                  {depositInfo.contractName.substring(0, 8)}
+                  &nbsp;&nbsp;&nbsp;&nbsp; {poolName.substring(0, 8)}
                 </Paragraph>
               </div>
               <div style={{ textTransform: 'uppercase' }}>
                 <DisplayValue
                   size="l-400"
-                  value={myStake && formatRounded(myStake, 2)}
+                  value={myStakeInAmber && formatRounded(myStakeInAmber, 2)}
                 />
               </div>
               <div style={{ textTransform: 'uppercase' }}>
                 {' '}
                 <DisplayValue
-                  value={totalStake && formatRounded(totalStake, 2)}
+                  value={
+                    totalStakeInAmber && formatRounded(totalStakeInAmber, 2)
+                  }
                   size="l-400"
                 />
               </div>
               <div>
                 {' '}
                 <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
-                  {depositInfo.active === false &&
-                  depositInfo.totalStake.gte(FIXED_POINT)
+                  {isPoolActive === false && totalStakeInAmber.gte(FIXED_POINT)
                     ? 'Offline'
-                    : `${APYOfPool}%`}
+                    : `${poolAPYPercent}%`}
                 </Paragraph>
               </div>
             </div>
@@ -314,8 +304,8 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
                   }}
                 >
                   Available for withdraw:{' '}
-                  {myStake && myStake.gte(MIN_SHOW_STAKE)
-                    ? formatThousand(formatRounded(myStake, 2))
+                  {myStakeInAmber && myStakeInAmber.gte(MIN_SHOW_STAKE)
+                    ? formatThousand(formatRounded(myStakeInAmber, 2))
                     : 0}{' '}
                   AMB
                 </span>
@@ -323,7 +313,6 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
             </div>
             <Withdraw
               withdrawContractInfo={depositInfo}
-              stake={myStake}
               hideModal={toggleWithdrawForm}
             />
           </>
@@ -334,9 +323,6 @@ const Deposit = observer(({ myStake, totalStake, APYOfPool, depositInfo }) => {
 });
 
 Deposit.propTypes = {
-  myStake: PropTypes.any,
-  totalStake: PropTypes.any,
-  APYOfPool: PropTypes.any,
   depositInfo: PropTypes.any,
 };
 export default Deposit;

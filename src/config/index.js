@@ -1,7 +1,7 @@
 import React from 'react';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { cssTransition } from 'react-toastify';
-import { Web3Provider } from '@ethersproject/providers';
+import { utils, providers } from 'ethers';
 
 import githubIcon from '../assets/svg/github-icon.svg';
 import mediumIcon from '../assets/svg/medium-icon.svg';
@@ -35,11 +35,11 @@ export const bounce = cssTransition({
 export const network =
   host.includes('local') || host.includes('dev') || host.includes('test');
 
-export const provider = ethereum ? new Web3Provider(ethereum) : null;
+export const provider = ethereum ? new providers.Web3Provider(ethereum) : null;
 
 export const transactionGasLimit = 8000000;
 
-export const transactionGasPrice = 20;
+export const transactionGasPrice = utils.parseUnits('20', 'gwei');
 
 export const SupportedChainId = {
   MAINNET: 1,
