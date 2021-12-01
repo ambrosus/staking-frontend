@@ -49,29 +49,37 @@ const Deposit = observer(({ depositInfo }) => {
     if (!checkValidNumberString(inputValue)) {
       return false;
     }
+
     console.log(depositInfo);
+
     const tx = await StakingWrapper.stake(depositInfo, inputValue);
+    let result;
+    if (tx) {
+      console.log('stake', tx);
 
-    console.log('stake', tx);
+      result = false;
 
-    let result = false;
-    setInputValue(() => tx && '');
+      setInputValue(() => '');
 
-    const shortHash = tx && `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
-    notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
-    try {
-      await tx.wait();
-      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
-      result = true;
-    } catch (err) {
-      notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
+      const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+
+      notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+
+      try {
+        await tx.wait();
+        notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+        result = true;
+      } catch (err) {
+        notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
+      }
+
+      // if (result) {
+      // await appStore.updatePoolData();
+      appStore.setRefresh();
+      // }
+    } else {
+      notificationMassage('ERROR', `Failed to create transaction.`);
     }
-
-    // if (result) {
-    // await appStore.updatePoolData();
-    appStore.setRefresh();
-    // }
-
     return result;
   };
 
