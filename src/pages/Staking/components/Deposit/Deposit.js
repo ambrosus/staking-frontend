@@ -53,34 +53,27 @@ const Deposit = observer(({ depositInfo }) => {
     console.log(depositInfo);
 
     const tx = await StakingWrapper.stake(depositInfo, inputValue);
-    let result;
-    if (tx) {
-      console.log('stake', tx);
+    console.log('stake', tx);
 
-      result = false;
-
-      setInputValue(() => '');
-
-      const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
-
-      notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
-
-      try {
-        await tx.wait();
-        notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
-        result = true;
-      } catch (err) {
-        notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
-      }
-
-      // if (result) {
-      // await appStore.updatePoolData();
-      appStore.setRefresh();
-      // }
-    } else {
+    if (!tx) {
       notificationMassage('ERROR', `Failed to create transaction.`);
     }
-    return result;
+
+    setInputValue(() => '');
+
+    const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+    notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+    try {
+      await tx.wait();
+      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+    } catch (err) {
+      notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
+      return false;
+    }
+
+    appStore.setRefresh();
+
+    return true;
   };
 
   const refreshProc = async () => {
