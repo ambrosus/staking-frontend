@@ -148,7 +148,25 @@ export default class StakingWrapper {
       ]);
 
       const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
-      const { poolAPY, estAR } = this.privateGetAPY(poolDPY, myStakeInAMB);
+
+      const poolAPY = math
+        .chain(poolDPY)
+        .add(1)
+        .pow(365)
+        .subtract(1)
+        .multiply(100)
+        .round(2)
+        .done()
+        .toFixed(2);
+      const estAR = math
+        .chain(poolAPY)
+        .divide(100)
+        .multiply(myStakeInAMB.toString())
+        .divide(FIXED_POINT.toString())
+        .round(2)
+        .done()
+        .toFixed(2);
+
       return {
         index,
         contractName,
@@ -206,28 +224,6 @@ export default class StakingWrapper {
     });
   }
 
-  static privateGetAPY(poolDPY, myStakeInAMB) {
-    const poolAPY = math
-      .chain(poolDPY)
-      .add(1)
-      .pow(365)
-      .subtract(1)
-      .multiply(100)
-      .round(2)
-      .done()
-      .toFixed(2);
-    const estAR = math
-      .chain(poolAPY)
-      .divide(100)
-      .multiply(myStakeInAMB.toString())
-      .divide(FIXED_POINT.toString())
-      .round(2)
-      .done()
-      .toFixed(2);
-
-    return { poolAPY, estAR };
-  }
-
   static async stake(poolInfo, value) {
     const overrides = {
       value: parseFloatToBigNumber(value),
@@ -242,12 +238,11 @@ export default class StakingWrapper {
     try {
       overrides.gasLimit = await poolContract.estimateGas.stake(overrides);
       xxxLog('gasLimit', overrides.gasLimit.toString());
+      return poolContract.stake(overrides);
     } catch (err) {
       xxxLog('stake error', err);
       return null;
     }
-
-    return poolContract.stake(overrides);
   }
 
   static async unstake(poolInfo, value, fullUnstake = false) {
@@ -283,11 +278,10 @@ export default class StakingWrapper {
         overrides,
       );
       xxxLog('gasLimit', overrides.gasLimit.toString());
+      return poolContract.unstake(tokens, overrides);
     } catch (err) {
       xxxLog('unstake error', err);
       return null;
     }
-
-    return poolContract.unstake(tokens, overrides);
   }
 }

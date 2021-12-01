@@ -42,29 +42,25 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
 
     console.log('withdraw', tx);
 
-    let result = false;
     if (tx) {
-      setInputValue('');
-
-      const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
-      notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
-      try {
-        await tx.wait();
-        notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
-        result = true;
-      } catch (err) {
-        notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
-      }
-
-      // if (result) {
-      // await appStore.updatePoolData();
-      appStore.setRefresh();
-      // }
-    } else {
       notificationMassage('ERROR', `Failed to create transaction.`);
     }
 
-    return result;
+    setInputValue('');
+
+    const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+    notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+    try {
+      await tx.wait();
+      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+    } catch (err) {
+      notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
+      return false;
+    }
+
+    appStore.setRefresh();
+
+    return true;
   };
 
   const calculateSumAfterWithdraw = useCallback(
