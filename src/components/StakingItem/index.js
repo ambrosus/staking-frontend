@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { useWeb3React } from '@web3-react/core';
@@ -6,8 +6,7 @@ import Collapse from '@kunukn/react-collapse';
 import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 
-import { formatRounded } from '../../services/numbers';
-import appStore from '../../store/app.store';
+import { FIXED_POINT, formatRounded } from '../../services/numbers';
 import { HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE } from '../../config';
 import avatarIcon from '../../assets/svg/avatar.svg';
 import Paragraph from '../Paragraph';
@@ -26,6 +25,13 @@ const StakingItem = observer(
     index = -1,
     poolInfo,
   }) => {
+    const {
+      myStakeInAMB: myStakeInAmber,
+      active: isPoolActive,
+      contractName: poolName,
+      totalStakeInAMB: totalStakeInAmber,
+      poolAPY: poolAPYPercent,
+    } = poolInfo;
     const history = useHistory();
     const { pathname } = history.location;
     const { active } = useWeb3React();
@@ -46,8 +52,6 @@ const StakingItem = observer(
       }
     };
 
-    useEffect(() => {}, [appStore.refresh]);
-
     return (
       <div
         role="presentation"
@@ -58,8 +62,8 @@ const StakingItem = observer(
             pathname === MAIN_PAGE && '0px 6px 10px rgba(0, 0, 0, 0.25)',
           color:
             pathname === MAIN_PAGE &&
-            !poolInfo.myStakeInAMB &&
-            !poolInfo.active &&
+            !myStakeInAmber &&
+            !isPoolActive &&
             'rgb(191 201 224)',
         }}
       >
@@ -76,8 +80,8 @@ const StakingItem = observer(
                   marginRight: pathname === STAKING_PAGE ? 10 : '',
                   color:
                     pathname === MAIN_PAGE &&
-                    !poolInfo.myStakeInAMB &&
-                    !poolInfo.active &&
+                    !myStakeInAmber &&
+                    !isPoolActive &&
                     'rgb(191 201 224)',
                 }}
                 className="item--header__flex__pool"
@@ -89,13 +93,13 @@ const StakingItem = observer(
                 />
                 <Paragraph
                   style={{
-                    color: poolInfo.active
+                    color: isPoolActive
                       ? pathname === MAIN_PAGE && '#FFF'
                       : 'rgb(191, 201, 224)',
                   }}
                   size="l-500"
                 >
-                  {poolInfo.contractName.substring(0, 8)}
+                  {poolName && poolName.substring(0, 8)}
                 </Paragraph>
               </div>
               {pathname === STAKING_PAGE && (
@@ -108,14 +112,11 @@ const StakingItem = observer(
                   <div style={{ width: 150 }}>
                     <DisplayValue
                       color={
-                        poolInfo.active
+                        isPoolActive
                           ? pathname === MAIN_PAGE && '#FFF'
                           : 'rgb(191, 201, 224)'
                       }
-                      value={
-                        poolInfo.myStakeInAMB &&
-                        formatRounded(poolInfo.myStakeInAMB, 2)
-                      }
+                      value={myStakeInAmber && formatRounded(myStakeInAmber, 2)}
                     />
                   </div>
                 </div>
@@ -124,22 +125,22 @@ const StakingItem = observer(
                 <div style={{ width: 150 }}>
                   <DisplayValue
                     color={
-                      poolInfo.active
+                      isPoolActive
                         ? pathname === MAIN_PAGE && '#FFF'
                         : 'rgb(191, 201, 224)'
                     }
                     value={
-                      poolInfo.totalStakeInAMB &&
-                      formatRounded(poolInfo.totalStakeInAMB, 2)
+                      totalStakeInAmber && formatRounded(totalStakeInAmber, 2)
                     }
                   />
                 </div>
               </div>
               <div className="item--header__flex__apy">
-                {poolInfo.poolAPY && poolInfo.contractName === 'Plutus' ? (
+                {isPoolActive === false &&
+                totalStakeInAmber.gte(FIXED_POINT) ? (
                   <Paragraph
                     style={{
-                      color: poolInfo.active
+                      color: isPoolActive
                         ? pathname === MAIN_PAGE && '#1ACD8C'
                         : 'rgb(191, 201, 224)',
                     }}
@@ -150,13 +151,13 @@ const StakingItem = observer(
                 ) : (
                   <DisplayValue
                     color={
-                      poolInfo.active
+                      isPoolActive
                         ? pathname === MAIN_PAGE && '#1ACD8C'
                         : 'rgb(191, 201, 224)'
                     }
                     size="l-700"
                     symbol="%"
-                    value={poolInfo.poolAPY}
+                    value={poolAPYPercent}
                   />
                 )}
               </div>

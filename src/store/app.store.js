@@ -12,7 +12,6 @@ export class AppStore {
     this.poolsData = poolsData;
     this.tokenPrice = tokenPrice;
     this.refresh = refresh;
-    this.updatePoolData = this.updatePoolData.bind(this);
     makeAutoObservable(this);
   }
 
@@ -30,8 +29,6 @@ export class AppStore {
     console.log('poolsData', poolsData);
     runInAction(() => {
       this.poolsData = poolsData;
-      // TODO => make update with mobx
-      this.setRefresh();
     });
   }
 

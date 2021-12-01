@@ -52,7 +52,7 @@ const Staking = observer(() => {
       ethereum.removeListener('accountsChanged', handleAccountsChanged);
       ethereum.removeListener('networkChanged', handleNetworkChanged);
     };
-  }, []);
+  }, [appStore.poolsData]);
 
   return (
     <>

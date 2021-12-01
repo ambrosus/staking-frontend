@@ -22,7 +22,7 @@ import {
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
 import { formatThousand, notificationMassage } from '../../../../utils/helpers';
-import appStore from '../../../../store/app.store';
+// import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
   const [inputValue, setInputValue] = useState(() => '');
@@ -57,7 +57,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
       }
 
       // if (result) {
-      await appStore.updatePoolData();
+      // await appStore.updatePoolData();
       // appStore.setRefresh();
       // }
     } else {
@@ -89,7 +89,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
   return (
     <div className="deposit">
       <div className="deposit-heading">
-        <span style={{ fontSeight: 'normal', fontSize: 14 }}>Amount</span>
+        <span style={{ fontWeight: 'normal', fontSize: 14 }}>Amount</span>
       </div>
       <div className="deposit-actions">
         <Input

@@ -81,7 +81,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
 
   useEffect(() => {
     getInfo();
-  }, [appStore.refresh]);
+  }, [poolsArr]);
 
   return (
     <div className="info-block ">

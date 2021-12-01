@@ -11,7 +11,7 @@ import useModal from '../../../../hooks/useModal';
 import Modal from '../../../../components/Modal';
 import Withdraw from '../Withdraw';
 import DisplayValue from '../../../../components/DisplayValue';
-import appStore from '../../../../store/app.store';
+// import appStore from '../../../../store/app.store';
 import {
   checkValidNumberString,
   parseFloatToBigNumber,
@@ -36,6 +36,13 @@ const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState(() => '');
   const [inputError, setInputError] = useState(() => false);
   const [balance, setBalance] = useState(() => ZERO);
+  const {
+    myStakeInAMB: myStakeInAmber,
+    active: isPoolActive,
+    contractName: poolName,
+    totalStakeInAMB: totalStakeInAmber,
+    poolAPY: poolAPYPercent,
+  } = depositInfo;
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
 
@@ -49,26 +56,22 @@ const Deposit = observer(({ depositInfo }) => {
     console.log('stake', tx);
 
     let result = false;
-    if (tx) {
-      setInputValue(() => '');
+    setInputValue(() => tx && '');
 
-      const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
-      notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
-      try {
-        await tx.wait();
-        notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
-        result = true;
-      } catch (err) {
-        notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
-      }
-
-      // if (result) {
-      await appStore.updatePoolData();
-      // appStore.setRefresh();
-      // }
-    } else {
-      // todo: ?????
+    const shortHash = tx && `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
+    notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
+    try {
+      await tx.wait();
+      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+      result = true;
+    } catch (err) {
+      notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
     }
+
+    // if (result) {
+    // await appStore.updatePoolData();
+    // appStore.setRefresh();
+    // }
 
     return result;
   };
@@ -90,7 +93,7 @@ const Deposit = observer(({ depositInfo }) => {
   useEffect(() => {
     setInputError(() => validateInput());
     refreshProc();
-  }, [inputValue, account]);
+  }, [inputValue, account, depositInfo]);
 
   return (
     <>
@@ -119,10 +122,10 @@ const Deposit = observer(({ depositInfo }) => {
       <div className="deposit">
         <div className="deposit-heading">
           {' '}
-          <span style={{ fontSeight: 'normal', fontSize: 14 }}>Amount</span>
+          <span style={{ fontWeight: 'normal', fontSize: 14 }}>Amount</span>
           {inputValue && inputError && (
             <span
-              style={{ fontSeight: 'normal', fontSize: 12, color: '#FF6767' }}
+              style={{ fontWeight: 'normal', fontSize: 12, color: '#FF6767' }}
             >
               &nbsp;&nbsp;&nbsp;&nbsp; Min amount for stake = 1000 AMB
             </span>
@@ -196,7 +199,7 @@ const Deposit = observer(({ depositInfo }) => {
           <Button
             type="green"
             disabled={
-              !depositInfo.active ||
+              !isPoolActive ||
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
               parseFloatToBigNumber(inputValue).gt(balance)
@@ -204,7 +207,7 @@ const Deposit = observer(({ depositInfo }) => {
             onclick={checkoutPayment}
           >
             <Paragraph size="m-500">
-              {!depositInfo.active ? 'Pool is offline' : ' Stake'}
+              {!isPoolActive ? 'Pool is offline' : ' Stake'}
             </Paragraph>
           </Button>
         </div>
@@ -230,9 +233,8 @@ const Deposit = observer(({ depositInfo }) => {
             >
               <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
                 Available for withdraw:{' '}
-                {depositInfo.myStakeInAMB &&
-                depositInfo.myStakeInAMB.gte(MIN_SHOW_STAKE)
-                  ? formatThousand(formatRounded(depositInfo.myStakeInAMB, 2))
+                {myStakeInAmber && myStakeInAmber.gte(MIN_SHOW_STAKE)
+                  ? formatThousand(formatRounded(myStakeInAmber, 2))
                   : 0}{' '}
                 AMB
               </span>
@@ -252,25 +254,20 @@ const Deposit = observer(({ depositInfo }) => {
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <ReactSVG src={avatarIcon} wrapper="span" />
                 <Paragraph size="l-500">
-                  &nbsp;&nbsp;&nbsp;&nbsp;{' '}
-                  {depositInfo.contractName.substring(0, 8)}
+                  &nbsp;&nbsp;&nbsp;&nbsp; {poolName.substring(0, 8)}
                 </Paragraph>
               </div>
               <div style={{ textTransform: 'uppercase' }}>
                 <DisplayValue
                   size="l-400"
-                  value={
-                    depositInfo.myStakeInAMB &&
-                    formatRounded(depositInfo.myStakeInAMB, 2)
-                  }
+                  value={myStakeInAmber && formatRounded(myStakeInAmber, 2)}
                 />
               </div>
               <div style={{ textTransform: 'uppercase' }}>
                 {' '}
                 <DisplayValue
                   value={
-                    depositInfo.totalStakeInAMB &&
-                    formatRounded(depositInfo.totalStakeInAMB, 2)
+                    totalStakeInAmber && formatRounded(totalStakeInAmber, 2)
                   }
                   size="l-400"
                 />
@@ -278,10 +275,9 @@ const Deposit = observer(({ depositInfo }) => {
               <div>
                 {' '}
                 <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
-                  {depositInfo.active === false &&
-                  depositInfo.totalStakeInAMB.gte(FIXED_POINT)
+                  {isPoolActive === false && totalStakeInAmber.gte(FIXED_POINT)
                     ? 'Offline'
-                    : `${depositInfo.poolAPY}%`}
+                    : `${poolAPYPercent}%`}
                 </Paragraph>
               </div>
             </div>
@@ -308,9 +304,8 @@ const Deposit = observer(({ depositInfo }) => {
                   }}
                 >
                   Available for withdraw:{' '}
-                  {depositInfo.myStakeInAMB &&
-                  depositInfo.myStakeInAMB.gte(MIN_SHOW_STAKE)
-                    ? formatThousand(formatRounded(depositInfo.myStakeInAMB, 2))
+                  {myStakeInAmber && myStakeInAmber.gte(MIN_SHOW_STAKE)
+                    ? formatThousand(formatRounded(myStakeInAmber, 2))
                     : 0}{' '}
                   AMB
                 </span>
