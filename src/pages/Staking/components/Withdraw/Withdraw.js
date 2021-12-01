@@ -37,7 +37,8 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
     const tx = await StakingWrapper.unstake(
       withdrawContractInfo,
       inputValue,
-      formatRounded(withdrawContractInfo.myStakeInAMB, 2) === inputValue, // ugly hack - check 100%
+      inputValue ===
+        withdrawContractInfo.myStakeInAMB.div(FIXED_POINT).toString(), // ugly hack - check 100%
     );
 
     console.log('withdraw', tx);
@@ -155,7 +156,9 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               onclick={() =>
                 setInputValue(
                   withdrawContractInfo.myStakeInAMB &&
-                    formatRounded(withdrawContractInfo.myStakeInAMB, 2),
+                    withdrawContractInfo.myStakeInAMB
+                      .div(FIXED_POINT)
+                      .toString(),
                 )
               }
             >
