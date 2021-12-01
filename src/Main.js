@@ -27,7 +27,7 @@ const Main = () => {
         ethereum.removeListener('networkChanged', handleNetworkChanged);
       }
     };
-  });
+  }, []);
 
   return (
     <BrowserRouter>
