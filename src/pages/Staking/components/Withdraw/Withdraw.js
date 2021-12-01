@@ -61,7 +61,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
       appStore.setRefresh();
       // }
     } else {
-      // todo: ?????
+      notificationMassage('ERROR', `Failed to create transaction.`);
     }
 
     return result;
