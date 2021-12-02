@@ -62,7 +62,6 @@ const InfoBlock = observer(({ poolsArr, account }) => {
   };
 
   const getInfo = async () => {
-    // todo: do refresh here ++
     if (poolsArr.length > 0) {
       poolsRewards = [];
       myTotalStake = [];
