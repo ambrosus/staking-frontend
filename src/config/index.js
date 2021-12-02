@@ -12,7 +12,7 @@ import linkedinIcon from '../assets/svg/linkedin-icon.svg';
 
 export const STAKING_PAGE = '/staking';
 export const MAIN_PAGE = '/';
-export const CONNECT_TEXT = 'Connect Your Wallet';
+export const CONNECT_TEXT = '↖ Connect to Wallet';
 export const HIDE = 'HIDE';
 export const SHOW = 'SHOW';
 export const STAKE = 'STAKE';
