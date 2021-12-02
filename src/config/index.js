@@ -25,15 +25,12 @@ export const NetworkContextName = 'NETWORK';
 
 export const { ethereum } = window;
 
-const host = window.location.hostname;
-
 export const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
   exit: 'animate__animated animate__bounceOut',
 });
 
-export const network =
-  host.includes('local') || host.includes('dev') || host.includes('test');
+export const network = process.env.NODE_ENV === 'production';
 
 export const provider = ethereum ? new providers.Web3Provider(ethereum) : null;
 
