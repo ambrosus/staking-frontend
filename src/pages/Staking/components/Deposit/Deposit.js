@@ -39,15 +39,15 @@ const Deposit = observer(({ depositInfo }) => {
   const [inputValue, setInputValue] = useState(() => '');
   const [inputError, setInputError] = useState(() => false);
   const [balance, setBalance] = useState(() => ZERO);
-  const {
-    myStakeInAMB: myStakeInAmber,
-    active: isPoolActive,
-    contractName: poolName,
-    totalStakeInAMB: totalStakeInAmber,
-    poolAPY: poolAPYPercent,
-  } = depositInfo;
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
+  const {
+    myStakeInAMB,
+    active: isPoolActive,
+    contractName,
+    totalStakeInAMB,
+    poolAPY,
+  } = depositInfo;
 
   const checkoutPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
@@ -85,6 +85,7 @@ const Deposit = observer(({ depositInfo }) => {
       });
     }
   };
+
   const validateInput = useCallback(
     () =>
       !checkValidNumberString(inputValue) ||
@@ -241,8 +242,8 @@ const Deposit = observer(({ depositInfo }) => {
             >
               <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
                 Available for withdraw:{' '}
-                {myStakeInAmber && myStakeInAmber.gte(MIN_SHOW_STAKE)
-                  ? formatThousand(formatRounded(myStakeInAmber, 2))
+                {myStakeInAMB && myStakeInAMB.gte(MIN_SHOW_STAKE)
+                  ? formatThousand(formatRounded(myStakeInAMB, 2))
                   : 0}{' '}
                 AMB
               </span>
@@ -262,30 +263,28 @@ const Deposit = observer(({ depositInfo }) => {
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <ReactSVG src={avatarIcon} wrapper="span" />
                 <Paragraph size="l-500">
-                  &nbsp;&nbsp;&nbsp;&nbsp; {poolName.substring(0, 8)}
+                  &nbsp;&nbsp;&nbsp;&nbsp; {contractName.substring(0, 8)}
                 </Paragraph>
               </div>
               <div style={{ textTransform: 'uppercase' }}>
                 <DisplayValue
                   size="l-400"
-                  value={myStakeInAmber && formatRounded(myStakeInAmber, 2)}
+                  value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
                 />
               </div>
               <div style={{ textTransform: 'uppercase' }}>
                 {' '}
                 <DisplayValue
-                  value={
-                    totalStakeInAmber && formatRounded(totalStakeInAmber, 2)
-                  }
+                  value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
                   size="l-400"
                 />
               </div>
               <div>
                 {' '}
                 <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
-                  {isPoolActive === false && totalStakeInAmber.gte(FIXED_POINT)
+                  {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT)
                     ? 'OFFLINE'
-                    : `${poolAPYPercent}%`}
+                    : `${poolAPY}%`}
                 </Paragraph>
               </div>
             </div>
@@ -312,8 +311,8 @@ const Deposit = observer(({ depositInfo }) => {
                   }}
                 >
                   Available for withdraw:{' '}
-                  {myStakeInAmber && myStakeInAmber.gte(MIN_SHOW_STAKE)
-                    ? formatThousand(formatRounded(myStakeInAmber, 2))
+                  {myStakeInAMB && myStakeInAMB.gte(MIN_SHOW_STAKE)
+                    ? formatThousand(formatRounded(myStakeInAMB, 2))
                     : 0}{' '}
                   AMB
                 </span>
