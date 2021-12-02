@@ -11,12 +11,6 @@ const dailyPercentageYieldExpression = math.compile(
   '(price2 / price1) ^ (86400 / (time2 - time1)) - 1',
 );
 
-const start = Date.now();
-
-function xxxLog(...agrs) {
-  debugLog(`${((Date.now() - start) / 1000).toFixed(2)}`, ...agrs);
-}
-
 export default class StakingWrapper {
   static privateProvider = null;
 
@@ -29,7 +23,7 @@ export default class StakingWrapper {
   static poolEventsEmitter = null;
 
   static privateStaticConstructorPromise = (async () => {
-    xxxLog('StakingWrapper static constructor');
+    debugLog('StakingWrapper static constructor');
 
     this.privateProvider = new providers.JsonRpcProvider(
       process.env.REACT_APP_RPC_URL,
@@ -64,7 +58,7 @@ export default class StakingWrapper {
       contractJsons.poolsStore.abi,
       this.privateProvider,
     );
-    xxxLog('StakingWrapper done');
+    debugLog('StakingWrapper done');
   })();
 
   static async getRewardEvents(from, to) {
@@ -98,7 +92,7 @@ export default class StakingWrapper {
       this.privateRewardEvents = this.privateRewardEvents
         .filter((event) => event.blockNumber > startBlockNumber)
         .concat(rewardEvents);
-      xxxLog(
+      debugLog(
         'getRewardEvents',
         startBlockNumber,
         this.privateLastBlock ? this.privateLastBlock + 1 : startBlockNumber,
@@ -114,7 +108,7 @@ export default class StakingWrapper {
   }
 
   static async getPools(loggedIn = false) {
-    xxxLog('## getPools');
+    debugLog('## getPools');
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(ethereum).getSigner()
       : this.privateProvider;
@@ -234,20 +228,20 @@ export default class StakingWrapper {
 
     const poolContract = poolInfo.contract;
 
-    xxxLog('.stake', poolInfo.index, value);
+    debugLog('.stake', poolInfo.index, value);
 
     try {
       overrides.gasLimit = await poolContract.estimateGas.stake(overrides);
-      xxxLog('gasLimit', overrides.gasLimit.toString());
+      debugLog('gasLimit', overrides.gasLimit.toString());
       return poolContract.stake(overrides);
     } catch (err) {
-      xxxLog('stake error', err);
+      debugLog('stake error', err);
       return null;
     }
   }
 
   static async unstake(poolInfo, value, fullUnstake = false) {
-    xxxLog('unstake', poolInfo.contractName, value, fullUnstake);
+    debugLog('unstake', poolInfo.contractName, value, fullUnstake);
 
     const poolContract = poolInfo.contract;
     const [tokenPriceAMB, myStakeInTokens] = await Promise.all([
@@ -259,7 +253,7 @@ export default class StakingWrapper {
       ? myStakeInTokens
       : parseFloatToBigNumber(value).mul(FIXED_POINT).div(tokenPriceAMB);
 
-    xxxLog(
+    debugLog(
       'unstake ##',
       poolInfo.index,
       value,
@@ -278,10 +272,10 @@ export default class StakingWrapper {
         tokens,
         overrides,
       );
-      xxxLog('gasLimit', overrides.gasLimit.toString());
+      debugLog('gasLimit', overrides.gasLimit.toString());
       return poolContract.unstake(tokens, overrides);
     } catch (err) {
-      xxxLog('unstake error', err);
+      debugLog('unstake error', err);
       return null;
     }
   }
