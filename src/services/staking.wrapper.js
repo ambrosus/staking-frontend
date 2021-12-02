@@ -106,7 +106,7 @@ export default class StakingWrapper {
       );
     }
   }
-  
+
   static async getPoolsXX() {
     const poolsCount = await this.poolsStore.getPoolsCount();
     return this.poolsStore.getPools(0, poolsCount);
