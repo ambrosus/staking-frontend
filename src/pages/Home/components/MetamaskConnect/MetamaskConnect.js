@@ -1,19 +1,16 @@
 import React from 'react';
-import { ReactSVG } from 'react-svg';
 import { observer } from 'mobx-react-lite';
 
 import Paragraph from '../../../../components/Paragraph';
 import { CONNECT_TEXT } from '../../../../config';
 
-import walletIcon from '../../../../assets/svg/wallet.svg';
 import useLogIn from '../../../../hooks/useLogIn';
 
 export const MetamaskConnect = observer(() => {
   const { logIn } = useLogIn();
 
   return (
-    <div role="presentation" className="connect-btn primary" onClick={logIn}>
-      <ReactSVG src={walletIcon} wrapper="span" />
+    <div role="presentation" className="connect-btn btn black" onClick={logIn}>
       <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
         <span
           style={{

@@ -6,7 +6,12 @@ import Down from './Down';
 
 const Block = ({ isOpen, title, onToggle, children, lastElement }) => (
   <div className="block">
-    <button type="button" className="btn toggle" onClick={onToggle}>
+    <button
+      type="button"
+      className="btn toggle"
+      style={{ border: 'none' }}
+      onClick={onToggle}
+    >
       <span
         className={cx({ 'active-toggle-text': isOpen })}
         style={{ color: 'white' }}

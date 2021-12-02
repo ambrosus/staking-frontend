@@ -5,14 +5,14 @@
 z-index: 0;
   .back-figure1 {
     position: absolute;
-    width: 514.64px;
+    width: 700px;
     height: 900.48px;
     left: 0;
-    top: 10px;
+    top: -76px;
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     opacity: 0.7;
-    background: url('../../assets/images/back2.png');
+    background: url('../../assets/images/back1.png');
     background-repeat: no-repeat;
     z-index: -1;
 
@@ -20,13 +20,13 @@ z-index: 0;
 
   .back-figure2 {
     position: absolute;
-    width: 527.24px;
-    height: 582px;
+    width: 599px;
+    height: 726px;
     right: 0;
-    top: 27px;
+    top: -52px;
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
-    background: url('../../assets/images/back1.png') no-repeat !important;
+    background: url('../../assets/images/back2.png') no-repeat !important;
     z-index: -1;
 
   }
@@ -71,6 +71,7 @@ z-index: 0;
     }
 
     &--info {
+      min-height: 675px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -86,8 +87,12 @@ z-index: 0;
         flex-direction: column;
 
         p:first-of-type {
-          margin-top: 60px;
-
+          font-family: Halvar Breitschrift, sans-serif;
+          font-style: normal;
+          font-weight: 300;
+          font-size: 60px;
+          line-height: 69px;
+          letter-spacing: -0.02em;
         }
 
         p {
@@ -96,23 +101,21 @@ z-index: 0;
       }
 
       .connect-btn {
-        height: 48px;
-        z-index: 3;
-        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 25px 36px;
+        margin-top: 100px;
+        width: 216px;
+        height: 65px;
+        background: #212121;
         border: 1px solid #FFFFFF;
         box-sizing: border-box;
-        border-radius: 12px;
-        padding: 15px;
-        width: 240px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 60px;
-        margin-bottom: 20px;
-        font-style: normal;
-        font-weight: 500;
-        text-align: center;
-        color: #FFFFFF;
+
+        flex: none;
+        order: 1;
+        flex-grow: 0;
 
         p {
           font-size: 16px !important;
@@ -171,62 +174,47 @@ z-index: 0;
 
       &--info {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
         flex-direction: column;
         width: 100%;
+        padding: 20px;
 
         .info-text {
-          text-align: center;
+          text-align: left;
           height: 90%;
           width: auto;
           display: flex;
           flex-direction: column;
-          padding: 10px;
 
           p:first-of-type {
+            text-align: left;
             margin-top: 68px;
-            font-style: normal !important;
-            font-weight: 500 !important;
-            font-size: 36px !important;
-            text-align: center !important;
-            font-feature-settings: 'liga' off !important;
-            padding: 0;
+            margin-bottom: 20px;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 49.697px;
+            line-height: 58px;
+            letter-spacing: -0.02em;
             color: #FFFFFF;
 
           }
 
           p {
+            text-align: left;
             margin-top: 0;
-            padding: 10px 25px;
-            font-style: normal !important;
-            font-weight: normal !important;
-            font-size: 18px !important;
-            text-align: center !important;
-            letter-spacing: -0.01em !important;
-            font-feature-settings: 'liga' off !important;
-
+            font-family: Proxima Nova, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 24px;
+            line-height: 29px;
+            letter-spacing: 0.03em;
             color: #FFFFFF;
           }
         }
 
         .connect-btn {
-          height: 48px;
-          z-index: 3;
-          cursor: pointer;
-          border: 1px solid #FFFFFF;
-          box-sizing: border-box;
-          border-radius: 12px;
-          padding: 15px;
-          width: 240px;
-          display: flex;
-          align-items: center;
-          margin-top: 60px;
-          margin-bottom: 20px;
-          font-style: normal;
-          font-weight: 500;
-          text-align: center;
-          color: #FFFFFF;
+          margin-top: 50px;
 
           p {
             font-size: 16px !important;

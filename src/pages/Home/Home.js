@@ -34,8 +34,6 @@ const Home = () => {
       <div className="home" id="home">
         <Sidebar pageWrapId="root" outerContainerId="root" />
         <ReactNotifications />
-        <div className="back-figure1" />
-        <div className="back-figure2" />
         <div className="home__top">
           <div className="home__top--header">
             <div className="logo">
@@ -45,6 +43,8 @@ const Home = () => {
           </div>
         </div>
         <div className="home__top--info">
+          <div className="back-figure1" />
+          <div className="back-figure2" />
           <div className="info-text">
             <Paragraph
               size="xxxl-500"
