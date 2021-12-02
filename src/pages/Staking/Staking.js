@@ -14,7 +14,7 @@ import { FIXED_POINT } from '../../services/numbers';
 import { bounce, connectorsByName, ethereum } from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
-import { changeNetwork, collapsedReducer } from '../../utils/helpers';
+import { changeNetwork, collapsedReducer, debugLog } from '../../utils/helpers';
 
 const Staking = observer(() => {
   const { account, activate, chainId } = useWeb3React();
@@ -31,7 +31,7 @@ const Staking = observer(() => {
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
   useEffect(() => {
-    console.log('Staking render useEffect');
+    debugLog('Staking render useEffect');
     activate(connectorsByName.Injected);
     getDataFromProvider();
     if (ethereum?.isMetaMask) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NotSupported from '../NotSupported';
+import { debugLog } from '../../utils/helpers';
 
 class ErrorBoundary extends React.PureComponent {
   constructor(props) {
@@ -9,32 +9,23 @@ class ErrorBoundary extends React.PureComponent {
   }
 
   static getDerivedStateFromError() {
-    return { hasError: true };
+    this.setState({
+      hasError: true,
+    });
   }
 
   componentDidCatch(error, errorInfo) {
-    if (window !== undefined) {
-      if (error) {
-        console.log('error', error);
-        console.log('errorInfo', errorInfo);
-        this.setState({
-          hasError: true,
-        });
-      }
+    this.setState({
+      hasError: true,
+    });
+    if (this.state.hasError) {
+      debugLog('Error :', error);
+      debugLog('Error info:', errorInfo);
     }
   }
 
   render() {
-    return (
-      <>
-        {this.state.hasError && (
-          <NotSupported>
-            Network connection failed. Please try again later
-          </NotSupported>
-        )}
-        {this.props.children}
-      </>
-    );
+    return this.props.children;
   }
 }
 

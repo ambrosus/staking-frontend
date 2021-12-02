@@ -1,5 +1,6 @@
 import { runInAction, makeAutoObservable } from 'mobx';
 import StakingWrapper from '../services/staking.wrapper';
+import { debugLog } from '../utils/helpers';
 
 export class AppStore {
   poolsData = [];
@@ -22,11 +23,11 @@ export class AppStore {
   }
 
   async updatePoolData() {
-    console.log('updatePoolData');
+    debugLog('updatePoolData');
     const poolsData = await StakingWrapper.getPools(
       window.location.pathname !== '/',
     );
-    console.log('poolsData', poolsData);
+    debugLog('poolsData', poolsData);
     runInAction(() => {
       this.poolsData = poolsData;
     });

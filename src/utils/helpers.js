@@ -17,19 +17,16 @@ const NETWORK_POLLING_INTERVALS = {
 export const getLibrary = (provider) => {
   const library = new providers.Web3Provider(
     provider,
-    /* eslint-disable-next-line */
+    /* eslint-disable-next-line no-nested-ternary */
     typeof provider.chainId === 'number'
       ? provider.chainId
-      : /* eslint-disable-next-line */
-      typeof provider.chainId === 'string'
-      ? /* eslint-disable-next-line */
-        parseInt(provider.chainId)
+      : typeof provider.chainId === 'string'
+      ? Number(provider.chainId)
       : 'any',
   );
   library.pollingInterval = 15000;
-  /* eslint-disable-next-line */
-  library.detectNetwork().then((network) => {
-    const networkPollingInterval = NETWORK_POLLING_INTERVALS[network.chainId];
+  library.detectNetwork().then((net) => {
+    const networkPollingInterval = NETWORK_POLLING_INTERVALS[net.chainId];
     if (networkPollingInterval) {
       library.pollingInterval = networkPollingInterval;
     }
@@ -102,6 +99,9 @@ export const formatThousand = (num) => {
   }
   return num.toFixed(2);
 };
+
+/* eslint-disable-next-line no-console */
+export const debugLog = (...logs) => network && console.log(...logs);
 
 export const changeNetwork = async () => {
   await ethereum.request({

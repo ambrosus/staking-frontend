@@ -21,7 +21,11 @@ import {
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
-import { formatThousand, notificationMassage } from '../../../../utils/helpers';
+import {
+  debugLog,
+  formatThousand,
+  notificationMassage,
+} from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
@@ -41,7 +45,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
         withdrawContractInfo.myStakeInAMB.div(FIXED_POINT).toString(), // ugly hack - check 100%
     );
 
-    console.log('withdraw', tx);
+    debugLog('withdraw', tx);
 
     if (!tx) {
       notificationMassage('ERROR', `Failed to create transaction.`);

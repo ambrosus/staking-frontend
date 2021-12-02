@@ -3,6 +3,7 @@ import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
 import { ethereum, transactionGasLimit, transactionGasPrice } from '../config';
 import { math, FIXED_POINT, parseFloatToBigNumber } from './numbers';
+import { debugLog } from '../utils/helpers';
 
 const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
 
@@ -13,7 +14,7 @@ const dailyPercentageYieldExpression = math.compile(
 const start = Date.now();
 
 function xxxLog(...agrs) {
-  console.log(`${((Date.now() - start) / 1000).toFixed(2)}`, ...agrs);
+  debugLog(`${((Date.now() - start) / 1000).toFixed(2)}`, ...agrs);
 }
 
 export default class StakingWrapper {

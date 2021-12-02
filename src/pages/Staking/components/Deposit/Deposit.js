@@ -22,7 +22,11 @@ import {
   ZERO,
 } from '../../../../services/numbers';
 import StakingWrapper from '../../../../services/staking.wrapper';
-import { formatThousand, notificationMassage } from '../../../../utils/helpers';
+import {
+  debugLog,
+  formatThousand,
+  notificationMassage,
+} from '../../../../utils/helpers';
 import {
   FIFTY_PERCENT,
   ONE_HUNDRED_PERCENT,
@@ -50,10 +54,8 @@ const Deposit = observer(({ depositInfo }) => {
       return false;
     }
 
-    console.log(depositInfo);
-
     const tx = await StakingWrapper.stake(depositInfo, inputValue);
-    console.log('stake', tx);
+    debugLog('stake', tx);
 
     if (!tx) {
       notificationMassage('ERROR', `Failed to create transaction.`);
