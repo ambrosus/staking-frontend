@@ -9,8 +9,7 @@ import { COMING_SOON, MAIN_PAGE, STAKE, STAKING_PAGE } from '../../config';
 import avatarIcon from '../../assets/svg/coming_soon_pool_icon.svg';
 
 const ComingSoonPool = ({ poolInfo, loading }) => {
-  const location = useLocation();
-  const { pathname } = location;
+  const { pathname } = useLocation();
 
   const stackHeader = (
     <div className="item--header" role="presentation">

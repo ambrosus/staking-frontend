@@ -17,8 +17,7 @@ import appStore from '../../store/app.store';
 
 const Home = () => {
   const [pools, setPools] = useState(() => []);
-  const location = useLocation();
-  const { pathname } = location;
+  const { pathname } = useLocation();
 
   const getPools = async () => {
     await appStore.updatePoolData();
@@ -80,7 +79,7 @@ const Home = () => {
                 <div className="staking__header__clearfix-apy">APY</div>
                 <div style={{ maxWidth: 160, minWidth: 160 }} />
               </div>
-              <div className="staking__pools Halvar_Breit">
+              <div className="staking__pools">
                 <RenderItems>
                   <>
                     {pools.map(

@@ -20,7 +20,7 @@ const CollapsedList = () => {
   };
 
   return (
-    <div className="collapsed-list Halvar_Breit">
+    <div className="collapsed-list">
       <div className="collapsed-list__heading">Arcadia Staking FAQs</div>
       {faqsList.map((block) => (
         <Block
@@ -29,7 +29,7 @@ const CollapsedList = () => {
           isOpen={state[block.key]}
           onToggle={() => toggleActive(block.key)}
         >
-          <div className="collapsed-content Proxima_Nova  ">
+          <div className="collapsed-content ">
             <Paragraph style={{ color: '#9C9C9C' }} size="m-400">
               {block.description}
             </Paragraph>
