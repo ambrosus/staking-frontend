@@ -38,8 +38,8 @@ const Main = () => {
     <BrowserRouter>
       {/*<Web3ReactProvider getLibrary={getLibrary}>*/}
       {/*  <Web3ProviderNetwork getLibrary={getLibrary}>*/}
-          <RenderRoutes />
-        {/*</Web3ProviderNetwork>*/}
+      <RenderRoutes />
+      {/*</Web3ProviderNetwork>*/}
       {/*</Web3ReactProvider>*/}
     </BrowserRouter>
   );
