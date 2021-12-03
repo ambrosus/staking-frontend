@@ -25,9 +25,7 @@ const Staking = observer(() => {
 
   const getDataFromProvider = async () => {
     await appStore.updatePoolData();
-    if (appStore.poolsData.length > 0) {
-      setPools(toJS(appStore.poolsData));
-    }
+    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
   };
 
   useTimeout(() => setCheckNetworkChain(true), 1500);
