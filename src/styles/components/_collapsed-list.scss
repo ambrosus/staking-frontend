@@ -42,12 +42,12 @@
   font-size: 100%;
   background: transparent;
   box-shadow: none;
-  width: 100%;
+  width: max-content;
   margin: 0;
-  padding: 10px;
+  padding: 0 36px;
   text-align: left;
   cursor: pointer;
-  height: auto !important;
+  height: 65px !important;
 
   span {
     height: auto !important;
@@ -55,7 +55,9 @@
 }
 
 .toggle {
+  width: 100%;
   display: flex;
+  padding: 0;
   align-items: center;
   justify-content: space-between;
   margin: 10px 0;
@@ -146,4 +148,13 @@ button[disabled] {
   background: #000000;
   opacity: 0.5;
   border-radius: 2px;
+}
+.btn-group{
+  padding-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .btn{
+    max-width: 262px;
+  }
 }

@@ -4,23 +4,44 @@ import { toJS } from 'mobx';
 import { useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 import Paragraph from '../../components/Paragraph';
-import MetamaskConnect from './components/MetamaskConnect';
 import StakingItem from '../../components/StakingItem';
 import CollapsedList from '../../components/CollapsedList';
 import { Loader } from '../../components/Loader';
 import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/RenderItems';
+import { useLogIn } from '../../hooks';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
-import { MAIN_PAGE } from '../../config';
+import { CONNECT_TEXT, MAIN_PAGE } from '../../config';
 import Menu from './components/Menu';
 import appStore from '../../store/app.store';
 
 import secondSectionIcon1 from '../../assets/svg/home/second-section/Icon1-66x85.svg';
+import secondSectionIcon2 from '../../assets/svg/home/second-section/Icon2-66x85.svg';
+import secondSectionIcon3 from '../../assets/svg/home/second-section/Icon3-66x85.svg';
+import secondSectionIcon4 from '../../assets/svg/home/second-section/Icon4-66x85.svg';
 const Home = () => {
   const [pools, setPools] = useState([]);
   const { pathname } = useLocation();
-
+  const { logIn } = useLogIn();
+  const arcadiaStaking = [
+    {
+      src: secondSectionIcon1,
+      text: 'Staking starts from 1000 AMB',
+    },
+    {
+      src: secondSectionIcon2,
+      text: 'Secure the network and earn rewards.',
+    },
+    {
+      src: secondSectionIcon3,
+      text: 'Rewards are distributed every 6 hours',
+    },
+    {
+      src: secondSectionIcon4,
+      text: 'Unstake at any time',
+    },
+  ];
   const getPools = async () => {
     await appStore.updatePoolData();
     if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
@@ -64,34 +85,46 @@ const Home = () => {
             in a few clicks.
           </Paragraph>
         </div>
-        <MetamaskConnect />
+        <div
+          role="presentation"
+          className="connect-btn btn black"
+          onClick={logIn}
+        >
+          <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+            <span
+              style={{
+                paddingLeft: 5,
+                fontFamily: ' Neue Machina',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {CONNECT_TEXT}
+            </span>
+          </Paragraph>
+        </div>
       </div>
       <div className="home__second-section">
-        <div>
-          <h2 className="section-heading">Arcadia</h2>
-        </div>
-        <p className="home__second-section--secondary">
-          Simplified staking on the Ambrosus network.
-        </p>
         <div className="container">
-          <div className="items-container">
-            <div className="items-container__item">
-              <ReactSVG src={secondSectionIcon1} wrapper="span" />
-              <p>Staking starts from 1000 AMB</p>
-            </div>
-            <div className="items-container__item">
-              <ReactSVG src={secondSectionIcon1} wrapper="span" />
-              <p>Staking starts from 1000 AMB</p>
-            </div>
-            <div className="items-container__item">
-              <ReactSVG src={secondSectionIcon1} wrapper="span" />
-              <p>Staking starts from 1000 AMB</p>
-            </div>
-            <div className="items-container__item">
-              <ReactSVG src={secondSectionIcon1} wrapper="span" />
-              <p>Staking starts from 1000 AMB</p>
-            </div>
+          <div>
+            <h2 className="section-heading">Arcadia</h2>
           </div>
+          <p className="home__second-section--secondary">
+            Simplified staking on the Ambrosus network.
+          </p>
+          <div className="items-container">
+            {arcadiaStaking.map((block) => (
+              <div className="items-container__item">
+                <ReactSVG src={block.src} wrapper="span" />
+                <p>{block.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="btn-group">
+          {' '}
+          <button type="button" className="btn white " onClick={logIn}>
+            ↖ Start Staking
+          </button>
         </div>
       </div>
       <div className="staking">
