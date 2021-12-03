@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
 import { toJS } from 'mobx';
-
+/*eslint-disable*/
 import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
 import NotSupported from '../../components/NotSupported';
@@ -31,7 +31,7 @@ const Staking = observer(() => {
 
   useEffect(() => {
     debugLog('Staking render useEffect');
-    activate(connectorsByName.Injected);
+    // activate(connectorsByName.Injected);
     getDataFromProvider();
     if (ethereum?.isMetaMask) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
