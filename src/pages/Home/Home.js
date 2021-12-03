@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { toJS } from 'mobx';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 import Paragraph from '../../components/Paragraph';
 import MetamaskConnect from './components/MetamaskConnect';
@@ -38,9 +38,11 @@ const Home = () => {
         <div className="back-figure2" />
         <div className="home__top">
           <div className="home__top--header">
-            <div className="logo">
-              <ReactSVG src={headerLogoSvg} wrapper="span" />
-            </div>
+            <Link to={MAIN_PAGE}>
+              <div className="logo">
+                <ReactSVG src={headerLogoSvg} wrapper="span" />
+              </div>
+            </Link>
             <Menu />
           </div>
         </div>
