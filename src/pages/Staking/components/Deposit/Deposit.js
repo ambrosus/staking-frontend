@@ -36,8 +36,8 @@ import {
 import avatarIcon from '../../../../assets/svg/avatar.svg';
 const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();
-  const [inputValue, setInputValue] = useState(() => '');
-  const [inputError, setInputError] = useState(() => false);
+  const [inputValue, setInputValue] = useState('');
+  const [inputError, setInputError] = useState(false);
   const [balance, setBalance] = useState(() => ZERO);
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();

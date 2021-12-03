@@ -4,7 +4,7 @@ import Modal from '../../../../components/Modal';
 import mmLogoIcon from '../../../../assets/svg/download-extension.png';
 
 export default function InstallMetamaskAlert() {
-  const [closeModal, setCloseModal] = useState(() => true);
+  const [closeModal, setCloseModal] = useState(true);
 
   return (
     <Modal isShowing={closeModal} hide={() => setCloseModal(false)}>

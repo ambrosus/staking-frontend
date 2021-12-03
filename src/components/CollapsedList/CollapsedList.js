@@ -5,7 +5,7 @@ import { collapsedReducer } from '../../utils/helpers';
 import { faqsList } from '../../config';
 
 const CollapsedList = () => {
-  const [activeExpand, setActiveExpand] = useState(() => -1);
+  const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, false);
 
   const toggleActive = (index) => {

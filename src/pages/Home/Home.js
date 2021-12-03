@@ -16,7 +16,7 @@ import Menu from './components/Menu';
 import appStore from '../../store/app.store';
 
 const Home = () => {
-  const [pools, setPools] = useState(() => []);
+  const [pools, setPools] = useState([]);
   const { pathname } = useLocation();
 
   const getPools = async () => {

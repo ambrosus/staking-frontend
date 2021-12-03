@@ -18,10 +18,10 @@ import appStore from '../../../../store/app.store';
 
 const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const [totalReward, setTotalReward] = useState(() => null);
-  const [totalRewardInUsd, setTotalRewardInUsd] = useState(() => null);
-  const [totalStaked, setTotalStaked] = useState(() => null);
-  const [totalStakedInUsd, setTotalStakedInUsd] = useState(() => null);
+  const [totalReward, setTotalReward] = useState(null);
+  const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
+  const [totalStaked, setTotalStaked] = useState(null);
+  const [totalStakedInUsd, setTotalStakedInUsd] = useState(null);
   let poolsRewards = [];
   let myTotalStake = [];
 

@@ -29,7 +29,7 @@ import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
   const { myStakeInAMB } = withdrawContractInfo;
-  const [inputValue, setInputValue] = useState(() => '');
+  const [inputValue, setInputValue] = useState('');
   const [afterWithdraw, setAfterWithdraw] = useState(
     () => myStakeInAMB || ZERO,
   );
