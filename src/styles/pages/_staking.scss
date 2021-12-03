@@ -293,6 +293,7 @@
 
       > div {
         button {
+          padding: 20px;
           p {
             font-family: Halvar Breitschrift, sans-serif !important;
             font-style: normal !important;
@@ -306,9 +307,9 @@
       }
 
       > div {
-        width: 64px;
-        margin-left: 20px;
-        height: auto;
+        width: 64px !important;
+        margin-left: 20px !important;
+        height: auto !important;
         color: #9198BB !important;
 
         button {
@@ -476,12 +477,12 @@
 
 .percent-btn {
   font-family: Halvar Breitschrift, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #9198BB;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  text-align: center !important;
+  color: #9198BB !important;
 
 }
