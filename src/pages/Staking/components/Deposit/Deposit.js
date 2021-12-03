@@ -195,7 +195,7 @@ const Deposit = observer(({ depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(() => balance.div(FIXED_POINT).toString())
+                  setInputValue(balance.div(FIXED_POINT).toString())
                 }
               >
                 <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}
