@@ -15,7 +15,6 @@ import headerLogoSvg from '../../assets/svg/header-logo.svg';
 import { MAIN_PAGE } from '../../config';
 import Menu from './components/Menu';
 import appStore from '../../store/app.store';
-import { toJS } from 'mobx';
 
 const Home = () => {
   const [pools, setPools] = useState([]);
