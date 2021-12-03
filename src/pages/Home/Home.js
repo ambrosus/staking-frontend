@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
+import { toJS } from 'mobx';
 import { useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 import Paragraph from '../../components/Paragraph';
@@ -21,7 +22,7 @@ const Home = () => {
 
   const getPools = async () => {
     await appStore.updatePoolData();
-    if (appStore.poolsData.length > 0) setPools(() => appStore.poolsData);
+    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
   };
 
   useEffect(() => {

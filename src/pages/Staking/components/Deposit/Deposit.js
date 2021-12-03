@@ -38,7 +38,7 @@ const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
-  const [balance, setBalance] = useState(() => ZERO);
+  const [balance, setBalance] = useState(ZERO);
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   const {
@@ -94,7 +94,7 @@ const Deposit = observer(({ depositInfo }) => {
   );
 
   useEffect(() => {
-    setInputError(() => validateInput());
+    setInputError(validateInput());
     refreshProc();
   }, [inputValue, account, depositInfo]);
 
@@ -130,7 +130,7 @@ const Deposit = observer(({ depositInfo }) => {
             <span
               style={{ fontWeight: 'normal', fontSize: 12, color: '#FF6767' }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp; Min amount for stake = 1000 AMB
+              &nbsp;&nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
             </span>
           )}
         </div>
