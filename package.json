@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "dependencies": {
+    "@inc4/eslint-config-react": "1.0.1",
     "react-scripts": "4.0.3",
     "@kunukn/react-collapse": "^2.2.9",
     "@web3-react/core": "^6.1.9",
@@ -53,7 +54,6 @@
     ]
   },
   "devDependencies": {
-    "@inc4/eslint-config-react": "1.0.1",
     "eslint": "^7.31.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.10.1",
