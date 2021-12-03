@@ -61,7 +61,7 @@ const Deposit = observer(({ depositInfo }) => {
       notificationMassage('ERROR', `Failed to create transaction.`);
     }
 
-    setInputValue(() => '');
+    setInputValue('');
 
     const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
     notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
@@ -81,7 +81,7 @@ const Deposit = observer(({ depositInfo }) => {
   const refreshProc = async () => {
     if (library && account) {
       library.getBalance(account).then((balanceObj) => {
-        setBalance(() => balanceObj);
+        setBalance(balanceObj);
       });
     }
   };
