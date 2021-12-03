@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 
 import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
-import { ethereum, MAIN_PAGE, menuLinks, STAKING_PAGE } from '../../../config';
+import { ethereum, MAIN_PAGE, menuLinks } from '../../../config';
 import { ambPriceInUsd, priceInPercent24h } from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
@@ -67,7 +67,7 @@ export const Header = observer(() => {
   return (
     <div className="header">
       <div className="header__logo">
-        <Link to={STAKING_PAGE}>
+        <Link to={MAIN_PAGE}>
           <ReactSVG src={headerLogoSvg} wrapper="span" />
         </Link>
       </div>
