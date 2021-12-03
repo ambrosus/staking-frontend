@@ -135,13 +135,15 @@ z-index: 0;
   .home {
     overflow: hidden;
     .back-figure1 {
-      display: none;
+      top: -172px;
+      left: -248px;
     }
 
     .back-figure2 {
-      top: -10px;
-      right: -70px;
-      transform: rotate(-2deg) scale(0.8);
+      top: 128px;
+      right: -290px;
+      transform: rotate(
+                      11deg) scale(0.8);
 
     }
 
@@ -183,7 +185,7 @@ z-index: 0;
         .info-text {
           text-align: left;
           height: 90%;
-          width: auto;
+          width: 306px;
           display: flex;
           flex-direction: column;
 
@@ -214,7 +216,7 @@ z-index: 0;
         }
 
         .connect-btn {
-          margin-top: 50px;
+          margin-top: 70px;
 
           p {
             font-size: 16px !important;
