@@ -26,11 +26,11 @@ const StakingItem = observer(
     poolInfo,
   }) => {
     const {
-      myStakeInAMB: myStakeInAmber,
+      myStakeInAMB,
       active: isPoolActive,
-      contractName: poolName,
-      totalStakeInAMB: totalStakeInAmber,
-      poolAPY: poolAPYPercent,
+      contractName,
+      totalStakeInAMB,
+      poolAPY,
     } = poolInfo;
     const history = useHistory();
     const { pathname } = history.location;
@@ -62,7 +62,7 @@ const StakingItem = observer(
             pathname === MAIN_PAGE && '0px 6px 10px rgba(0, 0, 0, 0.25)',
           color:
             pathname === MAIN_PAGE &&
-            !myStakeInAmber &&
+            !myStakeInAMB &&
             !isPoolActive &&
             'rgb(191 201 224)',
         }}
@@ -80,7 +80,7 @@ const StakingItem = observer(
                   marginRight: pathname === STAKING_PAGE ? 10 : '',
                   color:
                     pathname === MAIN_PAGE &&
-                    !myStakeInAmber &&
+                    !myStakeInAMB &&
                     !isPoolActive &&
                     'rgb(191 201 224)',
                 }}
@@ -99,7 +99,7 @@ const StakingItem = observer(
                   }}
                   size="l-500"
                 >
-                  {poolName && poolName.substring(0, 8)}
+                  {contractName && contractName.substring(0, 8)}
                 </Paragraph>
               </div>
               {pathname === STAKING_PAGE && (
@@ -116,7 +116,7 @@ const StakingItem = observer(
                           ? pathname === MAIN_PAGE && '#FFF'
                           : 'rgb(191, 201, 224)'
                       }
-                      value={myStakeInAmber && formatRounded(myStakeInAmber, 2)}
+                      value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
                     />
                   </div>
                 </div>
@@ -129,15 +129,12 @@ const StakingItem = observer(
                         ? pathname === MAIN_PAGE && '#FFF'
                         : 'rgb(191, 201, 224)'
                     }
-                    value={
-                      totalStakeInAmber && formatRounded(totalStakeInAmber, 2)
-                    }
+                    value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
                   />
                 </div>
               </div>
               <div className="item--header__flex__apy">
-                {isPoolActive === false &&
-                totalStakeInAmber.gte(FIXED_POINT) ? (
+                {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (
                   <Paragraph
                     style={{
                       color: isPoolActive
@@ -157,7 +154,7 @@ const StakingItem = observer(
                     }
                     size="l-700"
                     symbol="%"
-                    value={poolAPYPercent}
+                    value={poolAPY}
                   />
                 )}
               </div>

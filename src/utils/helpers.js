@@ -1,6 +1,12 @@
 import { toast } from 'react-toastify';
 import { utils, providers } from 'ethers';
-import { bounce, ethereum, network, SupportedChainId } from '../config';
+import {
+  bounce,
+  ENABLE_DEBUG_LOG,
+  ethereum,
+  network,
+  SupportedChainId,
+} from '../config';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -101,7 +107,7 @@ export const formatThousand = (num) => {
 };
 
 /* eslint-disable-next-line no-console */
-export const debugLog = (...logs) => network && console.log(...logs);
+export const debugLog = (...logs) => ENABLE_DEBUG_LOG && console.log(...logs);
 
 export const changeNetwork = async () => {
   await ethereum.request({

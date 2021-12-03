@@ -9,9 +9,9 @@ class ErrorBoundary extends React.PureComponent {
   }
 
   static getDerivedStateFromError() {
-    this.setState({
+    return {
       hasError: true,
-    });
+    };
   }
 
   componentDidCatch(error, errorInfo) {

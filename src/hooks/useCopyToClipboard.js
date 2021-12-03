@@ -16,7 +16,7 @@ export const copyToClipboard = (text) => {
 };
 
 const useCopyToClipboard = ({ text, successDuration }) => {
-  const [isCopied, setIsCopied] = useState(() => false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleCopyToClipboard = () => {
     const result = copyToClipboard(text);

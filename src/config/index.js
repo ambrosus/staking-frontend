@@ -32,6 +32,8 @@ export const bounce = cssTransition({
 
 export const network = process.env.NODE_ENV === 'production';
 
+export const ENABLE_DEBUG_LOG = false;
+
 export const provider = ethereum ? new providers.Web3Provider(ethereum) : null;
 
 export const transactionGasLimit = 8000000;

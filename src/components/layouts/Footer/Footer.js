@@ -8,8 +8,7 @@ import { MAIN_PAGE, socialsLinks } from '../../../config';
 import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 
 const Footer = observer(() => {
-  const location = useLocation();
-  const { pathname } = location;
+  const { pathname } = useLocation();
 
   const socials = socialsLinks.map((social) => (
     <li className="socials__list__link" key={social.url}>

@@ -6,8 +6,7 @@ import { useLogIn } from '../../hooks';
 import { STAKING_PAGE } from '../../config';
 
 const Sidebar = (props) => {
-  const location = useLocation();
-  const { pathname } = location;
+  const { pathname } = useLocation();
   const { logIn } = useLogIn();
 
   return (

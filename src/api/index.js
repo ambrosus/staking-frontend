@@ -1,8 +1,8 @@
-export const ambPriceInUsd = async (amb) => {
+export const ambPriceInUsd = async () => {
   try {
     const response = await fetch(process.env.REACT_APP_AMBROSUS_TOKEN_URL);
     const ambPrice = await response.json();
-    const result = amb * parseFloat(ambPrice.data.price_usd, 10);
+    const result = parseFloat(ambPrice.data.price_usd, 10);
     return result.toFixed(7);
   } catch (err) {
     return 0;

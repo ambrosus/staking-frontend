@@ -28,10 +28,12 @@ import {
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
-  const [inputValue, setInputValue] = useState(() => '');
+  const { myStakeInAMB } = withdrawContractInfo;
+  const [inputValue, setInputValue] = useState('');
   const [afterWithdraw, setAfterWithdraw] = useState(
-    () => withdrawContractInfo.myStakeInAMB || ZERO,
+    () => myStakeInAMB || ZERO,
   );
+
   const withdrawPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
       return false;
@@ -40,8 +42,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
     const tx = await StakingWrapper.unstake(
       withdrawContractInfo,
       inputValue,
-      inputValue ===
-        withdrawContractInfo.myStakeInAMB.div(FIXED_POINT).toString(), // ugly hack - check 100%
+      inputValue === myStakeInAMB.div(FIXED_POINT).toString(), // ugly hack - check 100%
     );
 
     debugLog('withdraw', tx);
@@ -69,13 +70,9 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
 
   const calculateSumAfterWithdraw = useCallback(
     () =>
-      withdrawContractInfo.myStakeInAMB &&
+      myStakeInAMB &&
       checkValidNumberString(inputValue) &&
-      setAfterWithdraw(
-        withdrawContractInfo.myStakeInAMB.sub(
-          parseFloatToBigNumber(inputValue),
-        ),
-      ),
+      setAfterWithdraw(myStakeInAMB.sub(parseFloatToBigNumber(inputValue))),
     [inputValue],
   );
 
@@ -84,7 +81,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
     return () => {
       calculateSumAfterWithdraw();
     };
-  }, [inputValue, withdrawContractInfo.myStakeInAMB]);
+  }, [inputValue, myStakeInAMB]);
 
   return (
     <div className="deposit">
@@ -104,15 +101,10 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               buttonStyles={{ height: 48 }}
               priority="secondary"
               type="outline"
-              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              disabled={myStakeInAMB.eq(0)}
               onclick={() =>
-                withdrawContractInfo.myStakeInAMB &&
-                setInputValue(
-                  withdrawContractInfo.myStakeInAMB
-                    .div(4)
-                    .div(FIXED_POINT)
-                    .toString(),
-                )
+                myStakeInAMB &&
+                setInputValue(myStakeInAMB.div(4).div(FIXED_POINT).toString())
               }
             >
               <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>
@@ -123,15 +115,10 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               buttonStyles={{ height: 48 }}
               priority="secondary"
               type="outline"
-              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              disabled={myStakeInAMB.eq(0)}
               onclick={() =>
-                withdrawContractInfo.myStakeInAMB &&
-                setInputValue(
-                  withdrawContractInfo.myStakeInAMB
-                    .div(2)
-                    .div(FIXED_POINT)
-                    .toString(),
-                )
+                myStakeInAMB &&
+                setInputValue(myStakeInAMB.div(2).div(FIXED_POINT).toString())
               }
             >
               <span className="percent-btn">{FIFTY_PERCENT}</span>
@@ -142,15 +129,11 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               buttonStyles={{ height: 48 }}
               priority="secondary"
               type="outline"
-              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              disabled={myStakeInAMB.eq(0)}
               onclick={() =>
-                withdrawContractInfo.myStakeInAMB &&
+                myStakeInAMB &&
                 setInputValue(
-                  withdrawContractInfo.myStakeInAMB
-                    .mul(3)
-                    .div(4)
-                    .div(FIXED_POINT)
-                    .toString(),
+                  myStakeInAMB.mul(3).div(4).div(FIXED_POINT).toString(),
                 )
               }
             >
@@ -162,13 +145,10 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               priority="secondary"
               buttonStyles={{ height: 48 }}
               type="outline"
-              disabled={withdrawContractInfo.myStakeInAMB.eq(0)}
+              disabled={myStakeInAMB.eq(0)}
               onclick={() =>
                 setInputValue(
-                  withdrawContractInfo.myStakeInAMB &&
-                    withdrawContractInfo.myStakeInAMB
-                      .div(FIXED_POINT)
-                      .toString(),
+                  myStakeInAMB && myStakeInAMB.div(FIXED_POINT).toString(),
                 )
               }
             >
@@ -194,7 +174,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
               !checkValidNumberString(inputValue) ||
               parseFloatToBigNumber(inputValue).eq(0) ||
               parseFloatToBigNumber(inputValue).gt(
-                withdrawContractInfo.myStakeInAMB.add(FIXED_POINT.div(2)),
+                myStakeInAMB.add(FIXED_POINT.div(2)),
               )
             }
             onclick={withdrawPayment}
