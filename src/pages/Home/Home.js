@@ -16,6 +16,7 @@ import { MAIN_PAGE } from '../../config';
 import Menu from './components/Menu';
 import appStore from '../../store/app.store';
 
+import secondSectionIcon1 from '../../assets/svg/home/second-section/Icon1-66x85.svg';
 const Home = () => {
   const [pools, setPools] = useState([]);
   const { pathname } = useLocation();
@@ -30,82 +31,110 @@ const Home = () => {
   }, []);
 
   return (
-      <div className="home" id="home">
-        <Sidebar pageWrapId="root" outerContainerId="root" />
-        <ReactNotifications />
-        <div className="home__top">
-          <div className="home__top--header">
-            <div className="logo">
-              <ReactSVG src={headerLogoSvg} wrapper="span" />
-            </div>
-            <Menu />
+    <div className="home" id="home">
+      <Sidebar pageWrapId="root" outerContainerId="root" />
+      <ReactNotifications />
+      <div className="home__top">
+        <div className="home__top--header">
+          <div className="logo">
+            <ReactSVG src={headerLogoSvg} wrapper="span" />
           </div>
-        </div>
-        <div className="home__top--info">
-          <div className="back-figure1" />
-          <div className="back-figure2" />
-          <div className="info-text">
-            <Paragraph
-              size="xxxl-500"
-              style={{
-                paddingBottom: 10,
-                fontFamily: 'Halvar Breitschrift,sans-serif',
-              }}
-            >
-              Get AMB Rewards. No node needed.
-            </Paragraph>
-            <Paragraph size="l-500-white">
-              Stake your AMB and receive up to
-              <span style={{ color: '#1ACD8C', fontWeight: 600 }}>
-                {' '}
-                35% APY
-              </span>{' '}
-              in a few clicks.
-            </Paragraph>
-          </div>
-          <MetamaskConnect />
-        </div>
-        <div className="staking">
-          {pools.length > 0 ? (
-            <>
-              <div
-                className="staking__header"
-                style={{
-                  color: pathname === MAIN_PAGE && '#FFFFFF',
-                }}
-              >
-                <div className="staking__header__clearfix-pool">Pool</div>
-                <div>Total pool stake</div>
-                <div className="staking__header__clearfix-apy">APY</div>
-                <div style={{ maxWidth: 160, minWidth: 160 }} />
-              </div>
-              <div className="staking__pools">
-                <RenderItems>
-                  <>
-                    {pools.map(
-                      (item) =>
-                        item.active && (
-                          <StakingItem
-                            key={item.contractName}
-                            poolInfo={item}
-                            expand={false}
-                          />
-                        ),
-                    )}
-                  </>
-                </RenderItems>
-              </div>
-            </>
-          ) : (
-            <div className="staking__loader">
-              <Loader types="spokes" />
-            </div>
-          )}
-        </div>
-        <div className="faq">
-          <CollapsedList />
+          <Menu />
         </div>
       </div>
+      <div className="home__top--info">
+        <div className="back-figure1" />
+        <div className="back-figure2" />
+        <div className="info-text">
+          <Paragraph
+            size="xxxl-500"
+            style={{
+              paddingBottom: 10,
+              fontFamily: 'Halvar Breitschrift,sans-serif',
+            }}
+          >
+            Get AMB Rewards. No node needed.
+          </Paragraph>
+          <Paragraph size="l-500-white">
+            Stake your AMB and receive up to
+            <span style={{ color: '#1ACD8C', fontWeight: 600 }}>
+              {' '}
+              35% APY
+            </span>{' '}
+            in a few clicks.
+          </Paragraph>
+        </div>
+        <MetamaskConnect />
+      </div>
+      <div className="home__second-section">
+        <div>
+          <h2 className="section-heading">Arcadia</h2>
+        </div>
+        <p className="home__second-section--secondary">
+          Simplified staking on the Ambrosus network.
+        </p>
+        <div className="container">
+          <div className="items-container">
+            <div className="items-container__item">
+              <ReactSVG src={secondSectionIcon1} wrapper="span" />
+              <p>Staking starts from 1000 AMB</p>
+            </div>
+            <div className="items-container__item">
+              <ReactSVG src={secondSectionIcon1} wrapper="span" />
+              <p>Staking starts from 1000 AMB</p>
+            </div>
+            <div className="items-container__item">
+              <ReactSVG src={secondSectionIcon1} wrapper="span" />
+              <p>Staking starts from 1000 AMB</p>
+            </div>
+            <div className="items-container__item">
+              <ReactSVG src={secondSectionIcon1} wrapper="span" />
+              <p>Staking starts from 1000 AMB</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="staking">
+        {pools.length > 0 ? (
+          <>
+            <div
+              className="staking__header"
+              style={{
+                color: pathname === MAIN_PAGE && '#FFFFFF',
+              }}
+            >
+              <div className="staking__header__clearfix-pool">Pool</div>
+              <div>Total pool stake</div>
+              <div className="staking__header__clearfix-apy">APY</div>
+              <div style={{ maxWidth: 160, minWidth: 160 }} />
+            </div>
+            <div className="staking__pools">
+              <RenderItems>
+                <>
+                  {pools.map(
+                    (item) =>
+                      item.active && (
+                        <StakingItem
+                          key={item.contractName}
+                          poolInfo={item}
+                          expand={false}
+                        />
+                      ),
+                  )}
+                </>
+              </RenderItems>
+            </div>
+          </>
+        ) : (
+          <div className="staking__loader">
+            <Loader types="spokes" />
+          </div>
+        )}
+      </div>
+      <div className="faq">
+        <CollapsedList />
+      </div>
+    </div>
   );
 };
 
