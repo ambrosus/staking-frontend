@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
 import { toJS } from 'mobx';
-/*eslint-disable*/
+
 import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
 import NotSupported from '../../components/NotSupported';
@@ -18,20 +18,21 @@ import { changeNetwork, collapsedReducer, debugLog } from '../../utils/helpers';
 
 const Staking = observer(() => {
   const { account, activate, chainId } = useWeb3React();
-  const [activeExpand, setActiveExpand] = useState(-1);
+  const [activeExpand, setActiveExpand] = useState(() => -1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
-  const [pools, setPools] = useState([]);
-  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
+  const [pools, setPools] = useState(() => []);
+  const [checkNetworkChain, setCheckNetworkChain] = useState(() => false);
 
   const getDataFromProvider = async () => {
     await appStore.updatePoolData();
     setPools(() => appStore.poolsData.length > 0 && toJS(appStore.poolsData));
   };
+
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
   useEffect(() => {
     debugLog('Staking render useEffect');
-    // activate(connectorsByName.Injected);
+    activate(connectorsByName.Injected);
     getDataFromProvider();
     if (ethereum?.isMetaMask) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
@@ -43,7 +44,7 @@ const Staking = observer(() => {
   return (
     <>
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
-        <NotSupported key={chainId} onclick={changeNetwork} />
+        <NotSupported onclick={changeNetwork} />
       )}
       <div className="layout">
         <Header />
