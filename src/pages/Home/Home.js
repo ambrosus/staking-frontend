@@ -30,7 +30,6 @@ const Home = () => {
   }, []);
 
   return (
-    <>
       <div className="home" id="home">
         <Sidebar pageWrapId="root" outerContainerId="root" />
         <ReactNotifications />
@@ -107,7 +106,6 @@ const Home = () => {
           <CollapsedList />
         </div>
       </div>
-    </>
   );
 };
 
