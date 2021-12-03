@@ -38,7 +38,7 @@ const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
-  const [balance, setBalance] = useState(() => ZERO);
+  const [balance, setBalance] = useState(ZERO);
   const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
     useModal();
   const {
@@ -61,7 +61,7 @@ const Deposit = observer(({ depositInfo }) => {
       notificationMassage('ERROR', `Failed to create transaction.`);
     }
 
-    setInputValue(() => '');
+    setInputValue('');
 
     const shortHash = `${tx.hash.substr(0, 6)}...${tx.hash.slice(60)}`;
     notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
@@ -81,7 +81,7 @@ const Deposit = observer(({ depositInfo }) => {
   const refreshProc = async () => {
     if (library && account) {
       library.getBalance(account).then((balanceObj) => {
-        setBalance(() => balanceObj);
+        setBalance(balanceObj);
       });
     }
   };
@@ -94,7 +94,7 @@ const Deposit = observer(({ depositInfo }) => {
   );
 
   useEffect(() => {
-    setInputError(() => validateInput());
+    setInputError(validateInput());
     refreshProc();
   }, [inputValue, account, depositInfo]);
 
@@ -130,7 +130,7 @@ const Deposit = observer(({ depositInfo }) => {
             <span
               style={{ fontWeight: 'normal', fontSize: 12, color: '#FF6767' }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp; Min amount for stake = 1000 AMB
+              &nbsp;&nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
             </span>
           )}
         </div>
@@ -195,7 +195,7 @@ const Deposit = observer(({ depositInfo }) => {
                 type="outline"
                 disabled={balance.isZero()}
                 onclick={() =>
-                  setInputValue(() => balance.div(FIXED_POINT).toString())
+                  setInputValue(balance.div(FIXED_POINT).toString())
                 }
               >
                 <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}
