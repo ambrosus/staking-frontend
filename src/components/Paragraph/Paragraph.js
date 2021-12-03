@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-const P = ({ size, className, children, ...props }) => (
+const Paragraph = ({ size, className, children, ...props }) => (
   <p
     className={cx(className, {
       'xxxl-500': size === 'xxxl-500',
@@ -25,7 +25,7 @@ const P = ({ size, className, children, ...props }) => (
   </p>
 );
 
-P.propTypes = {
+Paragraph.propTypes = {
   size: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.oneOfType([
@@ -34,4 +34,4 @@ P.propTypes = {
   ]),
 };
 
-export default P;
+export default Paragraph;

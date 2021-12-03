@@ -7,8 +7,10 @@ const ButtonGroup = (props) => {
     'button-group': true,
     compact: props.compact,
   });
+
   return <div className={cssClasses}>{props.children}</div>;
 };
+
 ButtonGroup.propTypes = {
   compact: PropTypes.string,
   children: PropTypes.oneOfType([

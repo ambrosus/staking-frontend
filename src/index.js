@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import ErrorBoundary from './components/ErrorBoundary';
 import Main from './Main';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <ErrorBoundary>
     <Main />
-  </BrowserRouter>,
+  </ErrorBoundary>,
   document.getElementById('root'),
 );
 

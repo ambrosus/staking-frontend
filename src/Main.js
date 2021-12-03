@@ -1,32 +1,47 @@
 import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import { BrowserRouter } from 'react-router-dom';
+import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 
-import storageService from './services/storage.service';
-import appStore from './store/app.store';
-
-import './styles/Main.scss';
 import RenderRoutes from './components/RenderRoutes';
-import { ethereum } from './utils/constants';
+import { getLibrary } from './utils/helpers';
+import { ethereum, NetworkContextName } from './config';
+import './styles/Main.scss';
 
-const Main = observer(() => {
-  const handleChange = () => {
-    window.location.reload();
-  };
+const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
+
+const Main = () => {
+  const handleChainChanged = () => window.location.reload();
+  const handleAccountsChanged = () => window.location.reload();
+  const handleNetworkChanged = () => window.location.reload();
+
   useEffect(() => {
     if (ethereum) {
-      ethereum.on('accountsChanged', handleChange);
-      ethereum.on('chainChanged', handleChange);
-    }
-    if (storageService.get('auth')) {
-      appStore.setAuth(true);
+      ethereum.on('chainChanged', handleChainChanged);
+      ethereum.on('accountsChanged', handleAccountsChanged);
+      ethereum.on('networkChanged', handleNetworkChanged);
+    } else {
+      // todo: handle error
     }
     return () => {
-      ethereum.removeListener('chainChanged', handleChange);
-      ethereum.removeListener('accountsChanged', handleChange);
+      if (ethereum.removeListener) {
+        ethereum.removeListener('chainChanged', handleChainChanged);
+        ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        ethereum.removeListener('networkChanged', handleNetworkChanged);
+      } else {
+        // todo: handle error
+      }
     };
-  }, [appStore.auth, storageService, ethereum]);
+  }, []);
 
-  return <RenderRoutes />;
-});
+  return (
+    <BrowserRouter>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Web3ProviderNetwork getLibrary={getLibrary}>
+          <RenderRoutes />
+        </Web3ProviderNetwork>
+      </Web3ReactProvider>
+    </BrowserRouter>
+  );
+};
 
 export default Main;

@@ -4,19 +4,13 @@ import { ReactSVG } from 'react-svg';
 import { useLocation } from 'react-router-dom';
 
 import Button from '../Button';
-import P from '../P';
-import {
-  COMING_SOON,
-  MAIN_PAGE,
-  STAKE,
-  STAKING_PAGE,
-} from '../../utils/constants';
-
+import Paragraph from '../Paragraph';
+import { COMING_SOON, MAIN_PAGE, STAKE, STAKING_PAGE } from '../../config';
 import avatarIcon from '../../assets/svg/coming_soon_pool_icon.svg';
 
-export const ComingSoonPool = ({ poolInfo, loading }) => {
-  const location = useLocation();
-  const { pathname } = location;
+const ComingSoonPool = ({ poolInfo, loading }) => {
+  const { pathname } = useLocation();
+
   const stackHeader = (
     <div className="item--header" role="presentation">
       <div
@@ -31,7 +25,7 @@ export const ComingSoonPool = ({ poolInfo, loading }) => {
           style={{ width: '80%' }}
         >
           <ReactSVG src={avatarIcon} wrapper="span" />
-          <P
+          <Paragraph
             className="w-100"
             style={{
               textTransform: 'uppercase',
@@ -41,19 +35,20 @@ export const ComingSoonPool = ({ poolInfo, loading }) => {
             }}
             size="l-500"
           >
-            {poolInfo?.contractName}
-          </P>
+            {poolInfo.contractName}
+          </Paragraph>
         </div>
       </div>
       <div className="item--header--coming-soon-btn">
         <Button disabled priority="secondary">
-          <P style={{ textTransform: 'uppercase' }} size="m-500">
+          <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
             {!loading ? STAKE : COMING_SOON}
-          </P>
+          </Paragraph>
         </Button>
       </div>
     </div>
   );
+
   return (
     <div
       role="presentation"

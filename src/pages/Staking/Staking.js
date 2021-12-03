@@ -1,99 +1,102 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { cssTransition, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import { useWeb3React } from '@web3-react/core';
+import { toJS } from 'mobx';
+
 import StakingItem from '../../components/StakingItem';
-import appStore from '../../store/app.store';
-
 import Header from '../../components/layouts/Header';
-import Footer from '../../components/layouts/Footer';
 import NotSupported from '../../components/NotSupported';
-import useStaking from '../../hooks/useStaking';
+import { useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
-import RenderItems from '../../components/StakingItem/RenderItems';
-import { FIXEDPOINT } from '../../services/staking.wrapper';
+import RenderItems from '../../components/RenderItems';
+import { FIXED_POINT } from '../../services/numbers';
+import { bounce, connectorsByName, ethereum } from '../../config';
+import appStore from '../../store/app.store';
+import { Loader } from '../../components/Loader';
+import { changeNetwork, collapsedReducer, debugLog } from '../../utils/helpers';
 
-const bounce = cssTransition({
-  enter: 'animate__animated animate__bounceIn',
-  exit: 'animate__animated animate__bounceOut',
-});
 const Staking = observer(() => {
-  const {
-    account,
-    userChainId,
-    totalStaked,
-    activeExpand,
-    setActiveExpand,
-    correctNetwork,
-    totalReward,
-    totalRewardInUsd,
-    totalStakedInUsd,
-    state,
-    dispatch,
-    pools,
-    changeNetwork,
-  } = useStaking();
-  const infoBlock = (
-    <InfoBlock
-      totalStakedInUsd={totalStakedInUsd}
-      account={account}
-      totalReward={totalReward}
-      totalRewardInUsd={totalRewardInUsd}
-      totalStaked={totalStaked}
-    />
-  );
-  const stakingBody = (
-    <div className="staking wrapper">
-      {pools.length > 0 && (
-        <>
-          <div className="staking__header">
-            <div>Pool</div>
-            <div>My Stake</div>
-            <div>Total pool stake</div>
-            <div>APY</div>
-            <div style={{ marginRight: -45 }} />
-          </div>
-          <RenderItems>
-            {pools
-              .filter((pool) => pool.active || pool.totalStake.gte(FIXEDPOINT))
-              .sort((a, b) => b.active - a.active)
-              .map((item, index) => (
-                <StakingItem
-                  dispatch={dispatch}
-                  activeExpand={activeExpand}
-                  setActiveExpand={setActiveExpand}
-                  key={item.contractName}
-                  index={index}
-                  state={state}
-                  expand
-                  hasChain={+process.env.REACT_APP_CHAIN_ID === userChainId}
-                  comingSoon={!item?.abi}
-                  lazy
-                  poolInfo={item}
-                />
-              ))}
-          </RenderItems>
-        </>
-      )}
-    </div>
-  );
-  return appStore.auth ? (
+  const { account, activate, chainId } = useWeb3React();
+  const [activeExpand, setActiveExpand] = useState(-1);
+  const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
+  const [pools, setPools] = useState([]);
+  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
+
+  const getDataFromProvider = async () => {
+    await appStore.updatePoolData();
+    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
+  };
+
+  useTimeout(() => setCheckNetworkChain(true), 1500);
+
+  useEffect(() => {
+    debugLog('Staking render useEffect');
+    activate(connectorsByName.Injected);
+    getDataFromProvider();
+    if (ethereum?.isMetaMask) {
+      if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
+        window.addEventListener('focus', changeNetwork);
+      }
+    }
+  }, [appStore.refresh]);
+
+  return (
     <>
-      {!correctNetwork && <NotSupported onclick={changeNetwork} />}
+      {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
+        <NotSupported key={chainId} onclick={changeNetwork} />
+      )}
       <div className="layout">
         <Header />
         <div className="content">
           <div className="page">
-            {infoBlock}
-            {stakingBody}
+            {pools.length > 0 ? (
+              <RenderItems>
+                <InfoBlock account={account} poolsArr={pools} />
+                <div className="staking wrapper">
+                  <>
+                    <div className="staking__header">
+                      <div>Pool</div>
+                      <div>My Stake</div>
+                      <div>Total pool stake</div>
+                      <div>APY</div>
+                      <div style={{ marginRight: -45 }} />
+                    </div>
+                    {pools
+                      .filter(
+                        (pool) =>
+                          pool.active || pool.totalStakeInAMB.gte(FIXED_POINT),
+                      )
+                      .sort((a, b) => b.active - a.active)
+                      .map((item, index) => (
+                        <StakingItem
+                          dispatch={dispatch}
+                          activeExpand={activeExpand}
+                          setActiveExpand={setActiveExpand}
+                          key={item.contractName}
+                          index={index}
+                          state={state}
+                          expand
+                          hasChain={+process.env.REACT_APP_CHAIN_ID === chainId}
+                          comingSoon={!item.abi}
+                          lazy
+                          poolInfo={item}
+                        />
+                      ))}
+                  </>
+                </div>
+              </RenderItems>
+            ) : (
+              <div style={{ paddingTop: 100 }}>
+                <Loader types="spokes" />
+              </div>
+            )}
             <ToastContainer transition={bounce} />
           </div>
         </div>
-        <Footer />
       </div>
     </>
-  ) : (
-    <div>Loading...</div>
   );
 });
 
-export default React.memo(Staking);
+export default Staking;

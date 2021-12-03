@@ -20,10 +20,9 @@
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  /* display: none; <- Crashes Chrome on hover */
   font-family: Halvar Breitschrift, sans-serif !important;
   -webkit-appearance: none;
-  margin: -20px; /* <-- Apparently some margin are still there even though it's hidden */
+  margin: -20px;
 }
 
 input[type=number] {

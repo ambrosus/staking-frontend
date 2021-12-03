@@ -1,30 +1,35 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import P from '../P';
+import Paragraph from '../Paragraph';
+import { network } from '../../config';
 
-const NotSupported = ({ onclick }) => {
-  const host = window.location.hostname;
-  const network =
-    host.includes('local') || host.includes('dev') || host.includes('test')
-      ? 'Testnet'
-      : 'Mainnet';
+const NotSupported = ({ children, onclick = () => {} }) => {
+  const net = !network ? 'Testnet' : 'Mainnet';
   return (
     <div className="not-supported">
-      <P>
-        {' '}
-        Ambrosus is not supported on this network. Please &nbsp;
-        <span
-          className="switch-text"
-          role="presentation"
-          onClick={() => onclick()}
-        >
-          switch to {network}
-        </span>
-      </P>
+      {children ? (
+        <Paragraph>{children}</Paragraph>
+      ) : (
+        <Paragraph>
+          {' '}
+          Ambrosus is not supported on this network. Please &nbsp;
+          <span
+            className="switch-text"
+            role="presentation"
+            onClick={() => onclick()}
+          >
+            switch to {net}
+          </span>
+        </Paragraph>
+      )}
     </div>
   );
 };
 NotSupported.propTypes = {
   onclick: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 export default NotSupported;

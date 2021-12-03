@@ -1,189 +1,187 @@
-/* eslint-disable */
-
+import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
-import { BigNumber, ethers, providers } from 'ethers';
-import { all, create } from 'mathjs';
+import { headContractAddress } from 'ambrosus-node-contracts/config/config';
+import { ethereum, transactionGasLimit, transactionGasPrice } from '../config';
+import { math, FIXED_POINT, parseFloatToBigNumber } from './numbers';
+import { debugLog } from '../utils/helpers';
 
-const ZERO = BigNumber.from(0);
-const ONE = BigNumber.from(1);
-const TEN = BigNumber.from(10);
-const FIXEDPOINT = TEN.pow(18);
-const MINSHOWSTAKE = FIXEDPOINT.div(100);
-const THOUSAND = FIXEDPOINT.mul(1000);
+const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
 
-const AVERAGING_PERIOD = 10 * 24 * 60 * 60;
+const dailyPercentageYieldExpression = math.compile(
+  '(price2 / price1) ^ (86400 / (time2 - time1)) - 1',
+);
 
-const math = create(all, {
-  number: 'BigNumber',
-  precision: 64,
-});
+export default class StakingWrapper {
+  static privateProvider = null;
 
-const exprDPY = math.compile('(s2 / s1) ^ (86400 / (t2 - t1)) - 1');
+  static privateLastBlock = 0;
 
-const headContractAddress = '0x0000000000000000000000000000000000000F10';
+  static privateRewardEvents = [];
 
-function formatRounded(bigNumber, digits = 18) {
-  if (!bigNumber || !BigNumber.isBigNumber(bigNumber)) {
-    throw new Error('not a BigNumber');
-  }
-  digits = Math.floor(digits);
-  if (digits < 0 || digits > 18) {
-    throw new Error('digits out of range');
-  }
-  const mathBn = math.bignumber(ethers.utils.formatEther(bigNumber));
-  return math.format(mathBn.round(digits), {
-    notation: 'fixed',
-    precision: digits,
-  });
-}
+  static poolsStore = null;
 
-function checkValidNumberString(str) {
-  let ret = false;
-  try {
-    parseFloatToBigNumber(str);
-    ret = true;
-  } catch (err) {}
-  return ret;
-}
+  static poolEventsEmitter = null;
 
-function parseFloatToBigNumber(str) {
-  const mathBn = math.bignumber(str);
-  return ethers.utils.parseEther(math.round(mathBn, 18).toString());
-}
+  static privateStaticConstructorPromise = (async () => {
+    debugLog('StakingWrapper static constructor');
 
-class StakingWrapper {
-  constructor(providerOrSigner = null) {
-    if (!providerOrSigner) {
-      providerOrSigner = new providers.JsonRpcProvider(
-        process.env.REACT_APP_RPC_URL,
-      );
-    }
-    this._providerOrSigner = providerOrSigner;
+    this.privateProvider = new providers.JsonRpcProvider(
+      process.env.REACT_APP_RPC_URL,
+    );
 
-    this._initPromise = this._initialize();
-  }
-
-  async _initialize() {
-    this.headContract = new ethers.Contract(
+    const headContract = new ethers.Contract(
       headContractAddress,
       contractJsons.head.abi,
-      this._providerOrSigner,
+      this.privateProvider,
     );
     const contextContract = new ethers.Contract(
-      await this.headContract.context(),
+      await headContract.context(),
       contractJsons.context.abi,
-      this._providerOrSigner,
+      this.privateProvider,
     );
     const storageCatalogueContr = new ethers.Contract(
       await contextContract.storageCatalogue(),
       contractJsons.storageCatalogue.abi,
-      this._providerOrSigner,
+      this.privateProvider,
     );
+    const [poolEventsEmitterAddr, poolsStoreAddr] = await Promise.all([
+      storageCatalogueContr.poolEventsEmitter(),
+      storageCatalogueContr.poolsStore(),
+    ]);
     this.poolEventsEmitter = new ethers.Contract(
-      await storageCatalogueContr.poolEventsEmitter(),
+      poolEventsEmitterAddr,
       contractJsons.poolEventsEmitter.abi,
-      this._providerOrSigner,
+      this.privateProvider,
     );
     this.poolsStore = new ethers.Contract(
-      await storageCatalogueContr.poolsStore(),
+      poolsStoreAddr,
       contractJsons.poolsStore.abi,
-      this._providerOrSigner,
+      this.privateProvider,
     );
-  }
+    debugLog('StakingWrapper done');
+  })();
 
-  async getPools() {
-    await this._initPromise;
-
-    const poolsCount = await this.poolsStore.getPoolsCount();
-    const poolsAddrs = await this.poolsStore.getPools(0, poolsCount);
-    this._pools = poolsAddrs.map(
-      (poolAddr) =>
-        new ethers.Contract(poolAddr, pool.abi, this._providerOrSigner),
-    );
-
-    return Promise.all(
-      this._pools.map(async (_pool, index) => {
-        const info = await Promise.all([
-          _pool.name(),
-          _pool.active(),
-          _pool.totalStake(),
-        ]);
-        return {
-          index,
-          contractName: info[0],
-          address: _pool.address,
-          abi: pool.abi,
-          active: info[1],
-          contract: _pool,
-          totalStake: info[2],
-        };
-      }),
-    );
-  }
-
-  async getPoolData(index) {
-    if (typeof index !== 'number') {
-      throw new Error('no pool index provided');
+  static async getRewardEvents(from, to) {
+    const blocks = 20000;
+    const eventsPromises = [];
+    for (let xFrom = from; xFrom < to; xFrom += blocks) {
+      const xTo = Math.min(xFrom + blocks - 1, to);
+      eventsPromises.push(
+        this.poolEventsEmitter.queryFilter(
+          this.poolEventsEmitter.filters.PoolReward(null, null, null),
+          xFrom,
+          xTo,
+        ),
+      );
     }
-    await this._initPromise;
+    const eventsArrays = await Promise.all(eventsPromises);
+    return eventsArrays.flatMap((arr) => arr);
+  }
 
-    if (!this._pools) await this.getPools();
+  static async updateRewardEvents() {
+    const currentBlockNumber = await this.privateProvider.getBlockNumber();
+    if (currentBlockNumber > this.privateLastBlock) {
+      const startBlockNumber =
+        currentBlockNumber - Math.floor(AVERAGING_PERIOD / 5);
 
-    const poolContract = this._pools[index];
+      const rewardEvents = await this.getRewardEvents(
+        this.privateLastBlock ? this.privateLastBlock + 1 : startBlockNumber,
+        currentBlockNumber,
+      );
+      this.privateLastBlock = currentBlockNumber;
+      this.privateRewardEvents = this.privateRewardEvents
+        .filter((event) => event.blockNumber > startBlockNumber)
+        .concat(rewardEvents);
+      debugLog(
+        'getRewardEvents',
+        startBlockNumber,
+        this.privateLastBlock ? this.privateLastBlock + 1 : startBlockNumber,
+        currentBlockNumber,
+        this.privateRewardEvents.length,
+      );
+    }
+  }
 
-    const [totalStakeInAMB, tokenPriceAMB, myStakeInTokens, poolDPY] =
-      await Promise.all([
+  static async getPoolsXX() {
+    const poolsCount = await this.poolsStore.getPoolsCount();
+    return this.poolsStore.getPools(0, poolsCount);
+  }
+
+  static async getPools(loggedIn = false) {
+    debugLog('## getPools');
+    const providerOrSigner = loggedIn
+      ? new providers.Web3Provider(ethereum).getSigner()
+      : this.privateProvider;
+
+    await this.privateStaticConstructorPromise;
+
+    const [poolsAddrs] = await Promise.all([
+      this.getPoolsXX(),
+      this.updateRewardEvents(),
+    ]);
+
+    const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
+      const poolContract = new ethers.Contract(
+        poolAddr,
+        pool.abi,
+        providerOrSigner,
+      );
+      const [
+        contractName,
+        active,
+        totalStakeInAMB,
+        tokenPriceAMB,
+        myStakeInTokens,
+        poolDPY,
+      ] = await Promise.all([
+        poolContract.name(),
+        poolContract.active(),
         poolContract.totalStake(),
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
-        this._getDPY(index),
+        this.privateGetDPY(poolAddr),
       ]);
-    const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXEDPOINT);
-    const poolAPY = math
-      .chain(poolDPY)
-      .add(1)
-      .pow(365)
-      .subtract(1)
-      .multiply(100)
-      .round(2)
-      .done()
-      .toFixed(2);
-    const estDR = math
-      .chain(poolDPY)
-      .multiply(myStakeInAMB.toString())
-      .divide(FIXEDPOINT.toString())
-      .round(2)
-      .done()
-      .toFixed(2);
-    const estAR = math
-      .chain(poolAPY)
-      .divide(100)
-      .multiply(myStakeInAMB.toString())
-      .divide(FIXEDPOINT.toString())
-      .round(2)
-      .done()
-      .toFixed(2);
-    return {
-      totalStakeInAMB,
-      myStakeInAMB,
-      tokenPriceAMB,
-      myStakeInTokens,
-      poolAPY,
-      estDR,
-      estAR,
-    };
+
+      const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
+
+      const poolAPY = math
+        .chain(poolDPY)
+        .add(1)
+        .pow(365)
+        .subtract(1)
+        .multiply(100)
+        .round(2)
+        .done()
+        .toFixed(2);
+      const estAR = math
+        .chain(poolAPY)
+        .divide(100)
+        .multiply(myStakeInAMB.toString())
+        .divide(FIXED_POINT.toString())
+        .round(2)
+        .done()
+        .toFixed(2);
+
+      return {
+        index,
+        contractName,
+        address: poolAddr,
+        active,
+        contract: poolContract,
+        totalStakeInAMB,
+        tokenPriceAMB,
+        myStakeInTokens,
+        myStakeInAMB,
+        poolAPY,
+        estAR,
+      };
+    });
+
+    return Promise.all(poolsDataPromises);
   }
 
-  async _getDPY(index = null) {
-    await this._initPromise;
-
-    const poolAddr = this._pools[index].address;
-
-    const rewardEvents = await this.poolEventsEmitter.queryFilter(
-      this.poolEventsEmitter.filters.PoolReward(null, null, null),
-      -Math.floor(AVERAGING_PERIOD / 5),
-    );
-
+  static async privateGetDPY(poolAddr) {
+    const rewardEvents = this.privateRewardEvents;
     if (!rewardEvents || rewardEvents.length < 2) return 0;
 
     const sortedPoolRewards = rewardEvents
@@ -201,7 +199,7 @@ class StakingWrapper {
 
     const [firstReward, lastReward] = await Promise.all(
       sortedPoolRewards
-        .filter((_, index, array) => index === 0 || index === array.length - 1)
+        .filter((_, idx, array) => idx === 0 || idx === array.length - 1)
         .map(async (event) => ({
           blockNumber: event.blockNumber,
           timestamp: (await event.getBlock()).timestamp,
@@ -213,24 +211,72 @@ class StakingWrapper {
 
     if (lastReward.timestamp - firstReward.timestamp < 300) return 0;
 
-    return exprDPY.evaluate({
-      s1: math.bignumber(firstReward.tokenPrice.toString()),
-      s2: math.bignumber(lastReward.tokenPrice.toString()),
-      t1: firstReward.timestamp,
-      t2: lastReward.timestamp,
+    return dailyPercentageYieldExpression.evaluate({
+      price1: math.bignumber(firstReward.tokenPrice.toString()),
+      price2: math.bignumber(lastReward.tokenPrice.toString()),
+      time1: firstReward.timestamp,
+      time2: lastReward.timestamp,
     });
   }
-}
 
-export {
-  StakingWrapper,
-  formatRounded,
-  parseFloatToBigNumber,
-  checkValidNumberString,
-  ZERO,
-  ONE,
-  TEN,
-  FIXEDPOINT,
-  MINSHOWSTAKE,
-  THOUSAND,
-};
+  static async stake(poolInfo, value) {
+    const overrides = {
+      value: parseFloatToBigNumber(value),
+      gasPrice: transactionGasPrice,
+      gasLimit: transactionGasLimit,
+    };
+
+    const poolContract = poolInfo.contract;
+
+    debugLog('.stake', poolInfo.index, value);
+
+    try {
+      overrides.gasLimit = await poolContract.estimateGas.stake(overrides);
+      debugLog('gasLimit', overrides.gasLimit.toString());
+      return poolContract.stake(overrides);
+    } catch (err) {
+      debugLog('stake error', err);
+      return null;
+    }
+  }
+
+  static async unstake(poolInfo, value, fullUnstake = false) {
+    debugLog('unstake', poolInfo.contractName, value, fullUnstake);
+
+    const poolContract = poolInfo.contract;
+    const [tokenPriceAMB, myStakeInTokens] = await Promise.all([
+      poolContract.getTokenPrice(),
+      poolContract.viewStake(),
+    ]);
+
+    const tokens = fullUnstake
+      ? myStakeInTokens
+      : parseFloatToBigNumber(value).mul(FIXED_POINT).div(tokenPriceAMB);
+
+    debugLog(
+      'unstake ##',
+      poolInfo.index,
+      value,
+      fullUnstake,
+      tokens.toString(),
+      tokenPriceAMB.toString(),
+    );
+
+    const overrides = {
+      gasPrice: transactionGasPrice,
+      gasLimit: transactionGasLimit,
+    };
+
+    try {
+      overrides.gasLimit = await poolContract.estimateGas.unstake(
+        tokens,
+        overrides,
+      );
+      debugLog('gasLimit', overrides.gasLimit.toString());
+      return poolContract.unstake(tokens, overrides);
+    } catch (err) {
+      debugLog('unstake error', err);
+      return null;
+    }
+  }
+}
