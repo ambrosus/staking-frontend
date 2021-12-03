@@ -2,7 +2,7 @@
   margin: 0 auto;
   background: #212121;
   position: relative;
-  z-index: 0;
+  z-index: 1;
 
   .section-heading {
     padding-bottom: 10px;
@@ -12,9 +12,11 @@
     font-size: 50px;
     line-height: 58px;
     letter-spacing: -0.02em;
-
     color: #FFFFFF;
-
+    @media (max-width: 600px) {
+      font-size: 36px;
+      line-height: 42px;
+    }
   }
 
   .back-figure1 {
@@ -23,12 +25,10 @@
     height: 900.48px;
     left: 0;
     top: -76px;
-    background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
-    opacity: 0.7;
     background: url('../../assets/images/back1.png');
     background-repeat: no-repeat;
-    z-index: -1;
+    z-index: 0;
 
   }
 
@@ -41,7 +41,7 @@
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     background: url('../../assets/images/back2.png') no-repeat !important;
-    z-index: -1;
+    z-index: 0;
 
   }
 
@@ -157,9 +157,74 @@
       line-height: 140%;
       color: #FFFFFF;
     }
-    &--btn{
+
+    &--btn {
       color: #1ACD8C;
     }
+  }
+
+  &__third-section {
+    position: relative;
+    max-width: 1240px;
+    margin: 200px auto;
+    @media (max-width: 600px) {
+      margin: 60px auto;
+    }
+    padding: 15px;
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 150px;
+      @media (max-width: 600px) {
+        margin-bottom: 80px;
+      }
+    }
+
+    .container {
+      .items-container {
+        align-items: center;
+        justify-content: space-around;
+
+        .items-container__item {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+        }
+      }
+    }
+
+    .back-figure3 {
+      position: absolute;
+      width: 700px;
+      height: 900.48px;
+      right: -506px;
+      top: -488px;
+      background: url('../../assets/images/romb.png');
+      background-repeat: no-repeat;
+      z-index: -1;
+      @media (max-width: 600px) {
+        right: -386px;
+        top: -558px;
+        transform: scale(0.8)
+      }
+    }
+
+    .back-figure4 {
+      position: absolute;
+      width: 599px;
+      height: 726px;
+      top: 253px;
+      left: -216px;
+      background: url('../../assets/images/dolbka.png') no-repeat !important;
+      z-index: -1;
+      @media (max-width: 600px) {
+        top: 153px;
+        left: -120px;
+        transform: scale(0.7);
+      }
+    }
+
   }
 }
 
