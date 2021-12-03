@@ -20,6 +20,12 @@ import secondSectionIcon1 from '../../assets/svg/home/second-section/Icon1-66x85
 import secondSectionIcon2 from '../../assets/svg/home/second-section/Icon2-66x85.svg';
 import secondSectionIcon3 from '../../assets/svg/home/second-section/Icon3-66x85.svg';
 import secondSectionIcon4 from '../../assets/svg/home/second-section/Icon4-66x85.svg';
+
+import BinanceIcon from '../../assets/svg/home/whereToByAmb/Binance.svg';
+import KuCoinIcon from '../../assets/svg/home/whereToByAmb/KuCoin.svg';
+import WhiteBITIcon from '../../assets/svg/home/whereToByAmb/WhiteBIT.svg';
+import probitIcon from '../../assets/svg/home/whereToByAmb/probit.svg';
+
 const Home = () => {
   const [pools, setPools] = useState([]);
   const { pathname } = useLocation();
@@ -40,6 +46,24 @@ const Home = () => {
     {
       src: secondSectionIcon4,
       text: 'Unstake at any time',
+    },
+  ];
+  const whereToByAmb = [
+    {
+      src: BinanceIcon,
+      text: 'Binance',
+    },
+    {
+      src: KuCoinIcon,
+      text: 'KuCoin',
+    },
+    {
+      src: WhiteBITIcon,
+      text: 'WhiteBIT',
+    },
+    {
+      src: probitIcon,
+      text: 'ProBit',
     },
   ];
   const getPools = async () => {
@@ -125,6 +149,23 @@ const Home = () => {
           <button type="button" className="btn white " onClick={logIn}>
             ↖ Start Staking
           </button>
+        </div>
+      </div>
+      <div className="home__third-section">
+        <div className="back-figure3" />
+        <div className="back-figure4" />
+        <div className="container">
+          <div>
+            <h2 className="section-heading">Where to buy AMB?</h2>
+          </div>
+          <div className="items-container">
+            {whereToByAmb.map((block) => (
+              <div className="items-container__item">
+                <ReactSVG src={block.src} wrapper="span" />
+                <p>{block.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className="staking">
