@@ -201,4 +201,4 @@ StakingItem.propTypes = {
   activeExpand: PropTypes.number,
   setActiveExpand: PropTypes.func,
 };
-export default StakingItem;
+export default React.memo(StakingItem);
