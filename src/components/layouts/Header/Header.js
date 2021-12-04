@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-
 import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
 import { MAIN_PAGE, menuLinks } from '../../../config';
-import { ambPriceInUsd, priceInPercent24h } from '../../../api';
+import { getToken } from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
@@ -18,30 +17,21 @@ import { useAsync } from '../../../hooks';
 export const Header = observer(() => {
   const { account, deactivate } = useWeb3React();
   const history = useHistory();
-  const price = useAsync(
-    () => ambPriceInUsd(),
-    {
-      status: 'pending',
-      data: 0,
+  const asyncGetToken = React.useCallback(() => getToken(), []);
+  const priceState = useAsync(asyncGetToken, {
+    status: 'pending',
+    data: {
+      data: {
+        price_usd: 0,
+        percent_change_24h: 0,
+      },
     },
-    [appStore.refresh],
-  );
-  const percent = useAsync(
-    () => priceInPercent24h(),
-    {
-      status: 'pending',
-      data: 0,
-    },
-    [appStore.refresh],
-  );
-  const { data: usdPrice, status: priceStatus } = price;
-  const { data: percentChange24h } = percent;
+  });
+  const { data, status: priceStatus } = priceState;
 
-  useEffect(() => {
-    if (usdPrice) {
-      appStore.setTokenPrice(usdPrice);
-    }
-  }, [priceStatus]);
+  if (priceStatus === 'resolved') {
+    appStore.setTokenPrice(data.data.price_usd);
+  }
 
   const logOut = async () => {
     deactivate();
@@ -82,10 +72,10 @@ export const Header = observer(() => {
             AMB Price{' '}
             <b>
               {' '}
-              {usdPrice ? (
+              {data?.data?.price_usd ? (
                 <span style={{ color: '#333333' }}>
                   {' '}
-                  $&nbsp;{Number(usdPrice).toFixed(4)}
+                  $&nbsp;{Number(data?.data?.price_usd).toFixed(4)}
                 </span>
               ) : (
                 <span>...</span>
@@ -93,9 +83,12 @@ export const Header = observer(() => {
             </b>
             &nbsp;&nbsp;
             <span
-              style={{ color: percentChange24h > 0 ? '#1ACD8C' : '#9198BB' }}
+              style={{
+                color:
+                  data?.data?.percent_change_24h > 0 ? '#1ACD8C' : '#9198BB',
+              }}
             >
-              {percentChange24h}%
+              {data?.data?.percent_change_24h}%
             </span>
           </Paragraph>
         </div>

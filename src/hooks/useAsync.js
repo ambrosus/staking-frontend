@@ -1,7 +1,7 @@
 import React from 'react';
 import { asyncReducer } from '../utils/reducers';
 
-const useAsync = (asyncCallback, initialState, dependecies) => {
+const useAsync = (asyncCallback, initialState) => {
   const [state, dispatch] = React.useReducer(asyncReducer, {
     status: 'idle',
     data: null,
@@ -23,8 +23,7 @@ const useAsync = (asyncCallback, initialState, dependecies) => {
         dispatch({ type: 'rejected', error });
       },
     );
-    /* eslint-disable-next-line */
-  }, dependecies);
+  }, [asyncCallback]);
 
   return state;
 };
