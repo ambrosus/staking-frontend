@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
@@ -7,36 +7,41 @@ import { useWeb3React } from '@web3-react/core';
 
 import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
-import { ethereum, MAIN_PAGE, menuLinks } from '../../../config';
+import { MAIN_PAGE, menuLinks } from '../../../config';
 import { ambPriceInUsd, priceInPercent24h } from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
 import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
+import { useAsync } from '../../../hooks';
 
 export const Header = observer(() => {
-  const [usdPrice, setUsdPrice] = useState(0);
-  const [percentChange24h, setPercentChange24h] = useState(0);
   const { account, deactivate } = useWeb3React();
   const history = useHistory();
-
-  const getAmbCourse = async () => {
-    const priceInUsd = await ambPriceInUsd();
-    if (priceInUsd) {
-      setUsdPrice(priceInUsd);
-      appStore.setTokenPrice(priceInUsd);
-    }
-    const percent = await priceInPercent24h();
-    if (percent) {
-      setPercentChange24h(percent);
-    }
-  };
+  const price = useAsync(
+    () => ambPriceInUsd(),
+    {
+      status: 'pending',
+      data: 0,
+    },
+    [appStore.refresh],
+  );
+  const percent = useAsync(
+    () => priceInPercent24h(),
+    {
+      status: 'pending',
+      data: 0,
+    },
+    [appStore.refresh],
+  );
+  const { data: usdPrice, status: priceStatus } = price;
+  const { data: percentChange24h } = percent;
 
   useEffect(() => {
-    if (ethereum?.isMetaMask) {
-      getAmbCourse();
+    if (usdPrice) {
+      appStore.setTokenPrice(usdPrice);
     }
-  }, []);
+  }, [priceStatus]);
 
   const logOut = async () => {
     deactivate();

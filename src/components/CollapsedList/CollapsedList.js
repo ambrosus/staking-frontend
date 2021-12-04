@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Block from './Block';
 import Paragraph from '../Paragraph';
-import { collapsedReducer } from '../../utils/helpers';
+import { collapsedReducer } from '../../utils/reducers';
 import { faqsList } from '../../config';
 
 const CollapsedList = () => {
