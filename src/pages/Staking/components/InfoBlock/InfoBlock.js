@@ -222,8 +222,10 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     </div>
   );
 });
+
 InfoBlock.propTypes = {
   poolsArr: PropTypes.array,
   account: PropTypes.string,
 };
+
 export default React.memo(InfoBlock);

@@ -36,7 +36,6 @@ const StakingItem = observer(
       totalStakeInAMB,
       poolAPY,
     } = poolInfo;
-
     const stakeBtnHandler = () => {
       if (expand !== false) {
         setActiveExpand(index);
