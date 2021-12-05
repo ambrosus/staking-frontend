@@ -9,33 +9,51 @@
 .collapsed-list {
   font-family: Halvar Breitschrift, sans-serif;
   margin: 0 auto;
-  max-width: 1040px;
+  position: relative;
+  max-width: 1240px;
+  z-index: 1;
   padding-bottom: 100px;
+  padding-top: 80px;
   @media (max-width: 600px) {
     padding: 0 10px;
   }
 
-  &__heading {
-    padding-bottom: 60px;
-    padding-top: 100px;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 36px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #FFFFFF !important;
-    justify-content: center;
-    width: 100%;
+  .faq-list {
+    transition: max-height 700ms ease-out;
+    max-height: 700px;
+    overflow: hidden;
+    background: linear-gradient(0deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .faq-list--expand {
+    max-height: 1400px;
+    overflow: hidden;
+    transition: max-height 700ms ease-in;
+    background: none;
   }
 }
 
+/* Rectangle 454 */
+
 .block {
   margin-bottom: 10px;
+  color: #212121;
 
-  button {
-    white-space: normal;
+  .faq-btn {
+    min-height: 100px;
+    font-family: Halvar Breitschrift, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 42px;
+    letter-spacing: -0.02em;
+    color: #212121;
+
+    button {
+      white-space: normal;
+    }
   }
+
 }
 
 .btn {
@@ -78,11 +96,18 @@
 
 .active-toggle-text {
   font-style: normal;
-  font-weight: 500;
-  font-size: 21px;
   display: flex;
   align-items: center;
-  color: #FFFFFF;
+  font-family: Halvar Breitschrift, sans-serif;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 42px;
+  color: #212121;
+  letter-spacing: -0.02em;
+  @media (max-width: 600px) {
+    font-size: 20px;
+    line-height: 23px;
+  }
 }
 
 header {
@@ -102,15 +127,23 @@ header {
 }
 
 .collapsed-content {
-  padding: 0 10px 30px;
+  padding: 30px 10px 30px;
 
   p {
-    font-family: Proxima Nova, sans-serif !important;
     white-space: break-spaces;
+    font-family: Proxima Nova, sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
-    color: #333333;
+    font-size: 26px;
+    line-height: 32px;
+    letter-spacing: 0.03em;
+    color: #212121;
+    @media (max-width: 600px) {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 19px;
+    }
   }
 }
 
@@ -124,10 +157,15 @@ button[disabled] {
 
 .icon-down {
   fill: white;
-  height: 24px;
+  @media (max-width: 600px) {
+    transform: scale(0.7)
+  }
 
   span {
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg {
       rect {
@@ -145,7 +183,7 @@ button[disabled] {
 .bottom-line {
   width: 100%;
   height: 1px;
-  background: #000000;
+  background: #262626;
   opacity: 0.5;
   border-radius: 2px;
 }

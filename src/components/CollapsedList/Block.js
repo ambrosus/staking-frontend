@@ -8,18 +8,14 @@ const Block = ({ isOpen, title, onToggle, children, lastElement }) => (
   <div className="block">
     <button
       type="button"
-      className="btn toggle"
+      className="btn toggle faq-btn"
       style={{ border: 'none' }}
       onClick={onToggle}
     >
-      <span
-        className={cx({ 'active-toggle-text': isOpen })}
-        style={{ color: 'white' }}
-      >
-        {title}
-      </span>
+      <span className="active-toggle-text">{title}</span>
       <Down isOpen={isOpen} />
     </button>
+    <div className={cx({ 'bottom-line': isOpen })} />
     <Collapse isOpen={isOpen}>{children}</Collapse>
     <div className={cx({ 'bottom-line': !lastElement })} />
   </div>

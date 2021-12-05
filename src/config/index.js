@@ -163,6 +163,7 @@ export const faqsList = [
       </>
     ),
     key: 8,
+    last: true,
   },
 ];
 
