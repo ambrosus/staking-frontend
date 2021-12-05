@@ -263,7 +263,7 @@ const Deposit = observer(({ depositInfo }) => {
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <ReactSVG src={avatarIcon} wrapper="span" />
                 <Paragraph size="l-500">
-                  &nbsp;&nbsp;&nbsp;&nbsp; {contractName.substring(0, 8)}
+                  &nbsp;&nbsp; {contractName.substring(0, 8)}
                 </Paragraph>
               </div>
               <div style={{ textTransform: 'uppercase' }}>
