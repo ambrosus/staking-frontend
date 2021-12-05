@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ReactSVG } from 'react-svg';
-import { toJS } from 'mobx';
 import { Link, useLocation } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 import Paragraph from '../../components/Paragraph';
@@ -12,20 +11,15 @@ import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/RenderItems';
 
 import headerLogoSvg from '../../assets/svg/header-logo.svg';
-import { MAIN_PAGE } from '../../config';
+import { MAIN_PAGE, PoolsContext } from '../../config';
 import Menu from './components/Menu';
-import appStore from '../../store/app.store';
+import { debugLog } from '../../utils/helpers';
 
 const Home = () => {
-  const [pools, setPools] = useState([]);
   const { pathname } = useLocation();
-
-  const getPools = async () => {
-    await appStore.updatePoolData();
-    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
-  };
-
+  const [pools, getPools] = useContext(PoolsContext);
   useEffect(() => {
+    debugLog('Home render useEffect');
     getPools();
   }, []);
 

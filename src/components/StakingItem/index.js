@@ -25,6 +25,10 @@ const StakingItem = observer(
     index = -1,
     poolInfo,
   }) => {
+    const history = useHistory();
+    const { pathname } = history.location;
+    const { active } = useWeb3React();
+    const { logIn } = useLogIn();
     const {
       myStakeInAMB,
       active: isPoolActive,
@@ -32,10 +36,6 @@ const StakingItem = observer(
       totalStakeInAMB,
       poolAPY,
     } = poolInfo;
-    const history = useHistory();
-    const { pathname } = history.location;
-    const { active } = useWeb3React();
-    const { logIn } = useLogIn();
 
     const stakeBtnHandler = () => {
       if (expand !== false) {

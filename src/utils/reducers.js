@@ -1,17 +1,17 @@
-export const collapsedReducer = (state, { type, index }) => {
+export const collapsedReducer = (state, action) => {
   const stateCopy = [false];
-  switch (type) {
+  switch (action.type) {
     case 'toggle':
-      stateCopy[index] = !stateCopy[index];
+      stateCopy[action.index] = !stateCopy[action.index];
       return [...stateCopy];
     case 'hide':
-      stateCopy[index] = false;
+      stateCopy[action.index] = false;
       return [...stateCopy];
     case 'show':
-      stateCopy[index] = true;
+      stateCopy[action.index] = true;
       return [...stateCopy];
     default:
-      throw new Error();
+      throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
 
