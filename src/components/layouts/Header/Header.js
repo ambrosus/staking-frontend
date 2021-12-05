@@ -17,23 +17,21 @@ import { useAsync } from '../../../hooks';
 export const Header = observer(() => {
   const { account, deactivate } = useWeb3React();
   const history = useHistory();
-  const {
-    data,
-    status: priceStatus,
-    run,
-  } = useAsync({
-    status: appStore.tokenPrice !== undefined ? 'pending' : 'idle',
-    data: null,
+  const asyncGetToken = React.useCallback(() => getToken(), []);
+  const priceState = useAsync(asyncGetToken, {
+    status: 'pending',
+    data: {
+      data: {
+        price_usd: 0,
+        percent_change_24h: 0,
+      },
+    },
   });
+  const { data, status: priceStatus } = priceState;
 
-  React.useEffect(() => {
-    if (priceStatus === 'idle') {
-      run(getToken());
-    }
-    if (priceStatus === 'resolved') {
-      appStore.setTokenPrice(data?.data?.price_usd);
-    }
-  }, [run, priceStatus]);
+  if (priceStatus === 'resolved') {
+    appStore.setTokenPrice(data.data.price_usd);
+  }
 
   const logOut = async () => {
     deactivate();
