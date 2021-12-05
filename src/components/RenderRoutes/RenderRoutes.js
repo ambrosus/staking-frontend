@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
-import { observer } from 'mobx-react-lite';
 import { BrowserRouter } from 'react-router-dom';
 
 import Home from '../../pages/Home';
@@ -8,7 +7,7 @@ import Staking from '../../pages/Staking';
 import Footer from '../layouts/Footer';
 import { MAIN_PAGE, STAKING_PAGE } from '../../config';
 
-const RenderRoutes = observer(() => (
+const RenderRoutes = () => (
   <BrowserRouter>
     <Switch>
       <Route path={MAIN_PAGE} exact render={() => <Home />} />
@@ -17,6 +16,6 @@ const RenderRoutes = observer(() => (
     </Switch>
     <Footer />
   </BrowserRouter>
-));
+);
 
 export default RenderRoutes;
