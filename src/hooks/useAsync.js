@@ -1,31 +1,39 @@
 import React from 'react';
 import { asyncReducer } from '../utils/reducers';
+import { useSafeDispatch } from './useSafeDispatch';
 
 const useAsync = (asyncCallback, initialState) => {
-  const [state, dispatch] = React.useReducer(asyncReducer, {
+  const [state, unsafeDispatch] = React.useReducer(asyncReducer, {
     status: 'idle',
     data: null,
     error: null,
     ...initialState,
   });
 
-  React.useEffect(() => {
-    const promise = asyncCallback();
-    if (!promise) {
-      return;
-    }
-    dispatch({ type: 'pending' });
-    promise.then(
-      (data) => {
-        dispatch({ type: 'resolved', data });
-      },
-      (error) => {
-        dispatch({ type: 'rejected', error });
-      },
-    );
-  }, [asyncCallback]);
+  const dispatch = useSafeDispatch(unsafeDispatch);
 
-  return state;
+  const { data, error, status } = state;
+
+  const run = React.useCallback(
+    (promise) => {
+      dispatch({ type: 'pending' });
+      promise.then(
+        (dataObj) => {
+          dispatch({ type: 'resolved', data: dataObj });
+        },
+        (errorObj) => {
+          dispatch({ type: 'rejected', error: errorObj });
+        },
+      );
+    },
+    [dispatch],
+  );
+
+  return {
+    error,
+    status,
+    data,
+    run,
+  };
 };
-
 export default useAsync;
