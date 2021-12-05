@@ -205,7 +205,7 @@ const Home = () => {
           </div>
         )}
       </div>
-      <div className="faq">
+      <div className="home__faq">
         <CollapsedList />
       </div>
     </div>

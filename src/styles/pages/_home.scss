@@ -227,6 +227,47 @@
     }
 
   }
+
+  &__faq {
+    position: relative;
+    z-index: 1;
+    background-color: #FFFFFF;
+    margin: 250px auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+    &:before {
+      background: #fff;
+      top: -167px;
+      z-index: 0;
+      content: "";
+      height: 10vw;
+      position: absolute;
+      right: 0;
+      transform: rotate(
+                      -5.4deg);
+      transform-origin: top right;
+      width: 110%;
+      @media (max-width: 600px) {
+        top: -40px;
+      }
+    }
+
+    &:after {
+      background: #fff;
+      bottom: 0;
+      z-index: 0;
+      content: "";
+      height: 10vw;
+      position: absolute;
+      right: 0;
+      transform: rotate(
+                      -5.4deg);
+      transform-origin: top right;
+      width: 110%;
+    }
+
+  }
 }
 
 @media (max-width: 600px) {
