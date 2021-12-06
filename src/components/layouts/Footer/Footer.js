@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { MAIN_PAGE, socialsLinks } from '../../../config';
 
 import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
+import footerLogo from '../../../assets/svg/footer-logo.svg';
 
 const Footer = () => {
   const { pathname } = useLocation();
@@ -21,19 +22,14 @@ const Footer = () => {
     <footer
       className="footer"
       style={{
-        background: pathname === MAIN_PAGE && '#262626',
-        color: pathname === MAIN_PAGE && 'white',
+        background: pathname === MAIN_PAGE && '#212121',
+        color: pathname === MAIN_PAGE && '#8F8F8F',
         fontFamily: pathname === MAIN_PAGE && 'Proxima Nova',
       }}
     >
       <div className="wrapper">
         <div className="copyright">
-          &copy; {new Date().getFullYear()} Ambrosus Network. All rights
-          reserved.
-        </div>
-
-        <div className="socials">
-          <ul className="socials__list">{socials}</ul>
+          <ReactSVG src={footerLogo} wrapper="span" />
         </div>
 
         <div className="contact">
@@ -41,7 +37,10 @@ const Footer = () => {
             Terms of use
           </a>{' '}
         </div>
-      </div>
+        <div className="socials">
+          <ul className="socials__list">{socials}</ul>
+        </div>
+      </div>{' '}
     </footer>
   );
 };
