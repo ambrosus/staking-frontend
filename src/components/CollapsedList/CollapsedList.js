@@ -41,6 +41,7 @@ const CollapsedList = () => {
             </div>
           </Block>
         ))}
+        <div className={cx({ gradient: !showMore })} />
       </div>
       <div className="btn-group">
         {' '}
