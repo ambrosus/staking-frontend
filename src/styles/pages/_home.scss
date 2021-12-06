@@ -48,6 +48,7 @@
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     @media (max-width: 600px) {
+      display: none;
       right: -100px;
       top: 1050px;
       transform: scale(0.8)
@@ -56,18 +57,18 @@
 
   .back-figure6 {
     position: absolute;
-    width: 920px;
-    height: 820px;
-    right: -220px;
-    bottom: 840px;
+    width: 499px;
+    height: 499px;
+    right: 200px;
+    bottom: 1100px;
     background: url('../../assets/images/right-dolbka.png') no-repeat;
     z-index: 0;
     transform: scale(1);
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     @media (max-width: 600px) {
-      right: -100px;
-      top: 1050px;
+      right: -250px;
+      bottom: 1200px;
       transform: scale(0.8)
     }
   }
@@ -77,7 +78,7 @@
     width: 599px;
     height: 726px;
     top: 1838px;
-    left: 0px;
+    left: 0;
     background: url('../../assets/images/dolbka.png') no-repeat !important;
     z-index: 0;
     transform: scale(1);
@@ -235,7 +236,7 @@
   &__third-section {
     position: relative;
     max-width: 1240px;
-    margin: 200px auto;
+    margin: 280px auto;
     @media (max-width: 600px) {
       margin: 60px auto;
     }

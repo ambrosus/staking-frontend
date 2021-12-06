@@ -12,7 +12,7 @@ import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
 import Button from '../Button';
 import Deposit from '../../pages/Staking/components/Deposit/Deposit';
-import { useLogIn } from '../../hooks';
+import { useLogIn, useMedia } from '../../hooks';
 
 const StakingItem = ({
   expand = false,
@@ -34,6 +34,7 @@ const StakingItem = ({
   const { pathname } = history.location;
   const { active } = useWeb3React();
   const { logIn } = useLogIn();
+  const isSmall = useMedia('(max-width: 699px)');
 
   const stakeBtnHandler = () => {
     if (expand !== false) {
@@ -156,15 +157,18 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          <Button
-            type={pathname === MAIN_PAGE ? 'green' : 'primary'}
-            onclick={stakeBtnHandler}
-          >
-            <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
-              {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
-              {!expand && STAKE}
-            </Paragraph>
-          </Button>
+          {!isSmall && (
+            <Button
+              type={pathname === MAIN_PAGE ? 'black' : 'primary'}
+              onclick={stakeBtnHandler}
+            >
+              <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
+                {expand &&
+                  (state[index] && activeExpand === index ? HIDE : SHOW)}
+                {!expand && STAKE}
+              </Paragraph>
+            </Button>
+          )}
         </div>
         {pathname === STAKING_PAGE && (
           <Collapse

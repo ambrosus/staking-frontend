@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { MAIN_PAGE, socialsLinks } from '../../../config';
 
 import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
-import footerLogo from '../../../assets/svg/footer-logo.svg';
+import footerLogo from '../../../assets/svg/footer-logo-mobile.svg';
 
 const Footer = () => {
   const { pathname } = useLocation();
