@@ -1,6 +1,5 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { observer } from 'mobx-react-lite';
 
 import Paragraph from '../../../../components/Paragraph';
 import { CONNECT_TEXT } from '../../../../config';
@@ -8,7 +7,7 @@ import { CONNECT_TEXT } from '../../../../config';
 import walletIcon from '../../../../assets/svg/wallet.svg';
 import useLogIn from '../../../../hooks/useLogIn';
 
-export const MetamaskConnect = observer(() => {
+export const MetamaskConnect = () => {
   const { logIn } = useLogIn();
 
   return (
@@ -27,6 +26,6 @@ export const MetamaskConnect = observer(() => {
       </Paragraph>
     </div>
   );
-});
+};
 
 export default MetamaskConnect;

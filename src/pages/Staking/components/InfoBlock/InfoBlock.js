@@ -231,4 +231,4 @@ InfoBlock.propTypes = {
   poolsArr: PropTypes.array,
   account: PropTypes.string,
 };
-export default InfoBlock;
+export default React.memo(InfoBlock);

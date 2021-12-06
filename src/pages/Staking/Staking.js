@@ -99,4 +99,4 @@ const Staking = observer(() => {
   );
 });
 
-export default Staking;
+export default React.memo(Staking);
