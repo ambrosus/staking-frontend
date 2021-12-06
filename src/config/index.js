@@ -3,6 +3,16 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { cssTransition } from 'react-toastify';
 import { utils, providers } from 'ethers';
 
+import secondSectionIcon1 from '../assets/svg/home/second-section/Icon1-66x85.svg';
+import secondSectionIcon2 from '../assets/svg/home/second-section/Icon2-66x85.svg';
+import secondSectionIcon3 from '../assets/svg/home/second-section/Icon3-66x85.svg';
+import secondSectionIcon4 from '../assets/svg/home/second-section/Icon4-66x85.svg';
+
+import BinanceIcon from '../assets/svg/home/whereToByAmb/Binance.svg';
+import KuCoinIcon from '../assets/svg/home/whereToByAmb/KuCoin.svg';
+import WhiteBITIcon from '../assets/svg/home/whereToByAmb/WhiteBIT.svg';
+import probitIcon from '../assets/svg/home/whereToByAmb/probit.svg';
+
 import githubIcon from '../assets/svg/github-icon.svg';
 import mediumIcon from '../assets/svg/medium-icon.svg';
 import redditIcon from '../assets/svg/reddit-icon.svg';
@@ -13,9 +23,9 @@ import linkedinIcon from '../assets/svg/linkedin-icon.svg';
 export const STAKING_PAGE = '/staking';
 export const MAIN_PAGE = '/';
 export const CONNECT_TEXT = '↖ Connect to Wallet';
-export const HIDE = 'HIDE';
-export const SHOW = 'SHOW';
-export const STAKE = 'STAKE';
+export const HIDE = '↖ Hide';
+export const SHOW = '↖ Show';
+export const STAKE = '↖ Stake';
 export const COMING_SOON = 'COMING SOON';
 export const TWENTY_FIVE_PERCENT = '25%';
 export const FIFTY_PERCENT = '50%';
@@ -167,6 +177,86 @@ export const faqsList = [
   },
 ];
 
+export const homePageStatic = {
+  lastSection: [
+    {
+      index: 0,
+      title: 'Stake AMB',
+      text: 'Unleash the power of your AMB and earn staking rewards. Click and start earning now!',
+      btnText: '↖ Stake Now',
+    },
+    {
+      index: 1,
+      title: 'Join Ambrosus',
+      text: 'You contribute to a decentralized network that is the backbone of the Ambrosus Ecosystem and its partners.',
+      links: [
+        {
+          url: 'https://t.me/Ambrosus',
+          title: 'Ambrosus Telegram',
+          icon: telegramIcon,
+        },
+        {
+          url: 'https://www.reddit.com/r/AmbrosusEcosystem',
+          title: 'Ambrosus Reddit',
+          icon: redditIcon,
+        },
+        {
+          url: 'https://blog.ambrosus.io',
+          title: 'Ambrosus Medium',
+          icon: mediumIcon,
+        },
+        {
+          url: 'https://twitter.com/AMB_Ecosystem',
+          title: 'Ambrosus Twitter',
+          icon: twitterIcon,
+        },
+      ],
+    },
+    {
+      index: 2,
+      title: 'Run a Node',
+      text: 'Add to the speed, stability, and security of Ambrosus! Validate or store transactions on AMB-NET with greater rewards than staking.',
+      btnText: '↖ Learn more',
+    },
+  ],
+  arcadiaStaking: [
+    {
+      src: secondSectionIcon1,
+      text: 'Staking starts from 1000 AMB',
+    },
+    {
+      src: secondSectionIcon2,
+      text: 'Secure the network and earn rewards.',
+    },
+    {
+      src: secondSectionIcon3,
+      text: 'Rewards are distributed every 6 hours',
+    },
+    {
+      src: secondSectionIcon4,
+      text: 'Unstake at any time',
+    },
+  ],
+  whereToByAmb: [
+    {
+      src: BinanceIcon,
+      text: 'Binance',
+    },
+    {
+      src: KuCoinIcon,
+      text: 'KuCoin',
+    },
+    {
+      src: WhiteBITIcon,
+      text: 'WhiteBIT',
+    },
+    {
+      src: probitIcon,
+      text: 'ProBit',
+    },
+  ],
+};
+
 export const socialsLinks = [
   {
     url: 'https://github.com/ambrosus',
@@ -254,6 +344,7 @@ export default {
   bounce,
   network,
   transactionGasLimit,
+  homePageStatic,
   transactionGasPrice,
   injected,
   connectorsByName,

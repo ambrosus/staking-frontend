@@ -43,7 +43,7 @@ const CollapsedList = () => {
         ))}
         <div className={cx({ gradient: !showMore })} />
       </div>
-      <div className="btn-group">
+      <div className="btn-group" style={{ paddingTop: 50 }}>
         {' '}
         <button type="button" className="btn white" onClick={showMoreHandler}>
           {!showMore ? '↖ See more ' : '↖ Roll up'}

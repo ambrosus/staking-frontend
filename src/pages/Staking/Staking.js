@@ -18,7 +18,7 @@ import { changeNetwork, collapsedReducer, debugLog } from '../../utils/helpers';
 
 const Staking = observer(() => {
   const { account, activate, chainId } = useWeb3React();
-  const [activeExpand, setActiveExpand] = useState(() => -1);
+  const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [pools, setPools] = useState(() => []);
   const [checkNetworkChain, setCheckNetworkChain] = useState(() => false);
