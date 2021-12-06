@@ -307,7 +307,7 @@
 
       > div {
         button {
-          padding: 20px;
+          width: 64px !important;
           p {
             font-family: Halvar Breitschrift, sans-serif !important;
             font-style: normal !important;
@@ -321,10 +321,8 @@
       }
 
       > div {
-        width: 64px !important;
-        margin-left: 20px !important;
-        height: auto !important;
         color: #9198BB !important;
+        padding-left: 10px;
 
         button {
           height: 48px !important;
@@ -482,8 +480,6 @@
 }
 
 .close-btn {
-  min-width: 319px;
-  width: 319px;
   @media (max-width: 480px) {
     min-width: 100px;
     width: auto;
