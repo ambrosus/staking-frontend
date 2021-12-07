@@ -6,6 +6,7 @@ import Menu from '../Menu';
 import Paragraph from '../../../../components/Paragraph';
 import { CONNECT_TEXT } from '../../../../config';
 import { useLogIn } from '../../../../hooks';
+import Button from '../../../../components/Button';
 
 export default () => {
   const { logIn } = useLogIn('CONNECT_WALLET');
@@ -23,7 +24,7 @@ export default () => {
           <Menu />
         </div>
       </div>
-      <div className="home__top--info">
+      <div className="home__top--info" id="home__top--info">
         <div className="back-figure1" />
         <div className="back-figure2" />
         <div className="info-text">
@@ -45,10 +46,13 @@ export default () => {
             in a few clicks.
           </Paragraph>
         </div>
-        <div
-          role="presentation"
-          className="connect-btn btn black"
-          onClick={logIn}
+        <Button
+          buttonStyles={{
+            marginTop: 50,
+            background: '#212121',
+          }}
+          type="black"
+          onclick={logIn}
         >
           <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
             <span
@@ -61,7 +65,7 @@ export default () => {
               {CONNECT_TEXT}
             </span>
           </Paragraph>
-        </div>
+        </Button>
       </div>
     </>
   );

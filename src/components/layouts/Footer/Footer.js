@@ -5,10 +5,13 @@ import { useLocation } from 'react-router-dom';
 import { MAIN_PAGE, socialsLinks } from '../../../config';
 
 import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
-import footerLogo from '../../../assets/svg/footer-logo-mobile.svg';
+import footerLogo from '../../../assets/svg/footer-logo.svg';
+import footerLogoMobile from '../../../assets/svg/footer-logo-mobile.svg';
+import { useMedia } from '../../../hooks';
 
 const Footer = () => {
   const { pathname } = useLocation();
+  const isSmall = useMedia('(max-width: 699px)');
 
   const socials = socialsLinks.map((social) => (
     <li className="socials__list__link" key={social.url}>
@@ -29,7 +32,10 @@ const Footer = () => {
     >
       <div className="wrapper">
         <div className="copyright">
-          <ReactSVG src={footerLogo} wrapper="span" />
+          <ReactSVG
+            src={!isSmall ? footerLogo : footerLogoMobile}
+            wrapper="span"
+          />
         </div>
 
         <div className="contact">

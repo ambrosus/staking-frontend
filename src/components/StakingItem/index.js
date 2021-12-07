@@ -70,7 +70,7 @@ const StakingItem = ({
           <div
             className="item--header__flex"
             style={{
-              paddingRight: pathname === STAKING_PAGE ? 100 : 140,
+              paddingRight: pathname === STAKING_PAGE ? 90 : 130,
             }}
           >
             <div

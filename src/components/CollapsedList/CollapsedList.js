@@ -24,6 +24,8 @@ const CollapsedList = () => {
 
   return (
     <div className="collapsed-list">
+      <div className="back-figure6" />
+
       <div className="section-heading" style={{ color: '#212121' }}>
         FAQ
       </div>

@@ -7,7 +7,6 @@ export default () => (
     <div className="back-figure3" />
     <div className="back-figure4" />
     <div className="back-figure5" />
-    <div className="back-figure6" />
     <div className="home__third-section">
       <div className="container">
         <div>

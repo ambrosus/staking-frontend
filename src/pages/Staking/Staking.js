@@ -60,7 +60,7 @@ const Staking = observer(() => {
                       <div>My Stake</div>
                       <div>Total pool stake</div>
                       <div>APY</div>
-                      <div style={{ marginRight: -45 }} />
+                      <div style={{ marginRight: -20 }} />
                     </div>
                     {pools
                       .filter(

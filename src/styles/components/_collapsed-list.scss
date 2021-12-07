@@ -10,25 +10,26 @@
   font-family: Halvar Breitschrift, sans-serif;
   margin: 0 auto;
   position: relative;
-  max-width: 1240px;
   z-index: 1;
+  max-width: 1240px;
   padding-bottom: 100px;
   padding-top: 80px;
   @media (max-width: 600px) {
-    padding: 0 10px;
+    padding: 30px 10px;
   }
 
   .faq-list {
-    transition: max-height 700ms ease-out;
-    max-height: 500px;
-    overflow: hidden;
     position: relative;
+    z-index: 1;
+    transition: max-height 700ms ease-out;
+    max-height: 650px;
+    overflow: hidden;
 
     .gradient {
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 275px;
+      height: 180px;
       opacity: 1;
       transition: opacity 10s;
       background: linear-gradient(0deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
@@ -36,6 +37,8 @@
   }
 
   .faq-list--expand {
+    position: relative;
+    z-index: 1;
     max-height: 1400px;
     overflow: hidden;
     transition: max-height 700ms ease-in;

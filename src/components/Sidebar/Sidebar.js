@@ -10,7 +10,7 @@ const Sidebar = (props) => {
   const { logIn } = useLogIn();
 
   return (
-    <Menu {...props}>
+    <Menu {...props} right>
       <a target="_blank" href="https://ambrosus.io/">
         <Paragraph
           style={{

@@ -59,16 +59,16 @@
     position: absolute;
     width: 499px;
     height: 499px;
-    right: 200px;
-    bottom: 1100px;
+    right: -69px;
+    bottom: -450px;
     background: url('../../assets/images/right-dolbka.png') no-repeat;
-    z-index: 0;
+    z-index: 3;
     transform: scale(1);
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     @media (max-width: 600px) {
-      right: -250px;
-      bottom: 1200px;
+      right: -300px;
+      bottom: -340px;
       transform: scale(0.8)
     }
   }
@@ -184,29 +184,7 @@
       }
 
       .connect-btn {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 25px 36px;
-        margin-top: 100px;
-        width: 216px;
-        height: 65px;
         background: #212121;
-        border: 1px solid #FFFFFF;
-        box-sizing: border-box;
-
-        flex: none;
-        order: 1;
-        flex-grow: 0;
-
-        p {
-          font-size: 16px !important;
-        }
-
-        &:hover {
-          background-color: #76778E !important;
-        }
       }
     }
 
@@ -231,6 +209,11 @@
 
     &--btn {
       color: #1ACD8C;
+    }
+    .items-container{
+      .items-container__item{
+        padding: 10px;
+      }
     }
   }
 
@@ -316,11 +299,29 @@
     padding: 15px;
     z-index: 1;
     position: relative;
+    button{
+      min-width: 174px!important;
+      height: 65px;
+      border: 1px solid #212121;
+      box-sizing: border-box;
+      font-family: Neue Machina, sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px !important;
+      padding: 0!important;
+      line-height: 15px;
+      display: flex;
+      align-items: center;
+      text-align: center;
 
+      color: #212121;
+    }
     .section-heading {
       margin-bottom: 110px;
+      margin-top: -100px;
       @media (max-width: 600px) {
         margin-bottom: 45px;
+        max-width: 340px;
       }
     }
 
@@ -338,6 +339,7 @@
           flex-direction: column;
           @media (max-width: 600px) {
             max-width: 100%;
+            margin-bottom: 80px;
           }
         }
 
@@ -354,10 +356,10 @@
           .socials__list {
             display: flex;
             flex-direction: row;
-            gap: 70px;
+            gap: 60px;
             position: relative;
             margin-top: 45px;
-            padding-left: 70px;
+            padding-left: 60px;
 
             &:before {
               background: url("../../assets/svg/home/back-arr.svg") no-repeat;
@@ -368,8 +370,7 @@
               height: 31px;
               position: absolute;
               left: 0;
-              @media (max-width: 600px) {
-              }
+
             }
 
             &__link {
@@ -462,8 +463,9 @@
           cursor: pointer;
 
           svg {
-            width: 100px;
-            height: 29px;
+            margin-top: 10px;
+            width: 155px;
+            height: 26px;
           }
         }
 
