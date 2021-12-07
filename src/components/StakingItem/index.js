@@ -70,7 +70,7 @@ const StakingItem = ({
           <div
             className="item--header__flex"
             style={{
-              paddingRight: pathname === STAKING_PAGE ? 100 : 100,
+              paddingRight: pathname === STAKING_PAGE ? 100 : 140,
             }}
           >
             <div
@@ -159,6 +159,10 @@ const StakingItem = ({
           </div>
           {!isSmall && (
             <Button
+              buttonStyles={{
+                width: pathname === MAIN_PAGE && 187,
+                height: pathname === MAIN_PAGE && 65,
+              }}
               type={pathname === MAIN_PAGE ? 'black' : 'primary'}
               onclick={stakeBtnHandler}
             >

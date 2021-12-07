@@ -80,6 +80,7 @@ export const faqsList = [
         each validating or storing data from assets and corresponding events
         from supply chains, IoT devices, and more.
         <br />
+        <br />
         AMB is used to keep information on the Ambrosus network up to date as
         tracked products and objects move across a supply chain. The coin
         enables a transparent ecosystem with trustworthy information that can be

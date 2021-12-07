@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import headerLogoSvg from '../../../../assets/svg/header-logo.svg';
 import Menu from '../Menu';
@@ -7,16 +8,18 @@ import { CONNECT_TEXT } from '../../../../config';
 import { useLogIn } from '../../../../hooks';
 
 export default () => {
-  const { logIn } = useLogIn();
+  const { logIn } = useLogIn('CONNECT_WALLET');
 
   return (
     <>
       {' '}
       <div className="home__top">
         <div className="home__top--header">
-          <div className="logo">
-            <ReactSVG src={headerLogoSvg} wrapper="span" />
-          </div>
+          <Link to="/">
+            <div className="logo">
+              <ReactSVG src={headerLogoSvg} wrapper="span" />
+            </div>
+          </Link>
           <Menu />
         </div>
       </div>
@@ -31,7 +34,7 @@ export default () => {
               fontFamily: 'Halvar Breitschrift,sans-serif',
             }}
           >
-            Get AMB Rewards. No node needed.
+            Get AMB rewards. No node needed.
           </Paragraph>
           <Paragraph size="l-500-white">
             Stake your AMB and receive up to
