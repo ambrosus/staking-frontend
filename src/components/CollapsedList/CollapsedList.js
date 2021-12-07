@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import cx from 'classnames';
 import Block from './Block';
-import Paragraph from '../Paragraph';
 import { collapsedReducer } from '../../utils/helpers';
 import { faqsList } from '../../config';
 
 const CollapsedList = () => {
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, false);
-
+  const [showMore, setShowMore] = useState(false);
   const toggleActive = (index) => {
     setActiveExpand(index);
     dispatch({ type: 'toggle', index });
@@ -18,24 +18,37 @@ const CollapsedList = () => {
       dispatch({ type: 'toggle', index });
     }
   };
+  const showMoreHandler = () => {
+    setShowMore((prev) => !prev);
+  };
 
   return (
     <div className="collapsed-list">
-      <div className="collapsed-list__heading">Arcadia Staking FAQs</div>
-      {faqsList.map((block) => (
-        <Block
-          key={block.key}
-          title={block.title}
-          isOpen={state[block.key]}
-          onToggle={() => toggleActive(block.key)}
-        >
-          <div className="collapsed-content ">
-            <Paragraph style={{ color: '#9C9C9C' }} size="m-400">
-              {block.description}
-            </Paragraph>
-          </div>
-        </Block>
-      ))}
+      <div className="section-heading" style={{ color: '#212121' }}>
+        FAQ
+      </div>
+      <div className={cx('faq-list', { 'faq-list--expand': showMore })}>
+        {faqsList.map((block) => (
+          <Block
+            lastElement={block.last}
+            key={block.key}
+            title={block.title}
+            isOpen={state[block.key]}
+            onToggle={() => toggleActive(block.key)}
+          >
+            <div className="collapsed-content ">
+              <p>{block.description}</p>
+            </div>
+          </Block>
+        ))}
+        <div className={cx({ gradient: !showMore })} />
+      </div>
+      <div className="btn-group" style={{ paddingTop: 50 }}>
+        {' '}
+        <button type="button" className="btn white" onClick={showMoreHandler}>
+          {!showMore ? '↖ See more ' : '↖ Roll up'}
+        </button>
+      </div>
     </div>
   );
 };

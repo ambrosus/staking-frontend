@@ -20,8 +20,8 @@ const Staking = observer(() => {
   const { account, activate, chainId } = useWeb3React();
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
-  const [pools, setPools] = useState([]);
-  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
+  const [pools, setPools] = useState(() => []);
+  const [checkNetworkChain, setCheckNetworkChain] = useState(() => false);
 
   const getDataFromProvider = async () => {
     await appStore.updatePoolData();
@@ -44,7 +44,7 @@ const Staking = observer(() => {
   return (
     <>
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
-        <NotSupported key={chainId} onclick={changeNetwork} />
+        <NotSupported onclick={changeNetwork} />
       )}
       <div className="layout">
         <Header />

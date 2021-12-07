@@ -2,7 +2,9 @@
   display: grid;
   justify-items: center;
   width: 100%;
-  max-width: 1040px;
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
   margin: 0 auto;
   height: auto;
   @media (max-width: 480px) {
@@ -76,11 +78,10 @@
     height: auto;
     background: #FFFFFF;
     box-shadow: 0 4px 24px rgba(55, 29, 199, 0.1);
-    border-radius: 12px;
 
     .item--header {
       display: flex;
-      height: 60px;
+      height: 113px;
       width: 100%;
       align-items: center;
       flex-direction: row;
@@ -89,6 +90,7 @@
       @media (max-width: 600px) {
         padding: 10px 10px;
         max-width: 100%;
+        height: 73px;
         > div {
           max-width: 250px !important;
           min-width: 250px !important;
@@ -118,6 +120,12 @@
           }
 
           p {
+            font-family: Halvar Breitschrift, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 30px;
+            line-height: 35px;
+            letter-spacing: -0.02em;
             margin-left: 20px;
             @media (max-width: 600px) {
               font-size: 12px !important;
@@ -135,6 +143,12 @@
           }
 
           p {
+            font-family: Halvar Breitschrift, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 23px;
+            letter-spacing: -0.02em;
             @media (max-width: 600px) {
               font-size: 12px !important;
               margin: 0 !important;
@@ -211,7 +225,6 @@
 
       button {
         max-width: 160px;
-        height: 40px !important;
         @media (max-width: 600px) {
           max-width: 60px;
         }
@@ -282,6 +295,7 @@
 
   .deposit-actions {
     display: flex;
+    width: 100%;
     flex-direction: row !important;
     @media (max-width: 480px) {
       flex-direction: column !important;
@@ -293,6 +307,7 @@
 
       > div {
         button {
+          width: 64px !important;
           p {
             font-family: Halvar Breitschrift, sans-serif !important;
             font-style: normal !important;
@@ -306,10 +321,8 @@
       }
 
       > div {
-        width: 64px;
-        margin-left: 20px;
-        height: auto;
         color: #9198BB !important;
+        padding-left: 10px;
 
         button {
           height: 48px !important;
@@ -353,6 +366,7 @@
   }
 
   .deposit-stake-btn {
+    margin-left: auto;
     button {
       height: 48px !important;
     }
@@ -466,8 +480,6 @@
 }
 
 .close-btn {
-  min-width: 319px;
-  width: 319px;
   @media (max-width: 480px) {
     min-width: 100px;
     width: auto;
@@ -476,12 +488,12 @@
 
 .percent-btn {
   font-family: Halvar Breitschrift, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #9198BB;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  text-align: center !important;
+  color: #9198BB !important;
 
 }
