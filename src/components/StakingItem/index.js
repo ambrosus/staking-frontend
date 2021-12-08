@@ -12,7 +12,7 @@ import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
 import Button from '../Button';
 import Deposit from '../../pages/Staking/components/Deposit/Deposit';
-import { useLogIn, useMedia } from '../../hooks';
+import { useLogIn } from '../../hooks';
 
 const StakingItem = ({
   expand = false,
@@ -33,7 +33,6 @@ const StakingItem = ({
   const history = useHistory();
   const { pathname } = history.location;
   const { active } = useWeb3React();
-  const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
   const stakeBtnHandler = () => {
     if (expand !== false) {
@@ -156,7 +155,7 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          {!isSmall && (
+          {pathname !== MAIN_PAGE && (
             <Button
               buttonStyles={{
                 width: pathname === MAIN_PAGE && 187,

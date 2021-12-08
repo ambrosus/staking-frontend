@@ -33,7 +33,7 @@
     white-space: nowrap;
     @media (max-width: 600px) {
       > div {
-        font-size: 10px!important;
+        font-size: 10px !important;
         max-width: 38px !important;
         min-width: 35px !important;
       }
@@ -116,6 +116,15 @@
           align-items: center;
           margin-right: 18px;
 
+          &--avatar {
+            span {
+              svg {
+                width: 30px;
+                height: 30px;
+              }
+            }
+          }
+
           @media (max-width: 600px) {
             margin-right: 80px !important;
 
@@ -164,10 +173,10 @@
 
         &__vault-assets {
           @media (max-width: 600px) {
-            div{
-              span{
-                p{
-                  font-size: 10px!important;
+            div {
+              span {
+                p {
+                  font-size: 10px !important;
                 }
               }
             }
@@ -187,16 +196,17 @@
         }
 
         &__apy {
-          .mobile-display-wrap{
+          .mobile-display-wrap {
             white-space: nowrap;
-            min-width: 150px!important;
-            max-width: 150px!important;
+            min-width: 150px !important;
+            max-width: 150px !important;
             @media (max-width: 600px) {
               white-space: pre-wrap;
-              min-width: 80px!important;
-              max-width: 80px!important;
+              min-width: 80px !important;
+              max-width: 80px !important;
             }
           }
+
           @media (max-width: 600px) {
             p {
               font-size: 10px !important;
@@ -271,6 +281,7 @@
         align-items: center;
         justify-content: space-between;
         white-space: nowrap;
+
         > p {
           flex-basis: 45%;
         }
@@ -293,7 +304,7 @@
 
   .deposit-heading {
     width: 100%;
-    padding: 15px 10px ;
+    padding: 15px 10px;
     display: flex;
     flex-direction: row;
   }
@@ -313,6 +324,7 @@
       > div {
         button {
           width: 64px !important;
+
           p {
             font-family: Halvar Breitschrift, sans-serif !important;
             font-style: normal !important;
@@ -372,6 +384,7 @@
 
   .deposit-stake-btn {
     margin-left: auto;
+
     button {
       height: 48px !important;
     }
