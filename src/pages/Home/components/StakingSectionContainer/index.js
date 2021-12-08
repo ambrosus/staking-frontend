@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
-/*eslint-disable*/
-import { useWeb3React } from '@web3-react/core';
-import { toJS } from 'mobx';
+import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { MAIN_PAGE, STAKE } from '../../../../config';
+import { MAIN_PAGE, PoolsContext, STAKE } from '../../../../config';
 import RenderItems from '../../../../components/RenderItems';
 import StakingItem from '../../../../components/StakingItem';
 import { Loader } from '../../../../components/Loader';
-import appStore from '../../../../store/app.store';
 import Paragraph from '../../../../components/Paragraph';
 import Button from '../../../../components/Button';
 import { useLogIn, useMedia } from '../../../../hooks';
+import { debugLog } from '../../../../utils/helpers';
 
 export default () => {
   const { pathname } = useLocation();
-  const [pools, setPools] = useState([]);
+  const [pools, getPools] = useContext(PoolsContext);
+  useEffect(() => {
+    debugLog('Home render useEffect');
+    getPools();
+  }, []);
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
-  const { active } = useWeb3React();
-
-  const getPools = async () => {
-    await appStore.updatePoolData();
-    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
-  };
 
   useEffect(() => {
     getPools();
@@ -66,14 +61,12 @@ export default () => {
           <div style={{ width: '100%' }}>
             {isSmall && (
               <Button
-                onClick={() => {
-                  console.log('sdadsa');
-                }}
                 buttonStyles={{ marginLeft: 'auto', maxHeight: 50, width: 160 }}
                 type={pathname === MAIN_PAGE ? 'black' : 'primary'}
+                onclick={logIn}
               >
                 <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
-                  {STAKE}sss
+                  {STAKE}
                 </Paragraph>
               </Button>
             )}

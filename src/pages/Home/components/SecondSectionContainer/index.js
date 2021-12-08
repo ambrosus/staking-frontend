@@ -1,13 +1,11 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { useWeb3React } from '@web3-react/core';
 
 import { homePageStatic } from '../../../../config';
 import { useLogIn } from '../../../../hooks';
 
 export default () => {
   const { logIn } = useLogIn();
-  const { active } = useWeb3React();
   return (
     <div className="home__second-section">
       <div className="container">
@@ -28,17 +26,7 @@ export default () => {
       </div>
       <div className="btn-group">
         {' '}
-        <button
-          type="button"
-          className="btn white "
-          onClick={() => {
-            if (active) {
-              logIn();
-            } else {
-              window.location.replace('#home__top--info');
-            }
-          }}
-        >
+        <button type="button" className="btn white " onClick={logIn}>
           ↖ Start Staking
         </button>
       </div>

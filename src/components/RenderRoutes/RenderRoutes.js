@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -15,7 +15,6 @@ const RenderRoutes = observer(() => (
       <Switch>
         <Route path={MAIN_PAGE} exact render={() => <Home />} />
         <Route path={STAKING_PAGE} exact render={() => <Staking />} />
-        <Redirect to={MAIN_PAGE} />
       </Switch>
       <Footer />
     </BrowserRouter>

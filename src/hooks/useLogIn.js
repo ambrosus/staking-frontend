@@ -5,25 +5,14 @@ import { useWeb3React } from '@web3-react/core';
 import InstallMetamaskAlert from '../pages/Home/components/InstallMetamaskAlert';
 import { connectorsByName, ethereum, STAKING_PAGE } from '../config';
 
-const useLogIn = (connect) => {
+const useLogIn = () => {
   const history = useHistory();
-  const { activate, active } = useWeb3React();
+  const { activate } = useWeb3React();
 
   const logIn = async () => {
-    if (connect === 'CONNECT_WALLET') {
-      await ethereum.request({
-        method: 'wallet_requestPermissions',
-        params: [
-          {
-            eth_accounts: {},
-          },
-        ],
-      });
-      await activate(connectorsByName.Injected);
-    }
-    if (active) {
-      history.push(STAKING_PAGE);
-    }
+    await activate(connectorsByName.Injected);
+    history.push(STAKING_PAGE);
+
     if (!ethereum?.isMetaMask) {
       return alertStore.addNotification({
         content: InstallMetamaskAlert,
@@ -34,7 +23,6 @@ const useLogIn = (connect) => {
     }
     return false;
   };
-
   return { logIn };
 };
 

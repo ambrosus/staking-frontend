@@ -1,5 +1,4 @@
 import { ReactSVG } from 'react-svg';
-import { useWeb3React } from '@web3-react/core';
 import cx from 'classnames';
 import React from 'react';
 import { homePageStatic } from '../../../../config';
@@ -8,7 +7,6 @@ import Button from '../../../../components/Button';
 
 export default () => {
   const { logIn } = useLogIn();
-  const { active } = useWeb3React();
   return (
     <div className="home__last-section">
       <div className="container">
@@ -47,11 +45,9 @@ export default () => {
                       type="white"
                       onclick={() => {
                         if (!block.btnText.includes('more')) {
-                          if (active) {
-                            logIn();
-                          } else {
-                            window.location.replace('#home__top--info');
-                          }
+                          logIn();
+                        } else {
+                          window.location.replace('#home__top--info');
                         }
                       }}
                     >
