@@ -17,7 +17,7 @@ const useLogIn = () => {
     await activate(connectorsByName.Injected);
     if (isMobile()) {
       return window.location.replace(
-        'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
+        'https://metamask.app.link/dapp/pr-42.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
     }
     if (!isMobile() && !ethereum?.isMetaMask) {
