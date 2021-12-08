@@ -4,29 +4,30 @@ import { useWeb3React } from '@web3-react/core';
 
 import InstallMetamaskAlert from '../pages/Home/components/InstallMetamaskAlert';
 import { connectorsByName, ethereum, STAKING_PAGE } from '../config';
-import useMedia from './useMedia';
+import useMobileDetect from './useMobileDetect';
+import { debugLog } from '../utils/helpers';
 
 const useLogIn = () => {
   const history = useHistory();
   const { activate } = useWeb3React();
-  const isSmall = useMedia('(max-width: 699px)');
+  const { isMobile } = useMobileDetect();
 
   const logIn = async () => {
+    debugLog('logIn');
+    console.log('isMobile', isMobile());
     await activate(connectorsByName.Injected);
-    if (isSmall) {
+    if (isMobile()) {
       return window.location.replace(
         'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
     }
-    if (!isSmall) {
-      if (!ethereum && !ethereum?.isMetaMask) {
-        return alertStore.addNotification({
-          content: InstallMetamaskAlert,
-          container: 'bottom-right',
-          animationIn: ['animated', 'fadeIn'],
-          animationOut: ['animated', 'fadeOut'],
-        });
-      }
+    if (!isMobile() && !ethereum?.isMetaMask) {
+      return alertStore.addNotification({
+        content: InstallMetamaskAlert,
+        container: 'bottom-right',
+        animationIn: ['animated', 'fadeIn'],
+        animationOut: ['animated', 'fadeOut'],
+      });
     }
     history.push(STAKING_PAGE);
     return false;
