@@ -1,3 +1,4 @@
+import useMedia from './useMedia';
 import { useSafeDispatch } from './useSafeDispatch';
 import useAsync from './useAsync';
 import useTimeout from './useTimeout';
@@ -7,6 +8,7 @@ import useCopyToClipboard from './useCopyToClipboard';
 
 export {
   useSafeDispatch,
+    useMedia,
   useAsync,
   useTimeout,
   useModal,

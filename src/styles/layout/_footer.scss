@@ -4,11 +4,24 @@
   justify-content: center;
   padding: 20px 0;
   width: 100%;
-  height: 60px;
+  height: 140px;
   box-shadow: 0 -2px 4px rgba(55, 29, 199, 0.05);
   font-size: 12px;
-  color: $color-gray;
+  color: #212121;
   background: #FFF;
+  position: relative;
+
+  &:before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    top: 0;
+    height: 1px;
+    background: #fff;
+    opacity: 0.3;
+    border-radius: 2px;
+  }
+
   @media (max-width: 600px) {
     height: auto;
   }
@@ -25,6 +38,7 @@
   > .wrapper {
     position: relative;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin: 0 auto;
     padding: 0 30px;
@@ -40,14 +54,12 @@
   }
 
   .copyright {
-    flex-basis: 300px;
     @media (max-width: 1024px) {
       margin-bottom: 20px;
     }
   }
 
   .contact {
-    flex-basis: 300px;
     text-align: right;
     a {
       text-decoration: none;
@@ -60,6 +72,7 @@
     @media (max-width: 1024px) {
       justify-content: space-around;
       margin-top: 20px;
+      margin-bottom: 20px;
       text-align: center;
     }
   }
@@ -69,9 +82,7 @@
   }
 }
   .socials {
-    flex-grow: 1;
     text-align: center;
-
     &__list {
       &__link {
         display: inline-block;

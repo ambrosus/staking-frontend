@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
+import { toJS } from 'mobx';
 
 import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
@@ -10,7 +11,7 @@ import { useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, connectorsByName, ethereum, PoolsContext } from '../../config';
+import { bounce, connectorsByName, ethereum,PoolsContext } from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from '../../utils/reducers';
@@ -54,7 +55,7 @@ const Staking = observer(() => {
                       <div>My Stake</div>
                       <div>Total pool stake</div>
                       <div>APY</div>
-                      <div style={{ marginRight: -45 }} />
+                      <div style={{ marginRight: -20 }} />
                     </div>
                     {pools
                       .filter(

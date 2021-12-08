@@ -204,22 +204,6 @@ const Deposit = observer(({ depositInfo }) => {
           </div>
         </div>
         <div className="space" style={{ marginBottom: 5 }} />
-        <div className="deposit-stake-btn">
-          <Button
-            type="green"
-            disabled={
-              !isPoolActive ||
-              !checkValidNumberString(inputValue) ||
-              parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
-              parseFloatToBigNumber(inputValue).gt(balance)
-            }
-            onclick={checkoutPayment}
-          >
-            <Paragraph size="m-500">
-              {!isPoolActive ? 'Pool is offline' : ' Stake'}
-            </Paragraph>
-          </Button>
-        </div>
         <div className="space" style={{ marginBottom: 5 }} />
         <div className="deposit-stake-options">
           <div className="flex" style={{ marginBottom: 5 }}>
@@ -249,6 +233,22 @@ const Deposit = observer(({ depositInfo }) => {
               </span>
             </Paragraph>
           </div>
+          <div className="deposit-stake-btn">
+            <Button
+              type="green"
+              disabled={
+                !isPoolActive ||
+                !checkValidNumberString(inputValue) ||
+                parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
+                parseFloatToBigNumber(inputValue).gt(balance)
+              }
+              onclick={checkoutPayment}
+            >
+              <Paragraph size="m-500">
+                {!isPoolActive ? 'Pool is offline' : ' Stake'}
+              </Paragraph>
+            </Button>
+          </div>
         </div>
         <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
           <>
@@ -263,7 +263,7 @@ const Deposit = observer(({ depositInfo }) => {
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <ReactSVG src={avatarIcon} wrapper="span" />
                 <Paragraph size="l-500">
-                  &nbsp;&nbsp;&nbsp;&nbsp; {contractName.substring(0, 8)}
+                  &nbsp;&nbsp; {contractName.substring(0, 8)}
                 </Paragraph>
               </div>
               <div style={{ textTransform: 'uppercase' }}>
