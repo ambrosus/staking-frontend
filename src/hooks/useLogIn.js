@@ -14,7 +14,6 @@ const useLogIn = () => {
 
   const logIn = async () => {
     debugLog('logIn');
-    console.log('isMobile', isMobile());
     await activate(connectorsByName.Injected);
     if (isMobile()) {
       return window.location.replace(
