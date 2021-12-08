@@ -15,7 +15,7 @@ const useLogIn = () => {
   const logIn = async () => {
     await activate(connectorsByName.Injected);
     if (isSmall) {
-      window.location.replace(
+      return window.location.replace(
         'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/',
       );
     } else {
