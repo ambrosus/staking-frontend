@@ -1,11 +1,10 @@
 import { useHistory } from 'react-router';
-/*eslint-disable*/
 import { store as alertStore } from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
 
 import InstallMetamaskAlert from '../pages/Home/components/InstallMetamaskAlert';
 import { connectorsByName, ethereum, STAKING_PAGE } from '../config';
-import { useMedia } from '../hooks/index';
+import useMedia from './useMedia';
 
 const useLogIn = () => {
   const history = useHistory();
@@ -18,7 +17,8 @@ const useLogIn = () => {
       return window.location.replace(
         'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/',
       );
-    } else {
+    }
+    if (!isSmall) {
       if (!ethereum && !ethereum?.isMetaMask) {
         return alertStore.addNotification({
           content: InstallMetamaskAlert,
