@@ -1,6 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import Collapse from '@kunukn/react-collapse';
 import { ReactSVG } from 'react-svg';
@@ -12,7 +12,7 @@ import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
 import Button from '../Button';
 import Deposit from '../../pages/Staking/components/Deposit/Deposit';
-import { useLogIn } from '../../hooks';
+import { useMobileDetect, useLogIn } from '../../hooks';
 
 const StakingItem = ({
   expand = false,
@@ -30,10 +30,10 @@ const StakingItem = ({
     totalStakeInAMB,
     poolAPY,
   } = poolInfo;
-  const history = useHistory();
-  const { pathname } = history.location;
+  const { pathname } = useLocation();
   const { active } = useWeb3React();
   const { logIn } = useLogIn();
+  const { isDesktop } = useMobileDetect();
 
   const stakeBtnHandler = () => {
     if (expand !== false) {
@@ -74,7 +74,7 @@ const StakingItem = ({
           >
             <div
               style={{
-                marginRight: pathname === STAKING_PAGE ? 10 : '',
+                marginRight: pathname === STAKING_PAGE ? 10 : -100,
                 color:
                   pathname === MAIN_PAGE &&
                   !myStakeInAMB &&
@@ -99,7 +99,7 @@ const StakingItem = ({
                 {contractName && contractName.substring(0, 8)}
               </Paragraph>
             </div>
-            {pathname === STAKING_PAGE && (
+            {isDesktop && pathname === STAKING_PAGE && (
               <div
                 style={{
                   marginRight: pathname === STAKING_PAGE ? 10 : '',
@@ -156,6 +156,22 @@ const StakingItem = ({
               )}
             </div>
           </div>
+          {isDesktop && pathname === MAIN_PAGE && (
+            <Button
+              buttonStyles={{
+                width: pathname === MAIN_PAGE && 187,
+                height: pathname === MAIN_PAGE && 65,
+              }}
+              type={pathname === MAIN_PAGE ? 'black' : 'primary'}
+              onclick={stakeBtnHandler}
+            >
+              <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
+                {expand &&
+                  (state[index] && activeExpand === index ? HIDE : SHOW)}
+                {!expand && STAKE}
+              </Paragraph>
+            </Button>
+          )}
           {pathname === STAKING_PAGE && (
             <Button
               buttonStyles={{
