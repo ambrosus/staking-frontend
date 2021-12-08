@@ -15,7 +15,7 @@ const useLogIn = () => {
     await activate(connectorsByName.Injected);
     if (isSmall) {
       return window.location.replace(
-        'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/',
+        'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
     }
     if (!isSmall) {
