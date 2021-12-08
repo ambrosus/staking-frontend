@@ -8,7 +8,7 @@ import useCopyToClipboard from './useCopyToClipboard';
 
 export {
   useSafeDispatch,
-    useMedia,
+  useMedia,
   useAsync,
   useTimeout,
   useModal,

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+/*eslint-disable*/
+import { useWeb3React } from '@web3-react/core';
 import { toJS } from 'mobx';
 import { useLocation } from 'react-router-dom';
+
 import { MAIN_PAGE, STAKE } from '../../../../config';
 import RenderItems from '../../../../components/RenderItems';
 import StakingItem from '../../../../components/StakingItem';
@@ -15,6 +18,7 @@ export default () => {
   const [pools, setPools] = useState([]);
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
+  const { active } = useWeb3React();
 
   const getPools = async () => {
     await appStore.updatePoolData();
@@ -62,12 +66,14 @@ export default () => {
           <div style={{ width: '100%' }}>
             {isSmall && (
               <Button
+                onClick={() => {
+                  console.log('sdadsa');
+                }}
                 buttonStyles={{ marginLeft: 'auto', maxHeight: 50, width: 160 }}
                 type={pathname === MAIN_PAGE ? 'black' : 'primary'}
-                onclick={logIn}
               >
                 <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
-                  {STAKE}
+                  {STAKE}sss
                 </Paragraph>
               </Button>
             )}
