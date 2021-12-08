@@ -15,8 +15,8 @@ const useLogIn = () => {
   const logIn = async () => {
     await activate(connectorsByName.Injected);
     if (isSmall) {
-      return window.location.replace(
-          'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/',
+      window.location.replace(
+        'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/',
       );
     } else {
       if (!ethereum && !ethereum?.isMetaMask) {
