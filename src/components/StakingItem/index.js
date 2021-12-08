@@ -33,9 +33,8 @@ const StakingItem = ({
   const history = useHistory();
   const { pathname } = history.location;
   const { active } = useWeb3React();
-  const { logIn } = useLogIn();
   const isSmall = useMedia('(max-width: 699px)');
-
+  const { logIn } = useLogIn();
   const stakeBtnHandler = () => {
     if (expand !== false) {
       setActiveExpand(index);

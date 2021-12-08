@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { toJS } from 'mobx';
+import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MAIN_PAGE, STAKE } from '../../../../config';
+
+import { MAIN_PAGE, PoolsContext, STAKE } from '../../../../config';
 import RenderItems from '../../../../components/RenderItems';
 import StakingItem from '../../../../components/StakingItem';
 import { Loader } from '../../../../components/Loader';
-import appStore from '../../../../store/app.store';
 import Paragraph from '../../../../components/Paragraph';
 import Button from '../../../../components/Button';
 import { useLogIn, useMedia } from '../../../../hooks';
+import { debugLog } from '../../../../utils/helpers';
 
 export default () => {
   const { pathname } = useLocation();
-  const [pools, setPools] = useState([]);
+  const [pools, getPools] = useContext(PoolsContext);
+  useEffect(() => {
+    debugLog('Home render useEffect');
+    getPools();
+  }, []);
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
-
-  const getPools = async () => {
-    await appStore.updatePoolData();
-    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
-  };
 
   useEffect(() => {
     getPools();

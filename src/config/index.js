@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { cssTransition } from 'react-toastify';
 import { utils, providers } from 'ethers';
@@ -39,6 +39,8 @@ export const bounce = cssTransition({
   enter: 'animate__animated animate__bounceIn',
   exit: 'animate__animated animate__bounceOut',
 });
+
+export const PoolsContext = createContext([]);
 
 export const network = process.env.NODE_ENV === 'production';
 
@@ -358,6 +360,7 @@ export default {
   CONNECT_TEXT,
   HIDE,
   SHOW,
+  PoolsContext,
   STAKE,
   COMING_SOON,
   TWENTY_FIVE_PERCENT,

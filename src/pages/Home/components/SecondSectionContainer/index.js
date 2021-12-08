@@ -1,11 +1,11 @@
-import { ReactSVG } from 'react-svg';
 import React from 'react';
+import { ReactSVG } from 'react-svg';
+
 import { homePageStatic } from '../../../../config';
 import { useLogIn } from '../../../../hooks';
 
 export default () => {
   const { logIn } = useLogIn();
-
   return (
     <div className="home__second-section">
       <div className="container">

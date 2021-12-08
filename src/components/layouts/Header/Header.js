@@ -1,42 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-
 import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
-import { ethereum, MAIN_PAGE, menuLinks } from '../../../config';
-import { ambPriceInUsd, priceInPercent24h } from '../../../api';
+import { MAIN_PAGE, menuLinks } from '../../../config';
+import { getToken } from '../../../api';
 
 import headerLogoSvg from '../../../assets/svg/header-logo-blue.svg';
 import loginIcon from '../../../assets/svg/login.svg';
 import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
+import { useAsync } from '../../../hooks';
 
 export const Header = observer(() => {
-  const [usdPrice, setUsdPrice] = useState(0);
-  const [percentChange24h, setPercentChange24h] = useState(0);
   const { account, deactivate } = useWeb3React();
   const history = useHistory();
+  const {
+    data,
+    status: priceStatus,
+    run,
+  } = useAsync({
+    status: appStore.tokenPrice !== undefined ? 'pending' : 'idle',
+    data: null,
+  });
 
-  const getAmbCourse = async () => {
-    const priceInUsd = await ambPriceInUsd();
-    if (priceInUsd) {
-      setUsdPrice(priceInUsd);
-      appStore.setTokenPrice(priceInUsd);
+  React.useEffect(() => {
+    if (priceStatus === 'idle') {
+      run(getToken());
     }
-    const percent = await priceInPercent24h();
-    if (percent) {
-      setPercentChange24h(percent);
+    if (priceStatus === 'resolved') {
+      appStore.setTokenPrice(data?.data?.price_usd);
     }
-  };
-
-  useEffect(() => {
-    if (ethereum?.isMetaMask) {
-      getAmbCourse();
-    }
-  }, []);
+  }, [run, priceStatus]);
 
   const logOut = async () => {
     deactivate();
@@ -77,10 +74,10 @@ export const Header = observer(() => {
             AMB Price{' '}
             <b>
               {' '}
-              {usdPrice ? (
+              {data?.data?.price_usd ? (
                 <span style={{ color: '#333333' }}>
                   {' '}
-                  $&nbsp;{Number(usdPrice).toFixed(4)}
+                  $&nbsp;{Number(data?.data?.price_usd).toFixed(4)}
                 </span>
               ) : (
                 <span>...</span>
@@ -88,9 +85,12 @@ export const Header = observer(() => {
             </b>
             &nbsp;&nbsp;
             <span
-              style={{ color: percentChange24h > 0 ? '#1ACD8C' : '#9198BB' }}
+              style={{
+                color:
+                  data?.data?.percent_change_24h > 0 ? '#1ACD8C' : '#9198BB',
+              }}
             >
-              {percentChange24h}%
+              {data?.data?.percent_change_24h}%
             </span>
           </Paragraph>
         </div>

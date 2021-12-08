@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
-import { toJS } from 'mobx';
 
 import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
@@ -11,29 +10,24 @@ import { useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, connectorsByName, ethereum } from '../../config';
+import { bounce, connectorsByName, ethereum, PoolsContext } from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
-import { changeNetwork, collapsedReducer, debugLog } from '../../utils/helpers';
+import { collapsedReducer } from '../../utils/reducers';
+import { changeNetwork, debugLog } from '../../utils/helpers';
 
 const Staking = observer(() => {
   const { account, activate, chainId } = useWeb3React();
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
-  const [pools, setPools] = useState(() => []);
-  const [checkNetworkChain, setCheckNetworkChain] = useState(() => false);
-
-  const getDataFromProvider = async () => {
-    await appStore.updatePoolData();
-    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
-  };
-
+  const [checkNetworkChain, setCheckNetworkChain] = useState(false);
+  const [pools, getPools] = useContext(PoolsContext);
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
   useEffect(() => {
     debugLog('Staking render useEffect');
     activate(connectorsByName.Injected);
-    getDataFromProvider();
+    getPools();
     if (ethereum?.isMetaMask) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         window.addEventListener('focus', changeNetwork);
@@ -44,7 +38,7 @@ const Staking = observer(() => {
   return (
     <>
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
-        <NotSupported onclick={changeNetwork} />
+        <NotSupported key={chainId} onclick={changeNetwork} />
       )}
       <div className="layout">
         <Header />
