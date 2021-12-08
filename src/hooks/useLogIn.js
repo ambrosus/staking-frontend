@@ -17,8 +17,9 @@ const useLogIn = () => {
       return window.location.replace(
         'https://metamask.app.link/dapp/pr-42.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
+    } else {
+      history.push(STAKING_PAGE);
     }
-    history.push(STAKING_PAGE);
     return false;
   };
   return { logIn };

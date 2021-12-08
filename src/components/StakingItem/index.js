@@ -157,7 +157,7 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          {!isMobile() && (
+          {!isMobile() || pathname !== MAIN_PAGE && (
             <Button
               buttonStyles={{
                 width: pathname === MAIN_PAGE && 187,
