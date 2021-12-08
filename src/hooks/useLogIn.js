@@ -1,9 +1,7 @@
 import { useHistory } from 'react-router';
-import { store as alertStore } from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
 
-import InstallMetamaskAlert from '../pages/Home/components/InstallMetamaskAlert';
-import { connectorsByName, ethereum, STAKING_PAGE } from '../config';
+import { connectorsByName, STAKING_PAGE } from '../config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from '../utils/helpers';
 
@@ -19,14 +17,6 @@ const useLogIn = () => {
       return window.location.replace(
         'https://metamask.app.link/dapp/pr-42.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
-    }
-    if (!isMobile() && !ethereum?.isMetaMask) {
-      return alertStore.addNotification({
-        content: InstallMetamaskAlert,
-        container: 'bottom-right',
-        animationIn: ['animated', 'fadeIn'],
-        animationOut: ['animated', 'fadeOut'],
-      });
     }
     history.push(STAKING_PAGE);
     return false;

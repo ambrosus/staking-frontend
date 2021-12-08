@@ -12,7 +12,7 @@ import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
 import Button from '../Button';
 import Deposit from '../../pages/Staking/components/Deposit/Deposit';
-import { useLogIn } from '../../hooks';
+import { useLogIn, useMobileDetect } from '../../hooks';
 
 const StakingItem = ({
   expand = false,
@@ -34,6 +34,8 @@ const StakingItem = ({
   const { pathname } = history.location;
   const { active } = useWeb3React();
   const { logIn } = useLogIn();
+  const { isMobile } = useMobileDetect();
+
   const stakeBtnHandler = () => {
     if (expand !== false) {
       setActiveExpand(index);
@@ -155,7 +157,7 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          {pathname === STAKING_PAGE && (
+          {!isMobile() && (
             <Button
               buttonStyles={{
                 width: pathname === MAIN_PAGE && 187,
