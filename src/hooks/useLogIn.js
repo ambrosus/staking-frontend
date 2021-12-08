@@ -8,17 +8,17 @@ import { debugLog } from '../utils/helpers';
 const useLogIn = () => {
   const history = useHistory();
   const { activate } = useWeb3React();
-  const { isMobile } = useMobileDetect();
+  const { isDesktop } = useMobileDetect();
 
   const logIn = async () => {
     debugLog('logIn');
     await activate(connectorsByName.Injected);
-    if (isMobile()) {
-      return window.location.replace(
+    if (isDesktop) {
+      history.push(STAKING_PAGE);
+    } else {
+      window.location.replace(
         'https://metamask.app.link/dapp/pr-42.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
-    } else {
-      history.push(STAKING_PAGE);
     }
     return false;
   };
