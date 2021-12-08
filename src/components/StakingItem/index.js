@@ -155,7 +155,7 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          {pathname !== MAIN_PAGE && (
+          {pathname === STAKING_PAGE && (
             <Button
               buttonStyles={{
                 width: pathname === MAIN_PAGE && 187,
