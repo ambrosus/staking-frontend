@@ -13,12 +13,12 @@ import { debugLog } from '../../../../utils/helpers';
 export default () => {
   const { pathname } = useLocation();
   const [pools, getPools] = useContext(PoolsContext);
+  const isSmall = useMedia('(max-width: 699px)');
+  const { logIn } = useLogIn();
   useEffect(() => {
     debugLog('Home render useEffect');
     getPools();
   }, []);
-  const isSmall = useMedia('(max-width: 699px)');
-  const { logIn } = useLogIn();
 
   useEffect(() => {
     getPools();

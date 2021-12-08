@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router';
+/*eslint-disable*/
 import { store as alertStore } from 'react-notifications-component';
 import { useWeb3React } from '@web3-react/core';
 
