@@ -2,15 +2,22 @@ import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
+import { useLocation } from 'react-router-dom';
 
 import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
 import NotSupported from '../../components/NotSupported';
-import { useTimeout } from '../../hooks';
+import { useMobileDetect, useTimeout } from '../../hooks';
 import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, connectorsByName, ethereum, PoolsContext } from '../../config';
+import {
+  bounce,
+  connectorsByName,
+  ethereum,
+  PoolsContext,
+  STAKING_PAGE,
+} from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from '../../utils/reducers';
@@ -22,6 +29,9 @@ const Staking = observer(() => {
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [checkNetworkChain, setCheckNetworkChain] = useState(false);
   const [pools, getPools] = useContext(PoolsContext);
+  const { pathname } = useLocation();
+  const { isDesktop } = useMobileDetect();
+
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
   useEffect(() => {
@@ -51,7 +61,9 @@ const Staking = observer(() => {
                   <>
                     <div className="staking__header">
                       <div>Pool</div>
-                      <div>My Stake</div>
+                      {isDesktop && pathname === STAKING_PAGE && (
+                        <div>My Stake</div>
+                      )}
                       <div>Total pool stake</div>
                       <div>APY</div>
                       <div style={{ marginRight: -20 }} />

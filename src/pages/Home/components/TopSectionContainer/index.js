@@ -9,7 +9,7 @@ import { useLogIn } from '../../../../hooks';
 import Button from '../../../../components/Button';
 
 export default () => {
-  const { logIn } = useLogIn('CONNECT_WALLET');
+  const { logIn } = useLogIn();
 
   return (
     <>

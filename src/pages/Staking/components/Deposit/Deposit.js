@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import * as PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
@@ -31,11 +32,14 @@ import {
   FIFTY_PERCENT,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
+  STAKING_PAGE,
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
 import avatarIcon from '../../../../assets/svg/avatar.svg';
+import { useMobileDetect } from '../../../../hooks';
 const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();
+  const { pathname } = useLocation();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
   const [balance, setBalance] = useState(ZERO);
@@ -48,6 +52,7 @@ const Deposit = observer(({ depositInfo }) => {
     totalStakeInAMB,
     poolAPY,
   } = depositInfo;
+  const { isDesktop } = useMobileDetect();
 
   const checkoutPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
@@ -107,6 +112,21 @@ const Deposit = observer(({ depositInfo }) => {
           </span>
           {/* TODO toltip for deposit */}
         </>
+        {!isDesktop && pathname === STAKING_PAGE && (
+          <Paragraph size="s-400">
+            <span
+              style={{
+                fontWeight: 600,
+                fontSize: 14,
+                fontFamily: ' Proxima Nova',
+                color: '#333333',
+              }}
+            >
+              &nbsp; You staked:{' '}
+              {myStakeInAMB && formatRounded(myStakeInAMB, 2)} AMB
+            </span>
+          </Paragraph>
+        )}
         <Paragraph size="s-400">
           <span
             style={{
@@ -120,6 +140,7 @@ const Deposit = observer(({ depositInfo }) => {
             {formatThousand(formatRounded(balance, 2))} AMB
           </span>
         </Paragraph>
+
         <div style={{ flexBasis: '90%' }} />
       </div>
       <div className="deposit">
