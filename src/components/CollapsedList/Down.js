@@ -8,19 +8,9 @@ import expandIcon from '../../assets/svg/expand-icon.svg';
 
 const Down = ({ isOpen }) =>
   isOpen ? (
-    <ReactSVG
-      style={{ color: 'white' }}
-      className={cx('icon-down')}
-      src={expandIcon}
-      wrapper="span"
-    />
+    <ReactSVG className={cx('icon-down')} src={expandIcon} wrapper="span" />
   ) : (
-    <ReactSVG
-      style={{ color: 'white' }}
-      className={cx('icon-down')}
-      src={inExpandIcon}
-      wrapper="span"
-    />
+    <ReactSVG className={cx('icon-down')} src={inExpandIcon} wrapper="span" />
   );
 
 Down.propTypes = {

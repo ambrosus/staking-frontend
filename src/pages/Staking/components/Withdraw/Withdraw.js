@@ -158,36 +158,6 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
         </div>
       </div>
       <div className="space" />
-      <ButtonGroup>
-        <div style={{ width: 665 }}>
-          <Button
-            buttonStyles={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              flexBasis: '257%',
-              marginRight: 20,
-            }}
-            type="green"
-            disabled={
-              !checkValidNumberString(inputValue) ||
-              parseFloatToBigNumber(inputValue).eq(0) ||
-              parseFloatToBigNumber(inputValue).gt(
-                myStakeInAMB.add(FIXED_POINT.div(2)),
-              )
-            }
-            onclick={withdrawPayment}
-          >
-            <Paragraph size="m-500">Withdraw</Paragraph>
-          </Button>
-        </div>
-        <div className="close-btn">
-          <Button type="secondary" onclick={hideModal}>
-            <Paragraph size="m-500">Close</Paragraph>
-          </Button>
-        </div>
-      </ButtonGroup>
       <div className="space" style={{ marginBottom: 5 }} />
       <div className="deposit-stake-options">
         <div>
@@ -201,6 +171,35 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
             </span>
           </Paragraph>
         </div>
+        <ButtonGroup>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              buttonStyles={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                marginRight: 20,
+              }}
+              type="green"
+              disabled={
+                !checkValidNumberString(inputValue) ||
+                parseFloatToBigNumber(inputValue).eq(0) ||
+                parseFloatToBigNumber(inputValue).gt(
+                  myStakeInAMB.add(FIXED_POINT.div(2)),
+                )
+              }
+              onclick={withdrawPayment}
+            >
+              <Paragraph size="m-500">Withdraw</Paragraph>
+            </Button>
+          </div>
+          <div className="close-btn">
+            <Button type="secondary" onclick={hideModal}>
+              <Paragraph size="m-500">Close</Paragraph>
+            </Button>
+          </div>
+        </ButtonGroup>
       </div>
     </div>
   );

@@ -20,14 +20,29 @@
   right: 18px;
   top: 25px;
   @media (min-width: 600px) {
-  display: none;
+    display: none;
   }
-  .bm-burger-bars{
+
+  .bm-burger-bars {
     height: 10% !important;
+    @media (min-width: 600px) {
+      width: 50% !important;
+    }
   }
+
+  .bm-burger-bars:first-of-type {
+    width: 50%;
+    margin-left: 50%;
   }
+}
+
 .bm-burger-bars {
   background: #FFFFFF;
+}
+
+.bm-menu-wrap {
+  right: 0;
+  left: 0 !important;
 }
 
 .bm-cross-button {
@@ -56,3 +71,15 @@
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
+
+.bm-menu-wrap {
+  position: absolute;
+  z-index: 1100;
+  width: 300px;
+  right: 0 !important;
+  left: initial !important;
+  height: 100%;
+  transition: all 0.5s ease-in 0s!important;
+
+}
+

@@ -18,10 +18,10 @@ import appStore from '../../../../store/app.store';
 
 const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
-  const [totalReward, setTotalReward] = useState(null);
-  const [totalRewardInUsd, setTotalRewardInUsd] = useState(null);
-  const [totalStaked, setTotalStaked] = useState(null);
-  const [totalStakedInUsd, setTotalStakedInUsd] = useState(null);
+  const [totalReward, setTotalReward] = useState(0);
+  const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
+  const [totalStaked, setTotalStaked] = useState(0);
+  const [totalStakedInUsd, setTotalStakedInUsd] = useState(0);
   let poolsRewards = [];
   let myTotalStake = [];
 
@@ -36,12 +36,10 @@ const InfoBlock = observer(({ poolsArr, account }) => {
         appStore.tokenPrice &&
         poolsRewards.length > 0 &&
         poolsRewards.reduceRight((acc, curr) => acc + +curr, 0);
-      setTotalRewardInUsd(
-        esdSum &&
-          appStore.tokenPrice &&
-          esdSum > 0 &&
-          esdSum * appStore.tokenPrice,
-      );
+      setTotalRewardInUsd(0);
+      if (esdSum && esdSum > 0 && appStore.tokenPrice) {
+        setTotalRewardInUsd(esdSum * appStore.tokenPrice);
+      }
     }
   };
 
@@ -53,11 +51,10 @@ const InfoBlock = observer(({ poolsArr, account }) => {
         BigNumber.from('0'),
       );
       setTotalStaked(totalStakeSum);
-      setTotalStakedInUsd(
-        totalStakeSum &&
-          appStore.tokenPrice &&
-          formatRounded(totalStakeSum) * appStore.tokenPrice,
-      );
+      if (totalStakeSum && appStore.tokenPrice) {
+        const TsSum = formatRounded(totalStakeSum);
+        setTotalStakedInUsd(TsSum * appStore.tokenPrice);
+      }
     }
   };
 
@@ -79,7 +76,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
 
   useEffect(() => {
     getInfo();
-  }, [poolsArr]);
+  }, [poolsArr, totalRewardInUsd, totalStakedInUsd]);
 
   return (
     <div className="info-block ">
@@ -216,7 +213,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                 <DisplayValue
                   size="xl-400"
                   color="#4A38AE"
-                  value={totalRewardInUsd}
+                  value={totalRewardInUsd || 0}
                   symbol="$"
                 />
               </div>
@@ -227,8 +224,10 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     </div>
   );
 });
+
 InfoBlock.propTypes = {
   poolsArr: PropTypes.array,
   account: PropTypes.string,
 };
+
 export default React.memo(InfoBlock);

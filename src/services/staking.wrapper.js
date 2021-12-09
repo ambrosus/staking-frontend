@@ -2,7 +2,7 @@ import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
 import { ethereum, transactionGasLimit, transactionGasPrice } from '../config';
-import { math, FIXED_POINT, parseFloatToBigNumber } from './numbers';
+import { math, FIXED_POINT, parseFloatToBigNumber, ZERO } from './numbers';
 import { debugLog } from '../utils/helpers';
 
 const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
@@ -81,8 +81,10 @@ export default class StakingWrapper {
   static async updateRewardEvents() {
     const currentBlockNumber = await this.privateProvider.getBlockNumber();
     if (currentBlockNumber > this.privateLastBlock) {
-      const startBlockNumber =
-        currentBlockNumber - Math.floor(AVERAGING_PERIOD / 5);
+      const startBlockNumber = Math.max(
+        0,
+        currentBlockNumber - Math.floor(AVERAGING_PERIOD / 5),
+      );
 
       const rewardEvents = await this.getRewardEvents(
         this.privateLastBlock ? this.privateLastBlock + 1 : startBlockNumber,
@@ -102,13 +104,15 @@ export default class StakingWrapper {
     }
   }
 
-  static async getPoolsXX() {
+  static async getPools() {
     const poolsCount = await this.poolsStore.getPoolsCount();
-    return this.poolsStore.getPools(0, poolsCount);
+    return poolsCount && poolsCount.gt(ZERO)
+      ? this.poolsStore.getPools(0, poolsCount)
+      : null;
   }
 
-  static async getPools(loggedIn = false) {
-    debugLog('## getPools');
+  static async getPoolsData(loggedIn = false) {
+    debugLog('## getPoolsData');
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(ethereum).getSigner()
       : this.privateProvider;
@@ -116,9 +120,11 @@ export default class StakingWrapper {
     await this.privateStaticConstructorPromise;
 
     const [poolsAddrs] = await Promise.all([
-      this.getPoolsXX(),
+      this.getPools(),
       this.updateRewardEvents(),
     ]);
+
+    if (!poolsAddrs || !poolsAddrs.length) return [];
 
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
       const poolContract = new ethers.Contract(
