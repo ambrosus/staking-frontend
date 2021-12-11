@@ -15,12 +15,9 @@ export default () => {
   const [pools, getPools] = useContext(PoolsContext);
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
-  useEffect(() => {
-    debugLog('Home render useEffect');
-    getPools();
-  }, []);
 
   useEffect(() => {
+    debugLog('Home render useEffect');
     getPools();
   }, []);
 

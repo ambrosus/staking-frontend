@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
-import StakingItem from '../../components/StakingItem';
 import Header from '../../components/layouts/Header';
-import NotSupported from '../../components/NotSupported';
 import { useMobileDetect, useTimeout } from '../../hooks';
-import InfoBlock from './components/InfoBlock';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
 import {
@@ -22,6 +19,13 @@ import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from '../../utils/reducers';
 import { changeNetwork, debugLog } from '../../utils/helpers';
+import StakingItem from '../../components/StakingItem';
+const NotSupported = React.lazy(() =>
+  import(/* webpackPrefetch: true */ '../../components/NotSupported'),
+);
+const InfoBlock = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './components/InfoBlock'),
+);
 
 const Staking = observer(() => {
   const { account, activate, chainId } = useWeb3React();
@@ -48,7 +52,9 @@ const Staking = observer(() => {
   return (
     <>
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
-        <NotSupported key={chainId} onclick={changeNetwork} />
+        <React.Suspense fallback={<div />}>
+          <NotSupported key={chainId} onclick={changeNetwork} />
+        </React.Suspense>
       )}
       <div className="layout">
         <Header />
@@ -56,7 +62,9 @@ const Staking = observer(() => {
           <div className="page">
             {pools.length > 0 ? (
               <RenderItems>
-                <InfoBlock account={account} poolsArr={pools} />
+                <React.Suspense fallback={<div />}>
+                  <InfoBlock account={account} poolsArr={pools} />
+                </React.Suspense>
                 <div className="staking wrapper">
                   <>
                     <div className="staking__header">

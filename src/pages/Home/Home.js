@@ -1,25 +1,35 @@
 import React from 'react';
 import ReactNotifications from 'react-notifications-component';
-import Faq from './components/FaqContainer';
-import LastSection from './components/LastSectionContainer';
-import ThirdSection from './components/ThirdSectionContainer';
 import TopSection from './components/TopSectionContainer';
 import SecondSection from './components/SecondSectionContainer';
 import StakingSection from './components/StakingSectionContainer';
-import Sidebar from '../../components/Sidebar';
 import RenderItems from '../../components/RenderItems';
+const Faq = React.lazy(() => import('./components/FaqContainer'));
+const LastSection = React.lazy(() =>
+  import('./components/LastSectionContainer'),
+);
+const ThirdSection = React.lazy(() =>
+  import('./components/ThirdSectionContainer'),
+);
+const Sidebar = React.lazy(() => import('../../components/Sidebar'));
 
 const Home = () => (
   <div className="home" id="home">
-    <Sidebar pageWrapId="root" outerContainerId="root" />
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <Sidebar pageWrapId="root" outerContainerId="root" />
+    </React.Suspense>
     <ReactNotifications />
     <RenderItems>
       <TopSection />
       <SecondSection />
-      <ThirdSection />
+      <React.Suspense fallback={<div />}>
+        <ThirdSection />
+      </React.Suspense>
       <StakingSection />
-      <Faq />
-      <LastSection />
+      <React.Suspense fallback={<div />}>
+        <Faq />
+        <LastSection />
+      </React.Suspense>
     </RenderItems>
   </div>
 );
