@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 import Home from '../../pages/Home';
 import Staking from '../../pages/Staking';
-import Footer from '../layouts/Footer';
 import { MAIN_PAGE, STAKING_PAGE } from '../../config';
 import PoolsContextProvider from '../../context/poolsContext';
+const Footer = React.lazy(() => import('../layouts/Footer'));
 
 const RenderRoutes = observer(() => (
   <PoolsContextProvider>
@@ -16,7 +16,9 @@ const RenderRoutes = observer(() => (
         <Route path={MAIN_PAGE} exact render={() => <Home />} />
         <Route path={STAKING_PAGE} exact render={() => <Staking />} />
       </Switch>
-      <Footer />
+      <React.Suspense fallback={<div />}>
+        <Footer />
+      </React.Suspense>
     </BrowserRouter>
   </PoolsContextProvider>
 ));
