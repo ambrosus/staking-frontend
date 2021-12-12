@@ -8,13 +8,13 @@ import { STAKING_PAGE } from '../../config';
 const Sidebar = (props) => {
   const { pathname } = useLocation();
   const { logIn } = useLogIn();
-
+  const isStakingPage = pathname === STAKING_PAGE;
   return (
     <Menu {...props} right>
       <a target="_blank" href="https://ambrosus.io/">
         <Paragraph
           style={{
-            color: pathname === STAKING_PAGE ? '#4A38AE' : '#FFFFFF',
+            color: isStakingPage ? '#4A38AE' : '#FFFFFF',
           }}
           size="xs-500"
         >
@@ -27,7 +27,7 @@ const Sidebar = (props) => {
       <Link to={STAKING_PAGE} onClick={logIn}>
         <Paragraph
           style={{
-            color: pathname === STAKING_PAGE ? '#4A38AE' : '#9198BB',
+            color: isStakingPage ? '#4A38AE' : '#9198BB',
           }}
           size="xs-500"
         >

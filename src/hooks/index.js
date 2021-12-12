@@ -6,8 +6,10 @@ import useTimeout from './useTimeout';
 import useModal from './useModal';
 import useLogIn from './useLogIn';
 import useCopyToClipboard from './useCopyToClipboard';
+import useHover from './useHover';
 
 export {
+  useHover,
   useSafeDispatch,
   useMobileDetect,
   useMedia,

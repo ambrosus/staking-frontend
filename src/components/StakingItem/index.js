@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-import Collapse from '@kunukn/react-collapse';
 import { ReactSVG } from 'react-svg';
-
 import { FIXED_POINT, formatRounded } from '../../services/numbers';
 import { HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE } from '../../config';
 import avatarIcon from '../../assets/svg/avatar.svg';
@@ -13,6 +11,9 @@ import DisplayValue from '../DisplayValue';
 import Button from '../Button';
 import Deposit from '../../pages/Staking/components/Deposit/Deposit';
 import { useMobileDetect, useLogIn } from '../../hooks';
+
+const loadCollapse = () => import('@kunukn/react-collapse');
+const Collapse = React.lazy(loadCollapse);
 
 const StakingItem = ({
   expand = false,
@@ -174,6 +175,8 @@ const StakingItem = ({
           )}
           {pathname === STAKING_PAGE && (
             <Button
+              onMouseEnter={loadCollapse}
+              onFocus={loadCollapse}
               buttonStyles={{
                 width: pathname === MAIN_PAGE && 187,
                 height: pathname === MAIN_PAGE && 65,
@@ -190,20 +193,24 @@ const StakingItem = ({
           )}
         </div>
         {pathname === STAKING_PAGE && (
-          <Collapse
-            isOpen={state[index] ? activeExpand === index : state[index]}
-          >
-            <div className="item--content">
-              <div className="line" />
-              <div className="collapsed-content">
-                {active && (
-                  <div className="collapsed-content__body">
-                    <Deposit depositInfo={poolInfo} />
+          <React.Suspense fallback={<div />}>
+            {activeExpand === index ? (
+              <Collapse
+                isOpen={state[index] ? activeExpand === index : state[index]}
+              >
+                <div className="item--content">
+                  <div className="line" />
+                  <div className="collapsed-content">
+                    {active && (
+                      <div className="collapsed-content__body">
+                        <Deposit depositInfo={poolInfo} />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          </Collapse>
+                </div>
+              </Collapse>
+            ) : null}
+          </React.Suspense>
         )}
       </>
     </div>

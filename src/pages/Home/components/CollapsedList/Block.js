@@ -1,11 +1,13 @@
 import React from 'react';
-import Collapse from '@kunukn/react-collapse';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import Down from './Down';
 
+const loadCollapse = () => import('@kunukn/react-collapse');
+const Collapse = React.lazy(loadCollapse);
+
 const Block = ({ isOpen, title, onToggle, children, lastElement }) => (
-  <div className="block">
+  <div className="block" onMouseEnter={loadCollapse} onFocus={loadCollapse}>
     <button
       type="button"
       className="btn toggle faq-btn"
@@ -16,7 +18,9 @@ const Block = ({ isOpen, title, onToggle, children, lastElement }) => (
       <Down isOpen={isOpen} />
     </button>
     <div className={cx({ 'bottom-line': isOpen })} />
-    <Collapse isOpen={isOpen}>{children}</Collapse>
+    <React.Suspense fallback={<div />}>
+      {isOpen ? <Collapse isOpen={isOpen}>{children}</Collapse> : null}
+    </React.Suspense>
     <div className={cx({ 'bottom-line': !lastElement })} />
   </div>
 );
@@ -31,4 +35,4 @@ Block.propTypes = {
     PropTypes.node,
   ]).isRequired,
 };
-export default Block;
+export default React.memo(Block);

@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import { InjectedConnector } from '@web3-react/injected-connector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { cssTransition } from 'react-toastify';
 import { utils, providers } from 'ethers';
 
@@ -44,7 +45,7 @@ export const PoolsContext = createContext([]);
 
 export const network = process.env.NODE_ENV === 'production';
 
-export const ENABLE_DEBUG_LOG = false;
+export const ENABLE_DEBUG_LOG = true;
 
 export const provider = ethereum ? new providers.Web3Provider(ethereum) : null;
 
@@ -65,12 +66,19 @@ export const injected = new InjectedConnector({
   supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
 });
 
+export const walletconnect = new WalletConnectConnector({
+  supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
+  qrcode: true,
+});
+
 const ConnectorNames = {
   Injected: 'Injected',
+  WalletConnect: 'WalletConnect',
 };
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
+  [ConnectorNames.WalletConnect]: walletconnect,
 };
 
 export const faqsList = [

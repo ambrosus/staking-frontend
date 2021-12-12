@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toJS } from 'mobx';
 import { PoolsContext } from '../config';
 import appStore from '../store/app.store';
+import { debugLog } from '../utils/helpers';
 
 function PoolsContextProvider(props) {
   const [pools, setPools] = useState([]);
@@ -10,7 +11,8 @@ function PoolsContextProvider(props) {
     await appStore.updatePoolData();
     if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
   };
-
-  return <PoolsContext.Provider value={[pools, getPools]} {...props} />;
+  const value = React.useMemo(() => [pools, getPools], [pools]);
+  debugLog(value);
+  return <PoolsContext.Provider value={value} {...props} />;
 }
 export default PoolsContextProvider;

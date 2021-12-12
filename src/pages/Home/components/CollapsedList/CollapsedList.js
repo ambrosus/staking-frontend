@@ -1,9 +1,9 @@
 import React, { useCallback, useReducer, useState } from 'react';
 import cx from 'classnames';
 import Block from './Block';
-import { collapsedReducer } from '../../utils/reducers';
-import { faqsList } from '../../config';
-import { useSafeDispatch } from '../../hooks';
+import { collapsedReducer } from '../../../../utils/reducers';
+import { faqsList } from '../../../../config';
+import { useSafeDispatch } from '../../../../hooks';
 
 const CollapsedList = () => {
   const [activeExpand, setActiveExpand] = useState(-1);
@@ -24,9 +24,11 @@ const CollapsedList = () => {
     },
     [activeExpand, state],
   );
+
   const showMoreHandler = () => {
     setShowMore((prev) => !prev);
   };
+
   return (
     <div className="collapsed-list">
       <div className="back-figure6" />
@@ -59,4 +61,4 @@ const CollapsedList = () => {
     </div>
   );
 };
-export default CollapsedList;
+export default React.memo(CollapsedList);

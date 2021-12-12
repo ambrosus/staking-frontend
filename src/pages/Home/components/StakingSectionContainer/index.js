@@ -15,7 +15,7 @@ export default () => {
   const [pools, getPools] = useContext(PoolsContext);
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
-
+  const isMainPage = pathname === MAIN_PAGE;
   useEffect(() => {
     debugLog('Home render useEffect');
     getPools();
@@ -31,7 +31,7 @@ export default () => {
           <div
             className="staking__header"
             style={{
-              color: pathname === MAIN_PAGE && '#FFFFFF',
+              color: isMainPage && '#FFFFFF',
             }}
           >
             <div className="staking__header__clearfix-pool">Pool</div>
@@ -59,7 +59,7 @@ export default () => {
             {isSmall && (
               <Button
                 buttonStyles={{ marginLeft: 'auto', maxHeight: 50, width: 160 }}
-                type={pathname === MAIN_PAGE ? 'black' : 'primary'}
+                type={isMainPage ? 'black' : 'primary'}
                 onclick={logIn}
               >
                 <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
