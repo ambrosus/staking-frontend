@@ -45,7 +45,7 @@ export const PoolsContext = createContext([]);
 
 export const network = process.env.NODE_ENV === 'production';
 
-export const ENABLE_DEBUG_LOG = true;
+export const ENABLE_DEBUG_LOG = false;
 
 export const provider = ethereum ? new providers.Web3Provider(ethereum) : null;
 
@@ -67,8 +67,10 @@ export const injected = new InjectedConnector({
 });
 
 export const walletconnect = new WalletConnectConnector({
-  supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
+  rpc: { 16718: process.env.REACT_APP_RPC_URL },
   qrcode: true,
+  bridge: 'https://bridge.walletconnect.org',
+  pollingInterval: 12000,
 });
 
 const ConnectorNames = {

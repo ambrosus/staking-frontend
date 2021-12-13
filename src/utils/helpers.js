@@ -20,7 +20,7 @@ const NETWORK_POLLING_INTERVALS = {
   [SupportedChainId.AMBROSUS]: 1000,
 };
 
-export const getLibrary = (provider) => {
+export const getLibrary = (provider = 'metamask') => {
   const library = new providers.Web3Provider(
     provider,
     /* eslint-disable-next-line no-nested-ternary */
