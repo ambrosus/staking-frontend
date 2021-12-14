@@ -3,26 +3,33 @@ import { slide as Menu } from 'react-burger-menu';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useLogIn } from '../../hooks';
-import { MAIN_PAGE, STAKING_PAGE } from '../../config';
+import { STAKING_PAGE } from '../../config';
 
 import arrowIcon from '../../assets/svg/arrow.svg';
 import ambLogo from '../../assets/svg/header-logo.svg';
-/*eslint-disable*/
+
 const Sidebar = () => {
   const { logIn } = useLogIn();
   const [open, setOpen] = useState(false);
+
   const handleOnOpen = () => {
-    setOpen(!open);
+    setOpen(() => !open);
   };
-  console.log(open);
+
   return (
-    <Menu right stack onOpen={handleOnOpen} isOpen={open}>
+    <Menu
+      noOverlay
+      disableOverlayClick
+      right
+      onOpen={handleOnOpen}
+      isOpen={open}
+    >
       <div className="header-sidebar">
         <div className="logo">
-          <ReactSVG src={ambLogo} onClick={() => history.push(MAIN_PAGE)} />
+          <ReactSVG src={ambLogo} />
         </div>
         <div className="close-sidebar">
-          <ReactSVG src={arrowIcon} onClick={handleOnOpen} />
+          <ReactSVG src={arrowIcon} onClick={() => handleOnOpen()} />
         </div>
       </div>
       <a className="menu-item" target="_blank" href="https://ambrosus.io/">

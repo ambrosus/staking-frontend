@@ -1,13 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
+import Collapse from '@kunukn/react-collapse';
 import PropTypes from 'prop-types';
 import Down from './Down';
 
-const loadCollapse = () => import('@kunukn/react-collapse');
-const Collapse = React.lazy(loadCollapse);
-
 const Block = ({ isOpen, title, onToggle, children, lastElement }) => (
-  <div className="block" onMouseEnter={loadCollapse} onFocus={loadCollapse}>
+  <div className="block">
     <button
       type="button"
       className="btn toggle faq-btn"
@@ -18,9 +16,7 @@ const Block = ({ isOpen, title, onToggle, children, lastElement }) => (
       <Down isOpen={isOpen} />
     </button>
     <div className={cx({ 'bottom-line': isOpen })} />
-    <React.Suspense fallback={<div />}>
-      {isOpen ? <Collapse isOpen={isOpen}>{children}</Collapse> : null}
-    </React.Suspense>
+    <Collapse isOpen={isOpen}>{children}</Collapse>
     <div className={cx({ 'bottom-line': !lastElement })} />
   </div>
 );
