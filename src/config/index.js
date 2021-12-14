@@ -323,7 +323,7 @@ export const menuLinks = [
   },
   {
     target: false,
-    href: STAKING_PAGE,
+    href: MAIN_PAGE,
     title: 'Staking',
     route: true,
   },

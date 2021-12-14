@@ -173,6 +173,7 @@
 
         &__vault-assets {
           @media (max-width: 600px) {
+            padding-left: 95px;
             div {
               span {
                 p {
@@ -208,6 +209,7 @@
           }
 
           @media (max-width: 600px) {
+            padding-left: 105px;
             p {
               font-size: 10px !important;
             }

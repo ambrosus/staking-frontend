@@ -1,41 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
-import { Link, useLocation } from 'react-router-dom';
-import Paragraph from '../Paragraph';
+import { ReactSVG } from 'react-svg';
+import { Link } from 'react-router-dom';
 import { useLogIn } from '../../hooks';
-import { STAKING_PAGE } from '../../config';
+import { MAIN_PAGE, STAKING_PAGE } from '../../config';
 
-const Sidebar = (props) => {
-  const { pathname } = useLocation();
+import arrowIcon from '../../assets/svg/arrow.svg';
+import ambLogo from '../../assets/svg/header-logo.svg';
+/*eslint-disable*/
+const Sidebar = () => {
   const { logIn } = useLogIn();
-  const isStakingPage = pathname === STAKING_PAGE;
+  const [open, setOpen] = useState(false);
+  const handleOnOpen = () => {
+    setOpen(!open);
+  };
+  console.log(open);
   return (
-    <Menu {...props} right>
-      <a target="_blank" href="https://ambrosus.io/">
-        <Paragraph
-          style={{
-            color: isStakingPage ? '#4A38AE' : '#FFFFFF',
-          }}
-          size="xs-500"
-        >
-          Main
-        </Paragraph>
+    <Menu right stack onOpen={handleOnOpen} isOpen={open}>
+      <div className="header-sidebar">
+        <div className="logo">
+          <ReactSVG src={ambLogo} onClick={() => history.push(MAIN_PAGE)} />
+        </div>
+        <div className="close-sidebar">
+          <ReactSVG src={arrowIcon} onClick={handleOnOpen} />
+        </div>
+      </div>
+      <a className="menu-item" target="_blank" href="https://ambrosus.io/">
+        <span className="after">— 01</span>
+        <p>Main</p>
       </a>
-      <a target="_blank" href="https://explorer.ambrosus.io/">
-        <Paragraph size="xs-500">Explorer</Paragraph>
+      <a
+        className="menu-item"
+        target="_blank"
+        href="https://explorer.ambrosus.io/"
+      >
+        <span className="after">— 02</span>
+        <p>Explorer</p>
       </a>
-      <Link to={STAKING_PAGE} onClick={logIn}>
-        <Paragraph
-          style={{
-            color: isStakingPage ? '#4A38AE' : '#9198BB',
-          }}
-          size="xs-500"
-        >
-          Staking
-        </Paragraph>
+      <Link className="menu-item" to={STAKING_PAGE} onClick={logIn}>
+        <span className="after">— 03</span>
+        <p>Staking</p>
       </Link>
-      <a href="https://amb.to/" target="_blank">
-        <Paragraph size="xs-500">amb.to</Paragraph>
+      <a className="menu-item" href="https://amb.to/" target="_blank">
+        <span className="after">— 04</span>
+        <p>amb.to</p>
       </a>
     </Menu>
   );

@@ -40,8 +40,8 @@
     position: absolute;
     width: 920px;
     height: 820px;
-    right: -150px;
-    bottom: -140px;
+    right: -112px;
+    bottom: -178px;
     background: url('../../assets/images/bottom-dolbka.png') no-repeat;
     z-index: 0;
     transform: scale(1);
@@ -67,6 +67,7 @@
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     @media (max-width: 600px) {
+      z-index: -1;
       right: -300px;
       bottom: -340px;
       transform: scale(0.8)
@@ -141,10 +142,6 @@
         align-items: center;
         color: white;
 
-        .active {
-          color: #FFFFFF;
-        }
-
         > a {
           padding-right: 20px;
           font-weight: normal;
@@ -205,6 +202,12 @@
       font-size: 24px;
       line-height: 140%;
       color: #FFFFFF;
+    }
+
+    .container {
+      .section-heading {
+        margin-bottom: 33px;
+      }
     }
 
     &--btn {
@@ -318,7 +321,6 @@
     }
     .section-heading {
       margin-bottom: 110px;
-      margin-top: -100px;
       @media (max-width: 600px) {
         margin-bottom: 45px;
         max-width: 340px;

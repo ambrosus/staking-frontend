@@ -75,7 +75,7 @@ const StakingItem = ({
           >
             <div
               style={{
-                marginRight: pathname === STAKING_PAGE ? 10 : -100,
+                marginRight: pathname === STAKING_PAGE ? 10 : 0,
                 color:
                   pathname === MAIN_PAGE &&
                   !myStakeInAMB &&

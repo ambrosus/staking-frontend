@@ -6,7 +6,7 @@
   display: inline-block;
   text-decoration: none;
   margin-bottom: 10px;
-  color: #d1d1d1;
+  color: #FFFFFF;
   transition: color 0.2s;
 }
 
@@ -40,10 +40,6 @@
   background: #FFFFFF;
 }
 
-.bm-menu-wrap {
-  right: 0;
-  left: 0 !important;
-}
 
 .bm-cross-button {
   height: 24px;
@@ -55,7 +51,7 @@
 }
 
 .bm-menu {
-  background: #373a47;
+  background: #212121;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
 }
@@ -65,7 +61,9 @@
 }
 
 .bm-item-list {
-  color: #b8b7ad;
+  color: #FFFFFF;
+  margin-left: auto;
+  text-align: end;
 }
 
 .bm-overlay {
@@ -73,13 +71,77 @@
 }
 
 .bm-menu-wrap {
+  width: 100% !important;
   position: absolute;
   z-index: 1100;
-  width: 300px;
   right: 0 !important;
   left: initial !important;
   height: 100%;
-  transition: all 0.5s ease-in 0s!important;
+  transition: all 0.5s ease-in 0s !important;
 
 }
 
+.menu-item {
+  position: relative;
+  margin-top: 50px;
+  padding-right: 45px;
+  margin-right: 40px;
+  text-transform: uppercase;
+
+  .title {
+    font-family: Proxima Nova, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 34px;
+    text-align: right;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    display: flex;
+    position: relative !important;
+  }
+
+  .after {
+    font-family: Neue Machina, sans-serif;
+    position: absolute !important;
+    top: -7px !important;
+    right: 0 !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 140%;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: #FFFFFF;
+    opacity: 0.6;
+  }
+
+}
+
+.bm-cross-button {
+  display: none;
+}
+
+.header-sidebar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+
+  .logo {
+    div {
+      div {
+        svg {
+          width: 155px;
+          height: 25px;
+        }
+      }
+    }
+  }
+
+  .close-sidebar {
+
+  }
+}

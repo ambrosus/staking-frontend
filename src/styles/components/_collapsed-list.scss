@@ -201,6 +201,7 @@ button[disabled] {
   border-radius: 2px;
 }
 .btn-group{
+  z-index: 2;
   padding-top: 100px;
   display: flex;
   align-items: center;
