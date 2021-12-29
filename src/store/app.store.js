@@ -7,6 +7,8 @@ export class AppStore {
 
   tokenPrice = undefined;
 
+  signer = undefined;
+
   refresh = false;
 
   constructor(poolsData, tokenPrice, refresh) {
@@ -19,6 +21,12 @@ export class AppStore {
   setRefresh() {
     runInAction(() => {
       this.refresh = !this.refresh;
+    });
+  }
+
+  setSigner(signer) {
+    runInAction(() => {
+      this.signer = signer;
     });
   }
 

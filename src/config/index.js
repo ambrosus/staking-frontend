@@ -69,11 +69,12 @@ export const injected = new InjectedConnector({
 export const walletconnect = new WalletConnectConnector({
   rpc: { 16718: process.env.REACT_APP_RPC_URL },
   qrcode: true,
+  chainId: 16718,
   bridge: 'https://bridge.walletconnect.org',
   pollingInterval: 12000,
 });
 
-const ConnectorNames = {
+export const ConnectorNames = {
   Injected: 'Injected',
   WalletConnect: 'WalletConnect',
 };

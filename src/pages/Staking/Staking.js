@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-
+/*eslint-disable*/
 import Header from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from '../../hooks';
 import RenderItems from '../../components/RenderItems';
@@ -40,9 +40,10 @@ const Staking = observer(() => {
 
   useEffect(() => {
     debugLog('Staking render useEffect');
+    // TODO change here when will do WalletConnect
     activate(connectorsByName.Injected);
     getPools();
-    if (ethereum?.isMetaMask) {
+    if (ethereum) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         window.addEventListener('focus', changeNetwork);
       }
