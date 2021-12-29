@@ -29,14 +29,13 @@
 
   &.black {
     color: white;
-    min-width: 187px;
-    background: $black;
+    background: #212121;
   }
 
   &.white {
     min-width: 187px;
     color: $black;
-    background: white;
+    background: #FFFFFF;
   }
 
   &.gradient {
@@ -47,6 +46,12 @@
 
   &.secondary {
     background-color: $color-blue;
+  }
+
+  &.action {
+    color: white;
+    min-width: 187px;
+    background: $black;
   }
 
   &.primary {
@@ -73,16 +78,6 @@
   }
 }
 
-button[disabled=disabled], button:disabled {
-  background: $color-blue !important;
-  opacity: 0.8;
-  pointer-events: none;
-  cursor: not-allowed;
-
-  p {
-    color: #D0DBF3 !important;
-  }
-}
 
 .primary {
   &:hover {
@@ -90,15 +85,39 @@ button[disabled=disabled], button:disabled {
   }
 }
 
-.green {
-  &:hover {
-    background-color: $green-light;
-  }
-}
-
 .secondary {
   &:hover {
     background-color: $color-gray-light;
+  }
+}
+
+.black {
+  &:hover {
+    background-color: #1A1A1A;
+    text-decoration-line: underline;
+  }
+}
+
+button[disabled=disabled], button:disabled {
+  background: inherit !important;
+  opacity: 0.8;
+  pointer-events: none;
+  cursor: not-allowed;
+  text-decoration-line: none;
+
+  p {
+    opacity: 0.8;
+  }
+}
+button{
+  &:hover {
+    text-decoration-line: underline;
+  }
+}
+.action {
+  &:hover {
+    background-color: #212121;
+    text-decoration-line: underline;
   }
 }
 

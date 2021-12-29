@@ -4,14 +4,13 @@ import { observer } from 'mobx-react-lite';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
-import Paragraph from '../../../../components/Paragraph';
-import ButtonGroup from '../../../../components/ButtonGroup';
 import {
   checkValidNumberString,
   parseFloatToBigNumber,
   formatRounded,
   FIXED_POINT,
   ZERO,
+  MIN_SHOW_STAKE,
 } from '../../../../services/numbers';
 import StakingWrapper from '../../../../services/staking.wrapper';
 import {
@@ -27,7 +26,7 @@ import {
 } from '../../../../utils/helpers';
 import appStore from '../../../../store/app.store';
 
-const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
+const Withdraw = observer(({ withdrawContractInfo }) => {
   const { myStakeInAMB } = withdrawContractInfo;
   const [inputValue, setInputValue] = useState('');
   const [afterWithdraw, setAfterWithdraw] = useState(
@@ -85,8 +84,17 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
 
   return (
     <div className="deposit">
+      <p className="available-tokens">
+        <span>
+          Available for withdraw:{' '}
+          {myStakeInAMB && myStakeInAMB.gte(MIN_SHOW_STAKE)
+            ? formatThousand(formatRounded(myStakeInAMB, 2))
+            : 0}{' '}
+          AMB
+        </span>
+      </p>
       <div className="deposit-heading">
-        <span style={{ fontWeight: 'normal', fontSize: 14 }}>Amount</span>
+        <span>Amount</span>
       </div>
       <div className="deposit-actions">
         <Input
@@ -98,9 +106,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
         <div className="deposit-actions__buttons">
           <div>
             <Button
-              buttonStyles={{ height: 48 }}
-              priority="secondary"
-              type="outline"
+              type="black"
               disabled={myStakeInAMB.eq(0)}
               onclick={() =>
                 myStakeInAMB &&
@@ -112,9 +118,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
           </div>
           <div>
             <Button
-              buttonStyles={{ height: 48 }}
-              priority="secondary"
-              type="outline"
+              type="black"
               disabled={myStakeInAMB.eq(0)}
               onclick={() =>
                 myStakeInAMB &&
@@ -126,9 +130,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
           </div>
           <div>
             <Button
-              buttonStyles={{ height: 48 }}
-              priority="secondary"
-              type="outline"
+              type="black"
               disabled={myStakeInAMB.eq(0)}
               onclick={() =>
                 myStakeInAMB &&
@@ -142,9 +144,7 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
           </div>
           <div>
             <Button
-              priority="secondary"
-              buttonStyles={{ height: 48 }}
-              type="outline"
+              type="black"
               disabled={myStakeInAMB.eq(0)}
               onclick={() =>
                 setInputValue(
@@ -157,56 +157,39 @@ const Withdraw = observer(({ withdrawContractInfo, hideModal }) => {
           </div>
         </div>
       </div>
-      <div className="space" />
-      <div className="space" style={{ marginBottom: 5 }} />
       <div className="deposit-stake-options">
         <div>
-          <Paragraph size="s-400" style={{ color: '#9198BB' }}>
-            <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
+          <p className="deposit-stake-options__estimated">
+            <span>
               Estimated stake after withdraw:{' '}
               {afterWithdraw.lt(0)
                 ? 0
                 : formatThousand(formatRounded(afterWithdraw, 2))}{' '}
               AMB
             </span>
-          </Paragraph>
+          </p>
         </div>
-        <ButtonGroup>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              buttonStyles={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                marginRight: 20,
-              }}
-              type="green"
-              disabled={
-                !checkValidNumberString(inputValue) ||
-                parseFloatToBigNumber(inputValue).eq(0) ||
-                parseFloatToBigNumber(inputValue).gt(
-                  myStakeInAMB.add(FIXED_POINT.div(2)),
-                )
-              }
-              onclick={withdrawPayment}
-            >
-              <Paragraph size="m-500">Withdraw</Paragraph>
-            </Button>
-          </div>
-          <div className="close-btn">
-            <Button type="secondary" onclick={hideModal}>
-              <Paragraph size="m-500">Close</Paragraph>
-            </Button>
-          </div>
-        </ButtonGroup>
+        <div className="deposit-stake-btn">
+          <Button
+            type="action"
+            disabled={
+              !checkValidNumberString(inputValue) ||
+              parseFloatToBigNumber(inputValue).eq(0) ||
+              parseFloatToBigNumber(inputValue).gt(
+                myStakeInAMB.add(FIXED_POINT.div(2)),
+              )
+            }
+            onclick={withdrawPayment}
+          >
+            <p className="deposit-stake-btn__text">Withdraw</p>
+          </Button>
+        </div>
       </div>
     </div>
   );
 });
 
 Withdraw.propTypes = {
-  hideModal: PropTypes.func,
   withdrawContractInfo: PropTypes.any,
 };
 

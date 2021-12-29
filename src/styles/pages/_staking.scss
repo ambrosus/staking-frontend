@@ -29,7 +29,7 @@
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
-    color: #9198BB;
+    color: #F9F8FB;
     white-space: nowrap;
     @media (max-width: 600px) {
       > div {
@@ -263,7 +263,7 @@
     }
 
     .collapsed-content {
-      background: $white;
+      background: $graphitered;
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
 
@@ -294,6 +294,64 @@
       }
 
       &__body {
+        &__tabs-titles {
+          display: flex;
+          flex-direction: row;
+          gap: 56px;
+
+          .active-tab {
+            position: relative;
+
+            p {
+              display: flex;
+              align-items: center;
+              font-family: Halvar Breitschrift, sans-serif;
+              font-style: normal;
+              font-weight: normal;
+              color: #FFFFFF;
+              order: 0;
+              margin: 0 10px;
+              font-size: 28px;
+              line-height: 32px;
+            }
+
+            &:after {
+              content: '';
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              position: absolute;
+              width: 100%;
+              height: 1px;
+              bottom: -18px;
+              background: #FFFFFF;
+              opacity: 0.5;
+              flex-grow: 0;
+            }
+          }
+
+          &--tab {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            p {
+              display: flex;
+              align-items: center;
+              font-family: Halvar Breitschrift, sans-serif;
+              font-style: normal;
+              font-weight: normal;
+              font-size: 28px;
+              line-height: 32px;
+              color: #898989;
+              order: 0;
+              margin: 0 10px;
+            }
+          }
+        }
       }
     }
   }
@@ -303,29 +361,78 @@
 .deposit {
   display: flex;
   flex-direction: column;
+  margin-top: 60px;
+
+  *, * {
+    color: #FFFFFF !important;
+  }
+
+  .available-tokens {
+    font-family: Proxima Nova, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    font-feature-settings: 'liga' off;
+    color: #FFFFFF;
+    margin-bottom: 48px;
+
+  }
 
   .deposit-heading {
     width: 100%;
-    padding: 15px 10px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    font-family: Halvar Breitschrift, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    font-feature-settings: 'liga' off;
+
+    /* White */
+
+    color: #FFFFFF;
+
+    margin-bottom: 12px;
+
   }
 
   .deposit-actions {
     display: flex;
     width: 100%;
     flex-direction: row !important;
+    justify-content: space-between;
+    max-width: 100%;
+    align-items: center;
+    margin-bottom: 40px;
     @media (max-width: 480px) {
       flex-direction: column !important;
+    }
+
+    .input {
+      width: 70%;
     }
 
     &__buttons {
       flex-direction: row;
       display: flex;
+      height: 56px !important;
 
       > div {
+        height: 56px !important;
+
         button {
-          width: 64px !important;
+          position: static;
+          width: 87px !important;
+          top: 0px;
+          background: #212121;
+          border: 1px solid #FFFFFF;
+          box-sizing: border-box;
 
           p {
             font-family: Halvar Breitschrift, sans-serif !important;
@@ -341,10 +448,10 @@
 
       > div {
         color: #9198BB !important;
-        padding-left: 10px;
+        padding-left: 20px;
 
         button {
-          height: 48px !important;
+          height: 56px !important;
         }
       }
 
@@ -357,7 +464,6 @@
       > div {
         margin-top: 0;
         color: #9198BB !important;
-
       }
 
       @media (max-width: 480px) {
@@ -388,7 +494,17 @@
     margin-left: auto;
 
     button {
-      height: 48px !important;
+      &__text{
+        font-family: Neue Machina, sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 15px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+      }
     }
   }
 
@@ -405,6 +521,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      &__estimated{
+        font-family: Proxima Nova, sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+        font-feature-settings: 'liga' off;
+        color: #F9F8FB;
+
+
+      }
     }
   }
 }
@@ -429,8 +558,10 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  background-color: white;
+  background-color: transparent;
   width: 100%;
+
+
   @media (max-width: 480px) {
     height: auto;
   }
@@ -452,18 +583,18 @@
     align-items: center;
     flex-direction: row;
     justify-content: flex-end;
+    gap: 20px;
 
     &--total {
       display: flex;
       align-items: flex-start;
       flex-direction: column;
       width: max-content;
-      height: 90px;
-      padding: 17px 20px;
-      justify-content: space-around;
-      border: 1px solid $color-gray-light;
+      height: 93px;
+      background: $graphitered;
+      padding: 20px;
+      justify-content: space-between;
       box-sizing: border-box;
-      border-radius: 12px;
     }
 
     &--course {
@@ -471,15 +602,11 @@
       align-items: flex-start;
       flex-direction: column;
       width: max-content;
-      justify-content: space-around;
-
-      height: 90px;
-      padding: 17px 20px;
-      margin-left: 40px;
-
-      border: 1px solid $color-gray-light;
+      height: 93px;
+      background: $graphitered;
+      padding: 20px;
+      justify-content: space-between;
       box-sizing: border-box;
-      border-radius: 12px;
     }
 
     @media (max-width: 480px) {
@@ -507,13 +634,14 @@
 }
 
 .percent-btn {
-  font-family: Halvar Breitschrift, sans-serif;
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-size: 12px !important;
-  display: flex !important;
-  align-items: center !important;
-  text-align: center !important;
-  color: #9198BB !important;
+  font-family: Neue Machina, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
 
 }

@@ -8,6 +8,9 @@ import {
   SupportedChainId,
 } from '../config';
 
+import avatarIcon from '../assets/svg/avatar.svg';
+import avatarIcon2 from '../assets/svg/avatar2.svg';
+
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,6 +21,17 @@ const NETWORK_POLLING_INTERVALS = {
   [SupportedChainId.GOERLI]: 1000,
   [SupportedChainId.KOVAN]: 1000,
   [SupportedChainId.AMBROSUS]: 1000,
+};
+
+export const poolIcon = (index) => {
+  switch (index) {
+    case index % 2:
+      return avatarIcon2;
+    case index:
+      return avatarIcon;
+    default:
+      return avatarIcon;
+  }
 };
 
 export const getLibrary = (provider = undefined) => {

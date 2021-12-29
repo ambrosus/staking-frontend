@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import { ReactSVG } from 'react-svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
@@ -10,7 +11,6 @@ import Button from '../../../../components/Button';
 import Paragraph from '../../../../components/Paragraph';
 import useModal from '../../../../hooks/useModal';
 import Modal from '../../../../components/Modal';
-import Withdraw from '../Withdraw';
 import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
@@ -104,249 +104,117 @@ const Deposit = observer(({ depositInfo }) => {
   }, [inputValue, account, depositInfo]);
 
   return (
-    <>
-      <div className="collapsed-content__header">
-        <>
-          <span style={{ fontWeight: 'normal', fontSize: 20 }}>
-            Deposit AMB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+    <div className="deposit">
+      {!isDesktop && pathname === STAKING_PAGE && (
+        <p className="available-tokens">
+          <span>
+            &nbsp; You staked: {myStakeInAMB && formatRounded(myStakeInAMB, 2)}{' '}
+            AMB
           </span>
-          {/* TODO toltip for deposit */}
-        </>
-        {!isDesktop && pathname === STAKING_PAGE && (
-          <Paragraph size="s-400">
-            <span
-              style={{
-                fontWeight: 600,
-                fontSize: 14,
-                fontFamily: ' Proxima Nova',
-                color: '#333333',
-              }}
-            >
-              &nbsp; You staked:{' '}
-              {myStakeInAMB && formatRounded(myStakeInAMB, 2)} AMB
-            </span>
-          </Paragraph>
-        )}
-        <Paragraph size="s-400">
-          <span
-            style={{
-              fontWeight: 600,
-              fontSize: 14,
-              fontFamily: ' Proxima Nova',
-              color: '#333333',
-            }}
-          >
-            &nbsp; Available for stake:{' '}
-            {formatThousand(formatRounded(balance, 2))} AMB
-          </span>
-        </Paragraph>
+        </p>
+      )}
+      <p className="available-tokens">
+        <span>
+          Available for stake: {formatThousand(formatRounded(balance, 2))} AMB
+        </span>
+      </p>
 
-        <div style={{ flexBasis: '90%' }} />
+      <div className="deposit-heading">
+        {' '}
+        <span>Amount</span>
+        {inputValue && inputError && (
+          <span
+            style={{ fontWeight: 'normal', fontSize: 12, color: '#FF6767' }}
+          >
+            &nbsp;&nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
+          </span>
+        )}
       </div>
-      <div className="deposit">
-        <div className="deposit-heading">
-          {' '}
-          <span style={{ fontWeight: 'normal', fontSize: 14 }}>Amount</span>
-          {inputValue && inputError && (
-            <span
-              style={{ fontWeight: 'normal', fontSize: 12, color: '#FF6767' }}
-            >
-              &nbsp;&nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
-            </span>
-          )}
-        </div>
-        <div className="deposit-actions">
-          <Input
-            onchange={setInputValue}
-            iconLeft
-            error={inputError}
-            placeholder="1000 min"
-            value={inputValue}
-          />
-          <div className="deposit-actions__buttons">
-            <div>
-              <Button
-                buttonStyles={{ height: 48 }}
-                priority="secondary"
-                type="outline"
-                disabled={balance.isZero()}
-                onclick={() =>
-                  setInputValue(() =>
-                    balance.div(4).div(FIXED_POINT).toString(),
-                  )
-                }
-              >
-                <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>{' '}
-              </Button>
-            </div>
-            <div>
-              <Button
-                buttonStyles={{ height: 48 }}
-                priority="secondary"
-                type="outline"
-                disabled={balance.isZero()}
-                onclick={() =>
-                  setInputValue(() =>
-                    balance.div(2).div(FIXED_POINT).toString(),
-                  )
-                }
-              >
-                <span className="percent-btn">{FIFTY_PERCENT}</span>{' '}
-              </Button>
-            </div>
-            <div>
-              <Button
-                priority="secondary"
-                buttonStyles={{ height: 48 }}
-                type="outline"
-                disabled={balance.isZero()}
-                onclick={() =>
-                  setInputValue(() =>
-                    balance.mul(3).div(4).div(FIXED_POINT).toString(),
-                  )
-                }
-              >
-                <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>{' '}
-              </Button>
-            </div>
-            <div>
-              <Button
-                priority="secondary"
-                buttonStyles={{ height: 48 }}
-                type="outline"
-                disabled={balance.isZero()}
-                onclick={() =>
-                  setInputValue(balance.div(FIXED_POINT).toString())
-                }
-              >
-                <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className="space" style={{ marginBottom: 5 }} />
-        <div className="space" style={{ marginBottom: 5 }} />
-        <div className="deposit-stake-options">
-          <div className="flex" style={{ marginBottom: 5 }}>
-            {/* TODO toltip for unstake */}
-            <Paragraph
-              size="s-400"
-              style={{ color: '#9198BB' }}
-              role="presentation"
-              onClick={toggleWithdrawForm}
-            >
-              &nbsp;{' '}
-              <u style={{ cursor: 'pointer', color: '#4A38AE' }}>Unstake</u>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-            </Paragraph>
-          </div>
-          <div style={{ marginBottom: 5 }}>
-            <Paragraph
-              size="s-400-gray"
-              style={{ color: '#9198BB', marginLeft: 10 }}
-            >
-              <span style={{ fontFamily: ' Proxima Nova', fontSize: 14 }}>
-                Available for withdraw:{' '}
-                {myStakeInAMB && myStakeInAMB.gte(MIN_SHOW_STAKE)
-                  ? formatThousand(formatRounded(myStakeInAMB, 2))
-                  : 0}{' '}
-                AMB
-              </span>
-            </Paragraph>
-          </div>
-          <div className="deposit-stake-btn">
+      <div className="deposit-actions">
+        <Input
+          onchange={setInputValue}
+          iconLeft
+          error={inputError}
+          placeholder="1 000 min"
+          value={inputValue}
+        />
+        <div className="deposit-actions__buttons">
+          <div>
             <Button
-              type="green"
-              disabled={
-                !isPoolActive ||
-                !checkValidNumberString(inputValue) ||
-                parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
-                parseFloatToBigNumber(inputValue).gt(balance)
+              type="black"
+              disabled={balance.isZero()}
+              onclick={() =>
+                setInputValue(() => balance.div(4).div(FIXED_POINT).toString())
               }
-              onclick={checkoutPayment}
             >
-              <Paragraph size="m-500">
-                {!isPoolActive ? 'Pool is offline' : ' Stake'}
-              </Paragraph>
+              <span className="percent-btn">{TWENTY_FIVE_PERCENT}</span>{' '}
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="black"
+              disabled={balance.isZero()}
+              onclick={() =>
+                setInputValue(() => balance.div(2).div(FIXED_POINT).toString())
+              }
+            >
+              <span className="percent-btn">{FIFTY_PERCENT}</span>{' '}
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="black"
+              disabled={balance.isZero()}
+              onclick={() =>
+                setInputValue(() =>
+                  balance.mul(3).div(4).div(FIXED_POINT).toString(),
+                )
+              }
+            >
+              <span className="percent-btn">{SEVENTY_FIVE_PERCENT}</span>{' '}
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="black"
+              disabled={balance.isZero()}
+              onclick={() => setInputValue(balance.div(FIXED_POINT).toString())}
+            >
+              <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}
             </Button>
           </div>
         </div>
-        <Modal isShowing={isWithdrawShowForm} hide={toggleWithdrawForm}>
-          <>
-            <div className="modal--modal-body__header">
-              <div>Pool</div>
-              <div>My Stake</div>
-              <div>Total pool stake</div>
-              <div>APY</div>
-            </div>
-            <div className="space" style={{ marginBottom: 5 }} />
-            <div className="modal--modal-body__header">
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <ReactSVG src={avatarIcon} wrapper="span" />
-                <Paragraph size="l-500">
-                  &nbsp;&nbsp; {contractName.substring(0, 8)}
-                </Paragraph>
-              </div>
-              <div style={{ textTransform: 'uppercase' }}>
-                <DisplayValue
-                  size="l-400"
-                  value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
-                />
-              </div>
-              <div style={{ textTransform: 'uppercase' }}>
-                {' '}
-                <DisplayValue
-                  value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
-                  size="l-400"
-                />
-              </div>
-              <div>
-                {' '}
-                <Paragraph style={{ textTransform: 'uppercase' }} size="l-700">
-                  {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT)
-                    ? 'OFFLINE'
-                    : `${poolAPY}%`}
-                </Paragraph>
-              </div>
-            </div>
-            <div className="space" />
-            <div className="line" />
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Paragraph size="xxl-500">
-                <span style={{ fontWeight: 'normal', fontSize: 20 }}>
-                  Unstake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-              </Paragraph>
-              <Paragraph size="s-400" style={{ fontWeight: 500, fontSize: 12 }}>
-                <span
-                  style={{
-                    fontFamily: ' Proxima Nova',
-                    fontSize: 14,
-                    fontWeight: 600,
-                  }}
-                >
-                  Available for withdraw:{' '}
-                  {myStakeInAMB && myStakeInAMB.gte(MIN_SHOW_STAKE)
-                    ? formatThousand(formatRounded(myStakeInAMB, 2))
-                    : 0}{' '}
-                  AMB
-                </span>
-              </Paragraph>
-            </div>
-            <Withdraw
-              withdrawContractInfo={depositInfo}
-              hideModal={toggleWithdrawForm}
-            />
-          </>
-        </Modal>
       </div>
-    </>
+      <div className="deposit-stake-options">
+        <div>
+          <p className="deposit-stake-options__estimated">
+            <span>
+              Available for withdraw:{' '}
+              {myStakeInAMB && myStakeInAMB.gte(MIN_SHOW_STAKE)
+                ? formatThousand(formatRounded(myStakeInAMB, 2))
+                : 0}{' '}
+              AMB
+            </span>
+          </p>
+        </div>
+        <div className="deposit-stake-btn">
+          <Button
+            type="action"
+            disabled={
+              !isPoolActive ||
+              !checkValidNumberString(inputValue) ||
+              parseFloatToBigNumber(inputValue).lt(THOUSAND) ||
+              parseFloatToBigNumber(inputValue).gt(balance)
+            }
+            onclick={checkoutPayment}
+          >
+            <p className="deposit-stake-btn__text">
+              {!isPoolActive ? 'Pool is offline' : ' Stake'}
+            </p>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 });
 

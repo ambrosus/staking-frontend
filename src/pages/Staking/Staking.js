@@ -1,9 +1,9 @@
+/*eslint-disable*/
 import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-/*eslint-disable*/
 import Header from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from '../../hooks';
 import RenderItems from '../../components/RenderItems';
@@ -20,6 +20,10 @@ import { Loader } from '../../components/Loader';
 import { collapsedReducer } from '../../utils/reducers';
 import { changeNetwork, debugLog } from '../../utils/helpers';
 import StakingItem from '../../components/StakingItem';
+import { ReactSVG } from 'react-svg';
+import headerLogoSvg from 'assets/svg/header-logo.svg';
+import Menu from 'pages/Home/components/Menu';
+
 const NotSupported = React.lazy(() =>
   import(/* webpackPrefetch: true */ '../../components/NotSupported'),
 );
@@ -33,7 +37,6 @@ const Staking = observer(() => {
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [checkNetworkChain, setCheckNetworkChain] = useState(false);
   const [pools, getPools] = useContext(PoolsContext);
-  const { pathname } = useLocation();
   const { isDesktop } = useMobileDetect();
 
   useTimeout(() => setCheckNetworkChain(true), 1500);
@@ -59,7 +62,17 @@ const Staking = observer(() => {
       )}
       <div className="layout">
         <Header />
-        <div className="content">
+        {/*<div className="home__top">*/}
+        {/*  <div className="home__top--header">*/}
+        {/*    <Link to="/">*/}
+        {/*      <div className="logo">*/}
+        {/*        <ReactSVG src={headerLogoSvg} wrapper="span"/>*/}
+        {/*      </div>*/}
+        {/*    </Link>*/}
+        {/*    <Menu/>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+        <div className="content" style={{ marginTop: 90 }}>
           <div className="page">
             {pools.length > 0 ? (
               <RenderItems>
@@ -70,9 +83,7 @@ const Staking = observer(() => {
                   <>
                     <div className="staking__header">
                       <div>Pool</div>
-                      {isDesktop && pathname === STAKING_PAGE && (
-                        <div>My Stake</div>
-                      )}
+                      {isDesktop && <div>My Stake</div>}
                       <div>Total pool stake</div>
                       <div>APY</div>
                       <div style={{ marginRight: -20 }} />

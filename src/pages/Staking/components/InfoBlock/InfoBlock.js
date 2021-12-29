@@ -83,12 +83,12 @@ const InfoBlock = observer(({ poolsArr, account }) => {
       <div className="wrapper">
         <>
           <div className="info-block__address">
-            <Paragraph size="m-400" style={{ paddingBottom: 5 }}>
+            <Paragraph size="m-400" style={{ paddingBottom: 5, color: '#fff' }}>
               My Address
             </Paragraph>
             <Paragraph
               size="l-500"
-              style={{ color: '#333333', fontSize: 16, fontWeight: 400 }}
+              style={{ color: '#15D378', fontSize: 16, fontWeight: 400 }}
             >
               {account
                 ? ` ${account.substr(0, 9)}...${account.slice(32)}`
@@ -129,7 +129,11 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                     />
                     <Paragraph
                       size="m-400"
-                      style={{ paddingBottom: 5, whiteSpace: 'nowrap' }}
+                      style={{
+                        paddingBottom: 5,
+                        whiteSpace: 'nowrap',
+                        color: '#fff',
+                      }}
                     >
                       &nbsp;Holdings&nbsp;
                     </Paragraph>
@@ -155,12 +159,12 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                   color="#1ACD8C"
                   value={totalStaked && formatRounded(totalStaked, 2)}
                 />
-                <Paragraph size="xl-400" style={{ color: '#4A38AE' }}>
+                <Paragraph size="xl-400" style={{ color: '#fff' }}>
                   &nbsp; / &nbsp;
                 </Paragraph>
                 <DisplayValue
                   size="xl-400"
-                  color="#4A38AE"
+                  color="#fff"
                   value={totalStakedInUsd}
                   symbol="$"
                 />
@@ -183,7 +187,10 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                   }}
                   src={earningsIcon}
                 />
-                <Paragraph size="m-400" style={{ paddingBottom: 5 }}>
+                <Paragraph
+                  size="m-400"
+                  style={{ paddingBottom: 5, color: '#fff' }}
+                >
                   &nbsp;Est. yearly yield&nbsp;
                 </Paragraph>
                 <ReactSVG
@@ -207,12 +214,12 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                   color="#1ACD8C"
                   value={totalReward}
                 />
-                <Paragraph size="xl-400" style={{ color: '#4A38AE' }}>
+                <Paragraph size="xl-400" style={{ color: '#fff' }}>
                   &nbsp; / &nbsp;
                 </Paragraph>
                 <DisplayValue
                   size="xl-400"
-                  color="#4A38AE"
+                  color="#fff"
                   value={totalRewardInUsd || 0}
                   symbol="$"
                 />

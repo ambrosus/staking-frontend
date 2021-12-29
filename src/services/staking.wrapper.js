@@ -115,9 +115,6 @@ export default class StakingWrapper {
 
   static async getPoolsData(loggedIn = false) {
     debugLog('## getPoolsData');
-    console.log(
-      appStore.signer !== undefined ? 'appStore.signer' : 'window.ethereum',
-    );
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(
           appStore.signer !== undefined ? appStore.signer : window.ethereum,
