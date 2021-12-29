@@ -189,32 +189,28 @@ const StakingItem = ({
                 {active && (
                   <div className="collapsed-content__body">
                     <div className="collapsed-content__body__tabs-titles">
-                      {content.map((section, index) => {
-                        console.log('index', index);
-                        console.log('section index', section.idx);
-                        return (
-                          <div
-                            key={section.tab}
-                            onClick={() => changeItem(index)}
-                            role="presentation"
-                            className={cx(
-                              'collapsed-content__body__tabs-titles--tab',
-                              {
-                                'active-tab': selectedTabIndex === section.idx,
-                              },
-                            )}
-                          >
-                            <p>
-                              <span
-                                style={{ fontWeight: 'normal', fontSize: 20 }}
-                              >
-                                {section.tab}
-                              </span>
-                            </p>
-                            <ReactSVG src={information} wrapper="span" />
-                          </div>
-                        );
-                      })}
+                      {content.map((section, index) => (
+                        <div
+                          key={section.tab}
+                          onClick={() => changeItem(index)}
+                          role="presentation"
+                          className={cx(
+                            'collapsed-content__body__tabs-titles--tab',
+                            {
+                              'active-tab': selectedTabIndex === section.idx,
+                            },
+                          )}
+                        >
+                          <p>
+                            <span
+                              style={{ fontWeight: 'normal', fontSize: 20 }}
+                            >
+                              {section.tab}
+                            </span>
+                          </p>
+                          <ReactSVG src={information} wrapper="span" />
+                        </div>
+                      ))}
                     </div>
                     <div>{currentItem.content}</div>
                   </div>
