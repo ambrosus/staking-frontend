@@ -112,8 +112,6 @@ export default class StakingWrapper {
   }
 
   static async getPoolsData(loggedIn, connector) {
-    console.log('connector', loggedIn);
-    console.log('connector', connector);
     debugLog('## getPoolsData');
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(connector).getSigner()

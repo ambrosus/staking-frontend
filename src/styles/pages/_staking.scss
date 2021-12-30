@@ -44,6 +44,7 @@
       white-space: nowrap;
       @media (max-width: 600px) {
         padding-right: 160px;
+
       }
     }
 
@@ -62,8 +63,12 @@
       white-space: nowrap;
       display: flex;
       align-items: flex-end;
-      min-width: 200px;
+      min-width: 108px;
       max-width: 200px;
+      @media (max-width: 480px) {
+        min-width: 110px !important;
+        max-width: none !important;
+      }
     }
   }
 
@@ -182,7 +187,7 @@
               }
             }
             > * {
-              margin: 0 !important;
+              margin: 0 13px !important;
 
             }
           }
@@ -202,6 +207,8 @@
             min-width: 150px !important;
             max-width: 150px !important;
             @media (max-width: 600px) {
+              margin: 0 30px;
+              padding-left:30px;
               white-space: pre-wrap;
               min-width: 70px !important;
               max-width: 70px !important;
@@ -222,7 +229,7 @@
           min-width: 200px;
           max-width: 200px;
           @media (max-width: 600px) {
-            min-width: 110px;
+            min-width: 125px;
             max-width: 110px;
           }
         }

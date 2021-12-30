@@ -34,9 +34,19 @@ export default () => {
               color: isMainPage && '#FFFFFF',
             }}
           >
-            <div className="staking__header__clearfix-pool">Pool</div>
-            <div>Total pool stake</div>
-            <div className="staking__header__clearfix-apy">APY</div>
+            <div
+              className="staking__header__clearfix-pool"
+              style={{ marginLeft: 60 }}
+            >
+              Pool
+            </div>
+            <div style={{ marginLeft: 80 }}>Total pool stake</div>
+            <div
+              className="staking__header__clearfix-apy"
+              style={{ marginLeft: 146 }}
+            >
+              APY
+            </div>
             <div style={{ maxWidth: 160, minWidth: 160 }} />
           </div>
           <div className="staking__pools">
