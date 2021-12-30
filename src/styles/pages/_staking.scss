@@ -290,7 +290,7 @@
     }
 
     .item--content {
-      padding: 0 10px;
+      padding: 0 25px;
     }
 
     .collapsed-content {
@@ -344,12 +344,11 @@
             justify-content: center;
             gap: 10px;
             white-space: nowrap;
-            width: 165px;
+            width: auto;
             @media (max-width: 480px) {
               align-items: center;
               max-width: max-content;
               width: 50%;
-
               gap: 0px;
               justify-content: space-between;
             }
@@ -372,6 +371,8 @@
               }
 
               span {
+                font-size: 28px!important;
+                line-height: 32px;
                 @media (max-width: 480px) {
                   font-size: 18px !important;
                   line-height: 21px;
@@ -432,8 +433,8 @@
               font-family: Halvar Breitschrift, sans-serif;
               font-style: normal;
               font-weight: normal;
-              font-size: 28px;
-              line-height: 32px;
+              font-size: 28px!important;
+              line-height: 32px!important;
               color: #898989;
               margin: 0 10px 0 0;
               @media (max-width: 480px) {
@@ -444,6 +445,8 @@
               }
 
               span {
+                font-size: 28px!important;
+                line-height: 32px;
                 @media (max-width: 480px) {
                   font-size: 18px !important;
                   line-height: 21px;
@@ -647,6 +650,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    margin-bottom: 35px;
     @media (max-width: 480px) {
       align-items: flex-start;
       flex-direction: column;
