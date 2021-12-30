@@ -6,6 +6,8 @@ export class AppStore {
 
   tokenPrice = undefined;
 
+  tokenChange = undefined;
+
   signer = undefined;
 
   refresh = false;
@@ -41,6 +43,12 @@ export class AppStore {
   setTokenPrice(price) {
     runInAction(() => {
       this.tokenPrice = price;
+    });
+  }
+
+  setTokenChange(change) {
+    runInAction(() => {
+      this.tokenChange = change;
     });
   }
 }

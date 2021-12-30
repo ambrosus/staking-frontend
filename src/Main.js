@@ -6,6 +6,7 @@ import RenderRoutes from './components/RenderRoutes';
 import { getLibrary } from './utils/helpers';
 import { ethereum } from './config';
 import './styles/Main.scss';
+import ReactNotifications from 'react-notifications-component';
 
 const Main = () => {
   const handleChainChanged = () => window.location.reload();
@@ -34,6 +35,7 @@ const Main = () => {
   return (
     <BrowserRouter>
       <Web3ReactProvider getLibrary={getLibrary}>
+        <ReactNotifications />
         <RenderRoutes />
       </Web3ReactProvider>
     </BrowserRouter>

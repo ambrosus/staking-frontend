@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import { Link, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import Sidebar from '../../components/Sidebar';
 import Header from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from '../../hooks';
 import RenderItems from '../../components/RenderItems';
@@ -55,6 +56,7 @@ const Staking = observer(() => {
 
   return (
     <>
+      <Sidebar pageWrapId="root" outerContainerId="root" />
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
         <React.Suspense fallback={<div />}>
           <NotSupported key={chainId} onclick={changeNetwork} />

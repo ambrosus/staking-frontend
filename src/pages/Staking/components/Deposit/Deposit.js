@@ -108,8 +108,7 @@ const Deposit = observer(({ depositInfo }) => {
       {!isDesktop && pathname === STAKING_PAGE && (
         <p className="available-tokens">
           <span>
-            &nbsp; You staked: {myStakeInAMB && formatRounded(myStakeInAMB, 2)}{' '}
-            AMB
+            You staked: {myStakeInAMB && formatRounded(myStakeInAMB, 2)} AMB
           </span>
         </p>
       )}

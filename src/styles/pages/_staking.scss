@@ -8,6 +8,7 @@
   margin: 0 auto;
   height: auto;
   @media (max-width: 480px) {
+    display: flex;
     width: 95%;
     flex-direction: column;
   }
@@ -34,8 +35,8 @@
     @media (max-width: 600px) {
       > div {
         font-size: 10px !important;
-        max-width: 38px !important;
-        min-width: 35px !important;
+        max-width: 80px !important;
+        min-width: 100px !important;
       }
     }
 
@@ -173,7 +174,6 @@
 
         &__vault-assets {
           @media (max-width: 600px) {
-            padding-left: 95px;
             div {
               span {
                 p {
@@ -203,13 +203,12 @@
             max-width: 150px !important;
             @media (max-width: 600px) {
               white-space: pre-wrap;
-              min-width: 80px !important;
-              max-width: 80px !important;
+              min-width: 70px !important;
+              max-width: 70px !important;
             }
           }
 
           @media (max-width: 600px) {
-            padding-left: 105px;
             p {
               font-size: 10px !important;
             }
@@ -256,6 +255,31 @@
           margin-left: 0;
         }
       }
+
+      &__collapse-btn {
+        cursor: pointer;
+        width: 95px;
+        white-space: nowrap;
+        padding-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: Neue Machina, sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 15px;
+        color: #FFFFFF;
+        @media (max-width: 600px) {
+          padding-right: 0px;
+          font-size: 12px;
+          width: 60px;
+          line-height: 12px;
+          display: flex;
+          align-items: center;
+          color: #FFFFFF;
+        }
+      }
     }
 
     .item--content {
@@ -266,6 +290,7 @@
       background: $graphitered;
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
+      padding: 0 !important;
 
       p {
         font-style: normal !important;
@@ -298,9 +323,29 @@
           display: flex;
           flex-direction: row;
           gap: 56px;
+          @media (max-width: 480px) {
+            gap: 30px;
+            margin-top: 45px;
+            width: 100%;
+          }
 
           .active-tab {
             position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            white-space: nowrap;
+            width: 165px;
+            @media (max-width: 480px) {
+              align-items: center;
+              max-width: max-content;
+              width: 50%;
+
+              gap: 0px;
+              justify-content: space-between;
+            }
 
             p {
               display: flex;
@@ -308,11 +353,34 @@
               font-family: Halvar Breitschrift, sans-serif;
               font-style: normal;
               font-weight: normal;
-              color: #FFFFFF;
-              order: 0;
-              margin: 0 10px;
               font-size: 28px;
               line-height: 32px;
+              color: #fff;
+              margin: 0 10px 0 0;
+              @media (max-width: 480px) {
+                font-size: 18px !important;
+                line-height: 21px;
+                justify-content: center;
+                white-space: nowrap;
+              }
+
+              span {
+                @media (max-width: 480px) {
+                  font-size: 18px !important;
+                  line-height: 21px;
+                  justify-content: center;
+                  white-space: nowrap;
+                }
+              }
+            }
+
+            span {
+              span {
+                svg {
+                  width: 16.5px;
+                  height: 16.5px;
+                }
+              }
             }
 
             &:after {
@@ -328,6 +396,9 @@
               background: #FFFFFF;
               opacity: 0.5;
               flex-grow: 0;
+              @media (max-width: 480px) {
+                width: 100%;
+              }
             }
           }
 
@@ -337,6 +408,16 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            white-space: nowrap;
+            width: 165px;
+            @media (max-width: 480px) {
+              align-items: center;
+              max-width: max-content;
+              width: 50%;
+
+              gap: 0px;
+              justify-content: space-between;
+            }
 
             p {
               display: flex;
@@ -347,8 +428,31 @@
               font-size: 28px;
               line-height: 32px;
               color: #898989;
-              order: 0;
-              margin: 0 10px;
+              margin: 0 10px 0 0;
+              @media (max-width: 480px) {
+                font-size: 18px !important;
+                line-height: 21px;
+                justify-content: center;
+                white-space: nowrap;
+              }
+
+              span {
+                @media (max-width: 480px) {
+                  font-size: 18px !important;
+                  line-height: 21px;
+                  justify-content: center;
+                  white-space: nowrap;
+                }
+              }
+            }
+
+            span {
+              span {
+                svg {
+                  width: 16.5px;
+                  height: 16.5px;
+                }
+              }
             }
           }
         }
@@ -380,6 +484,9 @@
     color: #FFFFFF;
     margin-bottom: 48px;
 
+    @media (max-width: 480px) {
+      margin-bottom: 5px;
+    }
   }
 
   .deposit-heading {
@@ -393,13 +500,11 @@
     font-size: 14px;
     line-height: 16px;
     font-feature-settings: 'liga' off;
-
-    /* White */
-
     color: #FFFFFF;
-
     margin-bottom: 12px;
-
+    @media (max-width: 480px) {
+      margin-top: 22px;
+    }
   }
 
   .deposit-actions {
@@ -416,12 +521,20 @@
 
     .input {
       width: 70%;
+      @media (max-width: 480px) {
+        width: 100%;
+      }
     }
 
     &__buttons {
       flex-direction: row;
       display: flex;
       height: 56px !important;
+
+      @media (max-width: 480px) {
+        width: 100%;
+      }
+
 
       > div {
         height: 56px !important;
@@ -433,6 +546,9 @@
           background: #212121;
           border: 1px solid #FFFFFF;
           box-sizing: border-box;
+          @media (max-width: 480px) {
+            width: 75px !important;
+          }
 
           p {
             font-family: Halvar Breitschrift, sans-serif !important;
@@ -449,6 +565,9 @@
       > div {
         color: #9198BB !important;
         padding-left: 20px;
+        @media (max-width: 480px) {
+          padding-left: 0;
+        }
 
         button {
           height: 56px !important;
@@ -469,10 +588,12 @@
       @media (max-width: 480px) {
         flex-direction: row !important;
         justify-content: space-between;
+        gap: 10px;
         > div:not(:first-child) {
-          margin-left: 5px !important;
+          margin-left: 0px !important;
         }
         > div {
+          max-width: 75px;
           margin-left: 0 !important;
           margin-top: 15px;
         }
@@ -492,9 +613,16 @@
 
   .deposit-stake-btn {
     margin-left: auto;
+    @media (max-width: 480px) {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
 
     button {
-      &__text{
+      width: 149px !important;
+      height: 50px !important;
+
+      &__text {
         font-family: Neue Machina, sans-serif;
         font-style: normal;
         font-weight: 500;
@@ -521,7 +649,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      &__estimated{
+
+      &__estimated {
         font-family: Proxima Nova, sans-serif;
         font-style: normal;
         font-weight: normal;
@@ -532,6 +661,10 @@
         font-feature-settings: 'liga' off;
         color: #F9F8FB;
 
+
+      }
+
+      .deposit-stake-btn {
 
       }
     }
@@ -584,6 +717,11 @@
     flex-direction: row;
     justify-content: flex-end;
     gap: 20px;
+    @media (max-width: 480px) {
+      width: 100%;
+      align-items: center;
+      gap: 10px;
+    }
 
     &--total {
       display: flex;
@@ -595,6 +733,10 @@
       padding: 20px;
       justify-content: space-between;
       box-sizing: border-box;
+      @media (max-width: 480px) {
+        width: 100%;
+        align-items: center;
+      }
     }
 
     &--course {
@@ -607,6 +749,10 @@
       padding: 20px;
       justify-content: space-between;
       box-sizing: border-box;
+      @media (max-width: 480px) {
+        width: 100%;
+        align-items: center;
+      }
     }
 
     @media (max-width: 480px) {
@@ -619,7 +765,6 @@
 
       &--course {
         margin-left: 0;
-        margin-top: 20px;
         margin-bottom: 10px;
       }
     }

@@ -9,11 +9,22 @@ function PoolsContextProvider(props) {
   const [pools, setPools] = useState([]);
 
   const getPools = async () => {
-    const poolsData = await StakingWrapper.getPoolsData(
-      window.location.pathname !== '/' && appStore.signer !== undefined
-        ? appStore.signer
-        : window.ethereum,
-    );
+    let isMainPage;
+    let poolsData;
+    if (window.location.pathname === '/') {
+      isMainPage = false;
+      poolsData = await StakingWrapper.getPoolsData(
+        isMainPage,
+        appStore.signer !== undefined ? appStore.signer : window.ethereum,
+      );
+    } else {
+      isMainPage = true;
+      poolsData = await StakingWrapper.getPoolsData(
+        isMainPage,
+        appStore.signer !== undefined ? appStore.signer : window.ethereum,
+      );
+    }
+
     await appStore.updatePoolData(poolsData);
     if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
   };

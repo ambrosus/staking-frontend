@@ -151,20 +151,7 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          <Paragraph
-            style={{
-              cursor: 'pointer',
-              width: 95,
-              whiteSpace: 'nowrap',
-              paddingRight: 20,
-              display: 'flex',
-              fontWeight: '300',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-            size="m-500"
-            onClick={stakeBtnHandler}
-          >
+          <p className="item--header__collapse-btn" onClick={stakeBtnHandler}>
             {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
             {!expand && STAKE}
             {pathname === STAKING_PAGE && (
@@ -178,7 +165,7 @@ const StakingItem = ({
                 wrapper="span"
               />
             )}
-          </Paragraph>
+          </p>
         </div>
         {pathname === STAKING_PAGE && (
           <Collapse

@@ -12,11 +12,13 @@ import { getToken } from '../../../api';
 import headerLogoSvg from '../../../assets/svg/header-logo.svg';
 import loginIcon from '../../../assets/svg/login.svg';
 import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
-import { useAsync } from '../../../hooks';
+import { useAsync, useMedia } from '../../../hooks';
 
 export const Header = observer(() => {
   const { account, deactivate } = useWeb3React();
   const history = useHistory();
+  const isSmall = useMedia('(max-width: 699px)');
+
   const {
     data,
     status: priceStatus,
@@ -32,6 +34,7 @@ export const Header = observer(() => {
     }
     if (priceStatus === 'resolved') {
       appStore.setTokenPrice(data?.data?.price_usd);
+      appStore.setTokenChange(data?.data?.percent_change_24h);
     }
   }, [run, priceStatus]);
 
@@ -43,12 +46,12 @@ export const Header = observer(() => {
   return (
     <div className="home__top">
       <div className="home__top--header">
-        <Link to="/">
+        <Link to="/" style={{ marginRight: isSmall && 'auto' }}>
           <div className="logo">
             <ReactSVG src={headerLogoSvg} wrapper="span" />
           </div>
         </Link>
-        {account && (
+        {account && !isSmall && (
           <Paragraph size="xs-400" style={{ color: '#FFFFFF' }}>
             AMB Price{' '}
             <b>
@@ -74,7 +77,7 @@ export const Header = observer(() => {
           </Paragraph>
         )}
         <Menu />
-        {account && (
+        {account && !isSmall && (
           <>
             <div className="wallet-connect">
               {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
