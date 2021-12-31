@@ -49,9 +49,9 @@
   }
 
   &.action {
-    color: white;
+    color: #212121 !important;
     min-width: 187px;
-    background: $black;
+    background: #FFFFFF;
   }
 
   &.primary {
@@ -114,10 +114,20 @@ button{
     text-decoration-line: underline;
   }
 }
+
 .action {
+  &:active{
+    color: #212121;
+    background-color:  #DAD7D7;
+  }
   &:hover {
-    background-color: #212121;
-    text-decoration-line: underline;
+    color: #212121!important;
+    background-color:  #DAD7D7;
+  }
+  &:disabled{
+    border: 1px solid #474747;
+    background-color: #2E2E2E !important;
+    color:#4E4E4E !important;
   }
 }
 

@@ -127,6 +127,11 @@ const Deposit = observer(({ depositInfo }) => {
           <div>
             <Button
               type="black"
+              buttonStyles={{
+                backgroundColor:
+                  balance.div(4).div(FIXED_POINT).toString() === inputValue &&
+                  '#1A1A1A',
+              }}
               disabled={balance.isZero()}
               onclick={() =>
                 setInputValue(() => balance.div(4).div(FIXED_POINT).toString())
@@ -139,6 +144,11 @@ const Deposit = observer(({ depositInfo }) => {
             <Button
               type="black"
               disabled={balance.isZero()}
+              buttonStyles={{
+                backgroundColor:
+                  balance.div(2).div(FIXED_POINT).toString() === inputValue &&
+                  '#1A1A1A',
+              }}
               onclick={() =>
                 setInputValue(() => balance.div(2).div(FIXED_POINT).toString())
               }
@@ -150,6 +160,11 @@ const Deposit = observer(({ depositInfo }) => {
             <Button
               type="black"
               disabled={balance.isZero()}
+              buttonStyles={{
+                backgroundColor:
+                  balance.mul(3).div(4).div(FIXED_POINT).toString() ===
+                    inputValue && '#1A1A1A',
+              }}
               onclick={() =>
                 setInputValue(() =>
                   balance.mul(3).div(4).div(FIXED_POINT).toString(),
@@ -163,6 +178,11 @@ const Deposit = observer(({ depositInfo }) => {
             <Button
               type="black"
               disabled={balance.isZero()}
+              buttonStyles={{
+                backgroundColor:
+                  balance.div(FIXED_POINT).toString() === inputValue &&
+                  '#1A1A1A',
+              }}
               onclick={() => setInputValue(balance.div(FIXED_POINT).toString())}
             >
               <span className="percent-btn">{ONE_HUNDRED_PERCENT}</span>{' '}

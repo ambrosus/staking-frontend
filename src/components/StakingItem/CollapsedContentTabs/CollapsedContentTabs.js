@@ -1,12 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg';
 import Deposit from '../../../pages/Staking/components/Deposit';
 import Withdraw from '../../../pages/Staking/components/Withdraw';
 import { useTabs } from '../../../hooks';
 
-import information from '../../../assets/svg/Information.svg';
+// import information from '../../../assets/svg/Information.svg';
 
 const CollapsedContentTabs = ({ poolInfo }) => {
   const content = [
@@ -40,7 +39,8 @@ const CollapsedContentTabs = ({ poolInfo }) => {
                 {section.tab}
               </span>
             </p>
-            <ReactSVG src={information} wrapper="span" />
+            {/* TODO add information tooltip
+           <ReactSVG src={information} wrapper="span" /> */}
           </div>
         ))}
       </div>

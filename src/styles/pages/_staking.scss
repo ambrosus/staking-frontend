@@ -303,7 +303,6 @@
         font-style: normal !important;
         font-weight: normal !important;
         font-size: 16px !important;
-        color: #9C9C9C;
       }
 
       &__header {
@@ -326,6 +325,10 @@
       }
 
       &__body {
+        *,* {
+          white-space: nowrap;
+        }
+
         &__tabs-titles {
           display: flex;
           flex-direction: row;
@@ -477,10 +480,6 @@
   flex-direction: column;
   margin-top: 60px;
 
-  *, * {
-    color: #FFFFFF !important;
-  }
-
   .available-tokens {
     font-family: Proxima Nova, sans-serif;
     font-style: normal;
@@ -493,6 +492,10 @@
     font-feature-settings: 'liga' off;
     color: #FFFFFF;
     margin-bottom: 48px;
+
+    *, * {
+      color: #FFFFFF !important;
+    }
 
     @media (max-width: 480px) {
       margin-bottom: 5px;
@@ -512,6 +515,11 @@
     font-feature-settings: 'liga' off;
     color: #FFFFFF;
     margin-bottom: 12px;
+
+    *, * {
+      color: #FFFFFF !important;
+    }
+
     @media (max-width: 480px) {
       margin-top: 22px;
     }
@@ -525,6 +533,11 @@
     max-width: 100%;
     align-items: center;
     margin-bottom: 40px;
+
+    *, * {
+      color: #FFFFFF !important;
+    }
+
     @media (max-width: 480px) {
       flex-direction: column !important;
     }
@@ -641,7 +654,6 @@
         display: flex;
         align-items: center;
         text-align: center;
-
       }
     }
   }
@@ -661,18 +673,18 @@
       align-items: center;
       justify-content: space-between;
 
-      &__estimated {
-        font-family: Proxima Nova, sans-serif;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 14px;
-        display: flex;
-        align-items: center;
-        font-feature-settings: 'liga' off;
-        color: #F9F8FB;
-
-
+      .deposit-stake-options__estimated {
+        span {
+          font-family: Proxima Nova, sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 14px;
+          display: flex;
+          align-items: center;
+          font-feature-settings: 'liga' off;
+          color: #FFFFFF;
+        }
       }
 
       .deposit-stake-btn {

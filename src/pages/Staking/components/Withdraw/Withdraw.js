@@ -108,6 +108,11 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
             <Button
               type="black"
               disabled={myStakeInAMB.eq(0)}
+              buttonStyles={{
+                backgroundColor:
+                  myStakeInAMB.div(4).div(FIXED_POINT).toString() ===
+                    inputValue && '#1A1A1A',
+              }}
               onclick={() =>
                 myStakeInAMB &&
                 setInputValue(myStakeInAMB.div(4).div(FIXED_POINT).toString())
@@ -120,6 +125,11 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
             <Button
               type="black"
               disabled={myStakeInAMB.eq(0)}
+              buttonStyles={{
+                backgroundColor:
+                  myStakeInAMB.div(2).div(FIXED_POINT).toString() ===
+                    inputValue && '#1A1A1A',
+              }}
               onclick={() =>
                 myStakeInAMB &&
                 setInputValue(myStakeInAMB.div(2).div(FIXED_POINT).toString())
@@ -132,6 +142,11 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
             <Button
               type="black"
               disabled={myStakeInAMB.eq(0)}
+              buttonStyles={{
+                backgroundColor:
+                  myStakeInAMB.mul(3).div(4).div(FIXED_POINT).toString() ===
+                    inputValue && '#1A1A1A',
+              }}
               onclick={() =>
                 myStakeInAMB &&
                 setInputValue(
@@ -146,6 +161,12 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
             <Button
               type="black"
               disabled={myStakeInAMB.eq(0)}
+              buttonStyles={{
+                backgroundColor:
+                  myStakeInAMB &&
+                  myStakeInAMB.div(FIXED_POINT).toString() === inputValue &&
+                  '#1A1A1A',
+              }}
               onclick={() =>
                 setInputValue(
                   myStakeInAMB && myStakeInAMB.div(FIXED_POINT).toString(),

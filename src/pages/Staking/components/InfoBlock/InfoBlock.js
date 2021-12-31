@@ -4,6 +4,7 @@ import { ReactSVG } from 'react-svg';
 import ReactTooltip from 'react-tooltip';
 import { BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
+import { useMedia } from '../../../../hooks';
 
 import Paragraph from '../../../../components/Paragraph';
 import { formatRounded } from '../../../../services/numbers';
@@ -15,7 +16,6 @@ import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
 import { tooltips } from '../../../../config';
 import appStore from '../../../../store/app.store';
-import {useMedia} from "hooks";
 
 const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
@@ -154,7 +154,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                   minWidth: '100%',
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: isSmall ? 'center' :'space-around',
+                  justifyContent: isSmall ? 'center' : 'space-around',
                 }}
               >
                 <DisplayValue
@@ -209,7 +209,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                   minWidth: '100%',
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: isSmall ? 'center' :'space-around',
+                  justifyContent: isSmall ? 'center' : 'space-around',
                 }}
               >
                 <DisplayValue
