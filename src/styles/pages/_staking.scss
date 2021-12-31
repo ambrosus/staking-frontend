@@ -334,6 +334,7 @@
           flex-direction: row;
           gap: 56px;
           @media (max-width: 480px) {
+            justify-content: space-between;
             gap: 30px;
             margin-top: 45px;
             width: 100%;
