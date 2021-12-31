@@ -1,4 +1,5 @@
 /*eslint-disable*/
+// TODO add WalletConnectConnector
 import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';

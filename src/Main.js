@@ -1,12 +1,11 @@
-/*eslint-disable*/
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Web3ReactProvider } from '@web3-react/core';
+import ReactNotifications from 'react-notifications-component';
 import RenderRoutes from './components/RenderRoutes';
 import { getLibrary } from './utils/helpers';
 import { ethereum } from './config';
 import './styles/Main.scss';
-import ReactNotifications from 'react-notifications-component';
 
 const Main = () => {
   const handleChainChanged = () => window.location.reload();

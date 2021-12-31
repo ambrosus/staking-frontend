@@ -1,5 +1,3 @@
-/*eslint-disable*/
-import { ReactSVG } from 'react-svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
@@ -8,10 +6,6 @@ import { useLocation } from 'react-router-dom';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
-import Paragraph from '../../../../components/Paragraph';
-import useModal from '../../../../hooks/useModal';
-import Modal from '../../../../components/Modal';
-import DisplayValue from '../../../../components/DisplayValue';
 import appStore from '../../../../store/app.store';
 import {
   checkValidNumberString,
@@ -35,23 +29,15 @@ import {
   STAKING_PAGE,
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
-import avatarIcon from '../../../../assets/svg/avatar.svg';
 import { useMobileDetect } from '../../../../hooks';
+
 const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();
   const { pathname } = useLocation();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
   const [balance, setBalance] = useState(ZERO);
-  const { isShowing: isWithdrawShowForm, toggle: toggleWithdrawForm } =
-    useModal();
-  const {
-    myStakeInAMB,
-    active: isPoolActive,
-    contractName,
-    totalStakeInAMB,
-    poolAPY,
-  } = depositInfo;
+  const { myStakeInAMB, active: isPoolActive } = depositInfo;
   const { isDesktop } = useMobileDetect();
 
   const checkoutPayment = async () => {

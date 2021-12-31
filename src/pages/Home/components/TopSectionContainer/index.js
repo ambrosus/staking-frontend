@@ -1,4 +1,5 @@
 /*eslint-disable*/
+// TODO add WalletConnect
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';

@@ -1,3 +1,4 @@
+// TODO add WalletConnectConnector
 // /*eslint-disable*/
 // import { useHistory } from 'react-router';
 //

@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React from 'react';
 import PropTypes from 'prop-types';
 import Collapse from '@kunukn/react-collapse';
@@ -6,19 +5,15 @@ import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { ReactSVG } from 'react-svg';
 import { FIXED_POINT, formatRounded } from '../../services/numbers';
-import { HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE } from '../../config';
-import { formatThousand, poolIcon } from '../../utils/helpers';
+import { HIDE, SHOW, STAKE, STAKING_PAGE } from '../../config';
+import { poolIcon } from '../../utils/helpers';
 import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
-import Button from '../Button';
-import Deposit from '../../pages/Staking/components/Deposit/Deposit';
-import Withdraw from 'pages/Staking/components/Withdraw';
-import { useTabs, useMobileDetect, useLogIn } from '../../hooks';
+import { useMobileDetect, useLogIn } from '../../hooks';
 
 import expandDown from '../../assets/svg/expandDown.svg';
 import expandUp from '../../assets/svg/expandUp.svg';
-import information from '../../assets/svg/Information.svg';
-import cx from 'classnames';
+import CollapsedContentTabs from './CollapsedContentTabs';
 
 const StakingItem = ({
   expand = false,
@@ -40,19 +35,6 @@ const StakingItem = ({
   const { active } = useWeb3React();
   const { logIn } = useLogIn();
   const { isDesktop } = useMobileDetect();
-  const content = [
-    {
-      idx: 0,
-      tab: 'Deposit AMB',
-      content: <Deposit depositInfo={poolInfo} />,
-    },
-    {
-      idx: 1,
-      tab: 'Unstake',
-      content: <Withdraw withdrawContractInfo={poolInfo} />,
-    },
-  ];
-  const { currentItem, changeItem, selectedTabIndex } = useTabs(0, content);
 
   const stakeBtnHandler = () => {
     if (expand !== false) {
@@ -151,7 +133,11 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          <p className="item--header__collapse-btn" onClick={stakeBtnHandler}>
+          <p
+            role="presentation"
+            className="item--header__collapse-btn"
+            onClick={stakeBtnHandler}
+          >
             {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
             {!expand && STAKE}
             {pathname === STAKING_PAGE && (
@@ -173,35 +159,7 @@ const StakingItem = ({
           >
             <div className="item--content">
               <div className="collapsed-content">
-                {active && (
-                  <div className="collapsed-content__body">
-                    <div className="collapsed-content__body__tabs-titles">
-                      {content.map((section, index) => (
-                        <div
-                          key={section.tab}
-                          onClick={() => changeItem(index)}
-                          role="presentation"
-                          className={cx(
-                            'collapsed-content__body__tabs-titles--tab',
-                            {
-                              'active-tab': selectedTabIndex === section.idx,
-                            },
-                          )}
-                        >
-                          <p>
-                            <span
-                              style={{ fontWeight: 'normal', fontSize: 20 }}
-                            >
-                              {section.tab}
-                            </span>
-                          </p>
-                          <ReactSVG src={information} wrapper="span" />
-                        </div>
-                      ))}
-                    </div>
-                    <div>{currentItem.content}</div>
-                  </div>
-                )}
+                {active && <CollapsedContentTabs poolInfo={poolInfo} />}
               </div>
             </div>
           </Collapse>
