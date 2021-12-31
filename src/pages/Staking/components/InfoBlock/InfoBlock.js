@@ -15,6 +15,7 @@ import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
 import DisplayValue from '../../../../components/DisplayValue';
 import { tooltips } from '../../../../config';
 import appStore from '../../../../store/app.store';
+import {useMedia} from "hooks";
 
 const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });
@@ -22,6 +23,8 @@ const InfoBlock = observer(({ poolsArr, account }) => {
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [totalStaked, setTotalStaked] = useState(0);
   const [totalStakedInUsd, setTotalStakedInUsd] = useState(0);
+  const isSmall = useMedia('(max-width: 699px)');
+
   let poolsRewards = [];
   let myTotalStake = [];
 
@@ -151,7 +154,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                   minWidth: '100%',
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'space-around',
+                  justifyContent: isSmall ? 'center' :'space-around',
                 }}
               >
                 <DisplayValue
@@ -206,7 +209,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
                   minWidth: '100%',
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'space-around',
+                  justifyContent: isSmall ? 'center' :'space-around',
                 }}
               >
                 <DisplayValue
