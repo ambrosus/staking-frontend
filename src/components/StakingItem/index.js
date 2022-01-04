@@ -93,75 +93,77 @@ const StakingItem = ({
         color: !myStakeInAMB && !isPoolActive && 'rgb(191 201 224)',
       }}
     >
-      {/*TODO new header*/}
-      {/*<div className="item--test-header" role="presentation">*/}
-      {/*  <Layout>*/}
-      {/*    <div className="pool-name">*/}
-      {/*      <ReactSVG src={poolIcon(poolInfo.index)} wrapper="div" />*/}
-      {/*      <div>{contractName && contractName.substring(0, 8)}</div>*/}
-      {/*    </div>*/}
-      {/*    {isDesktop && pathname === STAKING_PAGE && (*/}
-      {/*      <div className="my-stake">*/}
-      {/*        <div>*/}
-      {/*          <DisplayValue*/}
-      {/*            color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}*/}
-      {/*            value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}*/}
-      {/*          />*/}
-      {/*        </div>*/}
-      {/*      </div>*/}
-      {/*    )}*/}
-      {/*    <div className="vault-assets">*/}
-      {/*      <div>*/}
-      {/*        <DisplayValue*/}
-      {/*          color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}*/}
-      {/*          value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}*/}
-      {/*        />*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <div className="apy">*/}
-      {/*      {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (*/}
-      {/*        <Paragraph*/}
-      {/*          style={{*/}
-      {/*            color: isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)',*/}
-      {/*          }}*/}
-      {/*          size="l-700"*/}
-      {/*        >*/}
-      {/*          <span className="transitions">OFFLINE</span>*/}
-      {/*        </Paragraph>*/}
-      {/*      ) : (*/}
-      {/*        <DisplayValue*/}
-      {/*          color={isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)'}*/}
-      {/*          size="l-700"*/}
-      {/*          symbol="%"*/}
-      {/*          value={poolAPY}*/}
-      {/*        />*/}
-      {/*      )}*/}
-      {/*    </div>*/}
-      {/*    <div className="button">*/}
-      {/*      <p*/}
-      {/*        role="presentation"*/}
-      {/*        className="item--header__collapse-btn"*/}
-      {/*        onClick={stakeBtnHandler}*/}
-      {/*      >*/}
-      {/*        {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}*/}
-      {/*        {!expand && STAKE}*/}
-      {/*        {pathname === STAKING_PAGE && (*/}
-      {/*          <ReactSVG*/}
-      {/*            style={{*/}
-      {/*              marginLeft: 11,*/}
-      {/*            }}*/}
-      {/*            src={*/}
-      {/*              state[index] && activeExpand === index*/}
-      {/*                ? expandUp*/}
-      {/*                : expandDown*/}
-      {/*            }*/}
-      {/*            wrapper="span"*/}
-      {/*          />*/}
-      {/*        )}*/}
-      {/*      </p>*/}
-      {/*    </div>*/}
-      {/*  </Layout>*/}
-      {/*</div>*/}
+      {/*
+      TODO new header
+      <div className="item--test-header" role="presentation">
+        <Layout>
+          <div className="pool-name">
+            <ReactSVG src={poolIcon(poolInfo.index)} wrapper="div" />
+            <div>{contractName && contractName.substring(0, 8)}</div>
+          </div>
+          {isDesktop && pathname === STAKING_PAGE && (
+            <div className="my-stake">
+              <div>
+                <DisplayValue
+                  color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                  value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
+                />
+              </div>
+            </div>
+          )}
+          <div className="vault-assets">
+            <div>
+              <DisplayValue
+                color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
+              />
+            </div>
+          </div>
+          <div className="apy">
+            {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (
+              <Paragraph
+                style={{
+                  color: isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)',
+                }}
+                size="l-700"
+              >
+                <span className="transitions">OFFLINE</span>
+              </Paragraph>
+            ) : (
+              <DisplayValue
+                color={isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)'}
+                size="l-700"
+                symbol="%"
+                value={poolAPY}
+              />
+            )}
+          </div>
+          <div className="button">
+            <p
+              role="presentation"
+              className="item--header__collapse-btn"
+              onClick={stakeBtnHandler}
+            >
+              {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
+              {!expand && STAKE}
+              {pathname === STAKING_PAGE && (
+                <ReactSVG
+                  style={{
+                    marginLeft: 11,
+                  }}
+                  src={
+                    state[index] && activeExpand === index
+                      ? expandUp
+                      : expandDown
+                  }
+                  wrapper="span"
+                />
+              )}
+            </p>
+          </div>
+        </Layout>
+      </div>
+      */}
       <>
         <div className="item--header" role="presentation">
           <div
