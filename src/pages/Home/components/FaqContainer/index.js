@@ -1,5 +1,5 @@
 import React from 'react';
-import CollapsedList from '../../../../components/CollapsedList';
+import CollapsedList from '../CollapsedList';
 
 export default () => (
   <>

@@ -14,7 +14,7 @@ export default () => (
         </div>
         <div className="items-container">
           {homePageStatic.whereToByAmb.map((block) => (
-            <div className="items-container__item">
+            <div className="items-container__item" key={block.src}>
               <ReactSVG src={block.src} wrapper="span" />
               <p>{block.text}</p>
             </div>

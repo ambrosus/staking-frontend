@@ -1,7 +1,7 @@
 import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
-import { ethereum, transactionGasLimit, transactionGasPrice } from '../config';
+import { transactionGasLimit, transactionGasPrice } from '../config';
 import { math, FIXED_POINT, parseFloatToBigNumber, ZERO } from './numbers';
 import { debugLog } from '../utils/helpers';
 
@@ -111,12 +111,11 @@ export default class StakingWrapper {
       : null;
   }
 
-  static async getPoolsData(loggedIn = false) {
+  static async getPoolsData(loggedIn, connector) {
     debugLog('## getPoolsData');
     const providerOrSigner = loggedIn
-      ? new providers.Web3Provider(ethereum).getSigner()
+      ? new providers.Web3Provider(connector).getSigner()
       : this.privateProvider;
-
     await this.privateStaticConstructorPromise;
 
     const [poolsAddrs] = await Promise.all([

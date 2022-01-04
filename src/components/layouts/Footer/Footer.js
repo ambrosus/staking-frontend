@@ -1,18 +1,14 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { useLocation } from 'react-router-dom';
-
-import { MAIN_PAGE, socialsLinks } from '../../../config';
-
-import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
+import { socialsLinks } from '../../../config';
 import footerLogo from '../../../assets/svg/footer-logo.svg';
 import footerLogoMobile from '../../../assets/svg/footer-logo-mobile.svg';
 import { useMedia } from '../../../hooks';
 
-const Footer = () => {
-  const { pathname } = useLocation();
-  const isSmall = useMedia('(max-width: 699px)');
+import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 
+const Footer = () => {
+  const isSmall = useMedia('(max-width: 699px)');
   const socials = socialsLinks.map((social) => (
     <li className="socials__list__link" key={social.url}>
       <a href={social.url} target="_blank" rel="noopener noreferrer">
@@ -25,9 +21,9 @@ const Footer = () => {
     <footer
       className="footer"
       style={{
-        background: pathname === MAIN_PAGE && '#212121',
-        color: pathname === MAIN_PAGE && '#8F8F8F',
-        fontFamily: pathname === MAIN_PAGE && 'Proxima Nova',
+        background: '#212121',
+        color: '#8F8F8F',
+        fontFamily: 'Proxima Nova',
       }}
     >
       <div className="wrapper">

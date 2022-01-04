@@ -1,6 +1,6 @@
 import React from 'react';
-import Collapse from '@kunukn/react-collapse';
 import cx from 'classnames';
+import Collapse from '@kunukn/react-collapse';
 import PropTypes from 'prop-types';
 import Down from './Down';
 
@@ -31,4 +31,4 @@ Block.propTypes = {
     PropTypes.node,
   ]).isRequired,
 };
-export default Block;
+export default React.memo(Block);

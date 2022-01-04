@@ -40,8 +40,8 @@
     position: absolute;
     width: 920px;
     height: 820px;
-    right: -150px;
-    bottom: -140px;
+    right: -112px;
+    bottom: -178px;
     background: url('../../assets/images/bottom-dolbka.png') no-repeat;
     z-index: 0;
     transform: scale(1);
@@ -67,6 +67,7 @@
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     @media (max-width: 600px) {
+      z-index: -1;
       right: -300px;
       bottom: -340px;
       transform: scale(0.8)
@@ -97,11 +98,12 @@
     top: -76px;
     mix-blend-mode: lighten;
     background: url('../../assets/images/back1.png') no-repeat;
-    z-index: 0;
+    z-index: -1;
 
   }
 
   .back-figure2 {
+    z-index: -1;
     position: absolute;
     width: 599px;
     height: 726px;
@@ -110,8 +112,6 @@
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
     background: url('../../assets/images/back2.png') no-repeat !important;
-    z-index: 0;
-
   }
 
   &__top {
@@ -141,16 +141,54 @@
         align-items: center;
         color: white;
 
-        .active {
-          color: #FFFFFF;
-        }
-
         > a {
           padding-right: 20px;
           font-weight: normal;
         }
       }
 
+      .wallet-connect {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px;
+        background: $graphitered;
+
+        p {
+          color: #FFFFFF;
+          padding-left: 10px;
+        }
+      }
+
+      .login {
+        flex-basis: 6%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        color: #FFFFFF !important;
+
+        .header__btn {
+          color: #FFFFFF !important;
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-around;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .wallet-connect {
+          margin-top: 10px;
+        }
+
+        .header__btn {
+          cursor: pointer;
+          margin-bottom: 20px;
+        }
+      }
     }
 
     &--info {
@@ -205,6 +243,12 @@
       font-size: 24px;
       line-height: 140%;
       color: #FFFFFF;
+    }
+
+    .container {
+      .section-heading {
+        margin-bottom: 33px;
+      }
     }
 
     &--btn {
@@ -318,7 +362,6 @@
     }
     .section-heading {
       margin-bottom: 110px;
-      margin-top: -100px;
       @media (max-width: 600px) {
         margin-bottom: 45px;
         max-width: 340px;
@@ -438,6 +481,7 @@
     .back-figure1 {
       top: -172px;
       left: -248px;
+      z-index: -1;
     }
 
     .back-figure2 {
@@ -455,11 +499,10 @@
       &--header {
         height: 10%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         padding: 18px 6px 0 18px;
-
         .logo {
           cursor: pointer;
 

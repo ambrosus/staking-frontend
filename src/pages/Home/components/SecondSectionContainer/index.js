@@ -17,7 +17,7 @@ export default () => {
         </p>
         <div className="items-container">
           {homePageStatic.arcadiaStaking.map((block) => (
-            <div className="items-container__item">
+            <div className="items-container__item" key={block.src}>
               <ReactSVG src={block.src} wrapper="span" />
               <p>{block.text}</p>
             </div>

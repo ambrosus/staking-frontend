@@ -15,12 +15,9 @@ export default () => {
   const [pools, getPools] = useContext(PoolsContext);
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
+  const isMainPage = pathname === MAIN_PAGE;
   useEffect(() => {
     debugLog('Home render useEffect');
-    getPools();
-  }, []);
-
-  useEffect(() => {
     getPools();
   }, []);
 
@@ -34,12 +31,22 @@ export default () => {
           <div
             className="staking__header"
             style={{
-              color: pathname === MAIN_PAGE && '#FFFFFF',
+              color: isMainPage && '#FFFFFF',
             }}
           >
-            <div className="staking__header__clearfix-pool">Pool</div>
-            <div>Total pool stake</div>
-            <div className="staking__header__clearfix-apy">APY</div>
+            <div
+              className="staking__header__clearfix-pool"
+              style={{ marginLeft: 60 }}
+            >
+              Pool
+            </div>
+            <div style={{ marginLeft: 80 }}>Total pool stake</div>
+            <div
+              className="staking__header__clearfix-apy"
+              style={{ marginLeft: 146 }}
+            >
+              APY
+            </div>
             <div style={{ maxWidth: 160, minWidth: 160 }} />
           </div>
           <div className="staking__pools">
@@ -62,7 +69,7 @@ export default () => {
             {isSmall && (
               <Button
                 buttonStyles={{ marginLeft: 'auto', maxHeight: 50, width: 160 }}
-                type={pathname === MAIN_PAGE ? 'black' : 'primary'}
+                type={isMainPage ? 'black' : 'primary'}
                 onclick={logIn}
               >
                 <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">

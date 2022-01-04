@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import { InjectedConnector } from '@web3-react/injected-connector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { cssTransition } from 'react-toastify';
 import { utils, providers } from 'ethers';
 
@@ -23,8 +24,8 @@ import linkedinIcon from '../assets/svg/linkedin-icon.svg';
 export const STAKING_PAGE = '/staking';
 export const MAIN_PAGE = '/';
 export const CONNECT_TEXT = '↖ Connect to Wallet';
-export const HIDE = '↖ Hide';
-export const SHOW = '↖ Show';
+export const HIDE = 'Hide';
+export const SHOW = 'Show';
 export const STAKE = '↖ Stake';
 export const COMING_SOON = 'COMING SOON';
 export const TWENTY_FIVE_PERCENT = '25%';
@@ -65,12 +66,22 @@ export const injected = new InjectedConnector({
   supportedChainIds: [+process.env.REACT_APP_CHAIN_ID],
 });
 
-const ConnectorNames = {
+export const walletconnect = new WalletConnectConnector({
+  rpc: { 16718: process.env.REACT_APP_RPC_URL },
+  qrcode: true,
+  chainId: 16718,
+  bridge: 'https://bridge.walletconnect.org',
+  pollingInterval: 12000,
+});
+
+export const ConnectorNames = {
   Injected: 'Injected',
+  WalletConnect: 'WalletConnect',
 };
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
+  [ConnectorNames.WalletConnect]: walletconnect,
 };
 
 export const faqsList = [
@@ -313,7 +324,7 @@ export const menuLinks = [
   },
   {
     target: false,
-    href: STAKING_PAGE,
+    href: MAIN_PAGE,
     title: 'Staking',
     route: true,
   },

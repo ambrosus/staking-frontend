@@ -39,7 +39,9 @@ export default () => {
                 <p className="home__last-section--secondary">{block.text}</p>
                 {block.links && <ul className="socials__list">{socials}</ul>}
                 {block.btnText && (
-                  <a href={block.btnText.includes('more') && '#home__faq'}>
+                  <a
+                    href={block.btnText.includes('more') ? '#home__faq' : null}
+                  >
                     <Button
                       buttonStyles={{ width: 174, height: 65 }}
                       type="white"
