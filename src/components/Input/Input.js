@@ -1,11 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { ReactSVG } from 'react-svg';
+
+import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
 import clearIcon from '../../assets/svg/clear.svg';
 
 import { checkValidNumberString } from '../../services/numbers';
 
-const Input = ({ onchange, error = false, placeholder = '', value = '' }) => (
+const Input = ({
+  onchange,
+  iconLeft,
+  error = false,
+  placeholder = '',
+  value = '',
+}) => (
   <div
     className={classNames('input', {
       'input-error': value && error,
@@ -26,7 +35,13 @@ const Input = ({ onchange, error = false, placeholder = '', value = '' }) => (
           onchange(e.target.value);
         }
       }}
+      style={iconLeft && { padding: '0 55px' }}
     />
+    {iconLeft && (
+      <span className="iconLeft">
+        <ReactSVG src={AMBsmallIcon} wrapper="span" />
+      </span>
+    )}
     {value && (
       <span
         className="iconRight"
@@ -40,6 +55,7 @@ const Input = ({ onchange, error = false, placeholder = '', value = '' }) => (
 );
 
 Input.propTypes = {
+  iconLeft: PropTypes.bool,
   onchange: PropTypes.func,
   placeholder: PropTypes.string,
   value: PropTypes.any,

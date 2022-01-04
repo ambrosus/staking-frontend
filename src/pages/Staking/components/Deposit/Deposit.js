@@ -118,6 +118,7 @@ const Deposit = observer(({ depositInfo }) => {
       <div className="deposit-actions">
         <Input
           onchange={setInputValue}
+          iconLeft
           error={inputError}
           placeholder="1 000 min"
           value={inputValue}

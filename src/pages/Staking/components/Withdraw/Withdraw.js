@@ -97,7 +97,12 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
         <span>Amount</span>
       </div>
       <div className="deposit-actions">
-        <Input onchange={setInputValue} placeholder="0" value={inputValue} />
+        <Input
+          onchange={setInputValue}
+          iconLeft
+          placeholder="0"
+          value={inputValue}
+        />
         <div className="deposit-actions__buttons">
           <div>
             <Button
