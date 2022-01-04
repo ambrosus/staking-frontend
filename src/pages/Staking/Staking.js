@@ -25,12 +25,10 @@ import StakingItem from '../../components/StakingItem';
 import { ReactSVG } from 'react-svg';
 import headerLogoSvg from 'assets/svg/header-logo.svg';
 import Menu from 'pages/Home/components/Menu';
+import InfoBlock from './components/InfoBlock';
 
 const NotSupported = React.lazy(() =>
   import(/* webpackPrefetch: true */ '../../components/NotSupported'),
-);
-const InfoBlock = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './components/InfoBlock'),
 );
 
 const Staking = observer(() => {
@@ -79,9 +77,7 @@ const Staking = observer(() => {
           <div className="page">
             {pools.length > 0 ? (
               <RenderItems>
-                <React.Suspense fallback={<div />}>
-                  <InfoBlock account={account} poolsArr={pools} />
-                </React.Suspense>
+                <InfoBlock account={account} poolsArr={pools} />
                 <div className="staking wrapper">
                   <>
                     <div className="staking__header">
