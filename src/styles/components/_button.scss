@@ -98,17 +98,6 @@
   }
 }
 
-button[disabled=disabled], button:disabled {
-  background: inherit !important;
-  opacity: 0.8;
-  pointer-events: none;
-  cursor: not-allowed;
-  text-decoration-line: none;
-
-  p {
-    opacity: 0.8;
-  }
-}
 button{
   &:hover {
     text-decoration-line: underline;
@@ -116,18 +105,31 @@ button{
 }
 
 .action {
-  &:active{
-    color: #212121;
-    background-color:  #DAD7D7;
+  &:active {
+    border: 1px solid #FFFFFF !important;
+    background-color: #1A1A1A !important;
+
+    p {
+      color: White !important;
+    }
   }
+
   &:hover {
-    color: #212121!important;
-    background-color:  #DAD7D7;
+    border: 1px solid #FFFFFF !important;
+    background-color: #212121 !important;
+
+    p {
+      color: #FFFFFF !important;
+    }
   }
-  &:disabled{
-    border: 1px solid #474747;
-    background-color: #2E2E2E !important;
-    color:#4E4E4E !important;
+
+  &:disabled {
+    border: 1px solid #474747 !important;
+    background: #2E2E2E !important;
+
+    p {
+      color: #4E4E4E !important;
+    }
   }
 }
 
