@@ -52,7 +52,7 @@
 
 .bm-menu {
   background: #212121;
-  padding: 2.5em 1.5em 0;
+  padding: 35px 15px;
   font-size: 1.15em;
 }
 
@@ -117,8 +117,86 @@
 
 }
 
+.menu-item-info {
+  margin-top: 55px;
+  margin-right: 40px;
+  font-family: Halvar Breitschrift, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  font-feature-settings: 'liga' off;
+
+  /* Gray */
+
+  color: #F9F8FB;
+}
+
 .bm-cross-button {
   display: none;
+}
+
+.sidebar-options {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 45px;
+
+  .wallet-connect {
+span{
+  span{
+    svg{
+      fill: #15D378;
+    }
+  }
+}
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 10px;
+    background: $graphitered;
+
+    p {
+      font-family: Halvar Breitschrift, sans-serif;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 12px;
+      line-height: 14px;
+      display: flex;
+      align-items: center;
+      color: #FFFFFF;
+    }
+
+  }
+
+  .login {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    color: #FFFFFF !important;
+
+    .header__btn {
+      span {
+        span {
+          svg {
+            margin-top: 5px;
+          }
+        }
+      }
+
+      cursor: pointer;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 2px !important;
+    }
+
+  }
 }
 
 .header-sidebar {
@@ -126,6 +204,7 @@
   align-items: center !important;
   justify-content: space-between !important;
   flex-direction: row !important;
+  margin-bottom: 60px;
 
   .logo {
     div {
@@ -140,7 +219,5 @@
 
   .close-sidebar {
     width: 50px;
-    height: 50px;
-
   }
 }

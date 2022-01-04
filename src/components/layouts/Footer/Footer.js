@@ -1,7 +1,6 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { useLocation } from 'react-router-dom';
-import { MAIN_PAGE, socialsLinks } from '../../../config';
+import { socialsLinks } from '../../../config';
 import footerLogo from '../../../assets/svg/footer-logo.svg';
 import footerLogoMobile from '../../../assets/svg/footer-logo-mobile.svg';
 import { useMedia } from '../../../hooks';
@@ -9,9 +8,6 @@ import { useMedia } from '../../../hooks';
 import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 
 const Footer = () => {
-  const { pathname } = useLocation();
-  const isMainPage = pathname === MAIN_PAGE;
-
   const isSmall = useMedia('(max-width: 699px)');
   const socials = socialsLinks.map((social) => (
     <li className="socials__list__link" key={social.url}>
@@ -25,9 +21,9 @@ const Footer = () => {
     <footer
       className="footer"
       style={{
-        background: isMainPage && '#212121',
-        color: isMainPage && '#8F8F8F',
-        fontFamily: isMainPage && 'Proxima Nova',
+        background: '#212121',
+        color: '#8F8F8F',
+        fontFamily: 'Proxima Nova',
       }}
     >
       <div className="wrapper">

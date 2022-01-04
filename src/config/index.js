@@ -24,8 +24,8 @@ import linkedinIcon from '../assets/svg/linkedin-icon.svg';
 export const STAKING_PAGE = '/staking';
 export const MAIN_PAGE = '/';
 export const CONNECT_TEXT = '↖ Connect to Wallet';
-export const HIDE = '↖ Hide';
-export const SHOW = '↖ Show';
+export const HIDE = 'Hide';
+export const SHOW = 'Show';
 export const STAKE = '↖ Stake';
 export const COMING_SOON = 'COMING SOON';
 export const TWENTY_FIVE_PERCENT = '25%';
@@ -69,11 +69,12 @@ export const injected = new InjectedConnector({
 export const walletconnect = new WalletConnectConnector({
   rpc: { 16718: process.env.REACT_APP_RPC_URL },
   qrcode: true,
+  chainId: 16718,
   bridge: 'https://bridge.walletconnect.org',
   pollingInterval: 12000,
 });
 
-const ConnectorNames = {
+export const ConnectorNames = {
   Injected: 'Injected',
   WalletConnect: 'WalletConnect',
 };

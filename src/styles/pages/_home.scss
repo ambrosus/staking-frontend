@@ -147,6 +147,48 @@
         }
       }
 
+      .wallet-connect {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px;
+        background: $graphitered;
+
+        p {
+          color: #FFFFFF;
+          padding-left: 10px;
+        }
+      }
+
+      .login {
+        flex-basis: 6%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        color: #FFFFFF !important;
+
+        .header__btn {
+          color: #FFFFFF !important;
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-around;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .wallet-connect {
+          margin-top: 10px;
+        }
+
+        .header__btn {
+          cursor: pointer;
+          margin-bottom: 20px;
+        }
+      }
     }
 
     &--info {
@@ -457,11 +499,10 @@
       &--header {
         height: 10%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         padding: 18px 6px 0 18px;
-
         .logo {
           cursor: pointer;
 

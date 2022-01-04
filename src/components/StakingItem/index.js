@@ -5,13 +5,47 @@ import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { ReactSVG } from 'react-svg';
 import { FIXED_POINT, formatRounded } from '../../services/numbers';
-import { HIDE, MAIN_PAGE, SHOW, STAKE, STAKING_PAGE } from '../../config';
-import avatarIcon from '../../assets/svg/avatar.svg';
+import { HIDE, SHOW, STAKE, STAKING_PAGE } from '../../config';
+import { poolIcon } from '../../utils/helpers';
 import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
-import Button from '../Button';
-import Deposit from '../../pages/Staking/components/Deposit/Deposit';
 import { useMobileDetect, useLogIn } from '../../hooks';
+
+import expandDown from '../../assets/svg/expandDown.svg';
+import expandUp from '../../assets/svg/expandUp.svg';
+import CollapsedContentTabs from './CollapsedContentTabs';
+// TODO new item-header
+// const Layout = ({ children = 5, childrenPerRow = 1 }) => {
+//   const childrenWithSpacer = children.reduce((result, child) => {
+//     result.push(child);
+//     return result;
+//   }, []);
+//   return (
+//     <div
+//       className="grid-layout-columns"
+//       style={{
+//         height: 100,
+//         width: 'inherit',
+//         padding: '20px 20px',
+//         display: 'grid',
+//         alignItems: 'center',
+//         justifyContent: 'space-between',
+//         gridAutoFlow: 'column',
+//         gridTemplateRows: `repeat(${childrenPerRow}, 1fr)`,
+//       }}
+//     >
+//       {childrenWithSpacer}
+//     </div>
+//   );
+// };
+//
+// Layout.propTypes = {
+//   children: PropTypes.oneOfType([
+//     PropTypes.arrayOf(PropTypes.node),
+//     PropTypes.node,
+//   ]).isRequired,
+//   childrenPerRow: PropTypes.number,
+// };
 
 const StakingItem = ({
   expand = false,
@@ -54,15 +88,82 @@ const StakingItem = ({
       role="presentation"
       className="stack-item"
       style={{
-        background: pathname === MAIN_PAGE && '#262626',
-        boxShadow: pathname === MAIN_PAGE && '0px 6px 10px rgba(0, 0, 0, 0.25)',
-        color:
-          pathname === MAIN_PAGE &&
-          !myStakeInAMB &&
-          !isPoolActive &&
-          'rgb(191 201 224)',
+        background: '#262626',
+        boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.25)',
+        color: !myStakeInAMB && !isPoolActive && 'rgb(191 201 224)',
       }}
     >
+      {/*
+      TODO new header
+      <div className="item--test-header" role="presentation">
+        <Layout>
+          <div className="pool-name">
+            <ReactSVG src={poolIcon(poolInfo.index)} wrapper="div" />
+            <div>{contractName && contractName.substring(0, 8)}</div>
+          </div>
+          {isDesktop && pathname === STAKING_PAGE && (
+            <div className="my-stake">
+              <div>
+                <DisplayValue
+                  color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                  value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
+                />
+              </div>
+            </div>
+          )}
+          <div className="vault-assets">
+            <div>
+              <DisplayValue
+                color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
+              />
+            </div>
+          </div>
+          <div className="apy">
+            {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (
+              <Paragraph
+                style={{
+                  color: isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)',
+                }}
+                size="l-700"
+              >
+                <span className="transitions">OFFLINE</span>
+              </Paragraph>
+            ) : (
+              <DisplayValue
+                color={isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)'}
+                size="l-700"
+                symbol="%"
+                value={poolAPY}
+              />
+            )}
+          </div>
+          <div className="button">
+            <p
+              role="presentation"
+              className="item--header__collapse-btn"
+              onClick={stakeBtnHandler}
+            >
+              {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
+              {!expand && STAKE}
+              {pathname === STAKING_PAGE && (
+                <ReactSVG
+                  style={{
+                    marginLeft: 11,
+                  }}
+                  src={
+                    state[index] && activeExpand === index
+                      ? expandUp
+                      : expandDown
+                  }
+                  wrapper="span"
+                />
+              )}
+            </p>
+          </div>
+        </Layout>
+      </div>
+      */}
       <>
         <div className="item--header" role="presentation">
           <div
@@ -74,24 +175,18 @@ const StakingItem = ({
             <div
               style={{
                 marginRight: pathname === STAKING_PAGE ? 10 : 0,
-                color:
-                  pathname === MAIN_PAGE &&
-                  !myStakeInAMB &&
-                  !isPoolActive &&
-                  'rgb(191 201 224)',
+                color: !myStakeInAMB && !isPoolActive && 'rgb(191 201 224)',
               }}
               className="item--header__flex__pool"
             >
               <ReactSVG
                 className="item--header__flex__pool--avatar"
-                src={avatarIcon}
+                src={poolIcon(poolInfo.index)}
                 wrapper="span"
               />
               <Paragraph
                 style={{
-                  color: isPoolActive
-                    ? pathname === MAIN_PAGE && '#FFF'
-                    : 'rgb(191, 201, 224)',
+                  color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
                 }}
                 size="l-500"
               >
@@ -107,11 +202,7 @@ const StakingItem = ({
               >
                 <div style={{ width: 150 }}>
                   <DisplayValue
-                    color={
-                      isPoolActive
-                        ? pathname === MAIN_PAGE && '#FFF'
-                        : 'rgb(191, 201, 224)'
-                    }
+                    color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                     value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
                   />
                 </div>
@@ -120,11 +211,7 @@ const StakingItem = ({
             <div className="item--header__flex__vault-assets">
               <div style={{ width: 150 }}>
                 <DisplayValue
-                  color={
-                    isPoolActive
-                      ? pathname === MAIN_PAGE && '#FFF'
-                      : 'rgb(191, 201, 224)'
-                  }
+                  color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                   value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
                 />
               </div>
@@ -133,9 +220,7 @@ const StakingItem = ({
               {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (
                 <Paragraph
                   style={{
-                    color: isPoolActive
-                      ? pathname === MAIN_PAGE && '#1ACD8C'
-                      : 'rgb(191, 201, 224)',
+                    color: isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)',
                   }}
                   size="l-700"
                 >
@@ -143,11 +228,7 @@ const StakingItem = ({
                 </Paragraph>
               ) : (
                 <DisplayValue
-                  color={
-                    isPoolActive
-                      ? pathname === MAIN_PAGE && '#1ACD8C'
-                      : 'rgb(191, 201, 224)'
-                  }
+                  color={isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)'}
                   size="l-700"
                   symbol="%"
                   value={poolAPY}
@@ -155,51 +236,33 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          {isDesktop && pathname === MAIN_PAGE && (
-            <Button
-              buttonStyles={{
-                width: pathname === MAIN_PAGE && 187,
-                height: pathname === MAIN_PAGE && 65,
-              }}
-              type={pathname === MAIN_PAGE ? 'black' : 'primary'}
-              onclick={stakeBtnHandler}
-            >
-              <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
-                {expand &&
-                  (state[index] && activeExpand === index ? HIDE : SHOW)}
-                {!expand && STAKE}
-              </Paragraph>
-            </Button>
-          )}
-          {pathname === STAKING_PAGE && (
-            <Button
-              buttonStyles={{
-                width: pathname === MAIN_PAGE && 187,
-                height: pathname === MAIN_PAGE && 65,
-              }}
-              type={pathname === MAIN_PAGE ? 'black' : 'primary'}
-              onclick={stakeBtnHandler}
-            >
-              <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
-                {expand &&
-                  (state[index] && activeExpand === index ? HIDE : SHOW)}
-                {!expand && STAKE}
-              </Paragraph>
-            </Button>
-          )}
+          <p
+            role="presentation"
+            className="item--header__collapse-btn"
+            onClick={stakeBtnHandler}
+          >
+            {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
+            {!expand && STAKE}
+            {pathname === STAKING_PAGE && (
+              <ReactSVG
+                style={{
+                  marginLeft: 11,
+                }}
+                src={
+                  state[index] && activeExpand === index ? expandUp : expandDown
+                }
+                wrapper="span"
+              />
+            )}
+          </p>
         </div>
         {pathname === STAKING_PAGE && (
           <Collapse
             isOpen={state[index] ? activeExpand === index : state[index]}
           >
             <div className="item--content">
-              <div className="line" />
               <div className="collapsed-content">
-                {active && (
-                  <div className="collapsed-content__body">
-                    <Deposit depositInfo={poolInfo} />
-                  </div>
-                )}
+                {active && <CollapsedContentTabs poolInfo={poolInfo} />}
               </div>
             </div>
           </Collapse>

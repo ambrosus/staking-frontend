@@ -8,6 +8,9 @@ import {
   SupportedChainId,
 } from '../config';
 
+import avatarIcon from '../assets/svg/avatar.svg';
+import avatarIcon2 from '../assets/svg/avatar2.svg';
+
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,7 +23,18 @@ const NETWORK_POLLING_INTERVALS = {
   [SupportedChainId.AMBROSUS]: 1000,
 };
 
-export const getLibrary = (provider = 'metamask') => {
+export const poolIcon = (index) => {
+  switch (index) {
+    case index % 2:
+      return avatarIcon2;
+    case index:
+      return avatarIcon;
+    default:
+      return avatarIcon;
+  }
+};
+
+export const getLibrary = (provider = undefined) => {
   const library = new providers.Web3Provider(
     provider,
     /* eslint-disable-next-line no-nested-ternary */

@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
-
+import { Web3ReactProvider } from '@web3-react/core';
+import ReactNotifications from 'react-notifications-component';
 import RenderRoutes from './components/RenderRoutes';
 import { getLibrary } from './utils/helpers';
-import { ethereum, NetworkContextName } from './config';
+import { ethereum } from './config';
 import './styles/Main.scss';
-
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
 const Main = () => {
   const handleChainChanged = () => window.location.reload();
@@ -36,9 +34,8 @@ const Main = () => {
   return (
     <BrowserRouter>
       <Web3ReactProvider getLibrary={getLibrary}>
-        <Web3ProviderNetwork getLibrary={getLibrary}>
-          <RenderRoutes />
-        </Web3ProviderNetwork>
+        <ReactNotifications />
+        <RenderRoutes />
       </Web3ReactProvider>
     </BrowserRouter>
   );
