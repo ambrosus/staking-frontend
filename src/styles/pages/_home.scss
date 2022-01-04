@@ -285,10 +285,11 @@
         justify-content: space-around;
 
         .items-container__item {
+          height: 130px;
           display: flex;
           align-items: center;
           flex-direction: column;
-          justify-content: center;
+          justify-content: space-between;
         }
       }
     }

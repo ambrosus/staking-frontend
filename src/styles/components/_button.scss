@@ -34,8 +34,12 @@
 
   &.white {
     min-width: 187px;
-    color: $black;
-    background: #FFFFFF;
+    color: $black !important;
+    background: #FFFFFF !important;
+    border: 1px solid $black;
+    p{
+      color: $black !important;
+    }
   }
 
   &.gradient {
@@ -129,6 +133,27 @@ button{
 
     p {
       color: #4E4E4E !important;
+    }
+  }
+}
+
+
+.white {
+  &:active {
+    border: 1px solid #FFFFFF !important;
+    background-color: #DAD7D7 !important;
+
+    p {
+      color: #212121 !important;
+    }
+  }
+
+  &:hover {
+    border: 1px solid #FFFFFF !important;
+    background-color: #212121 !important;
+
+    p {
+      color: #FFFFFF !important;
     }
   }
 }

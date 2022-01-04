@@ -66,7 +66,7 @@ export default () => {
             {isSmall && (
               <Button
                 buttonStyles={{ marginLeft: 'auto', maxHeight: 50, width: 160 }}
-                type={isMainPage ? 'black' : 'primary'}
+                type="white "
                 onclick={logIn}
               >
                 <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
