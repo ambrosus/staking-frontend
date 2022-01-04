@@ -68,6 +68,17 @@ input[type=number] {
 .input input[type="password"]:focus + .iconLeft {
   font-family: Halvar Breitschrift, sans-serif !important;
   opacity: 1;
+
+  span {
+    span {
+      svg {
+        path {
+          fill: #FFFFFF !important;
+        }
+      }
+    }
+
+  }
 }
 
 .input .iconLeft,
@@ -93,23 +104,24 @@ input[type=number] {
   justify-content: center;
   height: 25px;
 
-  svg{
+  svg {
 
   }
 }
 
 .input .iconRight:hover {
- span{
-   span{
-     svg{
-       color: white;
-       fill: white !important;
-       path{
-         fill: white !important;
-       }
-     }
-   }
- }
+  span {
+    span {
+      svg {
+        color: white;
+        fill: white !important;
+
+        path {
+          fill: white !important;
+        }
+      }
+    }
+  }
 }
 
 .input-error input[type="number"]:focus,
@@ -132,5 +144,7 @@ input[type=number] {
 
 }
 
-input, textarea, select { font-family:inherit; }
+input, textarea, select {
+  font-family: inherit;
+}
 
