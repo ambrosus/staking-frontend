@@ -1,30 +1,18 @@
-/*eslint-disable*/
-// TODO add WalletConnectConnector
 import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-import { Link, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from '../../hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import {
-  bounce,
-  connectorsByName,
-  ethereum,
-  PoolsContext,
-  STAKING_PAGE,
-} from '../../config';
+import { bounce, ethereum, PoolsContext } from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from '../../utils/reducers';
 import { changeNetwork, debugLog } from '../../utils/helpers';
 import StakingItem from '../../components/StakingItem';
-import { ReactSVG } from 'react-svg';
-import headerLogoSvg from 'assets/svg/header-logo.svg';
-import Menu from 'pages/Home/components/Menu';
 import InfoBlock from './components/InfoBlock';
 
 const NotSupported = React.lazy(() =>
@@ -32,7 +20,7 @@ const NotSupported = React.lazy(() =>
 );
 
 const Staking = observer(() => {
-  const { account, activate, chainId } = useWeb3React();
+  const { account, activate, chainId, connector } = useWeb3React();
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [checkNetworkChain, setCheckNetworkChain] = useState(false);
@@ -44,7 +32,8 @@ const Staking = observer(() => {
   useEffect(() => {
     debugLog('Staking render useEffect');
     // TODO change here when will do WalletConnect
-    activate(connectorsByName.Injected);
+    console.log('connector', connector);
+    activate(connector);
     getPools();
     if (ethereum) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
@@ -63,16 +52,6 @@ const Staking = observer(() => {
       )}
       <div className="layout">
         <Header />
-        {/*<div className="home__top">*/}
-        {/*  <div className="home__top--header">*/}
-        {/*    <Link to="/">*/}
-        {/*      <div className="logo">*/}
-        {/*        <ReactSVG src={headerLogoSvg} wrapper="span"/>*/}
-        {/*      </div>*/}
-        {/*    </Link>*/}
-        {/*    <Menu/>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
         <div className="content" style={{ marginTop: 90 }}>
           <div className="page">
             {pools.length > 0 ? (

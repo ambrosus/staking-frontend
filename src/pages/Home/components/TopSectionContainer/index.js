@@ -1,21 +1,16 @@
 /*eslint-disable*/
-// TODO add WalletConnect
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
-import headerLogoSvg from '../../../../assets/svg/header-logo.svg';
-import Menu from '../Menu';
 import Paragraph from '../../../../components/Paragraph';
-import { CONNECT_TEXT } from '../../../../config';
-// import Modal from '../../../../components/Modal';
-import { useLogIn } from '../../../../hooks';
-// import ButtonGroup from '../../../../components/ButtonGroup';
+import { CONNECT_TEXT, injected, walletconnect } from '../../../../config';
+import Modal from '../../../../components/Modal';
+import { useModal, useLogIn } from '../../../../hooks';
+import ButtonGroup from '../../../../components/ButtonGroup';
 import Button from '../../../../components/Button';
 import Header from 'components/layouts/Header';
 
 export default () => {
-  // const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
-  //   useModal();
+  const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
+    useModal();
   const { logIn } = useLogIn();
 
   return (
@@ -50,7 +45,7 @@ export default () => {
             background: '#212121',
           }}
           type="black"
-          onclick={logIn}
+          onclick={toggleLogInMethodShow}
         >
           <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
             <span
@@ -64,8 +59,7 @@ export default () => {
             </span>
           </Paragraph>
         </Button>
-        {/* TODO WALLET CONNECT MODAL
-         <Modal
+        <Modal
           isShowing={isLogInMethodShow}
           hide={toggleLogInMethodShow}
           modalStyles={{ maxWidth: 500 }}
@@ -112,7 +106,7 @@ export default () => {
               </Paragraph>
             </Button>
           </ButtonGroup>
-        </Modal> */}
+        </Modal>
       </div>
     </>
   );
