@@ -1,21 +1,11 @@
-/*eslint-disable*/
-// TODO add WalletConnect
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
-import headerLogoSvg from '../../../../assets/svg/header-logo.svg';
-import Menu from '../Menu';
 import Paragraph from '../../../../components/Paragraph';
 import { CONNECT_TEXT } from '../../../../config';
-// import Modal from '../../../../components/Modal';
 import { useLogIn } from '../../../../hooks';
-// import ButtonGroup from '../../../../components/ButtonGroup';
 import Button from '../../../../components/Button';
-import Header from 'components/layouts/Header';
+import Header from '../../../../components/layouts/Header';
 
 export default () => {
-  // const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
-  //   useModal();
   const { logIn } = useLogIn();
 
   return (
@@ -64,55 +54,6 @@ export default () => {
             </span>
           </Paragraph>
         </Button>
-        {/* TODO WALLET CONNECT MODAL
-         <Modal
-          isShowing={isLogInMethodShow}
-          hide={toggleLogInMethodShow}
-          modalStyles={{ maxWidth: 500 }}
-        >
-          <ButtonGroup>
-            <Button
-              buttonStyles={{
-                margin: 20,
-                background: '#212121',
-              }}
-              type="black"
-              onclick={() => logIn(injected)}
-            >
-              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
-                <span
-                  style={{
-                    paddingLeft: 5,
-                    fontFamily: ' Neue Machina',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Metamask
-                </span>
-              </Paragraph>
-            </Button>
-            <Button
-              buttonStyles={{
-                margin: 20,
-                background: '#212121',
-              }}
-              type="black"
-              onclick={() => logIn(walletconnect)}
-            >
-              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
-                <span
-                  style={{
-                    paddingLeft: 5,
-                    fontFamily: ' Neue Machina',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  WalletConnect
-                </span>
-              </Paragraph>
-            </Button>
-          </ButtonGroup>
-        </Modal> */}
       </div>
     </>
   );
