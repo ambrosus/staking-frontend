@@ -1,7 +1,5 @@
-// TODO add WalletConnectConnector
-/*eslint-disable*/
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import {
   NoEthereumProviderError,
@@ -11,16 +9,18 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector';
-import { ethereum, STAKING_PAGE } from '../config';
+import appStore from '../store/app.store';
+import { injected, walletconnect } from '../config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from '../utils/helpers';
-import appStore from 'store/app.store';
 
 const useLogIn = () => {
   const history = useHistory();
-  const context = useWeb3React();
-  const { activate, error, connector } = context;
+  const [isConnected, setIsConnected] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const { activate, error, connector } = useWeb3React();
   const { isDesktop } = useMobileDetect();
+
   function getErrorMessage(err) {
     let message;
     if (err instanceof NoEthereumProviderError) {
@@ -45,33 +45,46 @@ const useLogIn = () => {
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
-    await activate(appConnector).then(() => {
-      setTimeout(() => {
-        if (isDesktop) {
-          if (connector !== undefined) {
-            if (connector instanceof WalletConnectConnector) {
-              appStore.setSigner(connector.walletConnectProvider);
-              localStorage.setItem('connector', 'walletconnect');
-              history.push('/staking');
-            } else {
-              appStore.setSigner(window.ethereum);
-              localStorage.setItem('connector', 'injected');
-              history.push('/staking');
-            }
-          }
-        } else {
-          window.location.replace(
-            'https://metamask.app.link/dapp/pr-48.d2nndxolfp1vk8.amplifyapp.com/staking',
-          );
-        }
-      }, 1000);
+    await activate(appConnector).catch((e) => {
+      console.log(e);
     });
-
+    await appConnector.activate();
+    setRefresh(!refresh);
     if (error) {
       alert(getErrorMessage(error));
     }
     return false;
   };
+
+  useEffect(() => {
+    if (refresh) {
+      if (isDesktop) {
+        if (connector !== undefined) {
+          if (connector instanceof WalletConnectConnector) {
+            walletconnect.activate();
+            appStore.setSigner(connector.walletConnectProvider);
+            localStorage.setItem('connector', 'walletconnect');
+            setIsConnected(true);
+          } else {
+            injected.activate();
+            appStore.setSigner(window.ethereum);
+            localStorage.setItem('connector', 'injected');
+            setIsConnected(true);
+          }
+        }
+      } else {
+        window.location.replace(
+          'https://metamask.app.link/dapp/pr-48.d2nndxolfp1vk8.amplifyapp.com/staking',
+        );
+      }
+    }
+    if (!isConnected) {
+      return;
+    }
+    if (isConnected) {
+      history.push('/staking');
+    }
+  }, [refresh, isConnected]);
 
   return { logIn };
 };
