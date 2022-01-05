@@ -1,13 +1,16 @@
+/*eslint-disable*/
 import React, { useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
 import { toJS } from 'mobx';
 import StakingWrapper from '../services/staking.wrapper';
-import { PoolsContext } from '../config';
+import { injected, PoolsContext, walletconnect } from '../config';
 import appStore from '../store/app.store';
 import { debugLog } from '../utils/helpers';
 
 function PoolsContextProvider(props) {
   const [pools, setPools] = useState([]);
-
+  const context = useWeb3React();
+  const { activate } = context;
   const getPools = async () => {
     let isMainPage;
     let poolsData;
@@ -18,11 +21,13 @@ function PoolsContextProvider(props) {
         appStore.signer !== undefined ? appStore.signer : window.ethereum,
       );
     } else {
-      isMainPage = true;
-      poolsData = await StakingWrapper.getPoolsData(
-        isMainPage,
-        appStore.signer !== undefined ? appStore.signer : window.ethereum,
-      );
+      await activate(walletconnect).then(async () => {
+        isMainPage = true;
+        poolsData = await StakingWrapper.getPoolsData(
+          isMainPage,
+          walletconnect.walletConnectProvider,
+        );
+      });
     }
 
     await appStore.updatePoolData(poolsData);

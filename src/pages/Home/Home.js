@@ -30,11 +30,6 @@ const Home = () => {
   //   2000,
   //   false,
   // );
-  useEffect(() => {
-    if (sessionStorage.getItem('connector') !== undefined) {
-      activate(connectorsByName[sessionStorage.getItem('connector')]);
-    }
-  }, []);
 
   return (
     <div className="home" id="home">

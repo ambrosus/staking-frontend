@@ -55,9 +55,11 @@ const useLogIn = () => {
                 connector,
               );
               appStore.setSigner(connector.walletConnectProvider);
+              localStorage.setItem('connector-wc', 'lala');
               history.push('/staking');
             } else {
               appStore.setSigner(window.ethereum);
+              localStorage.setItem('connector-injected', 'lala');
             }
           }
         } else {
