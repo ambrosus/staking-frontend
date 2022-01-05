@@ -35,7 +35,7 @@ const Input = ({
           onchange(e.target.value);
         }
       }}
-      style={iconLeft && { padding: '0 50px' }}
+      style={iconLeft && { padding: '0 55px' }}
     />
     {iconLeft && (
       <span className="iconLeft">
@@ -61,4 +61,5 @@ Input.propTypes = {
   value: PropTypes.any,
   error: PropTypes.bool,
 };
+
 export default React.memo(Input);

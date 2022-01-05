@@ -8,6 +8,9 @@ import {
   SupportedChainId,
 } from '../config';
 
+import avatarIcon from '../assets/svg/avatar.svg';
+import avatarIcon2 from '../assets/svg/avatar2.svg';
+
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,7 +23,18 @@ const NETWORK_POLLING_INTERVALS = {
   [SupportedChainId.AMBROSUS]: 1000,
 };
 
-export const getLibrary = (provider) => {
+export const poolIcon = (index) => {
+  switch (index) {
+    case index % 2:
+      return avatarIcon2;
+    case index:
+      return avatarIcon;
+    default:
+      return avatarIcon;
+  }
+};
+
+export const getLibrary = (provider = undefined) => {
   const library = new providers.Web3Provider(
     provider,
     /* eslint-disable-next-line no-nested-ternary */
@@ -71,23 +85,6 @@ export const notificationMassage = (type, alertText) => {
       draggable: true,
       transition: bounce,
     });
-  }
-};
-
-export const collapsedReducer = (state, { type, index }) => {
-  const stateCopy = [false];
-  switch (type) {
-    case 'toggle':
-      stateCopy[index] = !stateCopy[index];
-      return [...stateCopy];
-    case 'hide':
-      stateCopy[index] = false;
-      return [...stateCopy];
-    case 'show':
-      stateCopy[index] = true;
-      return [...stateCopy];
-    default:
-      throw new Error();
   }
 };
 

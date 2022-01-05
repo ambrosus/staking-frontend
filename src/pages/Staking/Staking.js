@@ -1,40 +1,52 @@
-import React, { useEffect, useState } from 'react';
+/*eslint-disable*/
+// TODO add WalletConnectConnector
+import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
-import { toJS } from 'mobx';
-
-import StakingItem from '../../components/StakingItem';
+import { Link, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import Sidebar from '../../components/Sidebar';
 import Header from '../../components/layouts/Header';
-import NotSupported from '../../components/NotSupported';
-import { useTimeout } from '../../hooks';
-import InfoBlock from './components/InfoBlock';
+import { useMobileDetect, useTimeout } from '../../hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, connectorsByName, ethereum } from '../../config';
+import {
+  bounce,
+  connectorsByName,
+  ethereum,
+  PoolsContext,
+  STAKING_PAGE,
+} from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
-import { changeNetwork, collapsedReducer, debugLog } from '../../utils/helpers';
+import { collapsedReducer } from '../../utils/reducers';
+import { changeNetwork, debugLog } from '../../utils/helpers';
+import StakingItem from '../../components/StakingItem';
+import { ReactSVG } from 'react-svg';
+import headerLogoSvg from 'assets/svg/header-logo.svg';
+import Menu from 'pages/Home/components/Menu';
+import InfoBlock from './components/InfoBlock';
+
+const NotSupported = React.lazy(() =>
+  import(/* webpackPrefetch: true */ '../../components/NotSupported'),
+);
 
 const Staking = observer(() => {
   const { account, activate, chainId } = useWeb3React();
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
-  const [pools, setPools] = useState([]);
   const [checkNetworkChain, setCheckNetworkChain] = useState(false);
-
-  const getDataFromProvider = async () => {
-    await appStore.updatePoolData();
-    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
-  };
+  const [pools, getPools] = useContext(PoolsContext);
+  const { isDesktop } = useMobileDetect();
 
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
   useEffect(() => {
     debugLog('Staking render useEffect');
+    // TODO change here when will do WalletConnect
     activate(connectorsByName.Injected);
-    getDataFromProvider();
-    if (ethereum?.isMetaMask) {
+    getPools();
+    if (ethereum) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         window.addEventListener('focus', changeNetwork);
       }
@@ -43,12 +55,25 @@ const Staking = observer(() => {
 
   return (
     <>
+      <Sidebar pageWrapId="root" outerContainerId="root" />
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
-        <NotSupported key={chainId} onclick={changeNetwork} />
+        <React.Suspense fallback={<div />}>
+          <NotSupported key={chainId} onclick={changeNetwork} />
+        </React.Suspense>
       )}
       <div className="layout">
         <Header />
-        <div className="content">
+        {/*<div className="home__top">*/}
+        {/*  <div className="home__top--header">*/}
+        {/*    <Link to="/">*/}
+        {/*      <div className="logo">*/}
+        {/*        <ReactSVG src={headerLogoSvg} wrapper="span"/>*/}
+        {/*      </div>*/}
+        {/*    </Link>*/}
+        {/*    <Menu/>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+        <div className="content" style={{ marginTop: 90 }}>
           <div className="page">
             {pools.length > 0 ? (
               <RenderItems>
@@ -57,10 +82,10 @@ const Staking = observer(() => {
                   <>
                     <div className="staking__header">
                       <div>Pool</div>
-                      <div>My Stake</div>
+                      {isDesktop && <div>My Stake</div>}
                       <div>Total pool stake</div>
                       <div>APY</div>
-                      <div style={{ marginRight: -45 }} />
+                      <div style={{ marginRight: -20 }} />
                     </div>
                     {pools
                       .filter(

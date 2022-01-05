@@ -2,7 +2,6 @@
 .input {
   position: relative;
   width: 100%;
-  max-width: 665px;
   font-family: Halvar Breitschrift, sans-serif !important;
   font-style: normal;
   font-weight: normal;
@@ -10,6 +9,7 @@
   display: flex;
   align-items: center;
   font-feature-settings: 'liga' off;
+  height: 56px;
 
   input {
     * {
@@ -23,6 +23,7 @@ input::-webkit-inner-spin-button {
   font-family: Halvar Breitschrift, sans-serif !important;
   -webkit-appearance: none;
   margin: -20px;
+
 }
 
 input[type=number] {
@@ -37,18 +38,17 @@ input[type=number] {
   font-style: normal !important;
   font-weight: normal !important;
   font-feature-settings: 'liga' off !important;
-  background: #F7F7FD;
+  background: #262626;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   appearance: none;
-  height: 48px;
+  height: inherit;
   display: flex;
   align-items: center;
   width: 100%;
-  border: 2px solid $whiteToGray;
-  border-radius: 12px;
   font-size: 14px;
   padding-left: 16px;
   padding-right: 89px !important;
-  color: $color-primary;
+  color: #fff;
   transition-property: border, color;
   transition-duration: 400ms;
 }
@@ -59,8 +59,7 @@ input[type=number] {
 .input input[type="password"]:focus {
   font-family: Halvar Breitschrift, sans-serif !important;
   font-size: 14px;
-  border: 2px solid $color-primary;
-  color: $color-primary;
+  border: 1px solid #FFFFFF;
 }
 
 .input input[type="number"]:focus + .iconLeft,
@@ -68,8 +67,18 @@ input[type=number] {
 .input input[type="text"]:focus + .iconLeft,
 .input input[type="password"]:focus + .iconLeft {
   font-family: Halvar Breitschrift, sans-serif !important;
-
   opacity: 1;
+
+  span {
+    span {
+      svg {
+        path {
+          fill: #FFFFFF !important;
+        }
+      }
+    }
+
+  }
 }
 
 .input .iconLeft,
@@ -80,12 +89,12 @@ input[type=number] {
 }
 
 .input .iconLeft {
-  top: 16px;
+  top: 20px;
   left: 12px;
 }
 
 .input .iconRight {
-  top: 12px;
+  top: 15px;
   right: 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -94,11 +103,25 @@ input[type=number] {
   align-items: center;
   justify-content: center;
   height: 25px;
-  background-color: $color-gray;
+
+  svg {
+
+  }
 }
 
 .input .iconRight:hover {
-  background-color: $color-gray-light;
+  span {
+    span {
+      svg {
+        color: white;
+        fill: white !important;
+
+        path {
+          fill: white !important;
+        }
+      }
+    }
+  }
 }
 
 .input-error input[type="number"]:focus,
@@ -121,5 +144,7 @@ input[type=number] {
 
 }
 
-input, textarea, select { font-family:inherit; }
+input, textarea, select {
+  font-family: inherit;
+}
 

@@ -3,23 +3,20 @@
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  user-select: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  background: $color-primary;
-  color: $white;
-  padding: 10px;
-  min-height: 40px;
-  min-width: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 12px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  width: max-content;
+  white-space: pre-wrap;
+  height: 65px !important;
+  font-family: Neue Machina, 'sans-serif';
+  font-weight: 400;
+  font-size: 1rem;
+  border: currentColor 1px solid;
+  border-radius: 0;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  cursor: pointer;
 
   p {
     font-family: Neue Machina, sans-serif;
@@ -30,8 +27,35 @@
     font-size: 12px !important;
   }
 
+  &.black {
+    color: white;
+    background: #212121;
+  }
+
+  &.white {
+    min-width: 187px;
+    color: $black !important;
+    background: #FFFFFF !important;
+    border: 1px solid $black;
+    p{
+      color: $black !important;
+    }
+  }
+
+  &.gradient {
+    color: white;
+    background: linear-gradient(97.53deg, #360f8c -22.91%, #15d378 138.45%);
+    border: 1px solid $black;
+  }
+
   &.secondary {
     background-color: $color-blue;
+  }
+
+  &.action {
+    color: #212121 !important;
+    min-width: 187px;
+    background: #FFFFFF;
   }
 
   &.primary {
@@ -58,16 +82,6 @@
   }
 }
 
-button[disabled=disabled], button:disabled {
-  background: $color-blue !important;
-  opacity: 0.8;
-  pointer-events: none;
-  cursor: not-allowed;
-
-  p {
-    color: #D0DBF3 !important;
-  }
-}
 
 .primary {
   &:hover {
@@ -75,15 +89,72 @@ button[disabled=disabled], button:disabled {
   }
 }
 
-.green {
-  &:hover {
-    background-color: $green-light;
-  }
-}
-
 .secondary {
   &:hover {
     background-color: $color-gray-light;
+  }
+}
+
+.black {
+  &:hover {
+    background-color: #1A1A1A;
+    text-decoration-line: underline;
+  }
+}
+
+button{
+  &:hover {
+    text-decoration-line: underline;
+  }
+}
+
+.action {
+  &:active {
+    border: 1px solid #FFFFFF !important;
+    background-color: #1A1A1A !important;
+
+    p {
+      color: White !important;
+    }
+  }
+
+  &:hover {
+    border: 1px solid #FFFFFF !important;
+    background-color: #212121 !important;
+
+    p {
+      color: #FFFFFF !important;
+    }
+  }
+
+  &:disabled {
+    border: 1px solid #474747 !important;
+    background: #2E2E2E !important;
+
+    p {
+      color: #4E4E4E !important;
+    }
+  }
+}
+
+
+.white {
+  &:active {
+    border: 1px solid #FFFFFF !important;
+    background-color: #DAD7D7 !important;
+
+    p {
+      color: #212121 !important;
+    }
+  }
+
+  &:hover {
+    border: 1px solid #FFFFFF !important;
+    background-color: #212121 !important;
+
+    p {
+      color: #FFFFFF !important;
+    }
   }
 }
 

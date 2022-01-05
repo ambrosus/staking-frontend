@@ -1,11 +1,14 @@
 import { runInAction, makeAutoObservable } from 'mobx';
-import StakingWrapper from '../services/staking.wrapper';
 import { debugLog } from '../utils/helpers';
 
 export class AppStore {
   poolsData = [];
 
   tokenPrice = undefined;
+
+  tokenChange = undefined;
+
+  signer = undefined;
 
   refresh = false;
 
@@ -22,20 +25,30 @@ export class AppStore {
     });
   }
 
-  async updatePoolData() {
-    debugLog('updatePoolData');
-    const poolsData = await StakingWrapper.getPoolsData(
-      window.location.pathname !== '/',
-    );
-    debugLog('poolsData', poolsData);
+  setSigner(signer) {
     runInAction(() => {
-      this.poolsData = poolsData;
+      this.signer = signer;
+    });
+  }
+
+  async updatePoolData(data) {
+    debugLog('updatePoolData');
+
+    debugLog('poolsData', data);
+    runInAction(() => {
+      this.poolsData = data;
     });
   }
 
   setTokenPrice(price) {
     runInAction(() => {
       this.tokenPrice = price;
+    });
+  }
+
+  setTokenChange(change) {
+    runInAction(() => {
+      this.tokenChange = change;
     });
   }
 }

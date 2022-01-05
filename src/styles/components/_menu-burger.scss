@@ -6,7 +6,7 @@
   display: inline-block;
   text-decoration: none;
   margin-bottom: 10px;
-  color: #d1d1d1;
+  color: #FFFFFF;
   transition: color 0.2s;
 }
 
@@ -20,15 +20,26 @@
   right: 18px;
   top: 25px;
   @media (min-width: 600px) {
-  display: none;
+    display: none;
   }
-  .bm-burger-bars{
+
+  .bm-burger-bars {
     height: 10% !important;
+    @media (min-width: 600px) {
+      width: 50% !important;
+    }
   }
+
+  .bm-burger-bars:first-of-type {
+    width: 50%;
+    margin-left: 50%;
   }
+}
+
 .bm-burger-bars {
   background: #FFFFFF;
 }
+
 
 .bm-cross-button {
   height: 24px;
@@ -40,8 +51,8 @@
 }
 
 .bm-menu {
-  background: #373a47;
-  padding: 2.5em 1.5em 0;
+  background: #212121;
+  padding: 35px 15px;
   font-size: 1.15em;
 }
 
@@ -50,9 +61,163 @@
 }
 
 .bm-item-list {
-  color: #b8b7ad;
+  color: #FFFFFF;
+  margin-left: auto;
+  text-align: end;
 }
 
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.bm-menu-wrap {
+  width: 100% !important;
+  z-index: 1100;
+  right: 0 !important;
+  left: initial !important;
+  height: 100%;
+}
+
+.menu-item {
+  position: relative;
+  margin-top: 50px;
+  padding-right: 45px;
+  margin-right: 40px;
+  text-transform: uppercase;
+
+  .title {
+    font-family: Proxima Nova, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 34px;
+    text-align: right;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    display: flex;
+    position: relative !important;
+  }
+
+  .after {
+    font-family: Neue Machina, sans-serif;
+    position: absolute !important;
+    top: -7px !important;
+    right: 0 !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 140%;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: #FFFFFF;
+    opacity: 0.6;
+  }
+
+}
+
+.menu-item-info {
+  margin-top: 55px;
+  margin-right: 40px;
+  font-family: Halvar Breitschrift, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  font-feature-settings: 'liga' off;
+
+  /* Gray */
+
+  color: #F9F8FB;
+}
+
+.bm-cross-button {
+  display: none;
+}
+
+.sidebar-options {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 45px;
+
+  .wallet-connect {
+span{
+  span{
+    svg{
+      fill: #15D378;
+    }
+  }
+}
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 10px;
+    background: $graphitered;
+
+    p {
+      font-family: Halvar Breitschrift, sans-serif;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 12px;
+      line-height: 14px;
+      display: flex;
+      align-items: center;
+      color: #FFFFFF;
+    }
+
+  }
+
+  .login {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    color: #FFFFFF !important;
+
+    .header__btn {
+      span {
+        span {
+          svg {
+            margin-top: 5px;
+          }
+        }
+      }
+
+      cursor: pointer;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 2px !important;
+    }
+
+  }
+}
+
+.header-sidebar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+  margin-bottom: 60px;
+
+  .logo {
+    div {
+      div {
+        svg {
+          width: 155px;
+          height: 25px;
+        }
+      }
+    }
+  }
+
+  .close-sidebar {
+    width: 50px;
+  }
 }

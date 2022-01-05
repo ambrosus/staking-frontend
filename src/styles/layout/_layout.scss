@@ -1,7 +1,12 @@
-.content{
+.layout {
+  background: #212121;
+}
+
+.content {
   min-height: 89vh;
-  background-color: #F7F7FD;
+  background-color: #212121;
   padding-bottom: 100px;
+
   .page {
   }
 }
@@ -9,7 +14,7 @@
   display: flex;
   margin: 0 auto;
   width: 100%;
-  max-width: 1040px;
+  max-width: 1240px;
   height: auto;
   @media (max-width: 480px) {
     width: 95%;
