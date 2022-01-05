@@ -99,7 +99,7 @@ const useLogIn = () => {
       history.push(STAKING_PAGE);
     } else {
       window.location.replace(
-        'https://metamask.app.link/dapp/pr-48.d2nndxolfp1vk8.amplifyapp.com/staking',
+        'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
     }
     return false;
