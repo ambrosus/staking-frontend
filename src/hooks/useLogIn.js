@@ -50,16 +50,13 @@ const useLogIn = () => {
         if (isDesktop) {
           if (connector !== undefined) {
             if (connector instanceof WalletConnectConnector) {
-              console.log(
-                'connector instanceof WalletConnectConnector',
-                connector,
-              );
               appStore.setSigner(connector.walletConnectProvider);
-              localStorage.setItem('connector-wc', 'lala');
+              localStorage.setItem('connector', 'walletconnect');
               history.push('/staking');
             } else {
               appStore.setSigner(window.ethereum);
-              localStorage.setItem('connector-injected', 'lala');
+              localStorage.setItem('connector', 'injected');
+              history.push('/staking');
             }
           }
         } else {

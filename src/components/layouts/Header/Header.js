@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import Menu from '../../../pages/Home/components/Menu';
 import Paragraph from '../../Paragraph';
 import appStore from '../../../store/app.store';
-import { MAIN_PAGE } from '../../../config';
+import { MAIN_PAGE, walletconnect } from '../../../config';
 import { getToken } from '../../../api';
 import headerLogoSvg from '../../../assets/svg/header-logo.svg';
 import loginIcon from '../../../assets/svg/login.svg';
@@ -40,6 +40,11 @@ export const Header = observer(() => {
 
   const logOut = async () => {
     deactivate();
+    localStorage.removeItem('connector');
+    if (window.localStorage.getItem('connector') === 'walletconnect') {
+      await walletconnect.close();
+      walletconnect.walletConnectProvider = null;
+    }
     history.push(MAIN_PAGE);
   };
 

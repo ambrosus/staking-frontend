@@ -14,6 +14,8 @@ function PoolsContextProvider(props) {
   const getPools = async () => {
     let isMainPage;
     let poolsData;
+    const connectedMethod = localStorage.getItem('connector');
+
     if (window.location.pathname === '/') {
       isMainPage = false;
       poolsData = await StakingWrapper.getPoolsData(
@@ -21,11 +23,15 @@ function PoolsContextProvider(props) {
         appStore.signer !== undefined ? appStore.signer : window.ethereum,
       );
     } else {
-      await activate(walletconnect).then(async () => {
+      await activate(
+        connectedMethod == 'walletconnect' ? walletconnect : injected,
+      ).then(async () => {
         isMainPage = true;
         poolsData = await StakingWrapper.getPoolsData(
           isMainPage,
-          walletconnect.walletConnectProvider,
+          connectedMethod == 'walletconnect'
+            ? walletconnect.walletConnectProvider
+            : window.ethereum,
         );
       });
     }
