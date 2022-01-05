@@ -55,11 +55,9 @@ const useLogIn = () => {
                 connector,
               );
               appStore.setSigner(connector.walletConnectProvider);
+              history.push('/staking');
             } else {
               appStore.setSigner(window.ethereum);
-            }
-            if (connector === appConnector) {
-              history.push(STAKING_PAGE);
             }
           }
         } else {

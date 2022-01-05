@@ -116,6 +116,7 @@ export default class StakingWrapper {
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(connector).getSigner()
       : this.privateProvider;
+
     await this.privateStaticConstructorPromise;
 
     const [poolsAddrs] = await Promise.all([
