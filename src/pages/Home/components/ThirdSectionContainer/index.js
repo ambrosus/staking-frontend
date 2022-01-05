@@ -14,10 +14,17 @@ export default () => (
         </div>
         <div className="items-container">
           {homePageStatic.whereToByAmb.map((block) => (
-            <div className="items-container__item" key={block.src}>
-              <ReactSVG src={block.src} wrapper="span" />
-              <p>{block.text}</p>
-            </div>
+            <a
+              key={block.src}
+              href={block.url}
+              target="_blank"
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="items-container__item">
+                <ReactSVG src={block.src} wrapper="span" />
+                <p>{block.text}</p>
+              </div>
+            </a>
           ))}
         </div>
       </div>
