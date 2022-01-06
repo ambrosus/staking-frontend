@@ -9,7 +9,6 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector';
-import appStore from '../store/app.store';
 import { injected, walletconnect } from '../config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from '../utils/helpers';
@@ -18,7 +17,7 @@ const useLogIn = () => {
   const history = useHistory();
   const [isConnected, setIsConnected] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const { activate, error, connector } = useWeb3React();
+  const { activate, active, error, connector, deactivate } = useWeb3React();
   const { isDesktop } = useMobileDetect();
 
   function getErrorMessage(err) {
@@ -45,21 +44,33 @@ const useLogIn = () => {
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
-    if (!isDesktop && appConnector instanceof WalletConnectConnector) {
-      /* TODO WalletConnect from mobile */
-    } else {
-      window.location.replace(
-        'https://metamask.app.link/dapp/pr-49.d2nndxolfp1vk8.amplifyapp.com/staking',
-      );
-    }
-    await activate(appConnector).catch((e) => {
-      console.log(e);
+    appConnector.on('disconnect', (code, reason) => {
+      console.log(code, reason);
     });
-    await appConnector.activate();
-    setRefresh(!refresh);
-    if (error) {
-      alert(getErrorMessage(error));
+    try {
+      if (!isDesktop) {
+        if (appConnector instanceof WalletConnectConnector) {
+          appConnector.activate();
+        } else {
+          window.location.replace(
+            'https://metamask.app.link/dapp/pr-49.d2nndxolfp1vk8.amplifyapp.com/staking',
+          );
+        }
+      }
+      await activate(appConnector);
+      setRefresh(!refresh);
+      if (error) {
+        alert(getErrorMessage(error));
+      }
+    } catch (e) {
+      if (e) {
+        await walletconnect.close();
+        walletconnect.walletConnectProvider = null;
+        deactivate();
+        localStorage.removeItem('connector');
+      }
     }
+
     return false;
   };
 
@@ -69,15 +80,14 @@ const useLogIn = () => {
         if (connector !== undefined) {
           if (connector instanceof WalletConnectConnector) {
             walletconnect.activate();
-            appStore.setSigner(connector.walletConnectProvider);
             localStorage.setItem('connector', 'walletconnect');
-            setIsConnected(true);
           } else {
             injected.activate();
-            appStore.setSigner(window.ethereum);
             localStorage.setItem('connector', 'injected');
-            setIsConnected(true);
           }
+        }
+        if (active) {
+          setIsConnected(true);
         }
       }
     }
