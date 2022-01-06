@@ -45,6 +45,13 @@ const useLogIn = () => {
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
+    if (!isDesktop && appConnector instanceof WalletConnectConnector) {
+      /* TODO WalletConnect from mobile */
+    } else {
+      window.location.replace(
+        'https://metamask.app.link/dapp/pr-49.d2nndxolfp1vk8.amplifyapp.com/staking',
+      );
+    }
     await activate(appConnector).catch((e) => {
       console.log(e);
     });
@@ -72,10 +79,6 @@ const useLogIn = () => {
             setIsConnected(true);
           }
         }
-      } else {
-        window.location.replace(
-          'https://metamask.app.link/dapp/pr-48.d2nndxolfp1vk8.amplifyapp.com/staking',
-        );
       }
     }
     if (!isConnected) {
