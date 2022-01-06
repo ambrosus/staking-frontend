@@ -255,18 +255,22 @@ export const homePageStatic = {
     {
       src: BinanceIcon,
       text: 'Binance',
+      url: 'https://accounts.binance.com/en/register?ref=E8NGKMF8',
     },
     {
       src: KuCoinIcon,
       text: 'KuCoin',
+      url: 'https://www.kucoin.com/',
     },
     {
       src: WhiteBITIcon,
       text: 'WhiteBIT',
+      url: 'https://whitebit.com/',
     },
     {
       src: probitIcon,
       text: 'ProBit',
+      url: 'https://www.probit.com/',
     },
   ],
 };

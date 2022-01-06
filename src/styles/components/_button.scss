@@ -140,7 +140,6 @@ button{
 
 .white {
   &:active {
-    border: 1px solid #FFFFFF !important;
     background-color: #DAD7D7 !important;
 
     p {
@@ -149,11 +148,10 @@ button{
   }
 
   &:hover {
-    border: 1px solid #FFFFFF !important;
-    background-color: #212121 !important;
+    background-color: #FFFFFF !important;
 
     p {
-      color: #FFFFFF !important;
+      color: #212121 !important;
     }
   }
 }
