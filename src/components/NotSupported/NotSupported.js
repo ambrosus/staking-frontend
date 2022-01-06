@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import Paragraph from '../Paragraph';
-import { network } from '../../config';
+import { network } from 'config';
 
 const NotSupported = ({ children, onclick = () => {} }) => {
   const net = !network ? 'Testnet' : 'Mainnet';

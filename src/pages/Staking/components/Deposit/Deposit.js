@@ -17,18 +17,14 @@ import {
   ZERO,
 } from '../../../../services/numbers';
 import StakingWrapper from '../../../../services/staking.wrapper';
-import {
-  debugLog,
-  formatThousand,
-  notificationMassage,
-} from '../../../../utils/helpers';
+import { debugLog, formatThousand, notificationMassage } from 'utils/helpers';
 import {
   FIFTY_PERCENT,
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   STAKING_PAGE,
   TWENTY_FIVE_PERCENT,
-} from '../../../../config';
+} from 'config';
 import { useMobileDetect } from '../../../../hooks';
 
 const Deposit = observer(({ depositInfo }) => {

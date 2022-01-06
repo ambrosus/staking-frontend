@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 import Button from '../Button';
 import Paragraph from '../Paragraph';
-import { COMING_SOON, MAIN_PAGE, STAKE, STAKING_PAGE } from '../../config';
+import { COMING_SOON, MAIN_PAGE, STAKE, STAKING_PAGE } from 'config';
 import avatarIcon from '../../assets/svg/coming_soon_pool_icon.svg';
 
 const ComingSoonPool = ({ poolInfo, loading }) => {

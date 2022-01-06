@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../../../components/layouts/Header';
 import Paragraph from '../../../../components/Paragraph';
-import { CONNECT_TEXT, injected, walletconnect } from '../../../../config';
+import { CONNECT_TEXT, injected, walletconnect } from 'config';
 import Modal from '../../../../components/Modal';
 import { useModal, useLogIn } from '../../../../hooks';
 import ButtonGroup from '../../../../components/ButtonGroup';

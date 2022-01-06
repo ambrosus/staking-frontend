@@ -7,11 +7,11 @@ import Header from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from '../../hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, ethereum, PoolsContext } from '../../config';
+import { bounce, ethereum, PoolsContext } from 'config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
-import { collapsedReducer } from '../../utils/reducers';
-import { changeNetwork, debugLog } from '../../utils/helpers';
+import { collapsedReducer } from 'utils/reducers';
+import { changeNetwork, debugLog } from 'utils/helpers';
 import StakingItem from '../../components/StakingItem';
 import InfoBlock from './components/InfoBlock';
 

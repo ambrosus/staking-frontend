@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import appStore from '../../store/app.store';
 import { useLogIn, useMedia } from '../../hooks';
-import { MAIN_PAGE, STAKING_PAGE, walletconnect } from '../../config';
+import { MAIN_PAGE, STAKING_PAGE, walletconnect } from 'config';
 import Paragraph from '../Paragraph';
 
 import arrowIcon from '../../assets/svg/arrow.svg';

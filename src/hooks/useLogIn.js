@@ -9,9 +9,9 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector';
-import { injected, walletconnect } from '../config';
+import { injected, walletconnect } from 'config';
 import useMobileDetect from './useMobileDetect';
-import { debugLog } from '../utils/helpers';
+import { debugLog } from 'utils/helpers';
 
 const useLogIn = () => {
   const history = useHistory();
@@ -51,6 +51,11 @@ const useLogIn = () => {
       if (!isDesktop) {
         if (appConnector instanceof WalletConnectConnector) {
           appConnector.activate();
+          setTimeout(() => {
+            if (connector instanceof WalletConnectConnector) {
+              history.push('/staking');
+            }
+          }, 1000);
         } else {
           window.location.replace(
             'https://metamask.app.link/dapp/pr-49.d2nndxolfp1vk8.amplifyapp.com/staking',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
-import { socialsLinks } from '../../../config';
+import { socialsLinks } from 'config';
 import footerLogo from '../../../assets/svg/footer-logo.svg';
 import footerLogoMobile from '../../../assets/svg/footer-logo-mobile.svg';
 import { useMedia } from '../../../hooks';

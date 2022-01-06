@@ -9,7 +9,7 @@ import Paragraph from '../../../../components/Paragraph';
 import { formatRounded } from '../../../../services/numbers';
 import copyIcon from '../../../../assets/svg/copy.svg';
 import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
-import { tooltips } from '../../../../config';
+import { tooltips } from 'config';
 import appStore from '../../../../store/app.store';
 
 const InfoBlock = observer(({ poolsArr, account }) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import * as PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
-import { tooltips } from '../../../../config';
+import { tooltips } from 'config';
 import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
 import Paragraph from '../../../../components/Paragraph';
 import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 
-import { homePageStatic } from '../../../../config';
+import { homePageStatic } from 'config';
 import { useLogIn } from '../../../../hooks';
 
 export default () => {

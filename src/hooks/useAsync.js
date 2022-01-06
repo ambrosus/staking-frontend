@@ -1,5 +1,5 @@
 import React from 'react';
-import { asyncReducer } from '../utils/reducers';
+import { asyncReducer } from 'utils/reducers';
 import { useSafeDispatch } from './useSafeDispatch';
 
 const useAsync = (asyncCallback, initialState) => {

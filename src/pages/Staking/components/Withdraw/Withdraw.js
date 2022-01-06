@@ -18,12 +18,8 @@ import {
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
-} from '../../../../config';
-import {
-  debugLog,
-  formatThousand,
-  notificationMassage,
-} from '../../../../utils/helpers';
+} from 'config';
+import { debugLog, formatThousand, notificationMassage } from 'utils/helpers';
 import appStore from '../../../../store/app.store';
 
 const Withdraw = observer(({ withdrawContractInfo }) => {
