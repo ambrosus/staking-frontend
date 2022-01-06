@@ -1,14 +1,13 @@
-/*eslint-disable*/
 import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/layouts/Header';
-import { useInterval, useMobileDetect, useTimeout } from '../../hooks';
+import { useMobileDetect, useTimeout } from '../../hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, connectorsByName, ethereum, PoolsContext } from '../../config';
+import { bounce, ethereum, PoolsContext } from '../../config';
 import appStore from '../../store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from '../../utils/reducers';
@@ -21,7 +20,7 @@ const NotSupported = React.lazy(() =>
 );
 
 const Staking = observer(() => {
-  const { account, activate, chainId, connector, library } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const [activeExpand, setActiveExpand] = useState(-1);
   const [state, dispatch] = React.useReducer(collapsedReducer, [false]);
   const [checkNetworkChain, setCheckNetworkChain] = useState(false);
@@ -29,15 +28,6 @@ const Staking = observer(() => {
   const { isDesktop } = useMobileDetect();
 
   useTimeout(() => setCheckNetworkChain(true), 1500);
-  // useInterval(
-  //   async () => {
-  //     activate(connectorsByName[sessionStorage.getItem('connector')]).then(
-  //       console.log,
-  //     );
-  //   },
-  //   2000,
-  //   false,
-  // );
   useEffect(() => {
     debugLog('Staking render useEffect');
     getPools();

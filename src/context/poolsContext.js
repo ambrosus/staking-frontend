@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React, { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { toJS } from 'mobx';
@@ -24,12 +23,12 @@ function PoolsContextProvider(props) {
       );
     } else {
       await activate(
-        connectedMethod == 'walletconnect' ? walletconnect : injected,
+        connectedMethod === 'walletconnect' ? walletconnect : injected,
       ).then(async () => {
         isMainPage = true;
         poolsData = await StakingWrapper.getPoolsData(
           isMainPage,
-          connectedMethod == 'walletconnect'
+          connectedMethod === 'walletconnect'
             ? walletconnect.walletConnectProvider
             : window.ethereum,
         );
