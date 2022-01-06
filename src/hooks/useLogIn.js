@@ -43,10 +43,8 @@ const useLogIn = () => {
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
-    appConnector.on('disconnect', (code, reason) => {
-      console.log(code, reason);
-    });
     try {
+      /*eslint-disable*/
       if (!isDesktop) {
         if (appConnector instanceof WalletConnectConnector) {
           await appConnector.activate();
@@ -55,6 +53,7 @@ const useLogIn = () => {
               history.push('/staking');
             }
           }, 1000);
+          return;
         } else {
           window.location.replace(
             'https://metamask.app.link/dapp/pr-49.d2nndxolfp1vk8.amplifyapp.com/staking',
