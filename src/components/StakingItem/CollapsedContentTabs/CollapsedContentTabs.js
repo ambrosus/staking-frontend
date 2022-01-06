@@ -3,9 +3,9 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import Deposit from '../../../pages/Staking/components/Deposit';
 import Withdraw from '../../../pages/Staking/components/Withdraw';
-import { useTabs } from '../../../hooks';
+import { useTabs } from 'hooks';
 
-// import information from '../../../assets/svg/Information.svg';
+// import information from 'assets/svg/Information.svg';
 
 const CollapsedContentTabs = ({ poolInfo }) => {
   const content = [

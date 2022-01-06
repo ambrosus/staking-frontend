@@ -4,22 +4,22 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { cssTransition } from 'react-toastify';
 import { utils, providers } from 'ethers';
 
-import secondSectionIcon1 from '../assets/svg/home/second-section/Icon1-66x85.svg';
-import secondSectionIcon2 from '../assets/svg/home/second-section/Icon2-66x85.svg';
-import secondSectionIcon3 from '../assets/svg/home/second-section/Icon3-66x85.svg';
-import secondSectionIcon4 from '../assets/svg/home/second-section/Icon4-66x85.svg';
+import secondSectionIcon1 from 'assets/svg/home/second-section/Icon1-66x85.svg';
+import secondSectionIcon2 from 'assets/svg/home/second-section/Icon2-66x85.svg';
+import secondSectionIcon3 from 'assets/svg/home/second-section/Icon3-66x85.svg';
+import secondSectionIcon4 from 'assets/svg/home/second-section/Icon4-66x85.svg';
 
-import BinanceIcon from '../assets/svg/home/whereToByAmb/Binance.svg';
-import KuCoinIcon from '../assets/svg/home/whereToByAmb/KuCoin.svg';
-import WhiteBITIcon from '../assets/svg/home/whereToByAmb/WhiteBIT.svg';
-import probitIcon from '../assets/svg/home/whereToByAmb/probit.svg';
+import BinanceIcon from 'assets/svg/home/whereToByAmb/Binance.svg';
+import KuCoinIcon from 'assets/svg/home/whereToByAmb/KuCoin.svg';
+import WhiteBITIcon from 'assets/svg/home/whereToByAmb/WhiteBIT.svg';
+import probitIcon from 'assets/svg/home/whereToByAmb/probit.svg';
 
-import githubIcon from '../assets/svg/github-icon.svg';
-import mediumIcon from '../assets/svg/medium-icon.svg';
-import redditIcon from '../assets/svg/reddit-icon.svg';
-import telegramIcon from '../assets/svg/telegram-icon.svg';
-import twitterIcon from '../assets/svg/twitter-icon.svg';
-import linkedinIcon from '../assets/svg/linkedin-icon.svg';
+import githubIcon from 'assets/svg/github-icon.svg';
+import mediumIcon from 'assets/svg/medium-icon.svg';
+import redditIcon from 'assets/svg/reddit-icon.svg';
+import telegramIcon from 'assets/svg/telegram-icon.svg';
+import twitterIcon from 'assets/svg/twitter-icon.svg';
+import linkedinIcon from 'assets/svg/linkedin-icon.svg';
 
 export const STAKING_PAGE = '/staking';
 export const MAIN_PAGE = '/';

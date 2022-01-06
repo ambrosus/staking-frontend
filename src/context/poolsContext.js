@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { toJS } from 'mobx';
 import StakingWrapper from '../services/staking.wrapper';
 import { injected, PoolsContext, walletconnect } from 'config';
-import appStore from '../store/app.store';
+import appStore from 'store/app.store';
 import { debugLog } from 'utils/helpers';
 
 function PoolsContextProvider(props) {

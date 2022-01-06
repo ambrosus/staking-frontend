@@ -7,7 +7,7 @@ import StakingItem from '../../../../components/StakingItem';
 import { Loader } from '../../../../components/Loader';
 import Paragraph from '../../../../components/Paragraph';
 import Button from '../../../../components/Button';
-import { useLogIn, useMedia } from '../../../../hooks';
+import { useLogIn, useMedia } from 'hooks';
 import { debugLog } from 'utils/helpers';
 
 export default () => {

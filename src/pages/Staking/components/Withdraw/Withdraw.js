@@ -20,7 +20,7 @@ import {
   TWENTY_FIVE_PERCENT,
 } from 'config';
 import { debugLog, formatThousand, notificationMassage } from 'utils/helpers';
-import appStore from '../../../../store/app.store';
+import appStore from 'store/app.store';
 
 const Withdraw = observer(({ withdrawContractInfo }) => {
   const { myStakeInAMB } = withdrawContractInfo;

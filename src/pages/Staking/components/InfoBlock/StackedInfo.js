@@ -3,13 +3,13 @@ import ReactTooltip from 'react-tooltip';
 import * as PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg';
 import { tooltips } from 'config';
-import pieChartOutlineIcon from '../../../../assets/svg/pie_chart_outline.svg';
+import pieChartOutlineIcon from 'assets/svg/pie_chart_outline.svg';
 import Paragraph from '../../../../components/Paragraph';
-import errorOutlineIcon from '../../../../assets/svg/error_outline.svg';
+import errorOutlineIcon from 'assets/svg/error_outline.svg';
 import DisplayValue from '../../../../components/DisplayValue';
 import { formatRounded } from '../../../../services/numbers';
-import earningsIcon from '../../../../assets/svg/last24h.svg';
-import { useMedia } from '../../../../hooks';
+import earningsIcon from 'assets/svg/last24h.svg';
+import { useMedia } from 'hooks';
 
 const StackedInfo = ({
   totalStaked,

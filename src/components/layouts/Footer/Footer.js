@@ -1,11 +1,11 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { socialsLinks } from 'config';
-import footerLogo from '../../../assets/svg/footer-logo.svg';
-import footerLogoMobile from '../../../assets/svg/footer-logo-mobile.svg';
-import { useMedia } from '../../../hooks';
+import footerLogo from 'assets/svg/footer-logo.svg';
+import footerLogoMobile from 'assets/svg/footer-logo-mobile.svg';
+import { useMedia } from 'hooks';
 
-import pdfFile from '../../../assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
+import pdfFile from 'assets/files/Ambrosus_Arcadia_Staking_Terms_of_Use.pdf';
 
 const Footer = () => {
   const isSmall = useMedia('(max-width: 699px)');

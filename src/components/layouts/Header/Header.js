@@ -1,23 +1,21 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import Menu from '../../../pages/Home/components/Menu';
 import Paragraph from '../../Paragraph';
-import appStore from '../../../store/app.store';
-import { MAIN_PAGE, walletconnect } from 'config';
-import { getToken } from '../../../api';
-import headerLogoSvg from '../../../assets/svg/header-logo.svg';
-import loginIcon from '../../../assets/svg/login.svg';
-import greenLightIcon from '../../../assets/svg/green-light-icon.svg';
-import { useAsync, useMedia } from '../../../hooks';
+import appStore from 'store/app.store';
+import { getToken } from 'api';
+import headerLogoSvg from 'assets/svg/header-logo.svg';
+import loginIcon from 'assets/svg/login.svg';
+import greenLightIcon from 'assets/svg/green-light-icon.svg';
+import { useAsync, useLogIn, useMedia } from 'hooks';
 
 export const Header = observer(() => {
-  const { account, deactivate } = useWeb3React();
-  const history = useHistory();
+  const { account } = useWeb3React();
   const isSmall = useMedia('(max-width: 699px)');
+  const { logOut } = useLogIn();
 
   const {
     data,
@@ -37,16 +35,6 @@ export const Header = observer(() => {
       appStore.setTokenChange(data?.data?.percent_change_24h);
     }
   }, [run, priceStatus]);
-
-  const logOut = async () => {
-    deactivate();
-    localStorage.removeItem('connector');
-    if (window.localStorage.getItem('connector') === 'walletconnect') {
-      await walletconnect.close();
-      walletconnect.walletConnectProvider = null;
-    }
-    history.push(MAIN_PAGE);
-  };
 
   return (
     <div className="home__top">

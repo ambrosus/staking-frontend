@@ -1,38 +1,27 @@
 import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
-import { useHistory } from 'react-router';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-import appStore from '../../store/app.store';
-import { useLogIn, useMedia } from '../../hooks';
-import { MAIN_PAGE, STAKING_PAGE, walletconnect } from 'config';
+import appStore from 'store/app.store';
+import { useLogIn, useMedia } from 'hooks';
+import { STAKING_PAGE } from 'config';
 import Paragraph from '../Paragraph';
 
-import arrowIcon from '../../assets/svg/arrow.svg';
-import ambLogo from '../../assets/svg/header-logo.svg';
-import greenLightIcon from '../../assets/svg/green-light-icon.svg';
-import loginIcon from '../../assets/svg/login.svg';
+import arrowIcon from 'assets/svg/arrow.svg';
+import ambLogo from 'assets/svg/header-logo.svg';
+import greenLightIcon from 'assets/svg/green-light-icon.svg';
+import loginIcon from 'assets/svg/login.svg';
 
 const Sidebar = () => {
   const { logIn } = useLogIn();
   const [open, setOpen] = useState(false);
-  const { account, deactivate } = useWeb3React();
+  const { account } = useWeb3React();
+  const { logOut } = useLogIn();
   const isSmall = useMedia('(max-width: 699px)');
-  const history = useHistory();
 
   const handleOnOpen = () => {
     setOpen(() => !open);
-  };
-
-  const logOut = async () => {
-    deactivate();
-    localStorage.removeItem('connector');
-    if (window.localStorage.getItem('connector') === 'walletconnect') {
-      walletconnect.close();
-      walletconnect.walletConnectProvider = null;
-    }
-    history.push(MAIN_PAGE);
   };
 
   return (

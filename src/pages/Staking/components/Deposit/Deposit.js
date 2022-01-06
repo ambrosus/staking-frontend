@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
-import appStore from '../../../../store/app.store';
+import appStore from 'store/app.store';
 import {
   checkValidNumberString,
   parseFloatToBigNumber,
@@ -25,7 +25,7 @@ import {
   STAKING_PAGE,
   TWENTY_FIVE_PERCENT,
 } from 'config';
-import { useMobileDetect } from '../../../../hooks';
+import { useMobileDetect } from 'hooks';
 
 const Deposit = observer(({ depositInfo }) => {
   const { account, library } = useWeb3React();

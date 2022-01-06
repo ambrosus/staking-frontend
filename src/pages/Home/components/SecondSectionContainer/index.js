@@ -2,7 +2,7 @@ import React from 'react';
 import { ReactSVG } from 'react-svg';
 
 import { homePageStatic } from 'config';
-import { useLogIn } from '../../../../hooks';
+import { useLogIn } from 'hooks';
 
 export default () => {
   const { logIn } = useLogIn();

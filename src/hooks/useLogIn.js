@@ -9,13 +9,12 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector';
-import { injected, walletconnect } from 'config';
+import { injected, MAIN_PAGE, walletconnect } from 'config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from 'utils/helpers';
 
 const useLogIn = () => {
   const history = useHistory();
-  const [isConnected, setIsConnected] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const { activate, active, error, connector, deactivate } = useWeb3React();
   const { isDesktop } = useMobileDetect();
@@ -78,6 +77,15 @@ const useLogIn = () => {
 
     return false;
   };
+  const logOut = async () => {
+    deactivate();
+    localStorage.removeItem('connector');
+    if (window.localStorage.getItem('connector') === 'walletconnect') {
+      await walletconnect.close();
+      walletconnect.walletConnectProvider = null;
+    }
+    history.push(MAIN_PAGE);
+  };
 
   useEffect(() => {
     if (refresh) {
@@ -91,20 +99,14 @@ const useLogIn = () => {
             localStorage.setItem('connector', 'injected');
           }
         }
-        if (active) {
-          setIsConnected(true);
-        }
+        if (active) history.push('/staking');
       }
     }
-    if (!isConnected) {
-      return;
-    }
-    if (isConnected) {
-      history.push('/staking');
-    }
-  }, [refresh, isConnected]);
 
-  return { logIn };
+    if (active) history.push('/staking');
+  }, [refresh, active]);
+
+  return { logIn, logOut };
 };
 
 export default useLogIn;

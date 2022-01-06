@@ -9,10 +9,10 @@ import { HIDE, SHOW, STAKE, STAKING_PAGE } from 'config';
 import { poolIcon } from 'utils/helpers';
 import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
-import { useMobileDetect, useLogIn } from '../../hooks';
+import { useMobileDetect, useLogIn } from 'hooks';
 
-import expandDown from '../../assets/svg/expandDown.svg';
-import expandUp from '../../assets/svg/expandUp.svg';
+import expandDown from 'assets/svg/expandDown.svg';
+import expandUp from 'assets/svg/expandUp.svg';
 import CollapsedContentTabs from './CollapsedContentTabs';
 // TODO new item-header
 // const Layout = ({ children = 5, childrenPerRow = 1 }) => {
