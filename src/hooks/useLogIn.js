@@ -49,7 +49,7 @@ const useLogIn = () => {
     try {
       if (!isDesktop) {
         if (appConnector instanceof WalletConnectConnector) {
-          appConnector.activate();
+          await appConnector.activate();
           setTimeout(() => {
             if (connector instanceof WalletConnectConnector) {
               history.push('/staking');
