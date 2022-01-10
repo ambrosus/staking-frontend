@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
-import {
-  NoEthereumProviderError,
-  UserRejectedRequestError as UserRejectedRequestErrorInjected,
-} from '@web3-react/injected-connector';
-import {
-  UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
-  WalletConnectConnector,
-} from '@web3-react/walletconnect-connector';
+import { useWeb3React } from '@web3-react/core';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { injected, MAIN_PAGE, walletconnect } from 'config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from 'utils/helpers';
@@ -16,30 +9,8 @@ import { debugLog } from 'utils/helpers';
 const useLogIn = () => {
   const history = useHistory();
   const [refresh, setRefresh] = useState(false);
-  const { activate, active, error, connector, deactivate } = useWeb3React();
+  const { activate, active, connector, deactivate } = useWeb3React();
   const { isDesktop } = useMobileDetect();
-
-  function getErrorMessage(err) {
-    let message;
-    if (err instanceof NoEthereumProviderError) {
-      message =
-        'No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.';
-    }
-    if (err instanceof UnsupportedChainIdError) {
-      message = "You're connected to an unsupported network.";
-    }
-    if (
-      err instanceof UserRejectedRequestErrorInjected ||
-      err instanceof UserRejectedRequestErrorWalletConnect
-    ) {
-      message =
-        'Please authorize this website to access your Ethereum account.';
-    } else {
-      message =
-        'An unknown error occurred. Check the console for more details.';
-    }
-    return message;
-  }
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
@@ -62,15 +33,13 @@ const useLogIn = () => {
       }
       await activate(appConnector);
       setRefresh(!refresh);
-      if (error) {
-        alert(getErrorMessage(error));
-      }
     } catch (e) {
       if (e) {
         await walletconnect.close();
         walletconnect.walletConnectProvider = null;
         deactivate();
         localStorage.removeItem('connector');
+        window.location.reload();
       }
     }
 
@@ -93,16 +62,15 @@ const useLogIn = () => {
           if (connector instanceof WalletConnectConnector) {
             walletconnect.activate();
             localStorage.setItem('connector', 'walletconnect');
+            if (active) history.push('/staking');
           } else {
             injected.activate();
             localStorage.setItem('connector', 'injected');
+            if (active) history.push('/staking');
           }
         }
-        if (active) history.push('/staking');
       }
     }
-
-    if (active) history.push('/staking');
   }, [refresh, active]);
 
   return { logIn, logOut };
