@@ -28,6 +28,7 @@ const Staking = observer(() => {
   const { isDesktop } = useMobileDetect();
 
   useTimeout(() => setCheckNetworkChain(true), 1500);
+
   useEffect(() => {
     debugLog('Staking render useEffect');
     getPools();

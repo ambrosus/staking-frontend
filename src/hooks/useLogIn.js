@@ -10,14 +10,13 @@ import appStore from 'store/app.store';
 const useLogIn = () => {
   const history = useHistory();
   const [refresh, setRefresh] = useState(false);
-  const { activate, active, connector, deactivate } = useWeb3React();
+  const { activate, connector, deactivate } = useWeb3React();
   const { isDesktop } = useMobileDetect();
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
     await walletconnect.close();
     walletconnect.walletConnectProvider = null;
-    deactivate();
     try {
       /*eslint-disable*/
       if (!isDesktop) {
@@ -45,9 +44,7 @@ const useLogIn = () => {
       if (e) {
         await walletconnect.close();
         walletconnect.walletConnectProvider = null;
-        deactivate();
         localStorage.removeItem('connector');
-        window.location.reload();
       }
     }
 
@@ -64,23 +61,31 @@ const useLogIn = () => {
   };
 
   useEffect(() => {
+    console.log('useEffect use login');
     if (refresh) {
       if (isDesktop) {
         if (connector !== undefined) {
           if (connector instanceof WalletConnectConnector) {
             walletconnect.activate();
             localStorage.setItem('connector', 'walletconnect');
-            if (active) history.push('/staking');
+            window.location.replace('/staking');
+            appStore.setRefresh();
           } else {
-            injected.activate();
+            injected.activate().then(() => {
+              setTimeout(() => {
+                if (connector) {
+                  history.push('/staking');
+                  appStore.setRefresh();
+                }
+              }, 1000);
+            });
+            appStore.setRefresh();
             localStorage.setItem('connector', 'injected');
-            if (active) history.push('/staking');
           }
         }
-        appStore.setRefresh();
       }
     }
-  }, [refresh, active]);
+  }, [refresh]);
 
   return { logIn, logOut };
 };
