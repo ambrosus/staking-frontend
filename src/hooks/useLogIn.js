@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core';
 import { connectorsByName, STAKING_PAGE } from '../config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from '../utils/helpers';
+import appStore from 'store/app.store';
 
 const useLogIn = () => {
   const history = useHistory();
@@ -20,6 +21,7 @@ const useLogIn = () => {
         'https://metamask.app.link/dapp/staking.ambrosus.io/staking',
       );
     }
+    appStore.setRefresh();
     return false;
   };
   return { logIn };

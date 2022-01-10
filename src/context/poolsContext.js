@@ -24,6 +24,7 @@ function PoolsContextProvider(props) {
         appStore.signer !== undefined ? appStore.signer : window.ethereum,
       );
     }
+    appStore.setRefresh();
 
     await appStore.updatePoolData(poolsData);
     if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
