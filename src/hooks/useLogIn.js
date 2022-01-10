@@ -30,6 +30,7 @@ const useLogIn = () => {
               appStore.setRefresh();
             }
           }, 1000);
+          history.push('/staking');
           return;
         } else {
           localStorage.setItem('connector', 'injected');
