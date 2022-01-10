@@ -5,6 +5,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { injected, MAIN_PAGE, walletconnect } from 'config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from 'utils/helpers';
+import appStore from 'store/app.store';
 
 const useLogIn = () => {
   const history = useHistory();
@@ -17,19 +18,21 @@ const useLogIn = () => {
     await walletconnect.close();
     walletconnect.walletConnectProvider = null;
     deactivate();
-    localStorage.removeItem('connector');
     try {
       /*eslint-disable*/
       if (!isDesktop) {
         if (appConnector instanceof WalletConnectConnector) {
+          localStorage.setItem('connector', 'walletconnect');
           await appConnector.activate();
           setTimeout(() => {
             if (connector instanceof WalletConnectConnector) {
               history.push('/staking');
+              appStore.setRefresh();
             }
           }, 1000);
           return;
         } else {
+          localStorage.setItem('connector', 'injected');
           window.location.replace(
             'https://metamask.app.link/dapp/pr-49.d2nndxolfp1vk8.amplifyapp.com/staking',
           );
@@ -73,6 +76,7 @@ const useLogIn = () => {
             if (active) history.push('/staking');
           }
         }
+        appStore.setRefresh();
       }
     }
   }, [refresh, active]);

@@ -13,7 +13,7 @@ function PoolsContextProvider(props) {
   const getPools = async () => {
     let isMainPage;
     let poolsData;
-    const connectedMethod = localStorage.getItem('connector');
+    const connectedMethod = localStorage.getItem('walletconnect');
 
     if (window.location.pathname === '/') {
       isMainPage = false;
@@ -22,21 +22,28 @@ function PoolsContextProvider(props) {
         appStore.signer !== undefined ? appStore.signer : window.ethereum,
       );
     } else {
-      await activate(
-        connectedMethod === 'walletconnect' ? walletconnect : injected,
-      ).then(async () => {
-        isMainPage = true;
-        poolsData = await StakingWrapper.getPoolsData(
-          isMainPage,
-          connectedMethod === 'walletconnect'
-            ? walletconnect.walletConnectProvider
-            : window.ethereum,
+      /* eslint-disable-next-line */
+      if (connectedMethod) {
+        await activate(connectedMethod ? walletconnect : injected).then(
+          async () => {
+            isMainPage = true;
+            poolsData = await StakingWrapper.getPoolsData(
+              isMainPage,
+              connectedMethod
+                ? walletconnect.walletConnectProvider
+                : window.ethereum,
+            );
+            appStore.setRefresh();
+          },
         );
-      });
+      } else {
+        activate();
+      }
     }
 
     await appStore.updatePoolData(poolsData);
-    if (appStore.poolsData.length > 0) setPools(toJS(appStore.poolsData));
+    if (appStore.poolsData && appStore.poolsData.length > 0)
+      setPools(toJS(appStore.poolsData));
   };
   const value = React.useMemo(() => [pools, getPools], [pools]);
   debugLog(value);
