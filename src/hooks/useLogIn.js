@@ -14,6 +14,10 @@ const useLogIn = () => {
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
+    await walletconnect.close();
+    walletconnect.walletConnectProvider = null;
+    deactivate();
+    localStorage.removeItem('connector');
     try {
       /*eslint-disable*/
       if (!isDesktop) {
