@@ -1,10 +1,9 @@
 import { useHistory } from 'react-router';
 import { useWeb3React } from '@web3-react/core';
-
+import appStore from '../store/app.store';
 import { connectorsByName, STAKING_PAGE } from '../config';
 import useMobileDetect from './useMobileDetect';
 import { debugLog } from '../utils/helpers';
-import appStore from 'store/app.store';
 
 const useLogIn = () => {
   const history = useHistory();
