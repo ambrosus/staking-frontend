@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-
+/*eslint-disable*/
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import {
@@ -56,7 +56,8 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
     notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
     try {
       await tx.wait();
-      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+
+      // notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
     } catch (err) {
       notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
       return false;
