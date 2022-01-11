@@ -99,7 +99,11 @@
     font-weight: normal;
     font-size: 24px;
     line-height: 32px;
-  }
+    @media (max-width: 600px) {
+      font-size: 18px;
+      line-height: 134.3%;
+    }
+    }
 
   &__amount {
     display: flex;
@@ -111,6 +115,10 @@
     font-weight: bold;
     font-size: 18px;
     line-height: 22px;
+    @media (max-width: 600px) {
+      font-size: 16px;
+      line-height: 19px;
+    }
   }
 
   &__hash {
@@ -123,6 +131,10 @@
     font-weight: normal;
     font-size: 18px;
     line-height: 22px;
+    @media (max-width: 600px) {
+      font-size: 12px;
+      line-height: 15px;
+    }
   }
 }
 

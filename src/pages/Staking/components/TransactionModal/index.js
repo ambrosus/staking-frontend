@@ -48,9 +48,7 @@ const TransactionModal = ({
         <div className="transaction-modal__title">
           Your transaction has been successfully processed
         </div>
-        <div className="transaction-modal__amount">
-          Amount: {amount} AMB
-        </div>
+        <div className="transaction-modal__amount">Amount: {amount} AMB</div>
         <div className="transaction-modal__hash">Txhash {shortHash}</div>
       </div>
     </Modal>
