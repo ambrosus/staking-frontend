@@ -17,7 +17,7 @@ const useLogIn = () => {
       history.push(STAKING_PAGE);
     } else {
       window.location.replace(
-        'https://metamask.app.link/dapp/staking.ambrosus.io/staking',
+        'https://metamask.app.link/dapp/pr-52.d2nndxolfp1vk8.amplifyapp.com/staking',
       );
     }
     appStore.setRefresh();
