@@ -13,6 +13,7 @@ const TransactionModal = ({
   isNotificationModalShow,
   toggleNotificationModalShow,
   transaction,
+  withdraw,
 }) => {
   const isSmall = useMedia('(max-width: 699px)');
   const { value, hash } = transaction !== null && transaction;
@@ -48,7 +49,9 @@ const TransactionModal = ({
         <div className="transaction-modal__title">
           Your transaction has been successfully processed
         </div>
-        <div className="transaction-modal__amount">Amount: {amount} AMB</div>
+        {!withdraw && (
+          <div className="transaction-modal__amount">Amount: {amount} AMB</div>
+        )}
         <div className="transaction-modal__hash">Txhash {shortHash}</div>
       </div>
     </Modal>
@@ -58,6 +61,7 @@ TransactionModal.propTypes = {
   isNotificationModalShow: PropTypes.bool.isRequired,
   toggleNotificationModalShow: PropTypes.func.isRequired,
   transaction: PropTypes.object,
+  withdraw: PropTypes.bool,
 };
 
 export default TransactionModal;
