@@ -5,7 +5,8 @@
   width: 100vw;
   height: 100vh;
   z-index: 1040;
-  background-color: rgba(247, 247, 253, 0.9)
+  background: rgba(38, 38, 38, 0.6);
+  backdrop-filter: blur(8px);
 }
 
 .modal-wrapper {
