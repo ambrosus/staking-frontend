@@ -1,6 +1,6 @@
 import { ReactSVG } from 'react-svg';
 import React from 'react';
-import { homePageStatic } from '../../../../config';
+import { homePageStatic } from 'config';
 
 export default () => (
   <>

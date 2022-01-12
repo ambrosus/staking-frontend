@@ -1,8 +1,8 @@
 import { ReactSVG } from 'react-svg';
 import cx from 'classnames';
 import React from 'react';
-import { homePageStatic } from '../../../../config';
-import { useLogIn } from '../../../../hooks';
+import { homePageStatic } from 'config';
+import { useLogIn } from 'hooks';
 import Button from '../../../../components/Button';
 
 export default () => {

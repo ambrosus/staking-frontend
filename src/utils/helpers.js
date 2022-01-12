@@ -6,10 +6,10 @@ import {
   ethereum,
   network,
   SupportedChainId,
-} from '../config';
+} from 'config';
 
-import avatarIcon from '../assets/svg/avatar.svg';
-import avatarIcon2 from '../assets/svg/avatar2.svg';
+import avatarIcon from 'assets/svg/avatar.svg';
+import avatarIcon2 from 'assets/svg/avatar2.svg';
 
 import 'animate.css/animate.min.css';
 import 'react-toastify/dist/ReactToastify.css';

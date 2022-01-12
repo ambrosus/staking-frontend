@@ -1,9 +1,9 @@
 import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
-import { transactionGasLimit, transactionGasPrice } from '../config';
+import { transactionGasLimit, transactionGasPrice } from 'config';
 import { math, FIXED_POINT, parseFloatToBigNumber, ZERO } from './numbers';
-import { debugLog } from '../utils/helpers';
+import { debugLog } from 'utils/helpers';
 
 const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
 
@@ -116,6 +116,7 @@ export default class StakingWrapper {
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(connector).getSigner()
       : this.privateProvider;
+
     await this.privateStaticConstructorPromise;
 
     const [poolsAddrs] = await Promise.all([

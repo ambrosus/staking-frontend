@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { ReactSVG } from 'react-svg';
 
-import AMBsmallIcon from '../../assets/svg/AMB-small.svg';
-import clearIcon from '../../assets/svg/clear.svg';
+import AMBsmallIcon from 'assets/svg/AMB-small.svg';
+import clearIcon from 'assets/svg/clear.svg';
 
 import { checkValidNumberString } from '../../services/numbers';
 

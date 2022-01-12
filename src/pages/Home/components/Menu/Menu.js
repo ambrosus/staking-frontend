@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { menuLinks } from '../../../../config';
+import { menuLinks } from 'config';
 import Paragraph from '../../../../components/Paragraph';
 
 export const Menu = () => (

@@ -1,5 +1,5 @@
 import { runInAction, makeAutoObservable } from 'mobx';
-import { debugLog } from '../utils/helpers';
+import { debugLog } from 'utils/helpers';
 
 export class AppStore {
   poolsData = [];

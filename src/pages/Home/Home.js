@@ -1,10 +1,11 @@
 import React from 'react';
-import Sidebar from '../../components/Sidebar';
 
+import Sidebar from '../../components/Sidebar';
 import TopSection from './components/TopSectionContainer';
 import SecondSection from './components/SecondSectionContainer';
 import StakingSection from './components/StakingSectionContainer';
 import RenderItems from '../../components/RenderItems';
+
 const Faq = React.lazy(() => import('./components/FaqContainer'));
 const LastSection = React.lazy(() =>
   import('./components/LastSectionContainer'),

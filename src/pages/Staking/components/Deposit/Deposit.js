@@ -176,7 +176,7 @@ const Deposit = observer(({ depositInfo }) => {
               buttonStyles={{
                 backgroundColor:
                   balance.mul(3).div(4).div(FIXED_POINT).toString() ===
-                    inputValue && '#1A1A1A',
+                  inputValue && '#1A1A1A',
               }}
               onclick={() =>
                 setInputValue(() =>
