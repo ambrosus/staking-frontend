@@ -21,10 +21,10 @@ const useLogIn = () => {
       /*eslint-disable*/
       if (!isDesktop) {
         if (appConnector instanceof WalletConnectConnector) {
-          localStorage.setItem('connector', 'walletconnect');
           await appConnector.activate();
-          history.push('/staking');
+          window.location.replace('/staking');
           appStore.setRefresh();
+          localStorage.setItem('connector', 'walletconnect');
           return;
         } else {
           localStorage.setItem('connector', 'injected');
