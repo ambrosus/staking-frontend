@@ -40,6 +40,7 @@ function PoolsContextProvider(props) {
                   ? walletconnect.walletConnectProvider
                   : window.ethereum,
               );
+              appStore.setRefresh();
             },
           );
         } else {
@@ -53,6 +54,7 @@ function PoolsContextProvider(props) {
                   ? walletconnect.walletConnectProvider
                   : window.ethereum,
               );
+              appStore.setRefresh();
             },
           );
         }
@@ -63,11 +65,13 @@ function PoolsContextProvider(props) {
             isMainPage,
             walletconnect.walletConnectProvider,
           );
+          appStore.setRefresh();
         });
       }
     }
-    await appStore.updatePoolData(poolsData);
-    appStore.setRefresh();
+    await appStore.updatePoolData(poolsData).then(() => {
+      appStore.setRefresh();
+    });
     if (appStore.poolsData && appStore.poolsData.length > 0)
       setPools(toJS(appStore.poolsData));
   };

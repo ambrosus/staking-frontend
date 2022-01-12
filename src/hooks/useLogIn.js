@@ -35,13 +35,12 @@ const useLogIn = () => {
         }
       }
       await activate(appConnector);
-
       setRefresh(!refresh);
     } catch (e) {
       if (e) {
-        await walletconnect.close();
-        walletconnect.walletConnectProvider = null;
-        localStorage.removeItem('connector');
+        // await walletconnect.close();
+        // walletconnect.walletConnectProvider = null;
+        // localStorage.removeItem('connector');
       }
     }
 
