@@ -27,9 +27,11 @@ const useLogIn = () => {
           return;
         } else {
           localStorage.setItem('connector', 'injected');
-          window.location.replace(
-            'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
-          );
+          if (window.location.pathname === '/') {
+            window.location.replace(
+              'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
+            );
+          }
           appStore.setRefresh();
         }
       }
