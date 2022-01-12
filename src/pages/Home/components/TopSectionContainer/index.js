@@ -66,7 +66,6 @@ export default () => {
           <ButtonGroup>
             <Button
               buttonStyles={{
-                margin: 20,
                 background: '#212121',
               }}
               type="black"
@@ -86,7 +85,6 @@ export default () => {
             </Button>
             <Button
               buttonStyles={{
-                margin: 20,
                 background: '#212121',
               }}
               type="black"
