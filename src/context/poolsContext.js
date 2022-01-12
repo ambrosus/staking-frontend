@@ -27,18 +27,36 @@ function PoolsContextProvider(props) {
       );
     } else {
       /* eslint-disable-next-line */
-      await activate(
-        connectedMethod !== 'injected' ? walletconnect : injected,
-      ).then(async () => {
-        isMainPage = true;
-        poolsData = await StakingWrapper.getPoolsData(
-          isMainPage,
-          connectedMethod !== 'injected'
-            ? walletconnect.walletConnectProvider
-            : window.ethereum,
-        );
-        appStore.setRefresh();
-      });
+      if (connectedMethod !== 'injected') {
+        await activate(walletconnect).then(async () => {
+          isMainPage = true;
+          poolsData = await StakingWrapper.getPoolsData(
+            isMainPage,
+            walletconnect.walletConnectProvider,
+          );
+          appStore.setRefresh();
+        });
+      }
+      if (connectedMethod === 'injected') {
+        await activate(injected).then(async () => {
+          isMainPage = true;
+          poolsData = await StakingWrapper.getPoolsData(
+            isMainPage,
+            window.ethereum,
+          );
+          appStore.setRefresh();
+        });
+      }
+      if (!connectedMethod) {
+        await activate(injected).then(async () => {
+          isMainPage = true;
+          poolsData = await StakingWrapper.getPoolsData(
+            isMainPage,
+            window.ethereum,
+          );
+          appStore.setRefresh();
+        });
+      }
     }
 
     await appStore.updatePoolData(poolsData);
