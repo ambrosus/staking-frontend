@@ -36,8 +36,9 @@ const useLogIn = () => {
           }
           appStore.setRefresh();
         }
+      } else {
+        await activate(appConnector);
       }
-      await activate(appConnector);
       setRefresh(!refresh);
     } catch (e) {
       if (e) {
