@@ -27,14 +27,6 @@ const NotSupported = ({ children, onclick = () => {} }) => {
           >
             switch to {net}
           </span>{' '}
-          or{' '}
-          <span
-            className="switch-text"
-            role="presentation"
-            onClick={toggleLogInMethodShow}
-          >
-            reconnect
-          </span>
         </Paragraph>
       )}
 
