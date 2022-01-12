@@ -5,10 +5,12 @@ import StakingWrapper from '../services/staking.wrapper';
 import { injected, PoolsContext, walletconnect } from 'config';
 import appStore from 'store/app.store';
 import { debugLog } from 'utils/helpers';
+import { useMobileDetect } from 'hooks';
 
 function PoolsContextProvider(props) {
   const [pools, setPools] = useState([]);
   const context = useWeb3React();
+  const { isDesktop } = useMobileDetect();
   const { activate, active } = context;
   useEffect(() => {
     console.log('active', active);
@@ -27,42 +29,52 @@ function PoolsContextProvider(props) {
       );
     } else {
       /* eslint-disable-next-line */
-      if (connectedMethod) {
-        await activate(connectedMethod ? walletconnect : injected).then(
-          async () => {
-            isMainPage = true;
-            poolsData = await StakingWrapper.getPoolsData(
-              isMainPage,
-              connectedMethod
-                ? walletconnect.walletConnectProvider
-                : window.ethereum,
-            );
-            appStore.setRefresh();
-          },
-        );
+      if (isDesktop) {
+        if (connectedMethod) {
+          await activate(connectedMethod ? walletconnect : injected).then(
+            async () => {
+              isMainPage = true;
+              poolsData = await StakingWrapper.getPoolsData(
+                isMainPage,
+                connectedMethod
+                  ? walletconnect.walletConnectProvider
+                  : window.ethereum,
+              );
+            },
+          );
+        } else {
+          console.log('log');
+          await activate(connectedMethod ? walletconnect : injected).then(
+            async () => {
+              isMainPage = true;
+              poolsData = await StakingWrapper.getPoolsData(
+                isMainPage,
+                connectedMethod
+                  ? walletconnect.walletConnectProvider
+                  : window.ethereum,
+              );
+            },
+          );
+        }
       } else {
-        console.log('log');
-        await activate(connectedMethod ? walletconnect : injected).then(
-          async () => {
-            isMainPage = true;
-            poolsData = await StakingWrapper.getPoolsData(
-              isMainPage,
-              connectedMethod
-                ? walletconnect.walletConnectProvider
-                : window.ethereum,
-            );
-            appStore.setRefresh();
-          },
-        );
+        await activate(walletconnect).then(async () => {
+          isMainPage = true;
+          poolsData = await StakingWrapper.getPoolsData(
+            isMainPage,
+            walletconnect.walletConnectProvider,
+          );
+        });
       }
     }
-
     await appStore.updatePoolData(poolsData);
+    appStore.setRefresh();
     if (appStore.poolsData && appStore.poolsData.length > 0)
       setPools(toJS(appStore.poolsData));
   };
+
   const value = React.useMemo(() => [pools, getPools], [pools]);
   debugLog(value);
   return <PoolsContext.Provider value={value} {...props} />;
 }
+
 export default PoolsContextProvider;
