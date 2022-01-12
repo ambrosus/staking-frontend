@@ -23,24 +23,22 @@ const useLogIn = () => {
         if (appConnector instanceof WalletConnectConnector) {
           await appConnector.activate();
           window.location.replace('/staking');
-          appStore.setRefresh();
           localStorage.setItem('connector', 'walletconnect');
           return;
         } else {
-          await appConnector.activate();
           window.location.replace(
             'https://metamask.app.link/dapp/pr-53.d2nndxolfp1vk8.amplifyapp.com/staking',
           );
           localStorage.setItem('connector', 'injected');
         }
       }
-      await activate(appConnector);
       setRefresh(!refresh);
     } catch (e) {
       if (e) {
-        // await walletconnect.close();
-        // walletconnect.walletConnectProvider = null;
-        // localStorage.removeItem('connector');
+        await walletconnect.close();
+        walletconnect.walletConnectProvider = null;
+        localStorage.removeItem('connector');
+        history.push(MAIN_PAGE);
       }
     }
 
@@ -57,6 +55,9 @@ const useLogIn = () => {
   };
 
   useEffect(() => {
+    if (!refresh) {
+      return;
+    }
     console.log('useEffect use login');
     if (refresh) {
       if (isDesktop) {
@@ -68,12 +69,8 @@ const useLogIn = () => {
             appStore.setRefresh();
           } else {
             injected.activate().then(() => {
-              setTimeout(() => {
-                if (connector) {
-                  history.push('/staking');
-                  appStore.setRefresh();
-                }
-              }, 1000);
+              history.push('/staking');
+              appStore.setRefresh();
             });
             appStore.setRefresh();
             localStorage.setItem('connector', 'injected');

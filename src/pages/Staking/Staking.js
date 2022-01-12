@@ -38,7 +38,7 @@ const Staking = observer(() => {
         window.addEventListener('focus', changeNetwork);
       }
     }
-  }, [appStore.refresh]);
+  }, [appStore.refresh, !appStore.refresh]);
 
   return (
     <>

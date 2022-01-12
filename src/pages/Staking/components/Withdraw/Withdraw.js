@@ -69,9 +69,7 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
       return false;
     }
 
-    appStore.setRefresh();
-
-    return true;
+    return appStore.setRefresh();
   };
 
   const calculateSumAfterWithdraw = useCallback(

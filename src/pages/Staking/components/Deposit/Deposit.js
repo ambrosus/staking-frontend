@@ -70,9 +70,7 @@ const Deposit = observer(({ depositInfo }) => {
       return false;
     }
 
-    appStore.setRefresh();
-
-    return true;
+    return appStore.setRefresh();
   };
 
   const refreshProc = async () => {
