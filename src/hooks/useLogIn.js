@@ -23,11 +23,7 @@ const useLogIn = () => {
         if (appConnector instanceof WalletConnectConnector) {
           localStorage.setItem('connector', 'walletconnect');
           await appConnector.activate();
-          setTimeout(() => {
-            if (connector instanceof WalletConnectConnector) {
-              history.push('/staking');
-            }
-          }, 1000);
+          history.push('/staking');
           appStore.setRefresh();
           return;
         } else {
@@ -52,7 +48,7 @@ const useLogIn = () => {
   const logOut = async () => {
     deactivate();
     localStorage.removeItem('connector');
-    if (window.localStorage.getItem('connector') === 'walletconnect') {
+    if (window.localStorage.getItem('walletconnect')) {
       await walletconnect.close();
       walletconnect.walletConnectProvider = null;
     }
