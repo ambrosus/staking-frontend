@@ -27,11 +27,11 @@ const useLogIn = () => {
           localStorage.setItem('connector', 'walletconnect');
           return;
         } else {
-          localStorage.setItem('connector', 'injected');
           await appConnector.activate();
           window.location.replace(
             'https://metamask.app.link/dapp/pr-53.d2nndxolfp1vk8.amplifyapp.com/staking',
           );
+          localStorage.setItem('connector', 'injected');
         }
       }
       await activate(appConnector);
