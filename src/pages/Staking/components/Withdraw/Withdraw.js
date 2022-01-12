@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-
+/*eslint-disable*/
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import {
@@ -18,13 +18,22 @@ import {
   ONE_HUNDRED_PERCENT,
   SEVENTY_FIVE_PERCENT,
   TWENTY_FIVE_PERCENT,
-} from 'config';
-import { debugLog, formatThousand, notificationMassage } from 'utils/helpers';
-import appStore from 'store/app.store';
+} from '../../../../config';
+import {
+  debugLog,
+  formatThousand,
+  notificationMassage,
+} from '../../../../utils/helpers';
+import appStore from '../../../../store/app.store';
+import { useModal } from 'hooks';
+import TransactionModal from 'pages/Staking/components/TransactionModal';
 
 const Withdraw = observer(({ withdrawContractInfo }) => {
   const { myStakeInAMB } = withdrawContractInfo;
   const [inputValue, setInputValue] = useState('');
+  const { isShowing, toggle } = useModal();
+  const [transaction, setTransaction] = useState(null);
+
   const [afterWithdraw, setAfterWithdraw] = useState(
     () => myStakeInAMB || ZERO,
   );
@@ -52,7 +61,9 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
     notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
     try {
       await tx.wait();
-      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+      setTransaction(tx);
+      toggle();
+      // notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
     } catch (err) {
       notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
       return false;
@@ -80,6 +91,14 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
 
   return (
     <div className="deposit">
+      {transaction && (
+        <TransactionModal
+          transaction={transaction}
+          isNotificationModalShow={isShowing}
+          toggleNotificationModalShow={toggle}
+          withdraw
+        />
+      )}
       <p className="available-tokens">
         <span>
           Available for withdraw:{' '}

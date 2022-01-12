@@ -18,7 +18,7 @@ const Modal = ({ isShowing, hide, children, modalStyles }) =>
     : null;
 
 Modal.propTypes = {
-  isShowing: PropTypes.bool.isRequired,
+  isShowing: PropTypes.any.isRequired,
   hide: PropTypes.func.isRequired,
   modalStyles: PropTypes.object,
   children: PropTypes.oneOfType([
