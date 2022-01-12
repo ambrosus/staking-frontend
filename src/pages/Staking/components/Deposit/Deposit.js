@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
@@ -29,16 +30,19 @@ import {
   STAKING_PAGE,
   TWENTY_FIVE_PERCENT,
 } from '../../../../config';
-import { useMobileDetect } from '../../../../hooks';
+import { useMobileDetect, useModal } from '../../../../hooks';
+import TransactionModal from '../TransactionModal';
 
 const Deposit = observer(({ depositInfo }) => {
+  const { myStakeInAMB, active: isPoolActive } = depositInfo;
   const { account, library } = useWeb3React();
   const { pathname } = useLocation();
+  const { isShowing, toggle } = useModal();
+  const { isDesktop } = useMobileDetect();
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState(false);
   const [balance, setBalance] = useState(ZERO);
-  const { myStakeInAMB, active: isPoolActive } = depositInfo;
-  const { isDesktop } = useMobileDetect();
+  const [transaction, setTransaction] = useState(null);
 
   const checkoutPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
@@ -58,7 +62,9 @@ const Deposit = observer(({ depositInfo }) => {
     notificationMassage('PENDING', `Transaction ${shortHash} pending.`);
     try {
       await tx.wait();
-      notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
+      setTransaction(tx);
+      toggle();
+      // notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
     } catch (err) {
       notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
       return false;
@@ -91,6 +97,13 @@ const Deposit = observer(({ depositInfo }) => {
 
   return (
     <div className="deposit">
+      {transaction && (
+        <TransactionModal
+          transaction={transaction}
+          isNotificationModalShow={isShowing}
+          toggleNotificationModalShow={toggle}
+        />
+      )}
       {!isDesktop && pathname === STAKING_PAGE && (
         <p className="available-tokens">
           <span>
@@ -163,7 +176,7 @@ const Deposit = observer(({ depositInfo }) => {
               buttonStyles={{
                 backgroundColor:
                   balance.mul(3).div(4).div(FIXED_POINT).toString() ===
-                    inputValue && '#1A1A1A',
+                  inputValue && '#1A1A1A',
               }}
               onclick={() =>
                 setInputValue(() =>
