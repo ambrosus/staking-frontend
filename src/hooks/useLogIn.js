@@ -28,6 +28,7 @@ const useLogIn = () => {
           return;
         } else {
           localStorage.setItem('connector', 'injected');
+          await appConnector.activate();
           window.location.replace(
             'https://metamask.app.link/dapp/pr-53.d2nndxolfp1vk8.amplifyapp.com/staking',
           );
@@ -37,9 +38,9 @@ const useLogIn = () => {
       setRefresh(!refresh);
     } catch (e) {
       if (e) {
-        // await walletconnect.close();
-        // walletconnect.walletConnectProvider = null;
-        // localStorage.removeItem('connector');
+        await walletconnect.close();
+        walletconnect.walletConnectProvider = null;
+        localStorage.removeItem('connector');
       }
     }
 
