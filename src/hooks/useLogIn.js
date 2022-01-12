@@ -35,6 +35,7 @@ const useLogIn = () => {
         }
       }
       await activate(appConnector);
+
       setRefresh(!refresh);
     } catch (e) {
       if (e) {
