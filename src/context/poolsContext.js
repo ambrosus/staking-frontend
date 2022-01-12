@@ -27,35 +27,40 @@ function PoolsContextProvider(props) {
       );
     } else {
       /* eslint-disable-next-line */
-      if (connectedMethod !== 'injected') {
-        await activate(walletconnect).then(async () => {
-          isMainPage = true;
-          poolsData = await StakingWrapper.getPoolsData(
-            isMainPage,
-            walletconnect.walletConnectProvider,
-          );
-          appStore.setRefresh();
-        });
-      }
-      if (connectedMethod === 'injected') {
-        await activate(injected).then(async () => {
-          isMainPage = true;
-          poolsData = await StakingWrapper.getPoolsData(
-            isMainPage,
-            window.ethereum,
-          );
-          appStore.setRefresh();
-        });
-      }
-      if (!connectedMethod) {
-        await activate(injected).then(async () => {
-          isMainPage = true;
-          poolsData = await StakingWrapper.getPoolsData(
-            isMainPage,
-            window.ethereum,
-          );
-          appStore.setRefresh();
-        });
+
+      switch (connectedMethod) {
+        case 'injected': {
+          await activate(injected).then(async () => {
+            isMainPage = true;
+            poolsData = await StakingWrapper.getPoolsData(
+              isMainPage,
+              window.ethereum,
+            );
+            appStore.setRefresh();
+          });
+          break;
+        }
+        case 'walletconnect': {
+          await activate(walletconnect).then(async () => {
+            isMainPage = true;
+            poolsData = await StakingWrapper.getPoolsData(
+              isMainPage,
+              walletconnect.walletConnectProvider,
+            );
+            appStore.setRefresh();
+          });
+          break;
+        }
+        default: {
+          await activate(injected).then(async () => {
+            isMainPage = true;
+            poolsData = await StakingWrapper.getPoolsData(
+              isMainPage,
+              window.ethereum,
+            );
+            appStore.setRefresh();
+          });
+        }
       }
     }
 

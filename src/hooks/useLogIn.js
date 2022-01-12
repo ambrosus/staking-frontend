@@ -20,6 +20,7 @@ const useLogIn = () => {
       localStorage.removeItem('walletconnect');
       /*eslint-disable*/
       if (!isDesktop) {
+        console.log('jsafbsaljkfnaslnfosa');
         if (appConnector instanceof WalletConnectConnector) {
           history.push(STAKING_PAGE);
           appStore.setRefresh();
@@ -28,6 +29,7 @@ const useLogIn = () => {
         } else {
           localStorage.setItem('connector', 'injected');
           if (window.location.pathname === '/') {
+            console.log('deep LINK');
             window.location.replace(
               'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
             );
