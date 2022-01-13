@@ -15,9 +15,9 @@ const useLogIn = () => {
 
   const logIn = async (appConnector) => {
     debugLog('logIn');
+    localStorage.removeItem('connector');
+    localStorage.removeItem('walletconnect');
     try {
-      localStorage.removeItem('connector');
-      localStorage.removeItem('walletconnect');
       if (!isDesktop) {
         if (appConnector instanceof WalletConnectConnector) {
           history.push(STAKING_PAGE);

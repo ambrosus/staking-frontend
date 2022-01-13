@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import Scroll from 'react-scroll-to-element';
+
 import Collapse from '@kunukn/react-collapse';
 import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
@@ -77,6 +79,7 @@ const StakingItem = ({
   const { active } = useWeb3React();
   const { logIn } = useLogIn();
   const { isDesktop } = useMobileDetect();
+  const h2ref = useRef(null);
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
 
@@ -97,6 +100,7 @@ const StakingItem = ({
 
   return (
     <div
+      id="stack-item"
       role="presentation"
       className="stack-item"
       style={{
@@ -248,31 +252,34 @@ const StakingItem = ({
               )}
             </div>
           </div>
-          <p
-            role="presentation"
-            className="item--header__collapse-btn"
-            onClick={stakeBtnHandler}
-          >
-            {expand && (state[index] && activeExpand === index ? HIDE : SHOW)}
-            {!expand && STAKE}
-            {pathname === STAKING_PAGE && (
-              <ReactSVG
-                style={{
-                  marginLeft: 11,
-                }}
-                src={
-                  state[index] && activeExpand === index ? expandUp : expandDown
-                }
-                wrapper="span"
-              />
-            )}
-          </p>
+          <span role="presentation" onClick={stakeBtnHandler}>
+            <Scroll type="id" element="stack-item">
+              <p className="item--header__collapse-btn">
+                {expand &&
+                  (state[index] && activeExpand === index ? HIDE : SHOW)}
+                {!expand && STAKE}
+                {pathname === STAKING_PAGE && (
+                  <ReactSVG
+                    style={{
+                      marginLeft: 11,
+                    }}
+                    src={
+                      state[index] && activeExpand === index
+                        ? expandUp
+                        : expandDown
+                    }
+                    wrapper="span"
+                  />
+                )}
+              </p>
+            </Scroll>
+          </span>
         </div>
         {pathname === STAKING_PAGE && (
           <Collapse
             isOpen={state[index] ? activeExpand === index : state[index]}
           >
-            <div className="item--content">
+            <div className="item--content" id="item--content">
               <div className="collapsed-content">
                 {active && <CollapsedContentTabs poolInfo={poolInfo} />}
               </div>
@@ -327,6 +334,7 @@ const StakingItem = ({
           </ButtonGroup>
         </Modal>
       </>
+      <div ref={h2ref} />
     </div>
   );
 };
