@@ -71,19 +71,30 @@ const useLogIn = () => {
       if (isDesktop) {
         if (connector !== undefined) {
           if (connector instanceof WalletConnectConnector) {
-            walletconnect.activate();
-            localStorage.setItem('connector', 'walletconnect');
-            history.push(STAKING_PAGE);
-            appStore.setRefresh();
-          } else {
-            injected.activate().then(() => {
-              if (connector) {
-                history.push(STAKING_PAGE);
-                appStore.setRefresh();
+            try {
+              walletconnect.activate();
+              localStorage.setItem('connector', 'walletconnect');
+              history.push(STAKING_PAGE);
+              appStore.setRefresh();
+            }catch (e) {
+              if (e){
+                history.push(MAIN_PAGE);
+                localStorage.removeItem('connector');
               }
-            });
-            appStore.setRefresh();
-            localStorage.setItem('connector', 'injected');
+            }
+
+          } else {
+            try {
+              injected.activate()
+              localStorage.setItem('connector', 'injected');
+              history.push(STAKING_PAGE);
+              appStore.setRefresh();
+            }catch (e) {
+              if (e){
+                history.push(MAIN_PAGE);
+                localStorage.removeItem('connector');
+              }
+            }
           }
         }
       }
