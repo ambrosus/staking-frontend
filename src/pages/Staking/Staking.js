@@ -31,14 +31,13 @@ const Staking = observer(() => {
 
   useEffect(() => {
     debugLog('Staking render useEffect');
-    console.log('Staking');
     getPools();
     if (ethereum) {
       if (chainId !== +process.env.REACT_APP_CHAIN_ID) {
         window.addEventListener('focus', changeNetwork);
       }
     }
-  }, [appStore.refresh, !appStore.refresh]);
+  }, [appStore.refresh]);
 
   return (
     <>

@@ -18,21 +18,18 @@ const useLogIn = () => {
     try {
       localStorage.removeItem('connector');
       localStorage.removeItem('walletconnect');
-      /*eslint-disable*/
       if (!isDesktop) {
-        console.log('jsafbsaljkfnaslnfosa');
         if (appConnector instanceof WalletConnectConnector) {
           history.push(STAKING_PAGE);
           appStore.setRefresh();
           localStorage.setItem('connector', 'walletconnect');
           return;
+          /* eslint-disable-next-line */
         } else {
           localStorage.setItem('connector', 'injected');
           if (window.location.pathname === '/') {
-            console.log('deep LINK');
-            window.location.replace(
-              'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking',
-            );
+            window.location.href =
+              'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking';
           }
           appStore.setRefresh();
         }
@@ -42,13 +39,12 @@ const useLogIn = () => {
       setRefresh(!refresh);
     } catch (e) {
       if (e) {
-        // await walletconnect.close();
-        // await injected.deactivate();
-        // localStorage.removeItem('connector');
+        await walletconnect.close();
+        await injected.deactivate();
+        localStorage.removeItem('connector');
+        history.push(MAIN_PAGE);
       }
     }
-
-    return false;
   };
   const logOut = async () => {
     localStorage.removeItem('connector');
@@ -66,7 +62,6 @@ const useLogIn = () => {
     if (!refresh) {
       return;
     }
-    console.log('useEffect use login');
     if (refresh) {
       if (isDesktop) {
         if (connector !== undefined) {
@@ -85,17 +80,13 @@ const useLogIn = () => {
           } else {
             try {
               injected.activate();
-              debugger;
-              console.log('activate');
             } catch (e) {
               if (e) {
                 history.push(MAIN_PAGE);
                 localStorage.removeItem('connector');
               }
             }
-            console.log('activate');
             localStorage.setItem('connector', 'injected');
-            console.log('STAKING_PAGE');
             history.push(STAKING_PAGE);
             appStore.setRefresh();
           }

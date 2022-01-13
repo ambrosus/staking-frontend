@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-/*eslint-disable*/
 import { ReactSVG } from 'react-svg';
 import Modal from '../../../../components/Modal';
 import { formatRounded } from '../../../../services/numbers';

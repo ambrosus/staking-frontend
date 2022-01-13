@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { toJS } from 'mobx';
 import StakingWrapper from '../services/staking.wrapper';
@@ -9,10 +9,7 @@ import { debugLog } from 'utils/helpers';
 function PoolsContextProvider(props) {
   const [pools, setPools] = useState([]);
   const context = useWeb3React();
-  const { activate, active } = context;
-  useEffect(() => {
-    console.log('active', active);
-  }, []);
+  const { activate } = context;
 
   const getPools = async () => {
     let isMainPage;
@@ -26,8 +23,6 @@ function PoolsContextProvider(props) {
         appStore.signer !== undefined ? appStore.signer : window.ethereum,
       );
     } else {
-      /* eslint-disable-next-line */
-
       switch (connectedMethod) {
         case 'injected': {
           await activate(injected).then(async () => {
@@ -36,7 +31,6 @@ function PoolsContextProvider(props) {
               isMainPage,
               window.ethereum,
             );
-            appStore.setRefresh();
           });
           break;
         }
