@@ -76,25 +76,28 @@ const useLogIn = () => {
               localStorage.setItem('connector', 'walletconnect');
               history.push(STAKING_PAGE);
               appStore.setRefresh();
-            }catch (e) {
-              if (e){
+            } catch (e) {
+              if (e) {
                 history.push(MAIN_PAGE);
                 localStorage.removeItem('connector');
               }
             }
-
           } else {
             try {
-              injected.activate()
-              localStorage.setItem('connector', 'injected');
-              history.push(STAKING_PAGE);
-              appStore.setRefresh();
-            }catch (e) {
-              if (e){
+              injected.activate();
+              debugger;
+              console.log('activate');
+            } catch (e) {
+              if (e) {
                 history.push(MAIN_PAGE);
                 localStorage.removeItem('connector');
               }
             }
+            console.log('activate');
+            localStorage.setItem('connector', 'injected');
+            console.log('STAKING_PAGE');
+            history.push(STAKING_PAGE);
+            appStore.setRefresh();
           }
         }
       }
