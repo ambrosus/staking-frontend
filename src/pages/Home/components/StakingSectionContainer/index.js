@@ -1,20 +1,31 @@
 import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { MAIN_PAGE, PoolsContext, STAKE } from 'config';
+import {
+  injected,
+  MAIN_PAGE,
+  PoolsContext,
+  STAKE,
+  walletconnect,
+} from 'config';
 import RenderItems from '../../../../components/RenderItems';
 import StakingItem from '../../../../components/StakingItem';
 import { Loader } from '../../../../components/Loader';
 import Paragraph from '../../../../components/Paragraph';
 import Button from '../../../../components/Button';
-import { useLogIn, useMedia } from 'hooks';
+import { useLogIn, useMedia, useModal } from 'hooks';
 import { debugLog } from 'utils/helpers';
+import Modal from 'components/Modal';
+import ButtonGroup from 'components/ButtonGroup';
 
 export default () => {
   const { pathname } = useLocation();
   const [pools, getPools] = useContext(PoolsContext);
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
+  const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
+    useModal();
+
   const isMainPage = pathname === MAIN_PAGE;
   useEffect(() => {
     debugLog('Home render useEffect');
@@ -63,17 +74,17 @@ export default () => {
             </RenderItems>
           </div>
           <div style={{ width: '100%' }}>
-            {isSmall && (
-              <Button
-                buttonStyles={{ marginLeft: 'auto', maxHeight: 50, width: 160 }}
-                type="white "
-                onclick={logIn}
-              >
-                <Paragraph style={{ textTransform: 'uppercase' }} size="m-500">
-                  {STAKE}
-                </Paragraph>
-              </Button>
-            )}
+            <Button
+              buttonStyles={{
+                margin: !isSmall ? '45px auto 0 auto' : '0 0 0 auto',
+                maxHeight: !isSmall ? 65 : 50,
+                width: !isSmall ? 211 : 160,
+              }}
+              type="white "
+              onclick={toggleLogInMethodShow}
+            >
+              <Paragraph size="m-500">{STAKE}</Paragraph>
+            </Button>
           </div>
         </>
       ) : (
@@ -81,6 +92,52 @@ export default () => {
           <Loader types="spokes" />
         </div>
       )}
+      <Modal
+        isShowing={isLogInMethodShow}
+        hide={toggleLogInMethodShow}
+        modalStyles={{ maxWidth: 500 }}
+      >
+        <ButtonGroup>
+          <Button
+            buttonStyles={{
+              background: '#212121',
+            }}
+            type="black"
+            onclick={() => logIn(injected)}
+          >
+            <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+              <span
+                style={{
+                  paddingLeft: 5,
+                  fontFamily: ' Neue Machina',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Metamask
+              </span>
+            </Paragraph>
+          </Button>
+          <Button
+            buttonStyles={{
+              background: '#212121',
+            }}
+            type="black"
+            onclick={() => logIn(walletconnect)}
+          >
+            <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+              <span
+                style={{
+                  paddingLeft: 5,
+                  fontFamily: ' Neue Machina',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                WalletConnect
+              </span>
+            </Paragraph>
+          </Button>
+        </ButtonGroup>
+      </Modal>
     </div>
   );
 };

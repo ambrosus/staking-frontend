@@ -5,15 +5,25 @@ import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { ReactSVG } from 'react-svg';
 import { FIXED_POINT, formatRounded } from '../../services/numbers';
-import { HIDE, SHOW, STAKE, STAKING_PAGE } from 'config';
+import {
+  HIDE,
+  injected,
+  SHOW,
+  STAKE,
+  STAKING_PAGE,
+  walletconnect,
+} from 'config';
 import { poolIcon } from 'utils/helpers';
 import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
-import { useMobileDetect, useLogIn } from 'hooks';
+import { useMobileDetect, useLogIn, useModal } from 'hooks';
 
 import expandDown from 'assets/svg/expandDown.svg';
 import expandUp from 'assets/svg/expandUp.svg';
 import CollapsedContentTabs from './CollapsedContentTabs';
+import Modal from 'components/Modal';
+import ButtonGroup from 'components/ButtonGroup';
+import Button from 'components/Button';
 // TODO new item-header
 // const Layout = ({ children = 5, childrenPerRow = 1 }) => {
 //   const childrenWithSpacer = children.reduce((result, child) => {
@@ -67,6 +77,8 @@ const StakingItem = ({
   const { active } = useWeb3React();
   const { logIn } = useLogIn();
   const { isDesktop } = useMobileDetect();
+  const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
+    useModal();
 
   const stakeBtnHandler = () => {
     if (expand !== false) {
@@ -79,7 +91,7 @@ const StakingItem = ({
         dispatch({ type: 'toggle', index });
       }
     } else {
-      logIn();
+      toggleLogInMethodShow();
     }
   };
 
@@ -267,6 +279,53 @@ const StakingItem = ({
             </div>
           </Collapse>
         )}
+
+        <Modal
+          isShowing={isLogInMethodShow}
+          hide={toggleLogInMethodShow}
+          modalStyles={{ maxWidth: 500 }}
+        >
+          <ButtonGroup>
+            <Button
+              buttonStyles={{
+                background: '#212121',
+              }}
+              type="black"
+              onclick={() => logIn(injected)}
+            >
+              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+                <span
+                  style={{
+                    paddingLeft: 5,
+                    fontFamily: ' Neue Machina',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Metamask
+                </span>
+              </Paragraph>
+            </Button>
+            <Button
+              buttonStyles={{
+                background: '#212121',
+              }}
+              type="black"
+              onclick={() => logIn(walletconnect)}
+            >
+              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+                <span
+                  style={{
+                    paddingLeft: 5,
+                    fontFamily: ' Neue Machina',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  WalletConnect
+                </span>
+              </Paragraph>
+            </Button>
+          </ButtonGroup>
+        </Modal>
       </>
     </div>
   );
