@@ -20,7 +20,6 @@ export class AppStore {
   }
 
   setRefresh() {
-    console.log('refresh');
     runInAction(() => {
       this.refresh = !this.refresh;
     });

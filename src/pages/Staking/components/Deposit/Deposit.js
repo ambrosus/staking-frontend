@@ -63,7 +63,6 @@ const Deposit = observer(({ depositInfo }) => {
       await tx.wait();
       setTransaction(tx);
       toggle();
-      // notificationMassage('SUCCESS', `Transaction ${shortHash} success!`);
     } catch (err) {
       notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
       return false;

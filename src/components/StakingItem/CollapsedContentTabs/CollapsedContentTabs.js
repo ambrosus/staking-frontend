@@ -5,8 +5,6 @@ import Deposit from '../../../pages/Staking/components/Deposit';
 import Withdraw from '../../../pages/Staking/components/Withdraw';
 import { useTabs } from 'hooks';
 
-// import information from 'assets/svg/Information.svg';
-
 const CollapsedContentTabs = ({ poolInfo }) => {
   const content = [
     {
@@ -39,8 +37,6 @@ const CollapsedContentTabs = ({ poolInfo }) => {
                 {section.tab}
               </span>
             </p>
-            {/* TODO add information tooltip
-           <ReactSVG src={information} wrapper="span" /> */}
           </div>
         ))}
       </div>
