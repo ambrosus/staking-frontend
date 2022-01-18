@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Scroll from 'react-scroll-to-element';
-
 import Collapse from '@kunukn/react-collapse';
 import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
