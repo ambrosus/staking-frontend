@@ -8,6 +8,7 @@ import useTabs from './useTabs';
 import useLogIn from './useLogIn';
 import useCopyToClipboard from './useCopyToClipboard';
 import useHover from './useHover';
+import useInterval from './useInterval';
 
 export {
   useHover,
@@ -19,5 +20,6 @@ export {
   useTimeout,
   useModal,
   useLogIn,
+  useInterval,
   useCopyToClipboard,
 };

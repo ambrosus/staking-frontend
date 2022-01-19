@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { formatThousand } from '../../utils/helpers';
+import { formatThousand } from 'utils/helpers';
 
 import Paragraph from '../Paragraph';
-import { useTimeout } from '../../hooks';
+import { useTimeout } from 'hooks';
 
 const DisplayValue = ({
   symbol = 'AMB',

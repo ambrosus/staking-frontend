@@ -1,9 +1,16 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import Paragraph from '../Paragraph';
-import { network } from '../../config';
+import { injected, network, walletconnect } from 'config';
+import { useLogIn, useModal } from 'hooks';
+import Button from 'components/Button';
+import Modal from 'components/Modal';
+import ButtonGroup from 'components/ButtonGroup';
 
 const NotSupported = ({ children, onclick = () => {} }) => {
+  const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
+    useModal();
+  const { logIn } = useLogIn();
   const net = !network ? 'Testnet' : 'Mainnet';
   return (
     <div className="not-supported">
@@ -19,9 +26,58 @@ const NotSupported = ({ children, onclick = () => {} }) => {
             onClick={() => onclick()}
           >
             switch to {net}
-          </span>
+          </span>{' '}
         </Paragraph>
       )}
+
+      <Modal
+        isShowing={isLogInMethodShow}
+        hide={toggleLogInMethodShow}
+        modalStyles={{ maxWidth: 500 }}
+      >
+        <ButtonGroup>
+          <Button
+            buttonStyles={{
+              margin: 20,
+              background: '#212121',
+            }}
+            type="black"
+            onclick={() => logIn(injected)}
+          >
+            <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+              <span
+                style={{
+                  paddingLeft: 5,
+                  fontFamily: ' Neue Machina',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Metamask
+              </span>
+            </Paragraph>
+          </Button>
+          <Button
+            buttonStyles={{
+              margin: 20,
+              background: '#212121',
+            }}
+            type="black"
+            onclick={() => logIn(walletconnect)}
+          >
+            <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+              <span
+                style={{
+                  paddingLeft: 5,
+                  fontFamily: ' Neue Machina',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                WalletConnect
+              </span>
+            </Paragraph>
+          </Button>
+        </ButtonGroup>
+      </Modal>
     </div>
   );
 };

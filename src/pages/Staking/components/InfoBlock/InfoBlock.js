@@ -7,10 +7,10 @@ import { observer } from 'mobx-react-lite';
 import StackedInfo from './StackedInfo';
 import Paragraph from '../../../../components/Paragraph';
 import { formatRounded } from '../../../../services/numbers';
-import copyIcon from '../../../../assets/svg/copy.svg';
-import useCopyToClipboard from '../../../../hooks/useCopyToClipboard';
-import { tooltips } from '../../../../config';
-import appStore from '../../../../store/app.store';
+import copyIcon from 'assets/svg/copy.svg';
+import useCopyToClipboard from 'hooks/useCopyToClipboard';
+import { tooltips } from 'config';
+import appStore from 'store/app.store';
 
 const InfoBlock = observer(({ poolsArr, account }) => {
   const { isCopied, onCopy } = useCopyToClipboard({ text: account });

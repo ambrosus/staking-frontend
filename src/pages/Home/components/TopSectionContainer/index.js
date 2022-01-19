@@ -1,11 +1,15 @@
 import React from 'react';
-import Paragraph from '../../../../components/Paragraph';
-import { CONNECT_TEXT } from '../../../../config';
-import { useLogIn } from '../../../../hooks';
-import Button from '../../../../components/Button';
 import Header from '../../../../components/layouts/Header';
+import Paragraph from '../../../../components/Paragraph';
+import { CONNECT_TEXT, injected, walletconnect } from 'config';
+import Modal from '../../../../components/Modal';
+import { useModal, useLogIn } from 'hooks';
+import ButtonGroup from '../../../../components/ButtonGroup';
+import Button from '../../../../components/Button';
 
 export default () => {
+  const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
+    useModal();
   const { logIn } = useLogIn();
 
   return (
@@ -40,7 +44,7 @@ export default () => {
             background: '#212121',
           }}
           type="black"
-          onclick={logIn}
+          onclick={toggleLogInMethodShow}
         >
           <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
             <span
@@ -54,6 +58,52 @@ export default () => {
             </span>
           </Paragraph>
         </Button>
+        <Modal
+          isShowing={isLogInMethodShow}
+          hide={toggleLogInMethodShow}
+          modalStyles={{ maxWidth: 500 }}
+        >
+          <ButtonGroup>
+            <Button
+              buttonStyles={{
+                background: '#212121',
+              }}
+              type="black"
+              onclick={() => logIn(injected)}
+            >
+              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+                <span
+                  style={{
+                    paddingLeft: 5,
+                    fontFamily: ' Neue Machina',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Metamask
+                </span>
+              </Paragraph>
+            </Button>
+            <Button
+              buttonStyles={{
+                background: '#212121',
+              }}
+              type="black"
+              onclick={() => logIn(walletconnect)}
+            >
+              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+                <span
+                  style={{
+                    paddingLeft: 5,
+                    fontFamily: ' Neue Machina',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  WalletConnect
+                </span>
+              </Paragraph>
+            </Button>
+          </ButtonGroup>
+        </Modal>
       </div>
     </>
   );

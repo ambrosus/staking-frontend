@@ -1,9 +1,9 @@
 import React, { useCallback, useReducer, useState } from 'react';
 import cx from 'classnames';
 import Block from './Block';
-import { collapsedReducer } from '../../../../utils/reducers';
-import { faqsList } from '../../../../config';
-import { useSafeDispatch } from '../../../../hooks';
+import { collapsedReducer } from 'utils/reducers';
+import { faqsList } from 'config';
+import { useSafeDispatch } from 'hooks';
 
 const CollapsedList = () => {
   const [activeExpand, setActiveExpand] = useState(-1);

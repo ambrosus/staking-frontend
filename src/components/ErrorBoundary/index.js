@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { debugLog } from '../../utils/helpers';
+import { debugLog } from 'utils/helpers';
 
 class ErrorBoundary extends React.PureComponent {
   constructor(props) {

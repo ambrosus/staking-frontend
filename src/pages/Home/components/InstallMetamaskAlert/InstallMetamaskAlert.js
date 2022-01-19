@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Modal from '../../../../components/Modal';
-import mmLogoIcon from '../../../../assets/svg/download-extension.png';
+import mmLogoIcon from 'assets/svg/download-extension.png';
 
 export default function InstallMetamaskAlert() {
   const [closeModal, setCloseModal] = useState(true);

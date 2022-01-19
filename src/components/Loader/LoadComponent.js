@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import * as PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
-import { MAIN_PAGE } from '../../config';
+import { MAIN_PAGE } from 'config';
 
 const Loader = ({ types = 'spokes' }) => {
   const { pathname } = useLocation();

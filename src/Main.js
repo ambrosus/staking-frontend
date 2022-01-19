@@ -6,11 +6,14 @@ import RenderRoutes from './components/RenderRoutes';
 import { getLibrary } from './utils/helpers';
 import { ethereum } from './config';
 import './styles/Main.scss';
+import appStore from 'store/app.store';
 
 const Main = () => {
-  const handleChainChanged = () => window.location.reload();
-  const handleAccountsChanged = () => window.location.reload();
-  const handleNetworkChanged = () => window.location.reload();
+  const handleChainChanged = () => appStore.setRefresh();
+
+  const handleAccountsChanged = () => appStore.setRefresh();
+
+  const handleNetworkChanged = () => appStore.setRefresh();
 
   useEffect(() => {
     if (ethereum) {
