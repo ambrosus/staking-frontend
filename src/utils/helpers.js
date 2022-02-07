@@ -112,7 +112,7 @@ export const changeNetwork = async () => {
     params: [
       {
         chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-        chainName: `${network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'}`,
+        chainName: `${network ? 'Ambrosus (Test net)' : 'Ambrosus (Main net)'}`,
         nativeCurrency: {
           name: 'AMB',
           symbol: 'AMB',
