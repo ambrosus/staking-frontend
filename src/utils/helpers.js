@@ -107,20 +107,35 @@ export const formatThousand = (num) => {
 export const debugLog = (...logs) => ENABLE_DEBUG_LOG && console.log(...logs);
 
 export const changeNetwork = async () => {
-  await ethereum.request({
-    method: 'wallet_addEthereumChain',
-    params: [
-      {
-        chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-        chainName: `${network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'}`,
-        nativeCurrency: {
-          name: 'AMB',
-          symbol: 'AMB',
-          decimals: 18,
+  try {
+    await ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [
+        {
+          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
         },
-        rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-        blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
-      },
-    ],
-  });
+      ],
+    });
+  } catch (e) {
+    if (e) {
+      await ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+            chainName: `${
+              network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'
+            }`,
+            nativeCurrency: {
+              name: 'AMB',
+              symbol: 'AMB',
+              decimals: 18,
+            },
+            rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+            blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
+          },
+        ],
+      });
+    }
+  }
 };
