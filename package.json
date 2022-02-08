@@ -22,10 +22,10 @@
   "dependencies": {
     "@inc4/eslint-config-react": "1.0.1",
     "@kunukn/react-collapse": "^2.2.9",
-    "@usedapp/core": "^0.7.2",
+    "@usedapp/core": "~0.10.0",
     "@web3-react/core": "^6.1.9",
-    "@web3-react/injected-connector": "^6.0.7",
-    "@web3-react/walletconnect-connector": "^6.2.8",
+    "@web3-react/injected-connector": "~6.0.7",
+    "@web3-react/walletconnect-connector": "6.2.8",
     "ambrosus-node-contracts": "^0.0.88",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
@@ -51,7 +51,7 @@
     "reactstrap": "^8.10.0",
     "sass": "^1.35.2",
     "web-vitals": "^1.0.1",
-    "web3-react": "^5.0.5"
+    "web3-react": "5.0.0"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
