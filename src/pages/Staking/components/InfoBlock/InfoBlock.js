@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import * as PropTypes from 'prop-types';
 import { BigNumber } from 'ethers';
@@ -8,7 +7,7 @@ import { formatRounded } from '../../../../services/numbers';
 import appStore from 'store/app.store';
 import StakingChart from 'components/StakingChart';
 
-const InfoBlock = observer(({ poolsArr, account }) => {
+const InfoBlock = observer(({ poolsArr }) => {
   const [totalReward, setTotalReward] = useState(0);
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [totalStaked, setTotalStaked] = useState(0);
@@ -74,7 +73,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     <div className="info-block ">
       <div className="wrapper">
         <>
-          <StakingChart />
+          <StakingChart poolsArr={poolsArr} />
           <StackedInfo
             totalStaked={totalStaked}
             totalStakedInUsd={totalStakedInUsd}
@@ -89,7 +88,6 @@ const InfoBlock = observer(({ poolsArr, account }) => {
 
 InfoBlock.propTypes = {
   poolsArr: PropTypes.array,
-  account: PropTypes.string,
 };
 
 export default React.memo(InfoBlock);

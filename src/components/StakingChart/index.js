@@ -1,58 +1,216 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AreaChart, Area, XAxis, Tooltip } from 'recharts';
+import { ReactSVG } from 'react-svg';
+import chevronUp from 'assets/svg/Chevron up.svg';
+import chevronDown from 'assets/svg/Chevron down.svg';
+import * as PropTypes from 'prop-types';
+import { poolIcon } from 'utils/helpers';
 
 const data = [
   {
-    name: 'Dec 11',
-    uv: 1500,
+    data: [
+      {
+        name: 'Dec 11',
+        uv: 1500,
+      },
+      {
+        name: '',
+        uv: 3500,
+      },
+      {
+        name: '',
+        uv: 2000,
+      },
+      {
+        name: 'Dec 12',
+        uv: 2400,
+      },
+      {
+        name: '',
+        uv: 5000,
+      },
+      {
+        name: '',
+        uv: 1500,
+      },
+      {
+        name: 'Dec 13',
+        uv: 3500,
+      },
+      {
+        name: '',
+        uv: 2000,
+      },
+      {
+        name: '',
+        uv: 2400,
+      },
+      {
+        name: 'Dec 14',
+        uv: 5000,
+      },
+    ],
   },
   {
-    name: '',
-    uv: 3500,
+    data: [
+      {
+        name: 'Dec 11',
+        uv: 1000,
+      },
+      {
+        name: '',
+        uv: 1500,
+      },
+      {
+        name: '',
+        uv: 2500,
+      },
+      {
+        name: 'Dec 12',
+        uv: 2300,
+      },
+      {
+        name: '',
+        uv: 1000,
+      },
+      {
+        name: '',
+        uv: 1200,
+      },
+      {
+        name: 'Dec 13',
+        uv: 1000,
+      },
+      {
+        name: '',
+        uv: 1100,
+      },
+      {
+        name: '',
+        uv: 1000,
+      },
+      {
+        name: 'Dec 14',
+        uv: 5000,
+      },
+    ],
   },
   {
-    name: '',
-    uv: 2000,
-  },
-  {
-    name: 'Dec 12',
-    uv: 2400,
-  },
-  {
-    name: '',
-    uv: 5000,
-  },
-  {
-    name: '',
-    uv: 1500,
-  },
-  {
-    name: 'Dec 13',
-    uv: 3500,
-  },
-  {
-    name: '',
-    uv: 2000,
-  },
-  {
-    name: '',
-    uv: 2400,
-  },
-  {
-    name: 'Dec 14',
-    uv: 5000,
+    data: [
+      {
+        name: 'Dec 11',
+        uv: 3500,
+      },
+      {
+        name: '',
+        uv: 500,
+      },
+      {
+        name: '',
+        uv: 1000,
+      },
+      {
+        name: 'Dec 12',
+        uv: 2400,
+      },
+      {
+        name: '',
+        uv: 5000,
+      },
+      {
+        name: '',
+        uv: 2500,
+      },
+      {
+        name: 'Dec 13',
+        uv: 2500,
+      },
+      {
+        name: '',
+        uv: 1000,
+      },
+      {
+        name: '',
+        uv: 400,
+      },
+      {
+        name: 'Dec 14',
+        uv: 100,
+      },
+    ],
   },
 ];
 
-export default function StakingChart() {
+const StakingChart = ({ poolsArr }) => {
+  const [openDropDown, setOpenDropDown] = useState(false);
+  const [chartData, setChartData] = useState(data[0]);
+  const [pickedName, setPickedName] = useState(poolsArr[0]);
+
+  const openDropDownHandler = () => {
+    setOpenDropDown(!openDropDown);
+  };
+
+  const chartDataHandler = (arr) => {
+    setChartData(arr);
+    openDropDownHandler();
+  };
+
+  const setPickedNameHandler = (contractName) => {
+    setPickedName(contractName);
+  };
+
   return (
     <div className="chart">
       <div className="chart__heading">Pool Performance</div>
+      <div
+        className="chart__pool-picker"
+        style={{
+          height: !openDropDown ? 44 : 'auto',
+          overflow: !openDropDown ? 'hidden' : 'auto',
+        }}
+      >
+        <div
+          role="presentation"
+          onClick={openDropDownHandler}
+          className="pool-picker-arrow"
+        >
+          <ReactSVG src={openDropDown ? chevronUp : chevronDown} />
+        </div>
+        <div className="chart__pool-picker--name" role="presentation">
+          <ReactSVG
+            className="chart__pool-picker--name--icon"
+            src={poolIcon(pickedName.index)}
+            wrapper="div"
+          />
+          {pickedName.contractName}
+        </div>
+        {poolsArr.map(
+          (pool, index) =>
+            pool.contractName !== pickedName.contractName && (
+              <div
+                key={pool.contractName}
+                className="chart__pool-picker--name"
+                onClick={() => {
+                  chartDataHandler(data[index]);
+                  setPickedNameHandler(pool);
+                }}
+                role="presentation"
+              >
+                <ReactSVG
+                  className="chart__pool-picker--name--icon"
+                  src={poolIcon(pool.index)}
+                  wrapper="div"
+                />
+                {pool.contractName}
+              </div>
+            ),
+        )}
+      </div>
       <div className="chart__chart">
         <AreaChart
           width={560}
           height={148}
-          data={data}
+          data={chartData.data}
           margin={{
             top: 10,
             right: 0,
@@ -98,4 +256,10 @@ export default function StakingChart() {
       </div>
     </div>
   );
-}
+};
+
+StakingChart.propTypes = {
+  poolsArr: PropTypes.array,
+};
+
+export default StakingChart;
