@@ -64,6 +64,9 @@ export default function StakingChart() {
             dataKey="name"
             fill="white"
             fontSize={12}
+            allowDecimals={false}
+            axisLine={false}
+            tickLine={false}
             style={{
               fill: '#fff',
               fontSize: 12,
@@ -75,8 +78,22 @@ export default function StakingChart() {
             className="gradient"
             dataKey="uv"
             stroke="#15D378"
-            fill="rgba(21, 211, 120, 0.4)"
+            fill="url(#colorUv)"
           />
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="rgba(21, 211, 120, 0.4"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="rgba(21, 211, 120, 0.4"
+                stopOpacity={0}
+              />
+            </linearGradient>
+          </defs>
         </AreaChart>
       </div>
     </div>

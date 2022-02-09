@@ -74,9 +74,7 @@ const InfoBlock = observer(({ poolsArr, account }) => {
     <div className="info-block ">
       <div className="wrapper">
         <>
-          <div className="info-block__address">
-            <StakingChart />
-          </div>
+          <StakingChart />
           <StackedInfo
             totalStaked={totalStaked}
             totalStakedInUsd={totalStakedInUsd}
