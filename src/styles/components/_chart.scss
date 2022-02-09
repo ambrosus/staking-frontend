@@ -1,0 +1,40 @@
+.chart {
+ display: flex;
+ flex-direction: column;
+ height: 300px;
+ margin-bottom: 114px;
+ margin-top: 150px;
+
+ &__heading {
+  font-family: Halvar Breitschrift, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 25px;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  padding-bottom: 55px;
+ }
+
+ &__charts {
+  height: 300px;
+
+  .recharts-cartesian-axis-tick-value {
+   fill: #FFFFFF !important;
+  }
+  .recharts-text{
+   fill: #FFFFFF;
+  }
+  .recharts-text .recharts-cartesian-axis-tick-value {
+   font-family: Halvar Breitschrift, sans-serif !important;
+   font-style: normal !important;
+   font-weight: 300 !important;
+   font-size: 12px !important;
+   line-height: 14px !important;
+   display: flex !important;
+   align-items: center !important;
+   color: #FFFFFF !important;
+   fill: #FFFFFF !important;
+  }
+ }
+}
