@@ -1221,6 +1221,7 @@
     flex-direction: row;
     gap: 80px;
     align-items: center;
+    position: relative;
 
     .info {
       display: flex;
@@ -1236,4 +1237,53 @@
       height: 600px;
     }
   }
+}
+
+.pool-picker {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  right: 0;
+  padding: 15px 34px 15px 24px;
+  min-width: 140px;
+  gap: 7.5px;
+
+  .pool-picker-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 12px;
+    top: 20px;
+    width: 8px;
+    height: 4px;
+    cursor: pointer;
+  }
+
+
+  &--name {
+    font-family: Halvar Breitschrift, sans-serif;
+    font-style: normal;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+
+    &--icon {
+      div {
+        svg {
+          margin-right: 9px;
+          width: 14px;
+          height: 17px;
+        }
+      }
+    }
+  }
+
 }
