@@ -1208,3 +1208,32 @@
   color: #FFFFFF;
 
 }
+
+.staking-calculator {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 220px auto;
+  height: auto;
+
+  .container {
+    flex-direction: row;
+    gap: 80px;
+    align-items: center;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .calculator {
+      background-color: #414040;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 600px;
+    }
+  }
+}

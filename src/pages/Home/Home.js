@@ -24,6 +24,7 @@ const Home = () => (
         <ThirdSection />
       </React.Suspense>
       <StakingSection />
+
       <React.Suspense fallback={<div />}>
         <Faq />
         <LastSection />
