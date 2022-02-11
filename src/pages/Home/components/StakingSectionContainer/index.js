@@ -62,18 +62,17 @@ export default () => {
   };
 
   const handleChangeRange = (e) => {
-    setRangeValue(e.target.value);
     if (e.target.value && pickedName.poolAPY && appStore.tokenPrice) {
+      setRangeValue(e.target.value);
       setCalculateValue(
         +e.target.value * +pickedName.poolAPY * appStore.tokenPrice,
       );
-      setHistoryCalculating((prevState) => [
-        ...prevState,
-        {
-          myStake: +rangeValue,
-          myReward: +calculateValue,
-        },
-      ]);
+      const newArr = [...historyCalculating];
+      newArr.unshift({
+        myStake: rangeValue,
+        myReward: calculateValue,
+      });
+      setHistoryCalculating(newArr);
     }
   };
 
@@ -254,12 +253,14 @@ export default () => {
             )}
             <div className="calculator__labels">
               <div className="left-value">
-                <div className="secondary">Caption</div>
-                <div className="primary">{rangeValue}</div>
+                <div className="left-value__secondary">Caption</div>
+                <div className="left-value__primary">{rangeValue}</div>
               </div>
               <div className="right-value">
-                <div className="secondary">Caption</div>
-                <div className="primary">{pickedName.poolAPY}%</div>
+                <div className="right-value__secondary">Caption</div>
+                <div className="right-value__primary">
+                  {pickedName.poolAPY}%
+                </div>
               </div>
             </div>
             <div className="calculator__range">
@@ -275,7 +276,6 @@ export default () => {
             </div>
             <div className="calculator__results">
               {historyCalculating
-                .reverse()
                 .filter((item, index) => index < 3)
                 .map((historyItem, index) => (
                   // eslint-disable-next-line

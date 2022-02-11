@@ -1276,7 +1276,7 @@
         padding-top: 70px;
 
         .left-value {
-          .secondary {
+          &__secondary {
             font-family: Halvar Breitschrift;
             font-style: normal;
             font-weight: 250;
@@ -1286,7 +1286,7 @@
             color: #FFFFFF;
           }
 
-          .primary {
+          &__primary {
             font-family: Halvar Breitschrift;
             font-style: normal;
             font-weight: normal;
@@ -1298,7 +1298,7 @@
         }
 
         .right-value {
-          .secondary {
+          &__secondary {
             font-family: Halvar Breitschrift;
             font-style: normal;
             font-weight: 250;
@@ -1308,7 +1308,7 @@
             color: #FFFFFF;
           }
 
-          .primary {
+          &__primary {
             font-family: Halvar Breitschrift;
             font-style: normal;
             font-weight: normal;
