@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
@@ -14,65 +15,25 @@ import { Loader } from '../../../../components/Loader';
 import Paragraph from '../../../../components/Paragraph';
 import Button from '../../../../components/Button';
 import { useLogIn, useMedia, useModal } from 'hooks';
-import { debugLog, poolIcon } from 'utils/helpers';
+import { debugLog } from 'utils/helpers';
 import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
 import appStore from 'store/app.store';
-
-import chevronUp from 'assets/svg/Chevron-up.svg';
-import chevronDown from 'assets/svg/Chevron-down.svg';
 import paragrapfIcon from 'assets/svg/paragrapf-icon.svg';
 
 export default () => {
   const { pathname } = useLocation();
   const [pools, getPools] = useContext(PoolsContext);
-  const [openDropDown, setOpenDropDown] = useState(false);
-  const [pickedName, setPickedName] = useState({});
-  const [rangeValue, setRangeValue] = useState(0);
-  const [calculateValue, setCalculateValue] = useState(0);
-  const [historyCalculating, setHistoryCalculating] = useState([
-    {
-      myStake: 0,
-      myReward: 0,
-    },
-  ]);
+  const [rangeValue, setRangeValue] = useState(1000);
+
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
 
-  useEffect(() => {
-    if (pools.length > 0) {
-      if (pickedName.index === undefined) {
-        pools.forEach((pool) => pool.active && setPickedName(pool));
-      }
-    }
-  }, [pools, pickedName]);
-
-  const openDropDownHandler = () => {
-    setOpenDropDown(!openDropDown);
-  };
-
-  const chartDataHandler = () => {
-    openDropDownHandler();
-  };
-
-  const setPickedNameHandler = (contractName) => {
-    setPickedName(contractName);
-  };
-
   const handleChangeRange = (e) => {
-    if (e.target.value && pickedName.poolAPY && appStore.tokenPrice) {
+    if (e.target.value && appStore.tokenPrice) {
       setRangeValue(e.target.value);
-      setCalculateValue(
-        +e.target.value * +pickedName.poolAPY * appStore.tokenPrice,
-      );
-      const newArr = [...historyCalculating];
-      newArr.unshift({
-        myStake: rangeValue,
-        myReward: calculateValue,
-      });
-      setHistoryCalculating(newArr);
     }
   };
 
@@ -204,53 +165,6 @@ export default () => {
             </div>
           </div>
           <div className="calculator">
-            {pools.length > 0 && (
-              <div
-                className="pool-picker"
-                style={{
-                  height: !openDropDown ? 44 : 'auto',
-                  overflow: !openDropDown ? 'hidden' : 'auto',
-                }}
-              >
-                <div
-                  role="presentation"
-                  onClick={openDropDownHandler}
-                  className="arrow"
-                >
-                  <ReactSVG src={openDropDown ? chevronUp : chevronDown} />
-                </div>
-                <div className="pool-picker--name" role="presentation">
-                  <ReactSVG
-                    className="pool-picker--name--icon"
-                    src={poolIcon(pickedName.index)}
-                    wrapper="div"
-                  />
-                  {pickedName.contractName}
-                </div>
-                {pools.map(
-                  (pool) =>
-                    // pool.active &&
-                    pool.contractName !== pickedName.contractName && (
-                      <div
-                        key={pool.contractName}
-                        className="pool-picker--name"
-                        onClick={() => {
-                          chartDataHandler();
-                          setPickedNameHandler(pool);
-                        }}
-                        role="presentation"
-                      >
-                        <ReactSVG
-                          className="pool-picker--name--icon"
-                          src={poolIcon(pool.index)}
-                          wrapper="div"
-                        />
-                        {pool.contractName}
-                      </div>
-                    ),
-                )}
-              </div>
-            )}
             <div className="calculator__labels">
               <div className="left-value">
                 <div className="left-value__secondary">Caption</div>
@@ -258,9 +172,7 @@ export default () => {
               </div>
               <div className="right-value">
                 <div className="right-value__secondary">Caption</div>
-                <div className="right-value__primary">
-                  {pickedName.poolAPY}%
-                </div>
+                <div className="right-value__primary">APY %</div>
               </div>
             </div>
             <div className="calculator__range">
@@ -275,14 +187,26 @@ export default () => {
               />
             </div>
             <div className="calculator__results">
-              {historyCalculating
+              {pools
                 .filter((item, index) => index < 3)
-                .map((historyItem, index) => (
+                .map((pool, index) => (
                   // eslint-disable-next-line
-                  <div key={index} className="calculator__results__result">
-                    <div>Caption</div>
-                    <div>{historyItem.myStake} AMB</div>
-                    <div>${historyItem.myReward.toFixed(2)}</div>
+                  <div
+                    key={pool.contractName}
+                    className="calculator__results__result"
+                  >
+                    <div>{pool.contractName}</div>
+                    <div>
+                      {((+rangeValue / 100) * pool.poolAPY).toFixed(2)} AMB
+                    </div>
+                    <div>
+                      $
+                      {(
+                        (+rangeValue / 100) *
+                        pool.poolAPY *
+                        appStore.tokenPrice
+                      ).toFixed(2)}
+                    </div>
                     <div className="hr" />
                   </div>
                 ))}

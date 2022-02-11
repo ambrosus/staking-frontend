@@ -1273,7 +1273,6 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-top: 70px;
 
         .left-value {
           &__secondary {
@@ -1402,12 +1401,17 @@
           align-items: center;
           justify-content: space-between;
           position: relative;
+          width: 100%;
 
           div {
             font-family: Halvar Breitschrift, sans-serif;
             font-style: normal;
             font-weight: 300;
             font-size: 16px;
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+            justify-content: flex-start;
             line-height: 19px;
             letter-spacing: -0.02em;
             color: #FFFFFF;
