@@ -141,6 +141,7 @@ export default class StakingWrapper {
         tokenPriceAMB,
         myStakeInTokens,
         poolDPY,
+        poolRewards,
       ] = await Promise.all([
         poolContract.name(),
         poolContract.active(),
@@ -183,6 +184,7 @@ export default class StakingWrapper {
         myStakeInAMB,
         poolAPY,
         estAR,
+        poolRewards,
       };
     });
 
