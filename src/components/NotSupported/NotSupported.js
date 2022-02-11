@@ -12,21 +12,39 @@ const NotSupported = ({ children, onclick = () => {} }) => {
     useModal();
   const { logIn } = useLogIn();
   const net = !network ? 'Testnet' : 'Mainnet';
+  const method = localStorage.getItem('connector');
+
   return (
     <div className="not-supported">
       {children ? (
         <Paragraph>{children}</Paragraph>
       ) : (
         <Paragraph>
-          {' '}
-          Ambrosus is not supported on this network. Please &nbsp;
-          <span
-            className="switch-text"
-            role="presentation"
-            onClick={() => onclick()}
-          >
-            switch to {net}
-          </span>{' '}
+          {method === 'injected' ? (
+            <>
+              {' '}
+              Ambrosus is not supported on this network. Please &nbsp;
+              <span
+                className="switch-text"
+                role="presentation"
+                onClick={() => onclick()}
+              >
+                switch to {net}
+              </span>{' '}
+            </>
+          ) : (
+            <>
+              {' '}
+              Ambrosus is not supported on this network. Please &nbsp;
+              <span
+                className="switch-text"
+                role="presentation"
+                style={{ cursor: 'auto' }}
+              >
+                switch to {net} on your mobile
+              </span>{' '}
+            </>
+          )}
         </Paragraph>
       )}
 
