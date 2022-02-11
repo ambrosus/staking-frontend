@@ -44,7 +44,7 @@ const Staking = observer(() => {
       <Sidebar pageWrapId="root" outerContainerId="root" />
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
         <React.Suspense fallback={<div />}>
-          <NotSupported key={chainId} onclick={changeNetwork} />
+          <NotSupported key={chainId} />
         </React.Suspense>
       )}
       <div className="layout">
