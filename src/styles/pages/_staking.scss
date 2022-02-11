@@ -1214,27 +1214,218 @@
   position: relative;
   z-index: 1;
   max-width: 1240px;
-  margin: 220px auto;
+  margin: 180px auto;
   height: auto;
 
   .container {
     flex-direction: row;
     gap: 80px;
     align-items: center;
-    position: relative;
 
     .info {
       display: flex;
       flex-direction: column;
       width: 100%;
+      gap: 30px;
+      position: relative;
+
+      .after-icon {
+        position: absolute;
+        bottom: -90px;
+        left: 0;
+      }
+
+      &__primary {
+        font-family: Halvar Breitschrift, sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 36px;
+        line-height: 42px;
+        letter-spacing: -0.02em;
+        color: #FFFFFF;
+      }
+
+      &__secondary {
+        font-family: Halvar Breitschrift, sans-serif;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 18px;
+        line-height: 21px;
+        letter-spacing: -0.02em;
+        color: #FFFFFF;
+      }
     }
 
     .calculator {
-      background-color: #414040;
       display: flex;
       flex-direction: column;
       width: 100%;
       height: 600px;
+      position: relative;
+      padding: 45px;
+      background: #262626;
+      box-shadow: 0px 6px 10px rgba(37, 37, 37, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+
+      &__labels {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 70px;
+
+        .left-value {
+          .secondary {
+            font-family: Halvar Breitschrift;
+            font-style: normal;
+            font-weight: 250;
+            font-size: 18px;
+            line-height: 21px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+          }
+
+          .primary {
+            font-family: Halvar Breitschrift;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 36px;
+            line-height: 42px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+          }
+        }
+
+        .right-value {
+          .secondary {
+            font-family: Halvar Breitschrift;
+            font-style: normal;
+            font-weight: 250;
+            font-size: 18px;
+            line-height: 21px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+          }
+
+          .primary {
+            font-family: Halvar Breitschrift;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 36px;
+            line-height: 42px;
+            letter-spacing: -0.02em;
+            color: #15D378;
+          }
+        }
+      }
+
+      &__range {
+        input[type="range"] {
+          outline: none;
+          margin-top: 33px;
+          margin-bottom: 70px;
+          -webkit-appearance: none;
+          position: relative;
+          height: 10px;
+          width: 100%;
+          border: 1px solid #15D378;
+          cursor: pointer;
+          z-index: 1;
+          background-color: transparent;
+        }
+
+        ::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 18px; /* 1 */
+          height: 18px;
+          z-index: 2;
+          background: #15D378;
+          border-radius: 100px;
+        }
+
+        ::-moz-range-track {
+          height: 40px;
+          background: transparent;
+        }
+
+        ::-moz-range-thumb {
+          background: #fff;
+          height: 40px;
+          width: 20px;
+          border: 3px solid #999;
+          border-radius: 0 !important;
+          box-sizing: border-box;
+        }
+
+        ::-ms-fill-lower {
+          background: linear-gradient(243.9deg, #360F8C -67%, #15D378 89.98%);
+          background: dodgerblue;
+        }
+
+        ::-ms-thumb {
+          background: #fff;
+          border: 2px solid #999;
+          height: 40px;
+          width: 20px;
+          box-sizing: border-box;
+        }
+
+        ::-ms-ticks-after {
+          display: none;
+        }
+
+        ::-ms-ticks-before {
+          display: none;
+        }
+
+        ::-ms-track {
+          background: #ddd;
+          color: transparent;
+          height: 40px;
+          border: none;
+        }
+
+        ::-ms-tooltip {
+          display: none;
+        }
+      }
+
+      &__results {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        height: 515px;
+
+        &__result {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+
+          div {
+            font-family: Halvar Breitschrift, sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 19px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+
+          }
+
+          .hr {
+            position: absolute;
+            top: 43px;
+            background: #F9F8FB;
+            opacity: 0.2;
+            height: 1px;
+            width: 100%;
+          }
+        }
+
+
+      }
     }
   }
 }
@@ -1244,12 +1435,15 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  right: 0;
+  left: 45px;
+  top: 45px;
   padding: 15px 34px 15px 24px;
   min-width: 140px;
   gap: 7.5px;
+  background: #212121;
+  box-shadow: 0px 6px 10px rgba(37, 37, 37, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.15);
 
-  .pool-picker-arrow {
+  .arrow {
     display: flex;
     align-items: center;
     justify-content: center;
