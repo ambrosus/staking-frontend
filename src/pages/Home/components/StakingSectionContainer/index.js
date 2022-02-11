@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import {
@@ -25,6 +25,7 @@ export default () => {
   const { pathname } = useLocation();
   const [pools, getPools] = useContext(PoolsContext);
   const [rangeValue, setRangeValue] = useState(1000);
+  const inputRef = useRef(null);
 
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
@@ -32,8 +33,24 @@ export default () => {
     useModal();
 
   const handleChangeRange = (e) => {
-    if (e.target.value && appStore.tokenPrice) {
+    if (e.target.value && appStore.tokenPrice && inputRef.current !== null) {
       setRangeValue(e.target.value);
+      const value = ((e.target.value - 1000) / (100000 - 1000)) * 100;
+      inputRef.current.style.background =
+        'linear-gradient(to right, #360F8C -67%, #15D378 ' +
+        value +
+        '%, transparent ' +
+        value +
+        '%, transparent' +
+        ' 100%)';
+      inputRef.current.style.border =
+        '1px solid' +
+        'linear-gradient(to right, #360F8C -67%, #15D378 ' +
+        value +
+        '%, transparent ' +
+        value +
+        '%, transparent' +
+        ' 100%)';
     }
   };
 
@@ -167,17 +184,20 @@ export default () => {
           <div className="calculator">
             <div className="calculator__labels">
               <div className="left-value">
-                <div className="left-value__secondary">Caption</div>
-                <div className="left-value__primary">{rangeValue}</div>
+                <div className="left-value__secondary">Your stake</div>
+                <div className="left-value__primary">
+                  {new Intl.NumberFormat('en').format(rangeValue)}
+                </div>
               </div>
               <div className="right-value">
-                <div className="right-value__secondary">Caption</div>
+                <div className="right-value__secondary">% APY</div>
                 <div className="right-value__primary">APY %</div>
               </div>
             </div>
             <div className="calculator__range">
               {/* TODO min & max range value */}
               <input
+                ref={inputRef}
                 min="1000"
                 max="100000"
                 value={rangeValue}
@@ -188,28 +208,36 @@ export default () => {
             </div>
             <div className="calculator__results">
               {pools
-                .filter((item, index) => index < 3)
-                .map((pool, index) => (
-                  // eslint-disable-next-line
-                  <div
-                    key={pool.contractName}
-                    className="calculator__results__result"
-                  >
-                    <div>{pool.contractName}</div>
-                    <div>
-                      {((+rangeValue / 100) * pool.poolAPY).toFixed(2)} AMB
-                    </div>
-                    <div>
-                      $
-                      {(
-                        (+rangeValue / 100) *
-                        pool.poolAPY *
-                        appStore.tokenPrice
-                      ).toFixed(2)}
-                    </div>
-                    <div className="hr" />
-                  </div>
-                ))}
+                // .sort((x,y)=>(x === y)? 0 : x? -1 : 1)
+                .map(
+                  (pool, index) =>
+                    pool.active && (
+                      // eslint-disable-next-line
+                      <div
+                        key={pool.contractName}
+                        className="calculator__results__result"
+                      >
+                        <div style={{ justifyContent: 'flex-start' }}>
+                          {pool.contractName}
+                        </div>
+                        <div style={{ justifyContent: 'flex-start' }}>
+                          {pool.poolAPY} %
+                        </div>
+                        <div>
+                          {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
+                        </div>
+                        <div>
+                          $
+                          {(
+                            (+rangeValue / 100) *
+                            pool.poolAPY *
+                            appStore.tokenPrice
+                          ).toFixed(2)}
+                        </div>
+                        <div className="hr" />
+                      </div>
+                    ),
+                )}
               <Button
                 buttonStyles={{ width: 174, height: 65, marginLeft: 'auto' }}
                 type="white"

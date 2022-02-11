@@ -1320,74 +1320,28 @@
       }
 
       &__range {
-        input[type="range"] {
-          outline: none;
+        input[type="range"]{
+          -webkit-appearance: none;
           margin-top: 33px;
-          margin-bottom: 70px;
-          -webkit-appearance: none;
-          position: relative;
-          height: 10px;
-          width: 100%;
-          border: 1px solid #15D378;
-          cursor: pointer;
-          z-index: 1;
-          background-color: transparent;
-        }
-
-        ::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          width: 18px; /* 1 */
-          height: 18px;
-          z-index: 2;
-          background: #15D378;
-          border-radius: 100px;
-        }
-
-        ::-moz-range-track {
-          height: 40px;
+          margin-bottom: 74px;
+          -moz-apperance: none;
           background: transparent;
+          border: 1px solid #15D378;
+          height: 10px;
+          border: 1px solid linear-gradient(243.9deg, #360F8C -67%, #15D378 89.98%);
+          width: 100%;
         }
 
-        ::-moz-range-thumb {
-          background: #fff;
-          height: 40px;
-          width: 20px;
-          border: 3px solid #999;
-          border-radius: 0 !important;
-          box-sizing: border-box;
+        input[type='range']::-webkit-slider-thumb {
+          -webkit-appearance: none !important;
+          box-shadow: 0px 6px 10px rgba(45, 118, 140, 0.1), 0px 2px 4px rgba(45, 118, 140, 0.1);
+          border-radius: 37.1872px;
+          background: #15D378;
+          box-shadow: 0px 0px 10px rgba(37, 37, 37, 0.1), 0px 1px 4px rgba(0, 0, 0, 0.1);
+          height: 18px;
+          width: 18px;
         }
 
-        ::-ms-fill-lower {
-          background: linear-gradient(243.9deg, #360F8C -67%, #15D378 89.98%);
-          background: dodgerblue;
-        }
-
-        ::-ms-thumb {
-          background: #fff;
-          border: 2px solid #999;
-          height: 40px;
-          width: 20px;
-          box-sizing: border-box;
-        }
-
-        ::-ms-ticks-after {
-          display: none;
-        }
-
-        ::-ms-ticks-before {
-          display: none;
-        }
-
-        ::-ms-track {
-          background: #ddd;
-          color: transparent;
-          height: 40px;
-          border: none;
-        }
-
-        ::-ms-tooltip {
-          display: none;
-        }
       }
 
       &__results {
@@ -1409,13 +1363,23 @@
             font-weight: 300;
             font-size: 16px;
             display: flex;
-            align-items: flex-start;
+            justify-content: flex-end;
             width: 100%;
-            justify-content: flex-start;
             line-height: 19px;
             letter-spacing: -0.02em;
             color: #FFFFFF;
-
+          }
+          div:last-of-type {
+            font-family: Halvar Breitschrift, sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 16px;
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            line-height: 19px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
           }
 
           .hr {
