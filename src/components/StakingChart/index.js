@@ -120,7 +120,6 @@ const StakingChart = ({ poolsArr }) => {
             dataKey="timestamp"
             fill="white"
             fontSize={12}
-            allowDecimals={false}
             axisLine={false}
             tickLine={false}
             style={{
