@@ -1117,17 +1117,6 @@
     height: auto;
   }
 
-  &__address {
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-    @media (max-width: 480px) {
-      align-items: center;
-    }
-  }
-
   &__stacked {
     width: 100%;
     display: flex;

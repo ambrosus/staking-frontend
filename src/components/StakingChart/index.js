@@ -1,162 +1,60 @@
-import React, { useState } from 'react';
+/*eslint-disable*/
+import React, { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, Tooltip } from 'recharts';
 import { ReactSVG } from 'react-svg';
 import chevronUp from 'assets/svg/Chevron up.svg';
 import chevronDown from 'assets/svg/Chevron down.svg';
 import * as PropTypes from 'prop-types';
-import { poolIcon } from 'utils/helpers';
-
-const data = [
-  {
-    data: [
-      {
-        name: 'Dec 11',
-        uv: 1500,
-      },
-      {
-        name: '',
-        uv: 3500,
-      },
-      {
-        name: '',
-        uv: 2000,
-      },
-      {
-        name: 'Dec 12',
-        uv: 2400,
-      },
-      {
-        name: '',
-        uv: 5000,
-      },
-      {
-        name: '',
-        uv: 1500,
-      },
-      {
-        name: 'Dec 13',
-        uv: 3500,
-      },
-      {
-        name: '',
-        uv: 2000,
-      },
-      {
-        name: '',
-        uv: 2400,
-      },
-      {
-        name: 'Dec 14',
-        uv: 5000,
-      },
-    ],
-  },
-  {
-    data: [
-      {
-        name: 'Dec 11',
-        uv: 1000,
-      },
-      {
-        name: '',
-        uv: 1500,
-      },
-      {
-        name: '',
-        uv: 2500,
-      },
-      {
-        name: 'Dec 12',
-        uv: 2300,
-      },
-      {
-        name: '',
-        uv: 1000,
-      },
-      {
-        name: '',
-        uv: 1200,
-      },
-      {
-        name: 'Dec 13',
-        uv: 1000,
-      },
-      {
-        name: '',
-        uv: 1100,
-      },
-      {
-        name: '',
-        uv: 1000,
-      },
-      {
-        name: 'Dec 14',
-        uv: 5000,
-      },
-    ],
-  },
-  {
-    data: [
-      {
-        name: 'Dec 11',
-        uv: 3500,
-      },
-      {
-        name: '',
-        uv: 500,
-      },
-      {
-        name: '',
-        uv: 1000,
-      },
-      {
-        name: 'Dec 12',
-        uv: 2400,
-      },
-      {
-        name: '',
-        uv: 5000,
-      },
-      {
-        name: '',
-        uv: 2500,
-      },
-      {
-        name: 'Dec 13',
-        uv: 2500,
-      },
-      {
-        name: '',
-        uv: 1000,
-      },
-      {
-        name: '',
-        uv: 400,
-      },
-      {
-        name: 'Dec 14',
-        uv: 100,
-      },
-    ],
-  },
-];
+import { formatDate, poolIcon } from 'utils/helpers';
+import { formatRounded, ZERO } from 'services/numbers';
+import CustomScatterDo from './CustomScatterDo';
+import CustomTooltip from './CustomTooltip';
 
 const StakingChart = ({ poolsArr }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
-  const [chartData, setChartData] = useState(data[0]);
-  const [pickedName, setPickedName] = useState(poolsArr[0]);
+  const [chartData, setChartData] = useState([]);
+  const [pickedName, setPickedName] = useState({});
 
   const openDropDownHandler = () => {
     setOpenDropDown(!openDropDown);
   };
 
-  const chartDataHandler = (arr) => {
-    setChartData(arr);
-    openDropDownHandler();
-  };
+  useEffect(() => {
+    if (poolsArr && chartData.length === 0) {
+      chartDataHandler(poolsArr.find((item) => item.active).poolRewards);
+      setPickedNameHandler(poolsArr.find((item) => item.active));
+    }
+  }, [chartData, pickedName]);
 
   const setPickedNameHandler = (contractName) => {
     setPickedName(contractName);
+  };
+
+  const chartDataHandler = (arr) => {
+    console.log('Rewards', arr);
+    const rewardsData = [];
+    arr.reduce((acc, value) => {
+      rewardsData.push({
+        name: `${formatDate(value.timestamp * 1000, true)}`,
+        reward: value.reward,
+      });
+    }, []);
+
+    const res = Array.from(
+      rewardsData.reduce((m, { name, reward }) => {
+        return m.set(name, [...(m.get(name) || []), reward]);
+      }, new Map()),
+      ([name, arr]) => ({
+        name,
+        reward: formatRounded(
+          arr.reduce((t, n) => t.add(n), ZERO),
+          2,
+        ),
+      }),
+    );
+    const result = res.slice(1, -1);
+    setChartData(result);
+    console.log('chartData', chartData);
   };
 
   return (
@@ -165,33 +63,39 @@ const StakingChart = ({ poolsArr }) => {
       <div
         className="chart__pool-picker"
         style={{
-          height: !openDropDown ? 44 : 'auto',
+          height: !openDropDown ? 25 : 'auto',
           overflow: !openDropDown ? 'hidden' : 'auto',
         }}
       >
-        <div
-          role="presentation"
-          onClick={openDropDownHandler}
-          className="pool-picker-arrow"
-        >
-          <ReactSVG src={openDropDown ? chevronUp : chevronDown} />
-        </div>
-        <div className="chart__pool-picker--name" role="presentation">
-          <ReactSVG
-            className="chart__pool-picker--name--icon"
-            src={poolIcon(pickedName.index)}
-            wrapper="div"
-          />
-          {pickedName.contractName}
-        </div>
+        {poolsArr.map((pool) => pool.active).lenght > 0 && (
+          <div
+            role="presentation"
+            onClick={openDropDownHandler}
+            className="pool-picker-arrow"
+          >
+            <ReactSVG src={openDropDown ? chevronUp : chevronDown} />
+          </div>
+        )}
+        {pickedName?.contractName && (
+          <div className="chart__pool-picker--name" role="presentation">
+            <ReactSVG
+              className="chart__pool-picker--name--icon"
+              src={poolIcon(pickedName.index)}
+              wrapper="div"
+            />
+            {pickedName?.contractName}
+          </div>
+        )}
+
         {poolsArr.map(
-          (pool, index) =>
+          (pool) =>
+            pool.active &&
             pool.contractName !== pickedName.contractName && (
               <div
                 key={pool.contractName}
                 className="chart__pool-picker--name"
                 onClick={() => {
-                  chartDataHandler(data[index]);
+                  chartDataHandler(pool.poolRewards);
                   setPickedNameHandler(pool);
                 }}
                 role="presentation"
@@ -208,13 +112,13 @@ const StakingChart = ({ poolsArr }) => {
       </div>
       <div className="chart__chart">
         <AreaChart
-          width={560}
-          height={148}
-          data={chartData.data}
+          width={565}
+          height={235}
+          data={chartData}
           margin={{
             top: 10,
-            right: 0,
-            left: 30,
+            right: 100,
+            left: 0,
             bottom: 0,
           }}
         >
@@ -231,12 +135,29 @@ const StakingChart = ({ poolsArr }) => {
               fontFamily: 'Halvar Breitschrift',
             }}
           />
-          <Tooltip />
+
+          <Tooltip
+            content={<CustomTooltip />}
+            wrapperStyle={{
+              position: 'absolute',
+              top: 0,
+              left: -43,
+              right: 0,
+              bottom: 0,
+              width: 67,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '80%',
+              background:
+                'linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50.26%, rgba(255, 255, 255, 0) 100%)',
+            }}
+          />
           <Area
-            className="gradient"
-            dataKey="uv"
+            dataKey="reward"
             stroke="#15D378"
             fill="url(#colorUv)"
+            activeDot={<CustomScatterDo />}
           />
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">

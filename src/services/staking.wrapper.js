@@ -244,20 +244,29 @@ export default class StakingWrapper {
     const firstReward = sortedPoolRewards[0];
     const lastReward = sortedPoolRewards[sortedPoolRewards.length - 1];
 
-    const [firstTimestamp, lastTimestamp] = await Promise.all([firstReward, lastReward].map( async (event) => (await event.getBlock()).timestamp));
+    const [firstTimestamp, lastTimestamp] = await Promise.all(
+      [firstReward, lastReward].map(
+        async (event) => (await event.getBlock()).timestamp,
+      ),
+    );
 
-    if (lastTimestamp - firstTimestamp < 300)
-      return [];
+    if (lastTimestamp - firstTimestamp < 300) return [];
 
-    const avgBlockTime = (lastTimestamp-firstTimestamp) / (lastReward.blockNumber - firstReward.blockNumber);
+    const avgBlockTime =
+      (lastTimestamp - firstTimestamp) /
+      (lastReward.blockNumber - firstReward.blockNumber);
 
-    const rewards = sortedPoolRewards.map(event => ({
+    const rewards = sortedPoolRewards.map((event) => ({
       blockNumber: event.blockNumber,
-      timestamp: firstTimestamp+Math.floor(avgBlockTime*(event.blockNumber - firstReward.blockNumber)),
+      timestamp:
+        firstTimestamp +
+        Math.floor(
+          avgBlockTime * (event.blockNumber - firstReward.blockNumber),
+        ),
       reward: event.args.reward,
       tokenPrice: event.args.tokenPrice,
     }));
-    
+
     debugLog('Rewards:', rewards);
 
     return rewards;
