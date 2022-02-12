@@ -31,30 +31,24 @@ const StakingChart = ({ poolsArr }) => {
   };
 
   const chartDataHandler = (arr) => {
-    console.log('Rewards', arr);
-    const rewardsData = [];
-    arr.reduce((acc, value) => {
-      rewardsData.push({
-        name: `${formatDate(value.timestamp * 1000, true)}`,
-        reward: value.reward,
-      });
-    }, []);
-
     const res = Array.from(
-      rewardsData.reduce((m, { name, reward }) => {
-        return m.set(name, [...(m.get(name) || []), reward]);
+      arr.reduce((m, { timestamp, reward }) => {
+        return m.set(formatDate(timestamp * 1000, true), [
+          ...(m.get(formatDate(timestamp * 1000, true)) || []),
+          reward,
+        ]);
       }, new Map()),
-      ([name, arr]) => ({
-        name,
+      ([timestamp, arr]) => ({
+        timestamp,
         reward: formatRounded(
           arr.reduce((t, n) => t.add(n), ZERO),
           2,
         ),
       }),
     );
+    console.log('res', res);
     const result = res.slice(1, -1);
     setChartData(result);
-    console.log('chartData', chartData);
   };
 
   return (
@@ -123,7 +117,7 @@ const StakingChart = ({ poolsArr }) => {
           }}
         >
           <XAxis
-            dataKey="name"
+            dataKey="timestamp"
             fill="white"
             fontSize={12}
             allowDecimals={false}
