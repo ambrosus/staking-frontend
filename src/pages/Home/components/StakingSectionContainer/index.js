@@ -50,7 +50,7 @@ export default () => {
         '%, transparent ' +
         value +
         '%, transparent' +
-        ' 100%)';
+        ' 80%)';
     }
   };
 
