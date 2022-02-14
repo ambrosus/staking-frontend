@@ -55,7 +55,7 @@ const useLogIn = () => {
     } else {
       deactivate();
     }
-    history.push(MAIN_PAGE);
+    window.location.replace(MAIN_PAGE);
   };
 
   useEffect(() => {
