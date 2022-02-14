@@ -166,7 +166,7 @@
             font-family: Halvar Breitschrift, sans-serif;
             font-style: normal;
             font-weight: normal;
-            font-size: 20px;
+            font-size: 16px;
             line-height: 23px;
             letter-spacing: -0.02em;
             @media (max-width: 600px) {
@@ -178,6 +178,7 @@
         }
 
         &__vault-assets {
+          padding-left: 20px!important;
           @media (max-width: 600px) {
             div {
               span {
@@ -226,8 +227,8 @@
         }
 
         > div {
-          min-width: 200px;
-          max-width: 200px;
+          min-width: 150px;
+          max-width: 150px;
           @media (max-width: 600px) {
             min-width: 125px;
             max-width: 110px;

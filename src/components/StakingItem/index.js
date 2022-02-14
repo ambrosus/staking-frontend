@@ -26,6 +26,7 @@ import CollapsedContentTabs from './CollapsedContentTabs';
 import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
 import Button from 'components/Button';
+import { utils } from 'ethers';
 
 const StakingItem = ({
   expand = false,
@@ -50,6 +51,8 @@ const StakingItem = ({
   const h2ref = useRef(null);
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
+
+  const MAX_STAKE = utils.parseEther('10000');
 
   const stakeBtnHandler = () => {
     if (expand !== false) {
@@ -82,12 +85,12 @@ const StakingItem = ({
           <div
             className="item--header__flex"
             style={{
-              paddingRight: pathname === STAKING_PAGE ? 90 : 130,
+              paddingRight: pathname === STAKING_PAGE ? 40 : 130,
             }}
           >
             <div
               style={{
-                marginRight: pathname === STAKING_PAGE ? 10 : 0,
+                marginRight: pathname === STAKING_PAGE ? -50 : 0,
                 color: !myStakeInAMB && !isPoolActive && 'rgb(191 201 224)',
               }}
               className="item--header__flex__pool"
@@ -113,10 +116,65 @@ const StakingItem = ({
                 }}
                 className="item--header__flex__my-stake"
               >
+                <div
+                  style={{
+                    width: 'max-content',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                  }}
+                >
+                  {/* TODO maybe here is another condition */}
+                  {myStakeInAMB && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: '-9px',
+                        width: '100%',
+                        height: '2.5px',
+                        border: '0.2px solid #15D378',
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          top: 0,
+                          left: 0,
+                          height: 2.5,
+                          background: '#15D378',
+                          width: `${
+                            100 /
+                            (+formatRounded(MAX_STAKE, 18) /
+                              +formatRounded(myStakeInAMB, 18))
+                          }%`,
+                        }}
+                      />
+                    </div>
+                  )}
+                  <DisplayValue
+                    color={isPoolActive ? '#15D378' : 'rgb(191, 201, 224)'}
+                    value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
+                  />
+                  {MAX_STAKE && (
+                    <>
+                      <span style={{ color: '#fff' }}>/</span>
+                      <DisplayValue
+                        color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                        value={MAX_STAKE && formatRounded(MAX_STAKE, 2)}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+            {MAX_STAKE && (
+              <div className="item--header__flex__vault-assets">
                 <div style={{ width: 150 }}>
                   <DisplayValue
                     color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
-                    value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
+                    value={MAX_STAKE && formatRounded(MAX_STAKE, 2)}
                   />
                 </div>
               </div>

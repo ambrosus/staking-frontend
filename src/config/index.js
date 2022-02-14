@@ -355,6 +355,7 @@ export const tooltips = {
     notCopied: `Copy to clipboard`,
   },
   totalStaked: `The amount of staked coins in all pools`,
+  totalMaxStaked: `The maximum allowed number of bet coins in the pool`,
   deposit: `-`,
   unstake: `-`,
 };
