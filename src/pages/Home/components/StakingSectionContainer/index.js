@@ -36,21 +36,20 @@ export default () => {
     if (e.target.value && appStore.tokenPrice && inputRef.current !== null) {
       setRangeValue(e.target.value);
       const value = ((e.target.value - 1000) / (100000 - 1000)) * 100;
-      inputRef.current.style.background =
-        'linear-gradient(to right, #360F8C -67%, #15D378 ' +
-        value +
+      inputRef.current.style.backgroundImage =
+        'linear-gradient(to right, rgba(21, 211, 120,0.2) -53%, rgba(21, 211, 120, 0.9) 0%' +
+        value / 1.001 +
         '%, transparent ' +
         value +
         '%, transparent' +
         ' 100%)';
-      inputRef.current.style.border =
-        '1px solid' +
-        'linear-gradient(to right, #360F8C -67%, #15D378 ' +
-        value +
+      inputRef.current.style.background =
+        'linear-gradient(to right, #15D378 -40%' +
+        value / 1.2 +
         '%, transparent ' +
         value +
         '%, transparent' +
-        ' 80%)';
+        ' 100%)';
     }
   };
 
