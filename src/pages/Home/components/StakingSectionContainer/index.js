@@ -36,16 +36,19 @@ export default () => {
     if (e.target.value && appStore.tokenPrice && inputRef.current !== null) {
       setRangeValue(e.target.value);
       const value = ((e.target.value - 1000) / (100000 - 1000)) * 100;
-      inputRef.current.style.backgroundImage =
-        'linear-gradient(to right, rgba(21, 211, 120,0.2) -53%, rgba(21, 211, 120, 0.9) 0%' +
-        value / 1.001 +
+      inputRef.current.style.background =
+        'linear-gradient(to right, rgba(21, 211, 120,0.9) ' +
+        value / 1.3 +
+        '%, rgba(54, 15, 140, 0.8) ' +
+        value +
         '%, transparent ' +
         value +
         '%, transparent' +
         ' 100%)';
-      inputRef.current.style.background =
-        'linear-gradient(to right, #15D378 -40%' +
-        value / 1.2 +
+      inputRef.current.style.borderImage =
+        '1px solid' +
+        'linear-gradient(to left, #360F8C -67%, #360F8C ' +
+        value +
         '%, transparent ' +
         value +
         '%, transparent' +
