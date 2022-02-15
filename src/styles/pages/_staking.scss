@@ -1217,6 +1217,7 @@
   height: auto;
   background-blend-mode: normal, hue, normal, normal;
   mix-blend-mode: lighten;
+
   .background {
     background: url("../../assets/images/shutterstock_1791379106 1.png") no-repeat;
     position: absolute;
@@ -1333,7 +1334,7 @@
       }
 
       &__range {
-        input[type="range"]{
+        input[type="range"] {
           -webkit-appearance: none;
           margin-top: 33px;
           margin-bottom: 74px;
@@ -1350,11 +1351,12 @@
           -webkit-appearance: none !important;
           border-radius: 37.1872px;
           background: #15D378;
-          box-shadow: 0px 0px 8px 8px rgba(21, 211, 120,0.1);
+          box-shadow: 0px 0px 8px 8px rgba(21, 211, 120, 0.1);
           height: 18px;
           width: 18px;
           position: relative;
-          &:before{
+
+          &:before {
             content: '))))';
             position: absolute;
             bottom: 0;
@@ -1393,6 +1395,7 @@
             justify-content: flex-end;
             width: 100%;
           }
+
           div:last-of-type {
             font-family: Halvar Breitschrift;
             font-style: normal;
@@ -1431,6 +1434,27 @@
           justify-content: space-between;
           position: relative;
           width: 100%;
+
+          .pool-calc-icon {
+            width: 12px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+            span{
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              svg{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 4px;
+
+              }
+            }
+          }
 
           div {
             font-family: Halvar Breitschrift, sans-serif;
