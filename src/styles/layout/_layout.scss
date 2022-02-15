@@ -2,6 +2,8 @@
   background: #212121;
   position: relative;
   z-index: 1;
+  overflow: hidden;
+
   .staking_top-left {
     background: url("../../assets/images/staking_top-left.png") no-repeat;
     top: 0;
@@ -12,6 +14,12 @@
     height: 600px;
     background-blend-mode: normal, hue, normal, normal;
     mix-blend-mode: lighten;
+    @media (max-width: 600px) {
+      top: -100px;
+      left: -100px;
+      transform: scale(0.7)
+    }
+
   }
 
   .staking_top-right {
@@ -25,6 +33,13 @@
     width: 1071px;
     height: 1000px;
     transform: scale(0.5);
+    @media (max-width: 600px) {
+      top: -3%;
+      right: -480px;
+      transform: scale(0.44) rotate(-3deg);
+      height: 600px;
+    }
+
   }
 }
 

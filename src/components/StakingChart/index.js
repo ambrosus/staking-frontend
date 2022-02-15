@@ -1,5 +1,4 @@
-/*eslint-disable*/
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AreaChart, Area, XAxis, Tooltip } from 'recharts';
 import { ReactSVG } from 'react-svg';
 import chevronUp from 'assets/svg/Chevron up.svg';
@@ -14,6 +13,8 @@ const StakingChart = ({ poolsArr }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [pickedName, setPickedName] = useState({});
+  const [chartWidth, setChartWidth] = useState(500);
+  const chartRef = useRef(null);
 
   const openDropDownHandler = () => {
     setOpenDropDown(!openDropDown);
@@ -24,6 +25,9 @@ const StakingChart = ({ poolsArr }) => {
       chartDataHandler(poolsArr.find((item) => item.active).poolRewards);
       setPickedNameHandler(poolsArr.find((item) => item.active));
     }
+    if (chartRef.current !== null) {
+      setChartWidth(chartRef.current.offsetWidth);
+    }
   }, [chartData, pickedName]);
 
   const setPickedNameHandler = (contractName) => {
@@ -32,21 +36,22 @@ const StakingChart = ({ poolsArr }) => {
 
   const chartDataHandler = (arr) => {
     const res = Array.from(
-      arr.reduce((m, { timestamp, reward }) => {
-        return m.set(formatDate(timestamp * 1000, true), [
-          ...(m.get(formatDate(timestamp * 1000, true)) || []),
-          reward,
-        ]);
-      }, new Map()),
-      ([timestamp, arr]) => ({
+      arr.reduce(
+        (m, { timestamp, reward }) =>
+          m.set(formatDate(timestamp * 1000, true), [
+            ...(m.get(formatDate(timestamp * 1000, true)) || []),
+            reward,
+          ]),
+        new Map(),
+      ),
+      ([timestamp, newArr]) => ({
         timestamp,
         reward: formatRounded(
-          arr.reduce((t, n) => t.add(n), ZERO),
+          newArr.reduce((t, n) => t.add(n), ZERO),
           2,
         ),
       }),
     );
-    console.log('res', res);
     const result = res.slice(1, -1);
     setChartData(result);
   };
@@ -104,14 +109,14 @@ const StakingChart = ({ poolsArr }) => {
             ),
         )}
       </div>
-      <div className="chart__chart">
+      <div className="chart__chart" ref={chartRef}>
         <AreaChart
-          width={565}
+          width={chartWidth}
           height={165}
           data={chartData}
           margin={{
             top: 10,
-            right: 100,
+            right: 0,
             left: 0,
             bottom: 0,
           }}
