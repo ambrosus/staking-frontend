@@ -196,32 +196,35 @@ export default () => {
               </div>
             </div>
             <div className="calculator__results">
-              {pools.map((pool) => (
-                // eslint-disable-next-line
-                <div
-                  key={pool.contractName}
-                  className="calculator__results__result"
-                >
-                  <div style={{ justifyContent: 'flex-start' }}>
-                    {pool.contractName}
-                  </div>
-                  <div style={{ justifyContent: 'flex-start' }}>
-                    {pool.poolAPY} %
-                  </div>
-                  <div style={{ justifyContent: 'center' }}>
-                    {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
-                  </div>
-                  <div>
-                    $
-                    {(
-                      (+rangeValue / 100) *
-                      pool.poolAPY *
-                      appStore.tokenPrice
-                    ).toFixed(2)}
-                  </div>
-                  <div className="hr" />
-                </div>
-              ))}
+              {pools.map(
+                (pool) =>
+                  pool.active && (
+                    // eslint-disable-next-line
+                    <div
+                      key={pool.contractName}
+                      className="calculator__results__result"
+                    >
+                      <div style={{ justifyContent: 'flex-start' }}>
+                        {pool.contractName}
+                      </div>
+                      <div style={{ justifyContent: 'flex-start' }}>
+                        {pool.poolAPY} %
+                      </div>
+                      <div style={{ justifyContent: 'center' }}>
+                        {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
+                      </div>
+                      <div>
+                        $
+                        {(
+                          (+rangeValue / 100) *
+                          pool.poolAPY *
+                          appStore.tokenPrice
+                        ).toFixed(2)}
+                      </div>
+                      <div className="hr" />
+                    </div>
+                  ),
+              )}
               <Button
                 buttonStyles={{
                   width: 174,
