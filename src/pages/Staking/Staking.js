@@ -48,6 +48,8 @@ const Staking = observer(() => {
         </React.Suspense>
       )}
       <div className="layout">
+        <div className="staking_top-left" />
+        <div className="staking_top-right" />
         <Header />
         <div className="content" style={{ marginTop: 90 }}>
           <div className="page">

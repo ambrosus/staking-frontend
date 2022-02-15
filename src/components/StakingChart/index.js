@@ -107,7 +107,7 @@ const StakingChart = ({ poolsArr }) => {
       <div className="chart__chart">
         <AreaChart
           width={565}
-          height={235}
+          height={165}
           data={chartData}
           margin={{
             top: 10,
@@ -118,18 +118,17 @@ const StakingChart = ({ poolsArr }) => {
         >
           <XAxis
             dataKey="timestamp"
-            fill="white"
             fontSize={12}
             axisLine={false}
             tickLine={false}
             style={{
-              fill: '#fff',
               fontSize: 12,
               fontFamily: 'Halvar Breitschrift',
             }}
           />
 
           <Tooltip
+            cursor={false}
             content={<CustomTooltip />}
             wrapperStyle={{
               position: 'absolute',

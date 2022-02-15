@@ -1105,6 +1105,7 @@
 
 .info-block {
   margin-top: 11px;
+  z-index: 0;
   margin-bottom: 50px;
   display: flex;
   align-items: center;
@@ -1124,6 +1125,7 @@
     flex-direction: row;
     justify-content: flex-end;
     gap: 20px;
+    z-index: 1;
     @media (max-width: 480px) {
       width: 100%;
       align-items: center;
@@ -1140,6 +1142,7 @@
       padding: 20px;
       justify-content: space-between;
       box-sizing: border-box;
+      box-shadow: 0px 6px 10px rgba(37, 37, 37, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.15);
       @media (max-width: 480px) {
         width: 100%;
         align-items: center;
@@ -1156,6 +1159,7 @@
       padding: 20px;
       justify-content: space-between;
       box-sizing: border-box;
+      box-shadow: 0px 6px 10px rgba(37, 37, 37, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.15);
       @media (max-width: 480px) {
         width: 100%;
         align-items: center;

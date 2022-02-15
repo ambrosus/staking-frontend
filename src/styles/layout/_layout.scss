@@ -1,5 +1,31 @@
 .layout {
   background: #212121;
+  position: relative;
+  z-index: 1;
+  .staking_top-left {
+    background: url("../../assets/images/staking_top-left.png") no-repeat;
+    top: 0;
+    z-index: 0;
+    position: absolute;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    background-blend-mode: normal, hue, normal, normal;
+    mix-blend-mode: lighten;
+  }
+
+  .staking_top-right {
+    background: url("../../assets/images/staking_top-right.png") no-repeat;
+    top: -22%;
+    z-index: 0;
+    position: absolute;
+    right: -270px;
+    background-blend-mode: normal, hue, normal, normal;
+    mix-blend-mode: lighten;
+    width: 1071px;
+    height: 1000px;
+    transform: scale(0.5);
+  }
 }
 
 .content {
