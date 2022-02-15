@@ -13,7 +13,7 @@ import StakingItem from '../../../../components/StakingItem';
 import { Loader } from '../../../../components/Loader';
 import Paragraph from '../../../../components/Paragraph';
 import Button from '../../../../components/Button';
-import { useLogIn, useMedia, useModal } from 'hooks';
+import { useLogIn, useMedia, useMobileDetect, useModal } from 'hooks';
 import { debugLog, poolIcon } from 'utils/helpers';
 import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
@@ -26,6 +26,7 @@ export default () => {
   const [rangeValue, setRangeValue] = useState(50000);
   const inputRef = useRef(null);
   const isMainPage = pathname === MAIN_PAGE;
+  const { isDesktop } = useMobileDetect();
 
   const isSmall = useMedia('(max-width: 699px)');
   const { logIn } = useLogIn();
@@ -224,7 +225,12 @@ export default () => {
                       <div style={{ justifyContent: 'flex-start' }}>
                         {pool.poolAPY} %
                       </div>
-                      <div style={{ justifyContent: 'center' }}>
+                      <div
+                        style={{
+                          justifyContent: 'center',
+                          textAlign: 'center',
+                        }}
+                      >
                         {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
                       </div>
                       <div>
@@ -244,7 +250,7 @@ export default () => {
                   width: 174,
                   height: 65,
                   marginLeft: 'auto',
-                  marginTop: 70,
+                  marginTop: isDesktop ? 70 : 20,
                 }}
                 type="white"
                 onclick={() => {

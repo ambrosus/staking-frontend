@@ -13,6 +13,13 @@
     flex-direction: column;
   }
 
+  .section-heading {
+    @media (max-width: 480px) {
+      font-size: 26px !important;
+      max-width: 340px;
+    }
+  }
+
   &__loader {
     padding-top: 100px;
   }
@@ -1234,7 +1241,13 @@
     flex-direction: row;
     gap: 80px;
     align-items: center;
+    @media (max-width: 600px) {
+      flex-direction: column;
+      gap: 30px;
+      align-items: center;
+      padding: 10px;
 
+    }
 
     .info {
       display: flex;
@@ -1242,7 +1255,9 @@
       width: 100%;
       gap: 30px;
       position: relative;
-
+      @media (max-width: 600px) {
+        gap: 15px;
+      }
       .after-icon {
         position: absolute;
         bottom: -90px;
@@ -1257,6 +1272,9 @@
         line-height: 42px;
         letter-spacing: -0.02em;
         color: #FFFFFF;
+        @media (max-width: 600px) {
+          font-size: 26px;
+        }
       }
 
       &__secondary {
@@ -1264,6 +1282,9 @@
         font-style: normal;
         font-weight: 300;
         font-size: 18px;
+        @media (max-width: 600px) {
+          font-size: 14px;
+        }
         line-height: 21px;
         letter-spacing: -0.02em;
         color: #FFFFFF;
@@ -1294,6 +1315,9 @@
             font-style: normal;
             font-weight: 250;
             font-size: 18px;
+            @media (max-width: 600px) {
+              font-size: 12px;
+            }
             line-height: 21px;
             letter-spacing: -0.02em;
             color: #FFFFFF;
@@ -1304,31 +1328,12 @@
             font-style: normal;
             font-weight: normal;
             font-size: 36px;
+            @media (max-width: 600px) {
+              font-size: 32px;
+            }
             line-height: 42px;
             letter-spacing: -0.02em;
             color: #FFFFFF;
-          }
-        }
-
-        .right-value {
-          &__secondary {
-            font-family: Halvar Breitschrift;
-            font-style: normal;
-            font-weight: 250;
-            font-size: 18px;
-            line-height: 21px;
-            letter-spacing: -0.02em;
-            color: #FFFFFF;
-          }
-
-          &__primary {
-            font-family: Halvar Breitschrift;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 36px;
-            line-height: 42px;
-            letter-spacing: -0.02em;
-            color: #15D378;
           }
         }
       }
@@ -1388,6 +1393,9 @@
             font-style: normal;
             font-weight: 200;
             font-size: 16px;
+            @media (max-width: 600px) {
+              font-size: 14px;
+            }
             line-height: 19px;
             letter-spacing: -0.02em;
             color: #FFFFFF;
@@ -1401,6 +1409,9 @@
             font-style: normal;
             font-weight: 200;
             font-size: 16px;
+            @media (max-width: 600px) {
+              font-size: 14px;
+            }
             line-height: 19px;
             letter-spacing: -0.02em;
             color: #FFFFFF;
@@ -1461,6 +1472,9 @@
             font-style: normal;
             font-weight: 300;
             font-size: 16px;
+            @media (max-width: 600px) {
+              font-size: 14px;
+            }
             display: flex;
             justify-content: flex-end;
             width: 100%;
@@ -1474,6 +1488,9 @@
             font-style: normal;
             font-weight: 300;
             font-size: 16px;
+            @media (max-width: 600px) {
+              font-size: 14px;
+            }
             display: flex;
             justify-content: flex-end;
             width: 100%;
