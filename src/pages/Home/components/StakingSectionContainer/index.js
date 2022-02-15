@@ -231,11 +231,11 @@ export default () => {
                           wrapper="span"
                         />
                         {pool.contractName}{' '}
-                        {!isDesktop && Number(pool.poolAPY).toFixed(0)}%
+                        {!isDesktop && `${Number(pool.poolAPY).toFixed(0)} %`}
                       </div>
                       {isDesktop && (
                         <div style={{ justifyContent: 'flex-start' }}>
-                          {Number(pool.poolAPY).toFixed(0)} %
+                          {Number(pool.poolAPY).toFixed(2)} %
                         </div>
                       )}
                       <div
