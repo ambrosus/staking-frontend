@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
@@ -36,23 +35,7 @@ export default () => {
     if (e.target.value && appStore.tokenPrice && inputRef.current !== null) {
       setRangeValue(e.target.value);
       const value = ((e.target.value - 1000) / (100000 - 1000)) * 100;
-      inputRef.current.style.background =
-        'linear-gradient(to right, rgba(21, 211, 120,0.9) ' +
-        value / 1.3 +
-        '%, rgba(54, 15, 140, 0.8) ' +
-        value +
-        '%, transparent ' +
-        value +
-        '%, transparent' +
-        ' 100%)';
-      inputRef.current.style.borderImage =
-        '1px solid' +
-        'linear-gradient(to left, #360F8C -67%, #360F8C ' +
-        value +
-        '%, transparent ' +
-        value +
-        '%, transparent' +
-        ' 100%)';
+      inputRef.current.style.background = `linear-gradient(to right, rgba(21, 211, 120,0.9) 0%, rgba(54, 15, 140, 0.8) ${value}%, transparent ${value}%, transparent 100%)`;
     }
   };
 
@@ -171,29 +154,25 @@ export default () => {
         </Modal>
       </div>
       <div className="staking-calculator">
+        <div className="background" />
         <div className="container">
           <div className="info">
             <div className="after-icon">
               <ReactSVG src={paragrapfIcon} wrapper="span" />
             </div>
-            <div className="info__primary">Lorem ipsum dolor sit</div>
+            <div className="info__primary">Calculate your rewards</div>
             <div className="info__secondary">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-              diam, cursus interdum dictum interdum. Malesuada platea vehicula
-              ac, mattis et eget. Vel egestas aliquam semper amet, leo.
+              See what your AMB stake will be worth with our handy APY
+              calculator!
             </div>
           </div>
           <div className="calculator">
             <div className="calculator__labels">
               <div className="left-value">
-                <div className="left-value__secondary">Your stake</div>
+                <div className="left-value__secondary">Initial stake</div>
                 <div className="left-value__primary">
                   {new Intl.NumberFormat('en').format(rangeValue)}
                 </div>
-              </div>
-              <div className="right-value">
-                <div className="right-value__secondary">% APY</div>
-                <div className="right-value__primary">APY %</div>
               </div>
             </div>
             <div className="calculator__range">
@@ -208,38 +187,44 @@ export default () => {
                 type="range"
               />
             </div>
+            <div className="calculator__keys">
+              <div className="calculator__keys__result">
+                <div style={{ justifyContent: 'flex-start' }}>Pool</div>
+                <div style={{ justifyContent: 'flex-start' }}>APY %</div>
+                <div style={{ justifyContent: 'center' }}>APY AMB</div>
+                <div>APY $</div>
+              </div>
+            </div>
             <div className="calculator__results">
-              {pools
-                // .sort((x,y)=>(x === y)? 0 : x? -1 : 1)
-                .map(
-                  (pool, index) =>
-                    pool.active && (
-                      // eslint-disable-next-line
-                      <div
-                        key={pool.contractName}
-                        className="calculator__results__result"
-                      >
-                        <div style={{ justifyContent: 'flex-start' }}>
-                          {pool.contractName}
-                        </div>
-                        <div style={{ justifyContent: 'flex-start' }}>
-                          {pool.poolAPY} %
-                        </div>
-                        <div>
-                          {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
-                        </div>
-                        <div>
-                          $
-                          {(
-                            (+rangeValue / 100) *
-                            pool.poolAPY *
-                            appStore.tokenPrice
-                          ).toFixed(2)}
-                        </div>
-                        <div className="hr" />
+              {pools.map(
+                (pool) =>
+                  pool.active && (
+                    // eslint-disable-next-line
+                    <div
+                      key={pool.contractName}
+                      className="calculator__results__result"
+                    >
+                      <div style={{ justifyContent: 'flex-start' }}>
+                        {pool.contractName}
                       </div>
-                    ),
-                )}
+                      <div style={{ justifyContent: 'flex-start' }}>
+                        {pool.poolAPY} %
+                      </div>
+                      <div style={{ justifyContent: 'center' }}>
+                        {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
+                      </div>
+                      <div>
+                        $
+                        {(
+                          (+rangeValue / 100) *
+                          pool.poolAPY *
+                          appStore.tokenPrice
+                        ).toFixed(2)}
+                      </div>
+                      <div className="hr" />
+                    </div>
+                  ),
+              )}
               <Button
                 buttonStyles={{ width: 174, height: 65, marginLeft: 'auto' }}
                 type="white"

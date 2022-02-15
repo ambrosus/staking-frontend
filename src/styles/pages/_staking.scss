@@ -1211,16 +1211,29 @@
 
 .staking-calculator {
   width: 100%;
-  position: relative;
   z-index: 1;
   max-width: 1240px;
   margin: 180px auto;
   height: auto;
+  background-blend-mode: normal, hue, normal, normal;
+  mix-blend-mode: lighten;
+  .background {
+    background: url("../../assets/images/shutterstock_1791379106 1.png") no-repeat;
+    position: absolute;
+    right: 0px;
+    top: 2650px;
+    width: 670px;
+    height: 800px;
+    z-index: 0;
+  }
 
   .container {
+    position: relative;
+    z-index: 1;
     flex-direction: row;
     gap: 80px;
     align-items: center;
+
 
     .info {
       display: flex;
@@ -1355,6 +1368,57 @@
 
       }
 
+      &__keys {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        margin-bottom: 38px;
+
+        &__result {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          width: 100%;
+
+          div {
+            font-family: Halvar Breitschrift;
+            font-style: normal;
+            font-weight: 200;
+            font-size: 16px;
+            line-height: 19px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+          }
+          div:last-of-type {
+            font-family: Halvar Breitschrift;
+            font-style: normal;
+            font-weight: 200;
+            font-size: 16px;
+            line-height: 19px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+          }
+
+          .hr {
+            position: absolute;
+            top: 43px;
+            background: #F9F8FB;
+            opacity: 0.2;
+            height: 1px;
+            width: 100%;
+          }
+        }
+
+
+      }
+
       &__results {
         display: flex;
         flex-direction: column;
@@ -1380,6 +1444,7 @@
             letter-spacing: -0.02em;
             color: #FFFFFF;
           }
+
           div:last-of-type {
             font-family: Halvar Breitschrift, sans-serif;
             font-style: normal;
