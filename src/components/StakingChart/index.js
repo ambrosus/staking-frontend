@@ -20,7 +20,6 @@ const StakingChart = ({ poolsArr }) => {
     setOpenDropDown(!openDropDown);
   };
 
-
   useEffect(() => {
     if (poolsArr && chartData.length === 0) {
       chartDataHandler(poolsArr.find((item) => item.active).poolRewards);
