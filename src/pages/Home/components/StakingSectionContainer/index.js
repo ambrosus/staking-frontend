@@ -192,8 +192,17 @@ export default () => {
             </div>
             <div className="calculator__keys">
               <div className="calculator__keys__result">
-                <div style={{ justifyContent: 'flex-start' }}>Pool</div>
-                <div style={{ justifyContent: 'flex-start' }}>APY %</div>
+                <div
+                  style={{
+                    justifyContent: 'flex-start',
+                    flexBasis: !isDesktop && '130%',
+                  }}
+                >
+                  Pool
+                </div>
+                {isDesktop && (
+                  <div style={{ justifyContent: 'flex-start' }}>APY %</div>
+                )}
                 <div style={{ justifyContent: 'center' }}>APY AMB</div>
                 <div>APY $</div>
               </div>
@@ -213,6 +222,7 @@ export default () => {
                           alignItems: 'center',
                           gap: 10,
                           justifyItems: 'flex-start',
+                          flexBasis: !isDesktop && '130%',
                         }}
                       >
                         <ReactSVG
@@ -220,11 +230,14 @@ export default () => {
                           src={poolIcon(pool.index)}
                           wrapper="span"
                         />
-                        {pool.contractName}
+                        {pool.contractName}{' '}
+                        {!isDesktop && Number(pool.poolAPY).toFixed(0)}%
                       </div>
-                      <div style={{ justifyContent: 'flex-start' }}>
-                        {pool.poolAPY} %
-                      </div>
+                      {isDesktop && (
+                        <div style={{ justifyContent: 'flex-start' }}>
+                          {Number(pool.poolAPY).toFixed(0)} %
+                        </div>
+                      )}
                       <div
                         style={{
                           justifyContent: 'center',
@@ -239,7 +252,7 @@ export default () => {
                           (+rangeValue / 100) *
                           pool.poolAPY *
                           appStore.tokenPrice
-                        ).toFixed(2)}
+                        ).toFixed(0)}
                       </div>
                       <div className="hr" />
                     </div>
@@ -257,7 +270,7 @@ export default () => {
                   toggleLogInMethodShow();
                 }}
               >
-                ↖ Stake Now
+                <span style={{ fontSize: 14 }}>↖ Stake Now</span>
               </Button>
             </div>
           </div>
