@@ -203,7 +203,9 @@ export default () => {
                 {isDesktop && (
                   <div style={{ justifyContent: 'flex-start' }}>APY %</div>
                 )}
-                <div style={{ justifyContent: 'center' }}>APY AMB</div>
+                <div style={{ paddingLeft: 25, justifyContent: 'flex-start' }}>
+                  APY AMB
+                </div>
                 <div>APY $</div>
               </div>
             </div>
@@ -240,8 +242,8 @@ export default () => {
                       )}
                       <div
                         style={{
-                          justifyContent: 'center',
-                          textAlign: 'center',
+                          paddingLeft: 25,
+                          justifyContent: 'flex-start',
                         }}
                       >
                         {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
