@@ -254,8 +254,9 @@
     &--btn {
       color: #1ACD8C;
     }
-    .items-container{
-      .items-container__item{
+
+    .items-container {
+      .items-container__item {
         padding: 10px;
       }
     }
@@ -280,9 +281,14 @@
 
     .container {
       position: relative;
+
       .items-container {
         align-items: center;
         justify-content: space-around;
+
+        a:active {
+          opacity: 0.7;
+        }
 
         .items-container__item {
           height: 130px;
@@ -345,8 +351,9 @@
     padding: 15px;
     z-index: 1;
     position: relative;
-    button{
-      min-width: 174px!important;
+
+    button {
+      min-width: 174px !important;
       height: 65px;
       border: 1px solid #212121;
       box-sizing: border-box;
@@ -354,7 +361,7 @@
       font-style: normal;
       font-weight: 500;
       font-size: 16px !important;
-      padding: 0!important;
+      padding: 0 !important;
       line-height: 15px;
       display: flex;
       align-items: center;
@@ -362,6 +369,7 @@
 
       color: #212121;
     }
+
     .section-heading {
       margin-bottom: 110px;
       @media (max-width: 600px) {
@@ -398,6 +406,7 @@
             max-width: 100%;
             margin-left: 0;
           }
+
           .socials__list {
             display: flex;
             flex-direction: row;
@@ -480,6 +489,7 @@
 @media (max-width: 600px) {
   .home {
     overflow: hidden;
+
     .back-figure1 {
       top: -172px;
       left: -248px;
@@ -505,6 +515,7 @@
         align-items: center;
         justify-content: flex-start;
         padding: 18px 6px 0 18px;
+
         .logo {
           cursor: pointer;
 
@@ -585,7 +596,7 @@
   }
 }
 
-.download-metamask{
+.download-metamask {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -657,6 +668,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     overflow: auto;
+
     .items-container__item {
       margin: 20px 0;
       max-width: 240px;
