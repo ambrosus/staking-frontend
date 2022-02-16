@@ -112,7 +112,7 @@ const StakingChart = ({ poolsArr }) => {
       <div className="chart__chart" ref={chartRef}>
         <AreaChart
           width={chartWidth}
-          height={165}
+          height={230}
           data={chartData}
           margin={{
             top: 10,
@@ -129,7 +129,12 @@ const StakingChart = ({ poolsArr }) => {
             style={{
               fontSize: 12,
               fontFamily: 'Halvar Breitschrift',
+              color: '#FFFFFF',
             }}
+            color="#FFFFFF"
+            lightingColor="#FFFFFF"
+            colorInterpolation="#FFFFFF"
+            stopColor="#FFFFFF"
           />
 
           <Tooltip
@@ -137,15 +142,12 @@ const StakingChart = ({ poolsArr }) => {
             content={<CustomTooltip />}
             wrapperStyle={{
               position: 'absolute',
-              top: 0,
+              top: -10,
               left: -43,
               right: 0,
               bottom: 0,
               width: 67,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '80%',
+              height: '75%',
               background:
                 'linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50.26%, rgba(255, 255, 255, 0) 100%)',
             }}
@@ -157,6 +159,7 @@ const StakingChart = ({ poolsArr }) => {
             activeDot={<CustomScatterDo />}
           />
           <defs>
+            <g color="green" />
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="5%"

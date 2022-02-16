@@ -5,6 +5,17 @@
   height: 280px;
   position: relative !important;
 
+  tspan {
+    font-family: Halvar Breitschrift, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+    line-height: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    fill: #FFFFFF !important;
+    color: #FFFFFF !important;
+  }
 
   &__heading {
     font-family: Halvar Breitschrift, sans-serif;

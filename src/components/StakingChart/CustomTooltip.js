@@ -1,15 +1,16 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
+import { formatThousand } from 'utils/helpers';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          position: 'absolute',
+          top: 10,
           flexDirection: 'column',
+          zIndex: -1,
           border: '0px',
           background: '#262626',
           boxShadow:
@@ -25,7 +26,7 @@ const CustomTooltip = ({ active, payload }) => {
             color: '#fff',
             padding: 8,
           }}
-        >{`${payload[0].value}`}</p>
+        >{`${formatThousand(payload[0].value)}`}</p>
       </div>
     );
   }
