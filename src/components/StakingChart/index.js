@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AreaChart, Area, XAxis, Tooltip } from 'recharts';
+import { AreaChart, Area, XAxis, Tooltip, YAxis } from 'recharts';
 import { ReactSVG } from 'react-svg';
 import chevronUp from 'assets/svg/Chevron up.svg';
 import chevronDown from 'assets/svg/Chevron down.svg';
@@ -121,8 +121,11 @@ const StakingChart = ({ poolsArr }) => {
             bottom: 0,
           }}
         >
+          <YAxis hide domain={['auto', 'auto']} />
           <XAxis
-            dataKey="timestamp"
+            dataKey={({ timestamp }) =>
+              +timestamp.slice(0, 2) % 2 ? timestamp : ''
+            }
             fontSize={12}
             axisLine={false}
             tickLine={false}
