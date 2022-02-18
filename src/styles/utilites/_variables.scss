@@ -1,7 +1,6 @@
 $white: #FFF;
 $whiteToGray: #F7F7FD;
 $black: #212121;
-$green: #1ACD8C;
 $green-light: #2EDB9C;
 $color-primary: #4A38AE;
 $color-primary-light: #5C49C6;
@@ -10,3 +9,17 @@ $color-blue: #BFC9E0;
 $color-gray-light: #CDD7ED;
 $red: #FF6767;
 $graphitered: #262626;
+$green: #15D378;
+$lighter-black: #262626;
+$mobile-breakpoint: 1024px;
+$tablet-breakpoint: 1280px;
+
+* {
+  --content-width: 70rem;
+}
+
+@media screen and (max-width: $tablet-breakpoint) {
+  * {
+    --content-width: 100%;
+  }
+}

@@ -1,0 +1,141 @@
+.mobile-menu {
+  display: none;
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    position: fixed;
+    top: 7.125rem;
+    left: 0;
+
+    height: 0;
+    width: 100vw;
+
+    background: $black;
+
+    z-index: 15;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+
+    grid-row-gap: 4.25rem;
+
+    overflow-y: scroll;
+
+    transition: all .25s ease-in-out;
+  }
+
+}
+
+.mobile-menu_open {
+  width: 100vw;
+  height: calc(100vh - 7.125rem);
+}
+
+.mobile-menu__link {
+  font-family: "Proxima Nova", sans-serif;
+  font-weight: 300;
+  font-size: 1.125rem;
+  line-height: 3.5rem;
+  text-align: right;
+  vertical-align: bottom;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: white;
+
+  width: fit-content;
+  margin: 0 4rem 0 auto;
+}
+
+.mobile-menu__link:after {
+  content: attr(data-number);
+
+  font-family: 'Neue Machina', sans-serif;
+  font-weight: 300;
+  font-size: 0.625rem;
+  line-height: 100%;
+  margin-left: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  vertical-align: top;
+}
+
+.mobile-submenu {
+  position: relative;
+  margin: 0 4rem 0 auto;
+}
+
+.mobile-submenu__name {
+  font-family: "Proxima Nova", sans-serif;
+  font-weight: 300;
+  font-size: 1.125rem;
+  line-height: 3.5rem;
+  text-align: right;
+  vertical-align: bottom;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: white;
+
+  width: fit-content;
+}
+
+.mobile-submenu_open .mobile-submenu__name {
+  color: $green;
+}
+
+.mobile-submenu__name:after {
+  content: attr(data-number);
+
+  font-family: 'Neue Machina', sans-serif;
+  font-weight: 300;
+  font-size: 0.625rem;
+  line-height: 100%;
+  margin-left: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  vertical-align: top;
+}
+
+.mobile-submenu__arrow {
+  height: 0.75rem;
+  width: 1rem;
+  margin-left: 0.75rem;
+  transform: rotate(0);
+  transition: transform .25s ease-in-out;
+}
+
+.mobile-submenu_open .mobile-submenu__arrow {
+  transform: rotate(180deg);
+}
+
+.mobile-submenu__items {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
+  grid-row-gap: 1.75rem;
+
+  text-align: right;
+
+  overflow: hidden;
+  transition: height .25s ease-in-out;
+
+  --items-amount: unset; //passed from html
+  height: 0;
+  // should be calc(4.25rem * var(--items-amount)), when .mobile-submenu open,
+  // where 4.25rem = height + margins
+  // this needed for equal animation speed for any amount of items inside
+}
+
+.mobile-submenu_open .mobile-submenu__items {
+  //see explanation ^^^
+  height: calc(4.25rem * var(--items-amount));
+}
+
+.mobile-submenu__item {
+  font-family: "Proxima Nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 1.25rem;
+  line-height: 212%;
+  text-align: right;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}

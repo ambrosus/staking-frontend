@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '../../components/Sidebar';
-import Header from '../../components/layouts/Header';
+import { Header } from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from 'hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';

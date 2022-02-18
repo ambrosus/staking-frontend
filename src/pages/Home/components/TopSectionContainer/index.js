@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../../../../components/layouts/Header';
+import HeaderOld from '../../../../components/layouts/Header';
 import Paragraph from '../../../../components/Paragraph';
 import { CONNECT_TEXT, injected, walletconnect } from 'config';
 import Modal from '../../../../components/Modal';
@@ -15,7 +15,7 @@ export default () => {
   return (
     <>
       {' '}
-      <Header />
+      <HeaderOld />
       <div className="home__top--info" id="home__top--info">
         <div className="back-figure1" />
         <div className="back-figure2" />

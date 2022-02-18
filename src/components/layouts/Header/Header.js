@@ -1,102 +1,190 @@
-import React from 'react';
-import { ReactSVG } from 'react-svg';
+import * as React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
-import Menu from '../../../pages/Home/components/Menu';
-import Paragraph from '../../Paragraph';
-import appStore from 'store/app.store';
-import { getToken } from 'api';
-import headerLogoSvg from 'assets/svg/header-logo.svg';
-import loginIcon from 'assets/svg/login.svg';
-import greenLightIcon from 'assets/svg/green-light-icon.svg';
-import { useAsync, useLogIn, useMedia } from 'hooks';
+import { useHistory } from 'react-router';
+import PropTypes from 'prop-types';
+import Logo from '../../../assets/svg/logo.svg';
+import { MobileMenu } from './MobileMenu';
+import WalletConnectLogo from '../../../assets/images/connect-wallet__wallet-connect.png';
+import LogoutIcon from '../../../assets/svg/logout.svg';
 
-export const Header = observer(() => {
-  const { account } = useWeb3React();
-  const isSmall = useMedia('(max-width: 699px)');
-  const { logOut } = useLogIn();
-
-  const {
-    data,
-    status: priceStatus,
-    run,
-  } = useAsync({
-    status: appStore.tokenPrice !== undefined ? 'pending' : 'idle',
-    data: null,
-  });
-
-  React.useEffect(() => {
-    if (priceStatus === 'idle') {
-      run(getToken());
-    }
-    if (priceStatus === 'resolved') {
-      appStore.setTokenPrice(data?.data?.price_usd);
-      appStore.setTokenChange(data?.data?.percent_change_24h);
-    }
-  }, [run, priceStatus]);
+export const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <div className="home__top">
-      <div className="home__top--header">
-        <Link to="/" style={{ marginRight: isSmall && 'auto' }}>
-          <div className="logo">
-            <ReactSVG src={headerLogoSvg} wrapper="span" />
-          </div>
-        </Link>
-        {account && !isSmall && (
-          <Paragraph size="xs-400" style={{ color: '#FFFFFF' }}>
-            AMB Price{' '}
-            <b>
-              {' '}
-              {data?.data?.price_usd ? (
-                <span style={{ color: '#FFFFFF' }}>
-                  {' '}
-                  $&nbsp;{Number(data?.data?.price_usd).toFixed(4)}
-                </span>
-              ) : (
-                <span>...</span>
-              )}
-            </b>
-            &nbsp;&nbsp;
-            <span
-              style={{
-                color:
-                  data?.data?.percent_change_24h > 0 ? '#1ACD8C' : '#9198BB',
-              }}
-            >
-              {data?.data?.percent_change_24h}%
-            </span>
-          </Paragraph>
-        )}
-        <Menu />
-        {account && !isSmall && (
-          <>
-            <div className="wallet-connect">
-              {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
-              {account && (
-                <Paragraph size="xs-400">
-                  {account
-                    ? ` ${account.substr(0, 9)}...${account.slice(32)}`
-                    : '...'}
-                </Paragraph>
-              )}
-            </div>
-            <div className="login">
-              <div role="presentation" className="header__btn" onClick={logOut}>
-                <ReactSVG src={loginIcon} wrapper="span" />
-                <Paragraph
-                  size="xs-500"
-                  style={{ color: '#fff', paddingLeft: 5 }}
-                >
-                  Log Out
-                </Paragraph>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+    <>
+      <HeaderLayout
+        {...{
+          toggleMenu,
+          isOpen,
+        }}
+        data={HEADER_DATA}
+      />
+      <MobileMenu
+        {...{
+          isOpen,
+          toggleMenu,
+        }}
+        data={HEADER_DATA}
+      />
+    </>
   );
-});
-export default Header;
+};
+
+const HeaderLayout = ({
+  data = [{}],
+  isOpen = false,
+  toggleMenu = () => {},
+}) => {
+  const { account, deactivate } = useWeb3React();
+  const history = useHistory();
+  const logout = () => {
+    history.push('/');
+    deactivate();
+  };
+
+  return (
+    <header className="header">
+      <div className="content header__content">
+        <Link to="/" className="header__logo-wrapper">
+          <img src={Logo} alt="logo" className="header__logo" />
+        </Link>
+
+        {data.map((menuItem) => {
+          if (menuItem.type === 'submenu') {
+            return <Submenu name={menuItem.name} data={menuItem.data} />;
+          }
+          if (menuItem.type === 'link') {
+            return (
+              <a href={menuItem.link} className="header__link">
+                {menuItem.name}
+              </a>
+            );
+          }
+          return null;
+        })}
+
+        {account ? (
+          <>
+            <div className="account">
+              <img
+                src={WalletConnectLogo}
+                alt="wallet icon"
+                className="account__wallet-logo"
+              />
+              <span className="account__address">
+                Account {account.slice(-4)}
+              </span>
+            </div>
+
+            <button type="button" onClick={logout} className="logout">
+              <img
+                src={LogoutIcon}
+                alt="wallet icon"
+                className="logout__icon"
+              />
+              <span className="logout__text">LOG OUT</span>
+            </button>
+          </>
+        ) : null}
+
+        <button
+          type="button"
+          className={`burger-icon ${isOpen ? 'burger-icon_open' : ''}`}
+          onClick={toggleMenu}
+        >
+          <span className="burger-icon__first-line burger-icon__line" />
+          <span className="burger-icon__second-line burger-icon__line" />
+          <span className="burger-icon__third-line burger-icon__line" />
+        </button>
+      </div>
+    </header>
+  );
+};
+
+HeaderLayout.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  isOpen: PropTypes.bool,
+  toggleMenu: PropTypes.func,
+};
+
+const Submenu = ({ name = '', data = [{}] }) => (
+  <div className="submenu">
+    <p className="submenu__name">
+      {name}
+      <svg viewBox="0 0 15 8" className="submenu__arrow" fill="none">
+        <path
+          d="M14.2031 1L7.53644 7L0.869791 0.999999"
+          stroke="currentColor"
+        />
+      </svg>
+    </p>
+    <div className="submenu__items" style={{ '--items-amount': data.length }}>
+      {data.map(({ name: itemName, link }) => (
+        <a href={link} key={link} className="submenu__item">
+          {itemName}
+        </a>
+      ))}
+    </div>
+  </div>
+);
+
+Submenu.propTypes = {
+  name: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.object),
+};
+
+const HEADER_DATA = [
+  {
+    type: 'submenu',
+    name: 'Use Ambrosus',
+    data: [
+      {
+        name: 'About AMB',
+        link: 'https://ambrosus.io/about',
+      },
+      {
+        name: 'Staking',
+        link: 'https://staking.ambrosus.io/',
+      },
+      {
+        name: 'Wallet',
+        link: 'https://ambrosus.io/wallet',
+      },
+      {
+        name: 'Explorer',
+        link: 'https://explorer.ambrosus.com/',
+      },
+      {
+        name: 'Roadmap',
+        link: 'https://roadmap.ambrosus.io/',
+      },
+    ],
+  },
+  {
+    type: 'link',
+    name: 'Projects',
+    link: 'https://ambrosus.io/projects',
+  },
+  {
+    type: 'submenu',
+    name: 'Community',
+    data: [
+      {
+        name: 'Community',
+        link: 'https://ambrosus.io/community',
+      },
+      {
+        name: 'AMB',
+        link: 'https://ambrosus.io/amb',
+      },
+    ],
+  },
+  {
+    type: 'link',
+    name: 'About',
+    link: 'https://ambrosus.io/about',
+  },
+];
