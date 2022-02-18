@@ -4,10 +4,11 @@ import { homePageStatic } from 'config';
 import { useHover } from 'hooks';
 
 export default () => {
-  const [hoverSrc, isHovered] = useHover();
-  const [hoverSrc2, isHovered2] = useHover();
-  const [hoverSrc3, isHovered3] = useHover();
-  const [hoverSrc4, isHovered4] = useHover();
+  const { hovered: isHovered, bind: hoverSrc } = useHover();
+  const { hovered: isHovered2, bind: hoverSrc2 } = useHover();
+  const { hovered: isHovered3, bind: hoverSrc3 } = useHover();
+  const { hovered: isHovered4, bind: hoverSrc4 } = useHover();
+
   return (
     <>
       <div className="back-figure3" />
@@ -20,12 +21,11 @@ export default () => {
           </div>
           <div className="items-container">
             <a
-              ref={hoverSrc}
               href={homePageStatic.whereToByAmb[0].url}
               target="_blank"
               style={{ cursor: 'pointer' }}
             >
-              <div className="items-container__item">
+              <div className="items-container__item" {...hoverSrc}>
                 <ReactSVG
                   className="svg-item"
                   src={
@@ -39,12 +39,11 @@ export default () => {
               </div>
             </a>
             <a
-              ref={hoverSrc2}
               href={homePageStatic.whereToByAmb[1].url}
               target="_blank"
               style={{ cursor: 'pointer' }}
             >
-              <div className="items-container__item">
+              <div className="items-container__item" {...hoverSrc2}>
                 <ReactSVG
                   className="svg-item"
                   src={
@@ -58,12 +57,11 @@ export default () => {
               </div>
             </a>
             <a
-              ref={hoverSrc3}
               href={homePageStatic.whereToByAmb[2].url}
               target="_blank"
               style={{ cursor: 'pointer' }}
             >
-              <div className="items-container__item">
+              <div className="items-container__item" {...hoverSrc3}>
                 <ReactSVG
                   className="svg-item"
                   src={
@@ -77,12 +75,11 @@ export default () => {
               </div>
             </a>
             <a
-              ref={hoverSrc4}
               href={homePageStatic.whereToByAmb[3].url}
               target="_blank"
               style={{ cursor: 'pointer' }}
             >
-              <div className="items-container__item">
+              <div className="items-container__item" {...hoverSrc4}>
                 <ReactSVG
                   className="svg-item"
                   src={
