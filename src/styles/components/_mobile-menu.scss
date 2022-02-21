@@ -1,5 +1,38 @@
 .mobile-menu {
   display: none;
+  .wallet-connect {
+    margin: 0 4rem 0 auto;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+    background: $graphitered;
+
+
+    p {
+      color: #FFFFFF;
+      padding-left: 10px;
+    }
+  }
+  .login {
+    margin: 0 4rem 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    color: #FFFFFF !important;
+
+    .header__btn {
+      color: #FFFFFF !important;
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
 
   @media screen and (max-width: $mobile-breakpoint) {
     position: fixed;

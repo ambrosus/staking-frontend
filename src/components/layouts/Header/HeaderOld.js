@@ -14,7 +14,7 @@ import { useAsync, useLogIn, useMedia } from 'hooks';
 
 export const HeaderOld = observer(() => {
   const { account } = useWeb3React();
-  const isSmall = useMedia('(max-width: 699px)');
+  const isSmall = useMedia('(max-width: 856px)');
   const { logOut } = useLogIn();
 
   const {

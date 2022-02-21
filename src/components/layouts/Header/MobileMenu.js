@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { ReactSVG } from 'react-svg';
+import greenLightIcon from 'assets/svg/green-light-icon.svg';
+import Paragraph from 'components/Paragraph';
+import loginIcon from 'assets/svg/login.svg';
+import { useWeb3React } from '@web3-react/core';
+import { useAsync, useLogIn, useMedia } from 'hooks';
+import appStore from 'store/app.store';
+import { getToken } from 'api';
 
 export const MobileMenu = ({
   data = [{}],
@@ -8,6 +16,28 @@ export const MobileMenu = ({
   toggleMenu = () => {},
 }) => {
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState(-1);
+  const { account } = useWeb3React();
+  const isSmall = useMedia('(max-width: 899px)');
+  const { logOut } = useLogIn();
+
+  const {
+    data: courseData,
+    status: priceStatus,
+    run,
+  } = useAsync({
+    status: appStore.tokenPrice !== undefined ? 'pending' : 'idle',
+    data: null,
+  });
+
+  React.useEffect(() => {
+    if (priceStatus === 'idle') {
+      run(getToken());
+    }
+    if (priceStatus === 'resolved') {
+      appStore.setTokenPrice(courseData?.data?.price_usd);
+      appStore.setTokenChange(courseData?.data?.percent_change_24h);
+    }
+  }, [run, priceStatus]);
 
   useEffect(() => {
     if (isOpen) document.querySelector('body').style.overflow = 'hidden';
@@ -45,6 +75,31 @@ export const MobileMenu = ({
         }
         return null;
       })}
+      {account && isSmall && (
+        <>
+          <div className="wallet-connect">
+            {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
+            {account && (
+              <Paragraph size="xs-400">
+                {account
+                  ? ` ${account.substr(0, 9)}...${account.slice(32)}`
+                  : '...'}
+              </Paragraph>
+            )}
+          </div>
+          <div className="login">
+            <div role="presentation" className="header__btn" onClick={logOut}>
+              <ReactSVG src={loginIcon} wrapper="span" />
+              <Paragraph
+                size="xs-500"
+                style={{ color: '#fff', paddingLeft: 5 }}
+              >
+                Log Out
+              </Paragraph>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

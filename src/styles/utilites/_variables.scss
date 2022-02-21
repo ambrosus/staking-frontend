@@ -15,7 +15,7 @@ $mobile-breakpoint: 1024px;
 $tablet-breakpoint: 1280px;
 
 * {
-  --content-width: 70rem;
+  --content-width: 1280px;
 }
 
 @media screen and (max-width: $tablet-breakpoint) {
