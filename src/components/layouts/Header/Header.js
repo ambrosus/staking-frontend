@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
-import Logo from '../../../assets/svg/logo.svg';
+import Logo from '../../../assets/svg/header-logo.svg';
 import { MobileMenu } from './MobileMenu';
 import LogoutIcon from '../../../assets/svg/logout.svg';
-import { useAsync, useMedia } from '../../../hooks';
-import appStore from '../../../store/app.store';
-import { getToken } from '../../../api/index';
+import { useMedia } from '../../../hooks';
 import { ReactSVG } from 'react-svg';
 import greenLightIcon from 'assets/svg/green-light-icon.svg';
 import Paragraph from 'components/Paragraph';
@@ -51,58 +49,12 @@ const HeaderLayout = ({
     deactivate();
   };
 
-  const {
-    data: courseData,
-    status: priceStatus,
-    run,
-  } = useAsync({
-    status: appStore.tokenPrice !== undefined ? 'pending' : 'idle',
-    data: null,
-  });
-
-  React.useEffect(() => {
-    if (priceStatus === 'idle') {
-      run(getToken());
-    }
-    if (priceStatus === 'resolved') {
-      appStore.setTokenPrice(courseData?.data?.price_usd);
-      appStore.setTokenChange(courseData?.data?.percent_change_24h);
-    }
-  }, [run, priceStatus]);
-
   return (
     <header className="header">
       <div className="header-container header__content">
         <Link to="/" className="header__logo-wrapper">
           <img src={Logo} alt="logo" className="header__logo" />
         </Link>
-        {account && !isSmall && (
-          <Paragraph size="xs-400" style={{ color: '#FFFFFF' }}>
-            AMB Price{' '}
-            <b>
-              {' '}
-              {courseData?.data?.price_usd ? (
-                <span style={{ color: '#FFFFFF' }}>
-                  {' '}
-                  $&nbsp;{Number(courseData?.data?.price_usd).toFixed(4)}
-                </span>
-              ) : (
-                <span>...</span>
-              )}
-            </b>
-            &nbsp;&nbsp;
-            <span
-              style={{
-                color:
-                  courseData?.data?.percent_change_24h > 0
-                    ? '#1ACD8C'
-                    : '#9198BB',
-              }}
-            >
-              {courseData?.data?.percent_change_24h}%
-            </span>
-          </Paragraph>
-        )}
         {data.map((menuItem) => {
           if (menuItem.type === 'submenu') {
             return <Submenu name={menuItem.name} data={menuItem.data} />;

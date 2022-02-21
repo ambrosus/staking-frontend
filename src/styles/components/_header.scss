@@ -10,14 +10,16 @@
   @media screen and (max-width: $mobile-breakpoint) {
     height: 7.125rem;
   }
-  *,*{
+
+  *, * {
     white-space: nowrap;
   }
 }
-.header-container{
-  justify-content: space-between;
 
-  width: max-content;
+.header-container {
+  justify-content: space-between;
+  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   z-index: 5;
   position: relative;
@@ -26,8 +28,10 @@
     padding: 0 0;
   }
 }
+
 .header__content {
   justify-content: space-between;
+  padding: 0 20px;
 
   height: 100%;
   margin: 0 auto;
@@ -254,6 +258,7 @@
     right: -2px;
   }
 }
+
 .wallet-connect {
   display: flex;
   flex-direction: row;
