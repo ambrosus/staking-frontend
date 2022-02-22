@@ -145,23 +145,11 @@ Submenu.propTypes = {
 const HEADER_DATA = [
   {
     type: 'submenu',
-    name: 'Use Ambrosus',
+    name: 'ABOUT',
     data: [
       {
         name: 'About AMB',
         link: 'https://ambrosus.io/about',
-      },
-      {
-        name: 'Staking',
-        link: 'https://staking.ambrosus.io/',
-      },
-      {
-        name: 'Wallet',
-        link: 'https://ambrosus.io/wallet',
-      },
-      {
-        name: 'Explorer',
-        link: 'https://explorer.ambrosus.com/',
       },
       {
         name: 'Roadmap',
@@ -171,26 +159,39 @@ const HEADER_DATA = [
   },
   {
     type: 'link',
-    name: 'Projects',
-    link: 'https://ambrosus.io/projects',
+    name: 'BUSINESS',
+    link: 'https://ambrosus.io/business',
   },
   {
     type: 'submenu',
-    name: 'Community',
+    name: 'COMMUNITY',
     data: [
       {
-        name: 'Community',
-        link: 'https://ambrosus.io/community',
+        name: 'GET INVOLVED',
+        link: 'https://ambrosus.io/community/',
       },
       {
-        name: 'AMB',
-        link: 'https://ambrosus.io/amb',
+        name: 'USE AMB',
+        link: 'https://ambrosus.io/amb/',
+      },
+      {
+        name: 'WALLET',
+        link: 'https://ambrosus.io/wallet/',
+      },
+      {
+        name: 'STAKING',
+        link: 'https://staking.ambrosus.io/',
       },
     ],
   },
   {
     type: 'link',
-    name: 'About',
-    link: 'https://ambrosus.io/about',
+    name: 'DEVELOPERS',
+    link: 'https://ambrosus.io/developers',
+  },
+  {
+    type: 'link',
+    name: 'EXPLORER',
+    link: 'https://explorer.ambrosus.io/',
   },
 ];
