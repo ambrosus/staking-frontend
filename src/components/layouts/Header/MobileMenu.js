@@ -9,6 +9,9 @@ import { useWeb3React } from '@web3-react/core';
 import { useAsync, useLogIn, useMedia } from 'hooks';
 import appStore from 'store/app.store';
 import { getToken } from 'api';
+import { ethereum } from 'config';
+import { changeNetwork } from 'utils/helpers';
+import { ReactComponent as MetamaskIcon } from 'assets/svg/metamask-menu-icon.svg';
 
 export const MobileMenu = ({
   data = [{}],
@@ -118,7 +121,13 @@ const MobileSubmenu = ({
   toggleMenu = () => {},
   isOpen = false,
 }) => (
-  <div className={`mobile-submenu ${isOpen ? 'mobile-submenu_open' : ''}`}>
+  <div
+    className={`mobile-submenu ${isOpen ? 'mobile-submenu_open' : ''}`}
+    style={{
+      zIndex: 21,
+      position: 'relative',
+    }}
+  >
     <button
       type="button"
       className="mobile-submenu__name"
@@ -135,8 +144,52 @@ const MobileSubmenu = ({
     </button>
     <div
       className="mobile-submenu__items"
-      style={{ '--items-amount': data.length }}
+      style={{
+        margin: 0,
+        padding: 0,
+        right: -40,
+        width: 310,
+        '--items-amount':
+          name === 'COMMUNITY' ? data.length + 1 + 0.5 : data.length,
+      }}
     >
+      {name === 'COMMUNITY' && ethereum && isOpen && (
+        <div
+          className="connect-metamask-btn"
+          style={{
+            width: 304,
+            overflow: 'hidden',
+            transition: 'all 1s',
+            position: 'absolute',
+            top: 20,
+            zIndex: 2222,
+            right: 0,
+            height: 70,
+            margin: 0,
+            padding: 0,
+            minWidth: 304,
+          }}
+          role="presentation"
+          onClick={() => {
+            if (ethereum) {
+              changeNetwork();
+            }
+          }}
+        >
+          <div>
+            <MetamaskIcon width={32} height={30} />
+          </div>{' '}
+          <p
+            style={{
+              fontSize: '16px',
+              lineHeight: '24px',
+              letterSpacing: ' 0.22em',
+            }}
+          >
+            Add to Metamask
+          </p>
+        </div>
+      )}
       {data.map(({ name: itemName, link }) => (
         <a href={link} className="mobile-submenu__item" onClick={toggleMenu}>
           {itemName}
