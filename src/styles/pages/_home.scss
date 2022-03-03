@@ -147,19 +147,7 @@
         }
       }
 
-      .wallet-connect {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        padding: 10px;
-        background: $graphitered;
 
-        p {
-          color: #FFFFFF;
-          padding-left: 10px;
-        }
-      }
 
       .login {
         flex-basis: 6%;
