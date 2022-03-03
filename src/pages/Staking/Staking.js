@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import { ToastContainer } from 'react-toastify';
-import { Header } from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from 'hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
@@ -13,6 +12,7 @@ import { collapsedReducer } from 'utils/reducers';
 import { changeNetwork, debugLog } from 'utils/helpers';
 import StakingItem from '../../components/StakingItem';
 import InfoBlock from './components/InfoBlock';
+import { Header } from 'components/layouts/Header';
 
 const NotSupported = React.lazy(() =>
   import(/* webpackPrefetch: true */ '../../components/NotSupported'),
