@@ -108,7 +108,7 @@
 }
 
 .submenu__items {
-  width: 22rem;
+  width: 27rem;
 
   position: absolute;
   top: 6.25rem;
@@ -279,7 +279,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin: 30px auto 8px auto;
 
   padding: 20px 16px !important;
@@ -290,7 +290,6 @@
     font-family: Aktiv Grotesk Corp;
     font-style: normal;
     font-weight: 500;
-    font-size: 0.6875rem;
     line-height: 34px;
     text-align: right;
     letter-spacing: 0.09rem;
