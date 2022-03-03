@@ -46,6 +46,14 @@ const Staking = observer(() => {
         </React.Suspense>
       )}
       <div className="layout">
+        <div
+          className="staking_top-left"
+          style={{ opacity: !isDesktop && 0.5 }}
+        />
+        <div
+          className="staking_top-right"
+          style={{ opacity: !isDesktop && 0.5 }}
+        />
         <Header />
         <div className="content" style={{ marginTop: 90 }}>
           <div className="page">
@@ -54,6 +62,11 @@ const Staking = observer(() => {
                 <InfoBlock account={account} poolsArr={pools} />
                 <div className="staking wrapper">
                   <>
+                    {!isDesktop && (
+                      <div className="staking__header__title">
+                        Choose your staking pool
+                      </div>
+                    )}
                     <div className="staking__header">
                       <div>Pool</div>
                       {isDesktop && <div>My Stake</div>}

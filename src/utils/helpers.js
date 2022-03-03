@@ -107,39 +107,54 @@ export const formatThousand = (num) => {
 export const debugLog = (...logs) => ENABLE_DEBUG_LOG && console.log(...logs);
 
 export const changeNetwork = async () => {
-  if (localStorage.getItem('connector') !== 'walletconnect') {
-    try {
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [
-          {
-            chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-          },
-        ],
-      });
-    } catch (switchError) {
-      if (switchError.code === 4902) {
-        await ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-              chainName: `${
-                network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'
-              }`,
-              nativeCurrency: {
-                name: 'AMB',
-                symbol: 'AMB',
-                decimals: 18,
-              },
-              rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-              blockExplorerUrls: [
-                `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-              ],
-            },
-          ],
-        });
-      }
-    }
+  await ethereum.request({
+    method: 'wallet_addEthereumChain',
+    params: [
+      {
+        chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+        chainName: `${network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'}`,
+        nativeCurrency: {
+          name: 'AMB',
+          symbol: 'AMB',
+          decimals: 18,
+        },
+        rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+        blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
+      },
+    ],
+  });
+};
+
+export const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export const months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+export const formatDate = (timestamp, showDate = false, showTime = false) => {
+  const date = new Date(timestamp);
+  const dayName = days[date.getDay()];
+  const day = `0${date.getDate()}`.slice(-2);
+  const month = date.getMonth();
+  // const year = date.getFullYear();
+  const hours = `0${date.getHours()}`.slice(-2);
+  const minutes = `0${date.getMinutes()}`.slice(-2);
+  const seconds = `0${date.getSeconds()}`.slice(-2);
+
+  if (showTime) {
+    return `${
+      showDate ? `${dayName}, ${day} ${months[month]}` : ''
+    }${hours}:${minutes}:${seconds}`;
   }
+  return `${showDate ? `${day} ${months[month]}` : ''}`;
 };

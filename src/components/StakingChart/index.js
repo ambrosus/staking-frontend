@@ -1,46 +1,189 @@
-// import React from 'react';
-// import { AreaChart, Area, XAxis, CartesianGrid, Tooltip } from 'recharts';
-//
-// const data = [
-//   {
-//     name: 'Dec 1',
-//     uv: 2000,
-//   },
-//   {
-//     name: 'Dec 2',
-//     uv: 2500,
-//   },
-//   {
-//     name: 'Dec 3',
-//     uv: 2000,
-//   },
-//   {
-//     name: 'Dec 4',
-//     uv: 2400,
-//   },
-//   {
-//     name: 'Dec 5',
-//     uv: 1890,
-//   },
-// ];
-//
-// export default function StakingChart() {
-//   return (
-//     <AreaChart
-//       width={550}
-//       height={230}
-//       data={data}
-//       margin={{
-//         top: 10,
-//         right: 30,
-//         left: 0,
-//         bottom: 0,
-//       }}
-//     >
-//       <CartesianGrid strokeDasharray="3 3" />
-//       <XAxis dataKey="name" />
-//       <Tooltip />
-//       <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
-//     </AreaChart>
-//   );
-// }
+import React, { useEffect, useRef, useState } from 'react';
+import { AreaChart, Area, XAxis, Tooltip, YAxis } from 'recharts';
+import { ReactSVG } from 'react-svg';
+import chevronUp from 'assets/svg/Chevron up.svg';
+import chevronDown from 'assets/svg/Chevron down.svg';
+import * as PropTypes from 'prop-types';
+import { formatDate, poolIcon } from 'utils/helpers';
+import { formatRounded, ZERO } from 'services/numbers';
+import CustomScatterDo from './CustomScatterDo';
+import CustomTooltip from './CustomTooltip';
+
+const StakingChart = ({ poolsArr }) => {
+  const [openDropDown, setOpenDropDown] = useState(false);
+  const [chartData, setChartData] = useState([]);
+  const [pickedName, setPickedName] = useState({});
+  const [chartWidth, setChartWidth] = useState(500);
+  const chartRef = useRef(null);
+
+  const openDropDownHandler = () => {
+    setOpenDropDown(!openDropDown);
+  };
+
+  useEffect(() => {
+    if (poolsArr && chartData.length === 0) {
+      chartDataHandler(poolsArr.find((item) => item.active).poolRewards);
+      setPickedNameHandler(poolsArr.find((item) => item.active));
+    }
+    if (chartRef.current !== null) {
+      setChartWidth(chartRef.current.offsetWidth);
+    }
+  }, [chartData, pickedName]);
+
+  const setPickedNameHandler = (contractName) => {
+    setPickedName(contractName);
+  };
+
+  const chartDataHandler = (arr) => {
+    const res = Array.from(
+      arr.reduce(
+        (m, { timestamp, reward }) =>
+          m.set(formatDate(timestamp * 1000, true), [
+            ...(m.get(formatDate(timestamp * 1000, true)) || []),
+            reward,
+          ]),
+        new Map(),
+      ),
+      ([timestamp, newArr]) => ({
+        timestamp,
+        reward: formatRounded(
+          newArr.reduce((t, n) => t.add(n), ZERO),
+          2,
+        ),
+      }),
+    );
+    const result = res.slice(1, -1);
+    setChartData(result);
+  };
+
+  return (
+    <div className="chart">
+      <div className="chart__heading">Pool Performance</div>
+      <div
+        className="chart__pool-picker"
+        style={{
+          height: !openDropDown ? 25 : 'auto',
+          overflow: !openDropDown ? 'hidden' : 'auto',
+        }}
+      >
+        {poolsArr.map((pool) => pool.active).lenght > 0 && (
+          <div
+            role="presentation"
+            onClick={openDropDownHandler}
+            className="pool-picker-arrow"
+          >
+            <ReactSVG src={openDropDown ? chevronUp : chevronDown} />
+          </div>
+        )}
+        {pickedName?.contractName && (
+          <div className="chart__pool-picker--name" role="presentation">
+            <ReactSVG
+              className="chart__pool-picker--name--icon"
+              src={poolIcon(pickedName.index)}
+              wrapper="div"
+            />
+            {pickedName?.contractName}
+          </div>
+        )}
+
+        {poolsArr.map(
+          (pool) =>
+            pool.active &&
+            pool.contractName !== pickedName.contractName && (
+              <div
+                key={pool.contractName}
+                className="chart__pool-picker--name"
+                onClick={() => {
+                  chartDataHandler(pool.poolRewards);
+                  setPickedNameHandler(pool);
+                }}
+                role="presentation"
+              >
+                <ReactSVG
+                  className="chart__pool-picker--name--icon"
+                  src={poolIcon(pool.index)}
+                  wrapper="div"
+                />
+                {pool.contractName}
+              </div>
+            ),
+        )}
+      </div>
+      <div className="chart__chart" ref={chartRef}>
+        <AreaChart
+          width={chartWidth}
+          height={230}
+          data={chartData}
+          margin={{
+            top: 10,
+            right: 0,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <YAxis hide domain={['auto', 'auto']} />
+          <XAxis
+            dataKey={({ timestamp }) =>
+              +timestamp.slice(0, 2) % 2 ? timestamp : ''
+            }
+            fontSize={12}
+            axisLine={false}
+            tickLine={false}
+            style={{
+              fontSize: 12,
+              fontFamily: 'Halvar Breitschrift',
+              color: '#FFFFFF',
+            }}
+            color="#FFFFFF"
+            lightingColor="#FFFFFF"
+            colorInterpolation="#FFFFFF"
+            stopColor="#FFFFFF"
+          />
+
+          <Tooltip
+            cursor={false}
+            content={<CustomTooltip />}
+            wrapperStyle={{
+              position: 'absolute',
+              top: -10,
+              left: -43,
+              right: 0,
+              bottom: 0,
+              width: 67,
+              height: '75%',
+              background:
+                'linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50.26%, rgba(255, 255, 255, 0) 100%)',
+            }}
+          />
+          <Area
+            dataKey="reward"
+            stroke="#15D378"
+            fill="url(#colorUv)"
+            activeDot={<CustomScatterDo />}
+          />
+          <defs>
+            <g color="green" />
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="rgba(21, 211, 120, 0.4"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="rgba(21, 211, 120, 0.4"
+                stopOpacity={0}
+              />
+            </linearGradient>
+          </defs>
+        </AreaChart>
+      </div>
+    </div>
+  );
+};
+
+StakingChart.propTypes = {
+  poolsArr: PropTypes.array,
+};
+
+export default StakingChart;

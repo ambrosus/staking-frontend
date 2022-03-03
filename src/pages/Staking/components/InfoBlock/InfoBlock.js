@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg';
-import ReactTooltip from 'react-tooltip';
 import { BigNumber } from 'ethers';
 import { observer } from 'mobx-react-lite';
 import StackedInfo from './StackedInfo';
-import Paragraph from '../../../../components/Paragraph';
 import { formatRounded } from '../../../../services/numbers';
-import copyIcon from 'assets/svg/copy.svg';
-import useCopyToClipboard from 'hooks/useCopyToClipboard';
-import { tooltips } from 'config';
 import appStore from 'store/app.store';
+import StakingChart from 'components/StakingChart';
 
-const InfoBlock = observer(({ poolsArr, account }) => {
-  const { isCopied, onCopy } = useCopyToClipboard({ text: account });
+const InfoBlock = observer(({ poolsArr }) => {
   const [totalReward, setTotalReward] = useState(0);
   const [totalRewardInUsd, setTotalRewardInUsd] = useState(0);
   const [totalStaked, setTotalStaked] = useState(0);
@@ -78,44 +72,13 @@ const InfoBlock = observer(({ poolsArr, account }) => {
   return (
     <div className="info-block ">
       <div className="wrapper">
-        <>
-          <div className="info-block__address">
-            <Paragraph size="m-400" style={{ paddingBottom: 5, color: '#fff' }}>
-              My Address
-            </Paragraph>
-            <Paragraph
-              size="l-500"
-              style={{ color: '#15D378', fontSize: 16, fontWeight: 400 }}
-            >
-              {account
-                ? ` ${account.substr(0, 9)}...${account.slice(32)}`
-                : '...'}{' '}
-              <ReactSVG
-                data-tip
-                data-for="copy-state"
-                onClick={onCopy}
-                src={copyIcon}
-                wrapper="span"
-                style={{ marginLeft: 20, cursor: 'pointer' }}
-              />
-            </Paragraph>
-            {!isCopied ? (
-              <ReactTooltip id="copy-state" place="top" effect="solid">
-                {tooltips.copyState.notCopied}
-              </ReactTooltip>
-            ) : (
-              <ReactTooltip id="copy-state" place="top" effect="solid">
-                {tooltips.copyState.isCopied}
-              </ReactTooltip>
-            )}
-          </div>
-          <StackedInfo
-            totalStaked={totalStaked}
-            totalStakedInUsd={totalStakedInUsd}
-            totalReward={totalReward}
-            totalRewardInUsd={totalRewardInUsd}
-          />
-        </>
+        <StakingChart poolsArr={poolsArr} />
+        <StackedInfo
+          totalStaked={totalStaked}
+          totalStakedInUsd={totalStakedInUsd}
+          totalReward={totalReward}
+          totalRewardInUsd={totalRewardInUsd}
+        />
       </div>
     </div>
   );
@@ -123,7 +86,6 @@ const InfoBlock = observer(({ poolsArr, account }) => {
 
 InfoBlock.propTypes = {
   poolsArr: PropTypes.array,
-  account: PropTypes.string,
 };
 
 export default React.memo(InfoBlock);

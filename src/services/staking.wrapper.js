@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
@@ -139,6 +141,7 @@ export default class StakingWrapper {
         tokenPriceAMB,
         myStakeInTokens,
         poolDPY,
+        poolRewards,
       ] = await Promise.all([
         poolContract.name(),
         poolContract.active(),
@@ -146,6 +149,7 @@ export default class StakingWrapper {
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
         this.privateGetDPY(poolAddr),
+        this.privateGetRewards(poolAddr),
       ]);
 
       const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
@@ -180,10 +184,21 @@ export default class StakingWrapper {
         myStakeInAMB,
         poolAPY,
         estAR,
+        poolRewards,
       };
     });
 
     return Promise.all(poolsDataPromises);
+  }
+
+  static privateCompareRewards(a, b) {
+    if (a.args.tokenPrice.gt(b.args.tokenPrice)) {
+      return 1;
+    }
+    if (a.args.tokenPrice.lt(b.args.tokenPrice)) {
+      return -1;
+    }
+    return 0;
   }
 
   static async privateGetDPY(poolAddr) {
@@ -192,15 +207,7 @@ export default class StakingWrapper {
 
     const sortedPoolRewards = rewardEvents
       .filter((event) => event.args.pool === poolAddr)
-      .sort((a, b) => {
-        if (a.args.tokenPrice.gt(b.args.tokenPrice)) {
-          return 1;
-        }
-        if (a.args.tokenPrice.lt(b.args.tokenPrice)) {
-          return -1;
-        }
-        return 0;
-      });
+      .sort(this.privateCompareRewards);
     if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
 
     const [firstReward, lastReward] = await Promise.all(
@@ -209,7 +216,7 @@ export default class StakingWrapper {
         .map(async (event) => ({
           blockNumber: event.blockNumber,
           timestamp: (await event.getBlock()).timestamp,
-          pool: event.args.pool,
+          // pool: event.args.pool,
           reward: event.args.reward,
           tokenPrice: event.args.tokenPrice,
         })),
@@ -223,6 +230,46 @@ export default class StakingWrapper {
       time1: firstReward.timestamp,
       time2: lastReward.timestamp,
     });
+  }
+
+  static async privateGetRewards(poolAddr) {
+    const rewardEvents = this.privateRewardEvents;
+    if (!rewardEvents || rewardEvents.length < 2) return [];
+
+    const sortedPoolRewards = rewardEvents
+      .filter((event) => event.args.pool === poolAddr)
+      .sort(this.privateCompareRewards);
+    if (!sortedPoolRewards || sortedPoolRewards.length < 2) return [];
+
+    const firstReward = sortedPoolRewards[0];
+    const lastReward = sortedPoolRewards[sortedPoolRewards.length - 1];
+
+    const [firstTimestamp, lastTimestamp] = await Promise.all(
+      [firstReward, lastReward].map(
+        async (event) => (await event.getBlock()).timestamp,
+      ),
+    );
+
+    if (lastTimestamp - firstTimestamp < 300) return [];
+
+    const avgBlockTime =
+      (lastTimestamp - firstTimestamp) /
+      (lastReward.blockNumber - firstReward.blockNumber);
+
+    const rewards = sortedPoolRewards.map((event) => ({
+      blockNumber: event.blockNumber,
+      timestamp:
+        firstTimestamp +
+        Math.floor(
+          avgBlockTime * (event.blockNumber - firstReward.blockNumber),
+        ),
+      reward: event.args.reward,
+      tokenPrice: event.args.tokenPrice,
+    }));
+
+    debugLog('Rewards:', rewards);
+
+    return rewards;
   }
 
   static async stake(poolInfo, value) {
