@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import {
@@ -33,11 +39,14 @@ export default () => {
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
 
-  const handleChangeRange = (e) => {
-    if (e.target.value && appStore.tokenPrice && inputRef.current !== null) {
-      setRangeValue(e.target.value);
-    }
-  };
+  const handleChangeRange = useCallback(
+    (e) => {
+      if (e.target.value && appStore.tokenPrice && inputRef.current !== null) {
+        setRangeValue(e.target.value);
+      }
+    },
+    [rangeValue],
+  );
 
   useEffect(() => {
     if (inputRef.current !== null) {
@@ -185,6 +194,7 @@ export default () => {
                 min="1000"
                 max="100000"
                 value={rangeValue}
+                readOnly={false}
                 step="1"
                 onChange={handleChangeRange}
                 type="range"
