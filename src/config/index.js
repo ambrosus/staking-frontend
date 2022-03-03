@@ -14,6 +14,11 @@ import KuCoinIcon from 'assets/svg/home/whereToByAmb/KuCoin.svg';
 import WhiteBITIcon from 'assets/svg/home/whereToByAmb/WhiteBIT.svg';
 import probitIcon from 'assets/svg/home/whereToByAmb/probit.svg';
 
+import HoverBinanceIcon from 'assets/svg/home/whereToByAmb/hover-binance.svg';
+import HoverKuCoinIcon from 'assets/svg/home/whereToByAmb/hover-kukoin.svg';
+import HoverWhiteBITIcon from 'assets/svg/home/whereToByAmb/hover-wb.svg';
+import HoverprobitIcon from 'assets/svg/home/whereToByAmb/hover-probit.svg';
+
 import githubIcon from 'assets/svg/github-icon.svg';
 import mediumIcon from 'assets/svg/medium-icon.svg';
 import redditIcon from 'assets/svg/reddit-icon.svg';
@@ -256,21 +261,25 @@ export const homePageStatic = {
   whereToByAmb: [
     {
       src: BinanceIcon,
+      hoverSrc: HoverBinanceIcon,
       text: 'Binance',
       url: 'https://accounts.binance.com/en/register?ref=E8NGKMF8',
     },
     {
       src: KuCoinIcon,
+      hoverSrc: HoverKuCoinIcon,
       text: 'KuCoin',
       url: 'https://www.kucoin.com/',
     },
     {
       src: WhiteBITIcon,
+      hoverSrc: HoverWhiteBITIcon,
       text: 'WhiteBIT',
       url: 'https://whitebit.com/',
     },
     {
       src: probitIcon,
+      hoverSrc: HoverprobitIcon,
       text: 'ProBit',
       url: 'https://www.probit.com/',
     },
