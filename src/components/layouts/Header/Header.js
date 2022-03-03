@@ -87,7 +87,7 @@ export const Header = observer(() => {
                 <ReactSVG src={loginIcon} wrapper="span" />
                 <Paragraph
                   size="xs-500"
-                  style={{ color: '#fff', paddingLeft: 5 }}
+                  style={{ color: '#fff', paddingLeft: 4 }}
                 >
                   Log Out
                 </Paragraph>
