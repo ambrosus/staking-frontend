@@ -138,8 +138,7 @@
   height: calc(2.875rem * var(--items-amount) + 1.5rem);
 }
 
-
-.submenu__item {
+  .submenu__item {
   padding: 1rem 1.25rem;
   color: white;
   font-family: 'Proxima Nova', sans-serif;
@@ -271,5 +270,31 @@
   p {
     color: #FFFFFF;
     padding-left: 10px;
+  }
+}
+
+.connect-metamask-btn {
+  gap: 13px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 30px auto 8px auto;
+
+  padding: 20px 16px !important;
+  width: 90%;
+  min-height: 66px !important;
+  background: #262626;
+  p{
+    font-family: Aktiv Grotesk Corp;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.6875rem;
+    line-height: 34px;
+    text-align: right;
+    letter-spacing: 0.09rem;
+    text-transform: uppercase;
+    color: #FFFFFF;
   }
 }

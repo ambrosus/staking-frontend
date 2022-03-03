@@ -1,5 +1,6 @@
 .mobile-menu {
   display: none;
+
   .wallet-connect {
     margin: 0 4rem 0 auto;
 
@@ -16,6 +17,7 @@
       padding-left: 10px;
     }
   }
+
   .login {
     margin: 0 4rem 0 auto;
     display: flex;
@@ -97,6 +99,8 @@
 }
 
 .mobile-submenu__name {
+  float: right;
+
   font-family: "Proxima Nova", sans-serif;
   font-weight: 300;
   font-size: 1.125rem;
@@ -106,6 +110,7 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: white;
+  margin-right: auto;
 
   width: fit-content;
 }
@@ -143,7 +148,7 @@
   flex-flow: column nowrap;
   justify-content: flex-end;
   grid-row-gap: 1.75rem;
-
+  position: relative;
   text-align: right;
 
   overflow: hidden;

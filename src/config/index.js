@@ -48,7 +48,7 @@ export const bounce = cssTransition({
 
 export const PoolsContext = createContext([]);
 
-export const network = process.env.NODE_ENV === 'production';
+export const network = !process.env.REACT_APP_RPC_URL.includes('test');
 
 export const ENABLE_DEBUG_LOG = false;
 

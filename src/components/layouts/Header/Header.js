@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,6 +12,9 @@ import { useMedia } from '../../../hooks';
 import { ReactSVG } from 'react-svg';
 import greenLightIcon from 'assets/svg/green-light-icon.svg';
 import Paragraph from 'components/Paragraph';
+import { ReactComponent as MetamaskIcon } from '../../../assets/svg/metamask-menu-icon.svg';
+import { ethereum } from 'config';
+import { changeNetwork } from 'utils/helpers';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -116,26 +120,52 @@ HeaderLayout.propTypes = {
   toggleMenu: PropTypes.func,
 };
 
-const Submenu = ({ name = '', data = [{}] }) => (
-  <div className="submenu">
-    <p className="submenu__name">
-      {name}
-      <svg viewBox="0 0 15 8" className="submenu__arrow" fill="none">
-        <path
-          d="M14.2031 1L7.53644 7L0.869791 0.999999"
-          stroke="currentColor"
-        />
-      </svg>
-    </p>
-    <div className="submenu__items" style={{ '--items-amount': data.length }}>
-      {data.map(({ name: itemName, link }) => (
-        <a href={link} key={link} className="submenu__item">
-          {itemName}
-        </a>
-      ))}
+const Submenu = ({ name = '', data = [{}] }) => {
+  const { chainId } = useWeb3React();
+
+  return (
+    <div className="submenu">
+      <p className="submenu__name">
+        {name}
+        <svg viewBox="0 0 15 8" className="submenu__arrow" fill="none">
+          <path
+            d="M14.2031 1L7.53644 7L0.869791 0.999999"
+            stroke="currentColor"
+          />
+        </svg>
+      </p>
+      <div
+        className="submenu__items"
+        style={{
+          '--items-amount':
+            name === 'COMMUNITY' ? data.length + 2 : data.length,
+        }}
+      >
+        {name === 'COMMUNITY' && ethereum && (
+          <div
+            className="connect-metamask-btn submenu__item"
+            role="presentation"
+            onClick={() => {
+              if (ethereum) {
+                changeNetwork();
+              }
+            }}
+          >
+            <div>
+              <MetamaskIcon />
+            </div>{' '}
+            <p>Add Ambrosus Network to Metamask</p>
+          </div>
+        )}
+        {data.map(({ name: itemName, link }) => (
+          <a href={link} key={link} className="submenu__item">
+            {itemName}
+          </a>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 Submenu.propTypes = {
   name: PropTypes.string,
