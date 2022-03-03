@@ -154,7 +154,13 @@ const Submenu = ({ name = '', data = [{}] }) => {
             <div>
               <MetamaskIcon />
             </div>{' '}
-            <p>Add Ambrosus Network to Metamask</p>
+            <p
+              style={{
+                fontSize: 11,
+              }}
+            >
+              Add Ambrosus Network to Metamask
+            </p>
           </div>
         )}
         {data.map(({ name: itemName, link }) => (

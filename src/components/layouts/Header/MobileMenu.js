@@ -150,24 +150,25 @@ const MobileSubmenu = ({
         right: -40,
         width: 310,
         '--items-amount':
-          name === 'COMMUNITY' ? data.length + 1 + 0.5 : data.length,
+          name === 'COMMUNITY' ? data.length + 1 + 0.7 : data.length,
       }}
     >
       {name === 'COMMUNITY' && isOpen && (
         <div
           className="connect-metamask-btn"
           style={{
+            gap: 17,
+            padding: '25px 20px !important',
             userSelect: 'none',
             width: 304,
             overflow: 'hidden',
             transition: 'all 1s',
             position: 'absolute',
-            top: 20,
+            top: 30,
             zIndex: 2222,
             right: 0,
             height: 70,
             margin: 0,
-            padding: 0,
             minWidth: 304,
           }}
           role="presentation"
@@ -182,7 +183,7 @@ const MobileSubmenu = ({
           </div>{' '}
           <p
             style={{
-              fontSize: '16px',
+              fontSize: 16,
               lineHeight: '24px',
               letterSpacing: ' 0.22em',
             }}
