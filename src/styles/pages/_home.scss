@@ -285,56 +285,61 @@
       .items-container {
         align-items: center;
         justify-content: space-around;
-a:hover {
-  .binance{
-    span{
-      svg{
-       g{
-         path{
-           stroke: #F3BA2F;
-           fill: #F3BA2F;
-         }
-       }
-      }
-    }
-  }
-  .kukoin{
-    span{
-      svg{
-       g{
-         path{
-           stroke: #0093DD;
-           fill: #0093DD;
-         }
-       }
-      }
-    }
-  }
-  .profit{
-    span{
-      svg{
-          path{
-            stroke: #4330C8;
-            fill: #4330C8;
+
+        a:hover {
+          .binance {
+            span {
+              svg {
+                g {
+                  path {
+                    stroke: #F3BA2F;
+                    fill: #F3BA2F;
+                  }
+                }
+              }
+            }
           }
-      }
-    }
-  }
-  .wb{
-    span{
-      svg{
-        .www{
-            stroke: #151515;
-            fill: #151515;
+
+          .kukoin {
+            span {
+              svg {
+                g {
+                  path {
+                    stroke: #0093DD;
+                    fill: #0093DD;
+                  }
+                }
+              }
+            }
+          }
+
+          .profit {
+            span {
+              svg {
+                path {
+                  stroke: #4330C8;
+                  fill: #4330C8;
+                }
+              }
+            }
+          }
+
+          .wb {
+            span {
+              svg {
+                .www {
+                  stroke: #C8B159;
+                  fill: #C8B159;
+                }
+
+                .bww {
+                  stroke: #151515;
+                  fill: #151515;
+                }
+              }
+            }
+          }
         }
-        .bww{
-            stroke: #C8B159;
-            fill: #C8B159;
-        }
-      }
-    }
-  }
-}
 
         a:active {
           opacity: 0.7;
