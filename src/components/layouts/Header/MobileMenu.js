@@ -153,10 +153,11 @@ const MobileSubmenu = ({
           name === 'COMMUNITY' ? data.length + 1 + 0.5 : data.length,
       }}
     >
-      {name === 'COMMUNITY' && ethereum && isOpen && (
+      {name === 'COMMUNITY' && isOpen && (
         <div
           className="connect-metamask-btn"
           style={{
+            userSelect: 'none',
             width: 304,
             overflow: 'hidden',
             transition: 'all 1s',
