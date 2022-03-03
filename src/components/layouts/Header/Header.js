@@ -182,6 +182,10 @@ const HEADER_DATA = [
         name: 'STAKING',
         link: 'https://staking.ambrosus.io/',
       },
+      {
+        name: 'FORUM',
+        link: 'https://gov.ambrosus.io/',
+      },
     ],
   },
   {
