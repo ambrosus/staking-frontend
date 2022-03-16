@@ -145,11 +145,7 @@ const Submenu = ({ name = '', data = [{}] }) => {
           <button
             className="connect-metamask-btn submenu__item"
             role="presentation"
-            onClick={() => {
-              if (ethereum) {
-                changeNetwork();
-              }
-            }}
+            onClick={() => changeNetwork()}
           >
             <div>
               <MetamaskIcon />

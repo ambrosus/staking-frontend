@@ -9,7 +9,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useAsync, useLogIn, useMedia } from 'hooks';
 import appStore from 'store/app.store';
 import { getToken } from 'api';
-// import { ethereum } from 'config';
+import { ethereum } from 'config';
 import { changeNetwork } from 'utils/helpers';
 import { ReactComponent as MetamaskIcon } from 'assets/svg/metamask-menu-icon.svg';
 
@@ -153,7 +153,7 @@ const MobileSubmenu = ({
           name === 'COMMUNITY' ? data.length + 1 + 0.5 : data.length,
       }}
     >
-      {name === 'COMMUNITY' && isOpen && (
+      {name === 'COMMUNITY' && isOpen && ethereum && (
         <button
           className="connect-metamask-btn"
           style={{
