@@ -15,7 +15,6 @@ import Paragraph from 'components/Paragraph';
 import { ReactComponent as MetamaskIcon } from '../../../assets/svg/metamask-menu-icon.svg';
 import { ethereum } from 'config';
 import { changeNetwork } from 'utils/helpers';
-import Button from '../../../components/Button';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -143,28 +142,20 @@ const Submenu = ({ name = '', data = [{}] }) => {
         }}
       >
         {name === 'COMMUNITY' && ethereum && (
-          <Button
-            priority="connect-metamask-sumbenu"
-            buttonStyles={{
-              borderStyle: 'none',
-              background: '#262626',
-              width: '90%',
-              marginLeft: 20,
-            }}
+          <button
+            className="connect-metamask-btn submenu__item"
             role="presentation"
-            onclick={() => changeNetwork()}
+            onClick={() => {
+              if (ethereum) {
+                changeNetwork();
+              }
+            }}
           >
-            <div className="submenu__item">
-              <span
-                style={{
-                  marginRight: 12,
-                }}
-              >
-                <MetamaskIcon />
-              </span>
-              Add Ambrosus Network to Metamask
+            <div>
+              <MetamaskIcon />
             </div>
-          </Button>
+            <p>Add Ambrosus Network to Metamask</p>
+          </button>
         )}
 
         {data.map(({ name: itemName, link }) => (

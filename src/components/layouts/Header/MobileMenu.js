@@ -9,7 +9,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useAsync, useLogIn, useMedia } from 'hooks';
 import appStore from 'store/app.store';
 import { getToken } from 'api';
-import { ethereum } from 'config';
+// import { ethereum } from 'config';
 import { changeNetwork } from 'utils/helpers';
 import { ReactComponent as MetamaskIcon } from 'assets/svg/metamask-menu-icon.svg';
 
@@ -154,7 +154,7 @@ const MobileSubmenu = ({
       }}
     >
       {name === 'COMMUNITY' && isOpen && (
-        <div
+        <button
           className="connect-metamask-btn"
           style={{
             userSelect: 'none',
@@ -170,16 +170,12 @@ const MobileSubmenu = ({
             padding: 0,
             minWidth: 304,
           }}
-          role="presentation"
-          onClick={() => {
-            if (ethereum) {
-              changeNetwork();
-            }
-          }}
+          type="button"
+          onClick={() => changeNetwork()}
         >
           <div>
             <MetamaskIcon width={32} height={30} />
-          </div>{' '}
+          </div>
           <p
             style={{
               fontSize: '16px',
@@ -189,7 +185,7 @@ const MobileSubmenu = ({
           >
             Add to Metamask
           </p>
-        </div>
+        </button>
       )}
       {data.map(({ name: itemName, link }) => (
         <a href={link} className="mobile-submenu__item" onClick={toggleMenu}>
