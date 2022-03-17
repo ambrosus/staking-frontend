@@ -11,9 +11,8 @@
     padding: 10px;
     background: $graphitered;
 
-
     p {
-      color: #FFFFFF;
+      color: #ffffff;
       padding-left: 10px;
     }
   }
@@ -24,10 +23,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    color: #FFFFFF !important;
+    color: #ffffff !important;
 
     .header__btn {
-      color: #FFFFFF !important;
+      color: #ffffff !important;
       cursor: pointer;
       display: flex;
       flex-direction: row;
@@ -56,9 +55,8 @@
 
     overflow-y: scroll;
 
-    transition: all .25s ease-in-out;
+    transition: all 0.25s ease-in-out;
   }
-
 }
 
 .mobile-menu_open {
@@ -67,7 +65,7 @@
 }
 
 .mobile-menu__link {
-  font-family: "Proxima Nova", sans-serif;
+  font-family: 'Proxima Nova', sans-serif;
   font-weight: 300;
   font-size: 1.125rem;
   line-height: 3.5rem;
@@ -101,7 +99,7 @@
 .mobile-submenu__name {
   float: right;
 
-  font-family: "Proxima Nova", sans-serif;
+  font-family: 'Proxima Nova', sans-serif;
   font-weight: 300;
   font-size: 1.125rem;
   line-height: 3.5rem;
@@ -136,7 +134,7 @@
   width: 1rem;
   margin-left: 0.75rem;
   transform: rotate(0);
-  transition: transform .25s ease-in-out;
+  transition: transform 0.25s ease-in-out;
 }
 
 .mobile-submenu_open .mobile-submenu__arrow {
@@ -152,7 +150,7 @@
   text-align: right;
 
   overflow: hidden;
-  transition: height .25s ease-in-out;
+  transition: height 0.25s ease-in-out;
 
   --items-amount: unset; //passed from html
   height: 0;
@@ -167,13 +165,13 @@
 }
 
 .mobile-submenu__item {
-  font-family: "Proxima Nova", sans-serif;
+  font-family: 'Proxima Nova', sans-serif;
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1.25rem;
   line-height: 212%;
   text-align: right;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: #ffffff;
 }
