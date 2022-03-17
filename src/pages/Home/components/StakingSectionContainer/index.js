@@ -29,7 +29,7 @@ import paragrapfIcon from 'assets/svg/paragrapf-icon.svg';
 export default () => {
   const { pathname } = useLocation();
   const [pools, getPools] = useContext(PoolsContext);
-  const [rangeValue, setRangeValue] = useState(50000);
+  const [rangeValue, setRangeValue] = useState(100000);
   const inputRef = useRef(null);
   const isMainPage = pathname === MAIN_PAGE;
   const { isDesktop } = useMobileDetect();
@@ -47,15 +47,15 @@ export default () => {
     },
     [rangeValue],
   );
-  const value = (rangeValue / 100000) * 10;
 
   useEffect(() => {
+    const value = rangeValue / 10000;
     if (inputRef.current !== null) {
-      inputRef.current.style.background = `linear-gradient(to right, rgba(21, 211, 120),  ${value}%, transparent ${0}%, transparent 100%)`;
+      inputRef.current.style.background = `linear-gradient(to right, rgba(21, 211, 120, 1),  ${value}%,  transparent ${0}%, transparent 100%)`;
     }
     debugLog('Home render useEffect');
     getPools();
-  }, [value]);
+  }, [rangeValue]);
 
   return (
     <>
