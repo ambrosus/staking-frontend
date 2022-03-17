@@ -162,52 +162,63 @@ export default class StakingWrapper {
         // this.privateGetRewards(poolAddr),
       ]);
 
-      const days = [];
+      let days = [];
       let day = moment();
       let count = 0;
       while (count <= 10) {
-        console.log('10');
         count++;
         days.push(formatDate(day.valueOf(), true));
         day = day.clone().add(-1, 'd');
       }
-      const rewardsArr = days.reverse().map((day, index) => {
-        return {
-          timestamp: day,
-          reward: polsApiData[contractName].rewards[index],
-        };
-      });
-      console.log('rewardsArr', rewardsArr);
+      const rewardsArr =
+        contractName &&
+        days.reverse().map((day, indexN) => {
+          return {
+            timestamp: day,
+            reward:
+              polsApiData &&
+              polsApiData[contractName] &&
+              polsApiData[contractName].rewards
+                ? polsApiData[contractName].rewards[10 - indexN]
+                : null,
+          };
+        });
 
       const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
-      const estAR =
-        contractName &&
-        polsApiData &&
-        math
-          .chain(polsApiData[contractName].apy)
-          .divide(100)
-          .multiply(myStakeInAMB.toString())
-          .divide(FIXED_POINT.toString())
-          .round(2)
-          .done()
-          .toFixed(2);
+      const estAR = math
+        .chain(
+          polsApiData[contractName] && polsApiData[contractName].apy
+            ? polsApiData[contractName].apy
+            : '0',
+        )
+        .divide(100)
+        .multiply(myStakeInAMB.toString())
+        .divide(FIXED_POINT.toString())
+        .round(2)
+        .done()
+        .toFixed(2);
 
-      return {
-        index,
-        contractName,
-        address: poolAddr,
-        active,
-        contract: poolContract,
-        totalStakeInAMB,
-        tokenPriceAMB,
-        myStakeInTokens,
-        myStakeInAMB,
-        poolAPY: polsApiData[contractName].apy,
-        estAR,
-        poolRewards: rewardsArr,
-      };
+      return (
+        rewardsArr && {
+          index,
+          contractName,
+          address: poolAddr,
+          active,
+          contract: poolContract,
+          totalStakeInAMB,
+          tokenPriceAMB,
+          myStakeInTokens,
+          myStakeInAMB,
+          poolAPY:
+            polsApiData &&
+            polsApiData[contractName] &&
+            polsApiData[contractName]?.apy,
+          estAR,
+          poolRewards: rewardsArr,
+        }
+      );
     });
-
+    console.log('poolsDataPromises', Promise.all(poolsDataPromises));
     return Promise.all(poolsDataPromises);
   }
 

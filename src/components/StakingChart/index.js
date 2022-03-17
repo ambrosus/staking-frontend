@@ -34,7 +34,6 @@ const StakingChart = ({ poolsArr }) => {
   };
 
   const chartDataHandler = (arr) => {
-    console.log('arr', arr);
     // const res = Array.from(
     //   arr.reduce(
     //     (m, { timestamp, reward }) =>
@@ -124,7 +123,7 @@ const StakingChart = ({ poolsArr }) => {
           <YAxis hide domain={['auto', 'auto']} />
           <XAxis
             dataKey={({ timestamp }) =>
-              +timestamp.slice(0, 2) % 2 ? timestamp : ''
+              +timestamp.slice(0, 2) % 3 ? timestamp : ''
             }
             fontSize={12}
             axisLine={false}
