@@ -176,7 +176,18 @@ const MobileSubmenu = ({
           <div>
             <MetamaskIcon width={32} height={30} />
           </div>
-          <p className="mobile-submenu__item">Add to Metamask</p>
+          <p
+            // className="mobile-submenu__item"
+            style={{
+              fontSize: '16px',
+              fontFamily: 'Proxima Nova sans-serif',
+              lineHeight: '24px',
+              letterSpacing: ' 0.22em',
+              fontWeight: 400,
+            }}
+          >
+            Add to Metamask
+          </p>
         </button>
       )}
       {data.map(({ name: itemName, link }) => (
