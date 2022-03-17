@@ -3,9 +3,11 @@
 import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
-import { transactionGasLimit, transactionGasPrice } from 'config';
+import { network, transactionGasLimit, transactionGasPrice } from 'config';
 import { math, FIXED_POINT, parseFloatToBigNumber, ZERO } from './numbers';
-import { debugLog } from 'utils/helpers';
+import { debugLog, formatDate } from 'utils/helpers';
+import moment from 'moment';
+import { object } from 'prop-types';
 
 const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
 
@@ -127,6 +129,14 @@ export default class StakingWrapper {
     ]);
 
     if (!poolsAddrs || !poolsAddrs.length) return [];
+    const poolsApi = await fetch(
+      network
+        ? 'https://staking-api.ambrosus.io/pools/v2'
+        : 'https://staking-api.ambrosus-test.io/pools/v2',
+    );
+    const response = await poolsApi.json();
+    const polsApiData = response.data;
+    console.log('polsApiData', polsApiData);
 
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
       const poolContract = new ethers.Contract(
@@ -140,31 +150,47 @@ export default class StakingWrapper {
         totalStakeInAMB,
         tokenPriceAMB,
         myStakeInTokens,
-        poolDPY,
-        poolRewards,
+        // poolDPY,
+        // poolRewards,
       ] = await Promise.all([
         poolContract.name(),
         poolContract.active(),
         poolContract.totalStake(),
         poolContract.getTokenPrice(),
         poolContract.viewStake(),
-        this.privateGetDPY(poolAddr),
-        this.privateGetRewards(poolAddr),
+        // this.privateGetDPY(poolAddr),
+        // this.privateGetRewards(poolAddr),
       ]);
 
-      const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
+      let days = [];
+      let day = moment();
+      let count = 0;
+      while (count <= 10) {
+        count++;
+        days.push(formatDate(day.valueOf(), true));
+        day = day.clone().add(-1, 'd');
+      }
+      const rewardsArr =
+        contractName &&
+        days.reverse().map((day, indexN) => {
+          return {
+            timestamp: day,
+            reward:
+              polsApiData &&
+              polsApiData[contractName] &&
+              polsApiData[contractName].rewards
+                ? polsApiData[contractName].rewards[10 - indexN]
+                : null,
+          };
+        });
 
-      const poolAPY = math
-        .chain(poolDPY)
-        .add(1)
-        .pow(365)
-        .subtract(1)
-        .multiply(100)
-        .round(2)
-        .done()
-        .toFixed(2);
+      const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
       const estAR = math
-        .chain(poolAPY)
+        .chain(
+          polsApiData[contractName] && polsApiData[contractName].apy
+            ? polsApiData[contractName].apy
+            : '0',
+        )
         .divide(100)
         .multiply(myStakeInAMB.toString())
         .divide(FIXED_POINT.toString())
@@ -172,22 +198,27 @@ export default class StakingWrapper {
         .done()
         .toFixed(2);
 
-      return {
-        index,
-        contractName,
-        address: poolAddr,
-        active,
-        contract: poolContract,
-        totalStakeInAMB,
-        tokenPriceAMB,
-        myStakeInTokens,
-        myStakeInAMB,
-        poolAPY,
-        estAR,
-        poolRewards,
-      };
+      return (
+        rewardsArr && {
+          index,
+          contractName,
+          address: poolAddr,
+          active,
+          contract: poolContract,
+          totalStakeInAMB,
+          tokenPriceAMB,
+          myStakeInTokens,
+          myStakeInAMB,
+          poolAPY:
+            polsApiData &&
+            polsApiData[contractName] &&
+            polsApiData[contractName]?.apy,
+          estAR,
+          poolRewards: rewardsArr,
+        }
+      );
     });
-
+    console.log('poolsDataPromises', Promise.all(poolsDataPromises));
     return Promise.all(poolsDataPromises);
   }
 
@@ -201,36 +232,36 @@ export default class StakingWrapper {
     return 0;
   }
 
-  static async privateGetDPY(poolAddr) {
-    const rewardEvents = this.privateRewardEvents;
-    if (!rewardEvents || rewardEvents.length < 2) return 0;
-
-    const sortedPoolRewards = rewardEvents
-      .filter((event) => event.args.pool === poolAddr)
-      .sort(this.privateCompareRewards);
-    if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
-
-    const [firstReward, lastReward] = await Promise.all(
-      sortedPoolRewards
-        .filter((_, idx, array) => idx === 0 || idx === array.length - 1)
-        .map(async (event) => ({
-          blockNumber: event.blockNumber,
-          timestamp: (await event.getBlock()).timestamp,
-          // pool: event.args.pool,
-          reward: event.args.reward,
-          tokenPrice: event.args.tokenPrice,
-        })),
-    );
-
-    if (lastReward.timestamp - firstReward.timestamp < 300) return 0;
-
-    return dailyPercentageYieldExpression.evaluate({
-      price1: math.bignumber(firstReward.tokenPrice.toString()),
-      price2: math.bignumber(lastReward.tokenPrice.toString()),
-      time1: firstReward.timestamp,
-      time2: lastReward.timestamp,
-    });
-  }
+  // static async privateGetDPY(poolAddr) {
+  //   const rewardEvents = this.privateRewardEvents;
+  //   if (!rewardEvents || rewardEvents.length < 2) return 0;
+  //
+  //   const sortedPoolRewards = rewardEvents
+  //     .filter((event) => event.args.pool === poolAddr)
+  //     .sort(this.privateCompareRewards);
+  //   if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
+  //
+  //   const [firstReward, lastReward] = await Promise.all(
+  //     sortedPoolRewards
+  //       .filter((_, idx, array) => idx === 0 || idx === array.length - 1)
+  //       .map(async (event) => ({
+  //         blockNumber: event.blockNumber,
+  //         timestamp: (await event.getBlock()).timestamp,
+  //         // pool: event.args.pool,
+  //         reward: event.args.reward,
+  //         tokenPrice: event.args.tokenPrice,
+  //       })),
+  //   );
+  //
+  //   if (lastReward.timestamp - firstReward.timestamp < 300) return 0;
+  //
+  //   return dailyPercentageYieldExpression.evaluate({
+  //     price1: math.bignumber(firstReward.tokenPrice.toString()),
+  //     price2: math.bignumber(lastReward.tokenPrice.toString()),
+  //     time1: firstReward.timestamp,
+  //     time2: lastReward.timestamp,
+  //   });
+  // }
 
   static async privateGetRewards(poolAddr) {
     const rewardEvents = this.privateRewardEvents;

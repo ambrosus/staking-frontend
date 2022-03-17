@@ -61,11 +61,19 @@ const HeaderLayout = ({
         </Link>
         {data.map((menuItem) => {
           if (menuItem.type === 'submenu') {
-            return <Submenu name={menuItem.name} data={menuItem.data} />;
+            return (
+              <div key={menuItem.link + menuItem.name}>
+                <Submenu name={menuItem.name} data={menuItem.data} />
+              </div>
+            );
           }
           if (menuItem.type === 'link') {
             return (
-              <a href={menuItem.link} className="header__link">
+              <a
+                key={menuItem.link + menuItem.name}
+                href={menuItem.link}
+                className="header__link"
+              >
                 {menuItem.name}
               </a>
             );
@@ -158,7 +166,7 @@ const Submenu = ({ name = '', data = [{}] }) => {
           </div>
         )}
         {data.map(({ name: itemName, link }) => (
-          <a href={link} key={link} className="submenu__item">
+          <a href={link} key={link + itemName} className="submenu__item">
             {itemName}
           </a>
         ))}
