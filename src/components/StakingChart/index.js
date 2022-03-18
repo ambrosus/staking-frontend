@@ -4,8 +4,7 @@ import { ReactSVG } from 'react-svg';
 import chevronUp from 'assets/svg/Chevron up.svg';
 import chevronDown from 'assets/svg/Chevron down.svg';
 import * as PropTypes from 'prop-types';
-import { formatDate, poolIcon } from 'utils/helpers';
-import { formatRounded, ZERO } from 'services/numbers';
+import { poolIcon } from 'utils/helpers';
 import CustomScatterDo from './CustomScatterDo';
 import CustomTooltip from './CustomTooltip';
 
@@ -35,25 +34,25 @@ const StakingChart = ({ poolsArr }) => {
   };
 
   const chartDataHandler = (arr) => {
-    const res = Array.from(
-      arr.reduce(
-        (m, { timestamp, reward }) =>
-          m.set(formatDate(timestamp * 1000, true), [
-            ...(m.get(formatDate(timestamp * 1000, true)) || []),
-            reward,
-          ]),
-        new Map(),
-      ),
-      ([timestamp, newArr]) => ({
-        timestamp,
-        reward: formatRounded(
-          newArr.reduce((t, n) => t.add(n), ZERO),
-          2,
-        ),
-      }),
-    );
-    const result = res.slice(1, -1);
-    setChartData(result);
+    // const res = Array.from(
+    //   arr.reduce(
+    //     (m, { timestamp, reward }) =>
+    //       m.set(formatDate(timestamp * 1000, true), [
+    //         ...(m.get(formatDate(timestamp * 1000, true)) || []),
+    //         reward,
+    //       ]),
+    //     new Map(),
+    //   ),
+    //   ([timestamp, newArr]) => ({
+    //     timestamp,
+    //     reward: formatRounded(
+    //       newArr.reduce((t, n) => t.add(n), ZERO),
+    //       2,
+    //     ),
+    //   }),
+    // );
+    // const result = res.slice(1, -1);
+    setChartData(arr);
   };
 
   return (
