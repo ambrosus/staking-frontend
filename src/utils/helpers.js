@@ -128,7 +128,7 @@ export const changeNetwork = async () => {
     });
   } else {
     window.location.href =
-      'https://metamask.app.link/dapp/staking.ambrosus.io/staking';
+      'https://metamask.app.link/dapp/dev.d2nndxolfp1vk8.amplifyapp.com/staking';
   }
 };
 
