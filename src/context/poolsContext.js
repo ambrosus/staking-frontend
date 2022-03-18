@@ -57,7 +57,6 @@ function PoolsContextProvider(props) {
         }
       }
     }
-
     await appStore.updatePoolData(poolsData);
     if (appStore.poolsData && appStore.poolsData.length > 0)
       setPools(toJS(appStore.poolsData));

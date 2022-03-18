@@ -55,12 +55,8 @@ const InfoBlock = observer(({ poolsArr }) => {
       myTotalStake = [];
       poolsArr.forEach((pool) => {
         const { estAR, myStakeInAMB } = pool;
-        if (estAR) {
-          totalRewardCalculateHandler(estAR);
-        }
-        if (myStakeInAMB) {
-          totalStakeCalculateHandler(myStakeInAMB);
-        }
+        if (estAR) totalRewardCalculateHandler(estAR);
+        if (myStakeInAMB) totalStakeCalculateHandler(myStakeInAMB);
       });
     }
   };

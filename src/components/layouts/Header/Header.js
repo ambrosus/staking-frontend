@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import * as React from 'react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
@@ -47,6 +47,14 @@ const HeaderLayout = ({
   const { account, deactivate } = useWeb3React();
   const isSmall = useMedia('(max-width: 899px)');
   const history = useHistory();
+  const location = useLocation();
+  const [isMainPage, setIsMainPage] = useState(location.pathname !== '/');
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setIsMainPage(location.pathname !== '/');
+    }
+  }, [history, location.pathname]);
 
   const logout = () => {
     history.push('/');
@@ -61,11 +69,19 @@ const HeaderLayout = ({
         </Link>
         {data.map((menuItem) => {
           if (menuItem.type === 'submenu') {
-            return <Submenu name={menuItem.name} data={menuItem.data} />;
+            return (
+              <div key={menuItem.link + menuItem.name}>
+                <Submenu name={menuItem.name} data={menuItem.data} />
+              </div>
+            );
           }
           if (menuItem.type === 'link') {
             return (
-              <a href={menuItem.link} className="header__link">
+              <a
+                key={menuItem.link + menuItem.name}
+                href={menuItem.link}
+                className="header__link"
+              >
                 {menuItem.name}
               </a>
             );
@@ -75,7 +91,7 @@ const HeaderLayout = ({
 
         {account
           ? !isSmall &&
-            history.location !== '/' && (
+            isMainPage && (
               <>
                 <div className="wallet-connect">
                   {account && <ReactSVG src={greenLightIcon} wrapper="span" />}
@@ -142,7 +158,7 @@ const Submenu = ({ name = '', data = [{}] }) => {
         }}
       >
         {name === 'COMMUNITY' && ethereum && (
-          <button
+         <button
             className="connect-metamask-btn submenu__item"
             role="presentation"
             onClick={() => changeNetwork()}
@@ -155,7 +171,7 @@ const Submenu = ({ name = '', data = [{}] }) => {
         )}
 
         {data.map(({ name: itemName, link }) => (
-          <a href={link} key={link} className="submenu__item">
+          <a href={link} key={link + itemName} className="submenu__item">
             {itemName}
           </a>
         ))}

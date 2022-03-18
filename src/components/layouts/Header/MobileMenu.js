@@ -54,18 +54,21 @@ export const MobileMenu = ({
       {data.map((menuItem, i) => {
         if (menuItem.type === 'submenu') {
           return (
-            <MobileSubmenu
-              name={menuItem.name}
-              data={menuItem.data}
-              index={i}
-              toggleSubmenu={() => toggleSubmenu(i)}
-              isOpen={openSubmenuIndex === i}
-            />
+            <div key={menuItem.name}>
+              <MobileSubmenu
+                name={menuItem.name}
+                data={menuItem.data}
+                index={i}
+                toggleSubmenu={() => toggleSubmenu(i)}
+                isOpen={openSubmenuIndex === i}
+              />
+            </div>
           );
         }
         if (menuItem.type === 'link') {
           return (
             <a
+              key={menuItem.name}
               href={menuItem.link}
               className="mobile-menu__link"
               data-number={`—\u00A00${i + 1}`}
@@ -157,6 +160,7 @@ const MobileSubmenu = ({
           className="connect-metamask-btn"
           type="button"
           onClick={() => changeNetwork()}
+
         >
           <div>
             <MetamaskIcon width={32} height={30} />
@@ -165,7 +169,12 @@ const MobileSubmenu = ({
         </button>
       )}
       {data.map(({ name: itemName, link }) => (
-        <a href={link} className="mobile-submenu__item" onClick={toggleMenu}>
+        <a
+          key={link}
+          href={link}
+          className="mobile-submenu__item"
+          onClick={toggleMenu}
+        >
           {itemName}
         </a>
       ))}

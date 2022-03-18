@@ -19,7 +19,6 @@ const TransactionModal = ({
   const amount = value && formatThousand(formatRounded(value));
   const shortHash =
     hash && `${hash.substr(0, 9)}...${hash.substr(hash.length - 9, 9)}`;
-  console.log('hash', hash);
 
   return (
     <Modal
