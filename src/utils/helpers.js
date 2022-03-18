@@ -107,22 +107,29 @@ export const formatThousand = (num) => {
 export const debugLog = (...logs) => ENABLE_DEBUG_LOG && console.log(...logs);
 
 export const changeNetwork = async () => {
-  await ethereum.request({
-    method: 'wallet_addEthereumChain',
-    params: [
-      {
-        chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-        chainName: `${network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'}`,
-        nativeCurrency: {
-          name: 'AMB',
-          symbol: 'AMB',
-          decimals: 18,
+  if (ethereum) {
+    await ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+          chainName: `${
+            network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'
+          }`,
+          nativeCurrency: {
+            name: 'AMB',
+            symbol: 'AMB',
+            decimals: 18,
+          },
+          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+          blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
         },
-        rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-        blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
-      },
-    ],
-  });
+      ],
+    });
+  } else {
+    window.location.href =
+      'https://metamask.app.link/dapp/staking.ambrosus.io/staking';
+  }
 };
 
 export const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

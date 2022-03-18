@@ -136,7 +136,6 @@ export default class StakingWrapper {
     );
     const response = await poolsApi.json();
     const polsApiData = response.data;
-    console.log('polsApiData', polsApiData);
 
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
       const poolContract = new ethers.Contract(
@@ -218,7 +217,6 @@ export default class StakingWrapper {
         }
       );
     });
-    console.log('poolsDataPromises', Promise.all(poolsDataPromises));
     return Promise.all(poolsDataPromises);
   }
 

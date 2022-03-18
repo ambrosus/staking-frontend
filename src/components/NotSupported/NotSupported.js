@@ -41,6 +41,7 @@ const NotSupported = ({ children }) => {
                 className="switch-text"
                 role="presentation"
                 style={{ cursor: 'auto' }}
+                onClick={() => changeNetwork()}
               >
                 switch to {net} on your mobile
               </span>{' '}
