@@ -155,20 +155,6 @@ const MobileSubmenu = ({
       {name === 'COMMUNITY' && isOpen && (
         <button
           className="connect-metamask-btn"
-          style={{
-            userSelect: 'none',
-            width: 304,
-            overflow: 'hidden',
-            transition: 'all 1s',
-            position: 'absolute',
-            top: 20,
-            zIndex: 2222,
-            right: 0,
-            height: 70,
-            margin: 0,
-            padding: 0,
-            minWidth: 304,
-          }}
           type="button"
           onClick={() => changeNetwork()}
         >

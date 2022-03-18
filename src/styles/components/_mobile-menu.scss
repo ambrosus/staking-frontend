@@ -100,7 +100,7 @@
   float: right;
 
   font-family: 'Proxima Nova', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1.125rem;
   line-height: 3.5rem;
   text-align: right;
@@ -161,14 +161,13 @@
 
 .mobile-submenu_open .mobile-submenu__items {
   //see explanation ^^^
-  height: calc(4.25rem * var(--items-amount));
+  height: calc(4rem * var(--items-amount));
 }
 
 .mobile-submenu__item {
   font-family: 'Proxima Nova', sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 1.25rem;
   line-height: 212%;
   text-align: right;
   letter-spacing: 0.22em;
