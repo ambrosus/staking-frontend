@@ -158,7 +158,7 @@ const Submenu = ({ name = '', data = [{}] }) => {
         }}
       >
         {name === 'COMMUNITY' && ethereum && (
-         <button
+          <button
             className="connect-metamask-btn submenu__item"
             role="presentation"
             onClick={() => changeNetwork()}

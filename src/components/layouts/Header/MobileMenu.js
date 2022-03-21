@@ -160,7 +160,6 @@ const MobileSubmenu = ({
           className="connect-metamask-btn"
           type="button"
           onClick={() => changeNetwork()}
-
         >
           <div>
             <MetamaskIcon width={32} height={30} />
