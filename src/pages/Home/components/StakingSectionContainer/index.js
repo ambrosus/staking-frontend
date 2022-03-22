@@ -47,15 +47,15 @@ export default () => {
     },
     [rangeValue],
   );
+  const value = (rangeValue / 100000) * 10;
 
   useEffect(() => {
     if (inputRef.current !== null) {
-      const value = (rangeValue / (100000 - 1000)) * 100;
-      inputRef.current.style.background = `linear-gradient(to right, rgba(21, 211, 120,0.9) 0%, rgba(54, 15, 140, 0.8) ${value}%, transparent ${value}%, transparent 100%)`;
+      inputRef.current.style.background = `linear-gradient(to right, rgba(21, 211, 120),  ${value}%, transparent ${0}%, transparent 100%)`;
     }
     debugLog('Home render useEffect');
     getPools();
-  }, [rangeValue]);
+  }, [value]);
 
   return (
     <>
@@ -192,7 +192,7 @@ export default () => {
               <input
                 ref={inputRef}
                 min="1000"
-                max="100000"
+                max="1000000"
                 value={rangeValue}
                 readOnly={false}
                 step="1"

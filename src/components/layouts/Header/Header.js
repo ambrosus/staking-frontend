@@ -158,19 +158,18 @@ const Submenu = ({ name = '', data = [{}] }) => {
         }}
       >
         {name === 'COMMUNITY' && ethereum && (
-          <div
+          <button
             className="connect-metamask-btn submenu__item"
             role="presentation"
-            onClick={() => {
-              changeNetwork();
-            }}
+            onClick={() => changeNetwork()}
           >
             <div>
               <MetamaskIcon />
-            </div>{' '}
+            </div>
             <p>Add Ambrosus Network to Metamask</p>
-          </div>
+          </button>
         )}
+
         {data.map(({ name: itemName, link }) => (
           <a href={link} key={link + itemName} className="submenu__item">
             {itemName}

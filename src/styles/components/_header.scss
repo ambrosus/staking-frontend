@@ -11,7 +11,8 @@
     height: 7.125rem;
   }
 
-  *, * {
+  *,
+  * {
     white-space: nowrap;
   }
 }
@@ -78,13 +79,12 @@
   @media screen and (max-width: $mobile-breakpoint) {
     display: none;
   }
-
 }
 
 .submenu__name {
   color: white;
   font-family: 'Proxima Nova', sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 0.75rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -100,7 +100,7 @@
   width: 1rem;
   margin-left: 0.75rem;
   transform: rotate(0);
-  transition: transform .25s ease-in-out;
+  transition: transform 0.25s ease-in-out;
 }
 
 .submenu:hover .submenu__arrow {
@@ -123,7 +123,7 @@
   flex-flow: column nowrap;
   justify-content: center;
 
-  transition: height .25s ease-in-out;
+  transition: height 0.25s ease-in-out;
 
   --items-amount: unset; //passed from html
   height: 0;
@@ -138,16 +138,15 @@
   height: calc(2.875rem * var(--items-amount) + 1.5rem);
 }
 
-  .submenu__item {
+.submenu__item {
   padding: 1rem 1.25rem;
   color: white;
   font-family: 'Proxima Nova', sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 0.75rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
-
 
 .account {
   padding: 0.5rem 1rem;
@@ -169,12 +168,12 @@
 }
 
 .account__address {
-  font-family: "Proxima Nova", sans-serif;
+  font-family: 'Proxima Nova', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 0.875rem;
   line-height: 100%;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .logout {
@@ -191,13 +190,13 @@
 }
 
 .logout__text {
-  font-family: "Proxima Nova", sans-serif;
+  font-family: 'Proxima Nova', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 0.75rem;
   line-height: 100%;
   letter-spacing: 0.22em;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .burger-icon {
@@ -214,14 +213,13 @@
 
     position: relative;
   }
-
 }
 
 .burger-icon__line {
   height: 2px;
   background: white;
   transform: rotate(0deg);
-  transition: all .25s ease-in-out;
+  transition: all 0.25s ease-in-out;
   position: relative;
 }
 
@@ -236,7 +234,6 @@
 .burger-icon__third-line {
   width: calc((100% / 3) * 2);
 }
-
 
 .burger-icon_open {
   .burger-icon__first-line {
@@ -266,19 +263,18 @@
   padding: 10px;
   background: $graphitered;
 
-
   p {
-    color: #FFFFFF;
+    color: #ffffff;
     padding-left: 10px;
   }
 }
 
 .connect-metamask-btn {
   -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;   /* Chrome/Safari/Opera */
-  -khtml-user-select: none;    /* Konqueror */
-  -moz-user-select: none;      /* Firefox */
-  -ms-user-select: none;       /* Internet Explorer/Edge */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
   gap: 13px;
   cursor: pointer;
@@ -286,18 +282,18 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  margin: 30px auto 8px auto;
+  margin: 0px auto;
 
   padding: 20px 16px !important;
   width: 90%;
   min-height: 66px !important;
   background: #262626;
-  p{
+  p {
     -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -khtml-user-select: none;    /* Konqueror */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
     font-family: Aktiv Grotesk Corp;
     font-style: normal;
@@ -306,6 +302,6 @@
     text-align: right;
     letter-spacing: 0.09rem;
     text-transform: uppercase;
-    color: #FFFFFF;
+    color: #ffffff;
   }
 }
