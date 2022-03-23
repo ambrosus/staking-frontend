@@ -115,17 +115,16 @@ const StakingChart = ({ poolsArr }) => {
           data={chartData}
           margin={{
             top: 10,
-            right: 0,
-            left: 0,
+            right: 40,
+            left: 25,
             bottom: 0,
           }}
         >
           <YAxis hide domain={['auto', 'auto']} />
           <XAxis
-            dataKey={({ timestamp }) =>
-              +timestamp.slice(0, 2) % 2 ? timestamp : ''
-            }
+            dataKey={({ timestamp }) => timestamp}
             fontSize={12}
+            interval={2}
             axisLine={false}
             tickLine={false}
             style={{
