@@ -164,7 +164,7 @@ const MobileSubmenu = ({
           <div>
             <MetamaskIcon width={32} height={30} />
           </div>
-          <p className="mobile-submenu__item">Add to Metamask</p>
+          <span className="mobile-submenu__item">Add to Metamask</span>
         </button>
       )}
       {data.map(({ name: itemName, link }) => (
