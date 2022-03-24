@@ -133,16 +133,9 @@ export default class StakingWrapper {
     const polsApiData = response.data;
 
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
-      console.log(
-        'poolAddr=',
-        poolAddr,
-        poolAddr === '0x39a499cd81C494E8EBC226D416B245978820414e'
-          ? abiPoolsWithLimit
-          : pool.abi,
-      );
       const poolContract = new ethers.Contract(
         poolAddr,
-        poolAddr === '0x39a499cd81C494E8EBC226D416B245978820414e'
+        poolAddr === '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f'
           ? abiPoolsWithLimit
           : pool.abi,
         providerOrSigner,
@@ -166,14 +159,6 @@ export default class StakingWrapper {
         poolContract.maxUserTotalStake && poolContract.maxUserTotalStake(),
         poolContract.getStake && poolContract.getStake(),
       ]);
-      console.log('contractName', contractName);
-      console.log('active', active);
-      console.log('totalStakeInAMB', totalStakeInAMB);
-      console.log('tokenPriceAMB', tokenPriceAMB);
-      console.log('myStakeInTokens', myStakeInTokens);
-      console.log('maxPoolTotalStake', maxPoolTotalStake);
-      console.log('maxUserTotalStake', maxUserTotalStake);
-      console.log('userStake', userStake);
 
       let days = [];
       let day = moment();
@@ -228,6 +213,9 @@ export default class StakingWrapper {
             polsApiData[contractName]?.apy,
           estAR,
           poolRewards: rewardsArr,
+          maxPoolTotalStake,
+          maxUserTotalStake,
+          userStake,
         }
       );
     });

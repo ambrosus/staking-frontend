@@ -26,7 +26,6 @@ import CollapsedContentTabs from './CollapsedContentTabs';
 import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
 import Button from 'components/Button';
-import { utils } from 'ethers';
 
 const StakingItem = ({
   expand = false,
@@ -43,6 +42,8 @@ const StakingItem = ({
     contractName,
     totalStakeInAMB,
     poolAPY,
+    maxPoolTotalStake,
+    maxUserTotalStake,
   } = poolInfo;
   const { pathname } = useLocation();
   const { active } = useWeb3React();
@@ -52,8 +53,14 @@ const StakingItem = ({
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
 
-  const MAX_STAKE = utils.parseEther('10000');
-
+  const MAX_POOL_STAKE =
+    maxPoolTotalStake !== undefined || maxPoolTotalStake !== null
+      ? maxPoolTotalStake
+      : undefined;
+  const MAX_USER_STAKE =
+    maxUserTotalStake !== undefined || maxUserTotalStake !== null
+      ? maxUserTotalStake
+      : undefined;
   const stakeBtnHandler = () => {
     if (expand !== false) {
       setActiveExpand(index);
@@ -126,7 +133,7 @@ const StakingItem = ({
                   }}
                 >
                   {/* TODO maybe here is another condition */}
-                  {myStakeInAMB && (
+                  {myStakeInAMB && MAX_POOL_STAKE && (
                     <div
                       style={{
                         position: 'absolute',
@@ -147,7 +154,7 @@ const StakingItem = ({
                           background: '#15D378',
                           width: `${
                             100 /
-                            (+formatRounded(MAX_STAKE, 18) /
+                            (+formatRounded(MAX_USER_STAKE, 18) /
                               +formatRounded(myStakeInAMB, 18))
                           }%`,
                         }}
@@ -158,27 +165,36 @@ const StakingItem = ({
                     color={isPoolActive ? '#15D378' : 'rgb(191, 201, 224)'}
                     value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
                   />
-                  {MAX_STAKE && (
+                  {MAX_USER_STAKE && (
                     <>
                       <span style={{ color: '#fff' }}>/</span>
                       <DisplayValue
                         color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
-                        value={MAX_STAKE && formatRounded(MAX_STAKE, 2)}
+                        value={formatRounded(MAX_USER_STAKE, 2)}
                       />
                     </>
                   )}
                 </div>
               </div>
             )}
-            {MAX_STAKE && (
+            {MAX_POOL_STAKE ? (
               <div className="item--header__flex__vault-assets">
                 <div style={{ width: 150 }}>
                   <DisplayValue
                     color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
-                    value={MAX_STAKE && formatRounded(MAX_STAKE, 2)}
+                    value={MAX_POOL_STAKE && formatRounded(MAX_POOL_STAKE, 2)}
                   />
                 </div>
               </div>
+            ) : (
+              <Paragraph
+                style={{
+                  color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
+                }}
+                size="l-500"
+              >
+                Unlimited
+              </Paragraph>
             )}
             <div className="item--header__flex__vault-assets">
               <div style={{ width: 150 }}>
