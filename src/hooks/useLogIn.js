@@ -29,7 +29,7 @@ const useLogIn = () => {
           localStorage.setItem('connector', 'injected');
           if (window.location.pathname === '/') {
             window.location.href =
-              'https://metamask.app.link/dapp/staking.ambrosus.io/staking';
+              'https://metamask.app.link/dapp/dev.dm4e4sbc9589h.amplifyapp.com/staking';
           }
           appStore.setRefresh();
         }

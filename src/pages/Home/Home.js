@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Sidebar from '../../components/Sidebar';
 import TopSection from './components/TopSectionContainer';
 import SecondSection from './components/SecondSectionContainer';
 import StakingSection from './components/StakingSectionContainer';
@@ -16,7 +15,6 @@ const ThirdSection = React.lazy(() =>
 
 const Home = () => (
   <div className="home" id="home">
-    <Sidebar pageWrapId="root" outerContainerId="root" />
     <RenderItems>
       <TopSection />
       <SecondSection />
