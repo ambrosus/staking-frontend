@@ -32,8 +32,6 @@ export class AppStore {
   }
 
   async updatePoolData(data) {
-    debugLog('updatePoolData');
-
     debugLog('poolsData', data);
     runInAction(() => {
       this.poolsData = data;
