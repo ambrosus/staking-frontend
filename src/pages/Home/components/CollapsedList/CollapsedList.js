@@ -36,7 +36,11 @@ const CollapsedList = () => {
       <div className="section-heading" style={{ color: '#212121' }}>
         FAQ
       </div>
-      <div className={cx('faq-list', { 'faq-list--expand': showMore })}>
+      <div
+        className={cx(' faq-list', {
+          'faq-list--expand': showMore,
+        })}
+      >
         {faqsList.map((block) => (
           <Block
             lastElement={block.last}
@@ -50,8 +54,9 @@ const CollapsedList = () => {
             </div>
           </Block>
         ))}
-        <div className={cx({ gradient: !showMore })} />
+        <div className={`${!showMore && 'gradiento'}`} />
       </div>
+
       <div className="btn-group" style={{ paddingTop: 50 }}>
         {' '}
         <button type="button" className="btn white" onClick={showMoreHandler}>

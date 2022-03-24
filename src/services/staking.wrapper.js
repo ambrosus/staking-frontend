@@ -197,6 +197,8 @@ export default class StakingWrapper {
         .done()
         .toFixed(2);
 
+      console.log('rewardsArr', rewardsArr);
+      console.log('rewardsArr', rewardsArr.slice(0, rewardsArr.length - 1));
       return (
         rewardsArr && {
           index,
@@ -213,7 +215,7 @@ export default class StakingWrapper {
             polsApiData[contractName] &&
             polsApiData[contractName]?.apy,
           estAR,
-          poolRewards: rewardsArr,
+          poolRewards: rewardsArr.slice(0, rewardsArr.length - 1),
         }
       );
     });
