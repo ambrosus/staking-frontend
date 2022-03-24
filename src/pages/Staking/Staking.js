@@ -5,13 +5,16 @@ import { ToastContainer } from 'react-toastify';
 import { useMobileDetect, useTimeout } from 'hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, ethereum, PoolsContext } from 'config';
+import { bounce, ethereum, PoolsContext, tooltips } from 'config';
 import appStore from 'store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from 'utils/reducers';
 import { changeNetwork, debugLog } from 'utils/helpers';
 import StakingItem from '../../components/StakingItem';
 import InfoBlock from './components/InfoBlock';
+import ReactTooltip from 'react-tooltip';
+import { ReactSVG } from 'react-svg';
+import errorOutlineIcon from 'assets/svg/error_outline.svg';
 import { Header } from 'components/layouts/Header';
 
 const NotSupported = React.lazy(() =>
@@ -69,8 +72,37 @@ const Staking = observer(() => {
                     )}
                     <div className="staking__header">
                       <div>Pool</div>
-                      {isDesktop && <div>My Stake</div>}
-                      <div>Total pool stake</div>
+                      {isDesktop && <div>My Stake/Max Stake</div>}
+                      <ReactTooltip
+                        id="max-total-staked"
+                        place="top"
+                        effect="solid"
+                      >
+                        {tooltips.totalMaxStaked}
+                      </ReactTooltip>
+                      {isDesktop && (
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          data-tip
+                          data-for="max-total-staked"
+                        >
+                          Total Max Stake&nbsp;
+                          <ReactSVG
+                            data-tip
+                            data-for="total-staked"
+                            src={errorOutlineIcon}
+                            wrapper="span"
+                          />
+                        </div>
+                      )}
+                      <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        Total pool stake{' '}
+                      </div>
                       <div>APY</div>
                       <div style={{ marginRight: -20 }} />
                     </div>
