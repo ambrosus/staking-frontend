@@ -134,6 +134,7 @@ const StakingItem = ({
                         width: '100%',
                         height: '2.5px',
                         border: '0.2px solid #15D378',
+                        overflow: 'hidden',
                       }}
                     >
                       <div
