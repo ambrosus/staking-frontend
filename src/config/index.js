@@ -822,6 +822,20 @@ export const abiPoolsWithLimit = [
     constant: false,
     inputs: [
       {
+        name: 'tokens',
+        type: 'uint256',
+      },
+    ],
+    name: 'unstakeWithFee',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      {
         name: 'age',
         type: 'uint64',
       },

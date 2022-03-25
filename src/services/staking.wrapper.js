@@ -135,7 +135,7 @@ export default class StakingWrapper {
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
       const poolContract = new ethers.Contract(
         poolAddr,
-        poolAddr === '0x120cbb8fC3D240d831eAaBEb5C402534CC0f658f'
+        poolAddr === '0x7fecce438b087a83E95C91DC168ad3D150225543'
           ? abiPoolsWithLimit
           : pool.abi,
         providerOrSigner,
