@@ -107,14 +107,14 @@ const StakingItem = ({
                 src={poolIcon(poolInfo.index)}
                 wrapper="span"
               />
-              <Paragraph
+              <p
+                className="pool-title"
                 style={{
                   color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
                 }}
-                size="l-500"
               >
                 {contractName && contractName.substring(0, 8)}
-              </Paragraph>
+              </p>
             </div>
             {isDesktop && pathname === STAKING_PAGE && (
               <div
@@ -130,6 +130,7 @@ const StakingItem = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
+                    marginLeft: 10,
                   }}
                 >
                   {/* TODO maybe here is another condition */}
@@ -187,14 +188,18 @@ const StakingItem = ({
                 </div>
               </div>
             ) : (
-              <Paragraph
-                style={{
-                  color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
-                }}
-                size="l-500"
-              >
-                Unlimited
-              </Paragraph>
+              <div className="item--header__flex__vault-assets">
+                <div style={{ width: 150 }}>
+                  <Paragraph
+                    style={{
+                      color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
+                    }}
+                    size="l-500"
+                  >
+                    Unlimited
+                  </Paragraph>
+                </div>
+              </div>
             )}
             <div className="item--header__flex__vault-assets">
               <div style={{ width: 150 }}>

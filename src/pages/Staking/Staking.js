@@ -71,13 +71,9 @@ const Staking = observer(() => {
                       </div>
                     )}
                     <div className="staking__header">
-                      <div>Pool</div>
+                      <div style={{ fontSize: 18 }}>Pool</div>
                       {isDesktop && <div>My Stake/Max Stake</div>}
-                      <ReactTooltip
-                        id="max-total-staked"
-                        place="top"
-                        effect="solid"
-                      >
+                      <ReactTooltip id="max-total-staked">
                         {tooltips.totalMaxStaked}
                       </ReactTooltip>
                       {isDesktop && (
@@ -88,7 +84,6 @@ const Staking = observer(() => {
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}
-                          data-tip
                           data-for="max-total-staked"
                         >
                           Total Max Stake&nbsp;
@@ -103,7 +98,7 @@ const Staking = observer(() => {
                       <div style={{ display: 'flex', flexDirection: 'row' }}>
                         Total pool stake{' '}
                       </div>
-                      <div>APY</div>
+                      <div style={{ fontSize: 18 }}>APY</div>
                       <div style={{ marginRight: -20 }} />
                     </div>
                     {pools
