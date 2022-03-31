@@ -66,6 +66,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.1",
     "prettier": "^2.3.2",
+    "react-error-overlay": "^6.0.9",
     "source-map-explorer": "^2.5.2",
     "stylelint": "^13.13.1",
     "stylelint-config-idiomatic-order": "^8.1.0",

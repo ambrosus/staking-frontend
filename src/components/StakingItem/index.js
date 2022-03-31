@@ -167,6 +167,7 @@ const StakingItem = ({
                     color={isPoolActive ? '#15D378' : 'rgb(191, 201, 224)'}
                     value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
                   />
+
                   {MAX_USER_STAKE && (
                     <>
                       <span style={{ color: '#fff' }}>&nbsp;/&nbsp;</span>
