@@ -72,7 +72,11 @@ const Staking = observer(() => {
                     )}
                     <div className="staking__header">
                       <div style={{ fontSize: 18 }}>Pool</div>
-                      {isDesktop && <div>My Stake/Max Stake</div>}
+                      {isDesktop ? (
+                        <div>My Stake/Max Stake</div>
+                      ) : (
+                        <div>My Stake</div>
+                      )}
                       <ReactTooltip id="max-total-staked">
                         {tooltips.totalMaxStaked}
                       </ReactTooltip>
@@ -95,9 +99,11 @@ const Staking = observer(() => {
                           />
                         </div>
                       )}
-                      <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        Total pool stake{' '}
-                      </div>
+                      {isDesktop && (
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                          Total pool stake{' '}
+                        </div>
+                      )}
                       <div style={{ fontSize: 18 }}>APY</div>
                       <div style={{ marginRight: -20 }} />
                     </div>
