@@ -272,11 +272,12 @@ export default () => {
               )}
               <Button
                 buttonStyles={{
-                  width: 174,
-                  height: 65,
-                  marginLeft: 'auto',
                   marginTop: isDesktop ? 70 : 20,
+                  minWidth: '174px',
+                  width: '174px',
+                  minHeight: '65px',
                 }}
+                className="calc-stake"
                 type="white"
                 onclick={() => {
                   toggleLogInMethodShow();
