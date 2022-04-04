@@ -209,7 +209,7 @@ const StakingItem = ({
               isDesktop ? (
                 MAX_POOL_STAKE ? (
                   <div className="item--header__flex__vault-assets">
-                    <div style={{ width: 150 }}>
+                    <div style={{ width: 150, fontSize: 16 }}>
                       <DisplayValue
                         color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                         value={
@@ -224,6 +224,7 @@ const StakingItem = ({
                       <Paragraph
                         style={{
                           color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
+                          fontSize: 16,
                         }}
                         size="l-500"
                       >
