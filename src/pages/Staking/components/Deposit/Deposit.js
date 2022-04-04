@@ -33,7 +33,7 @@ import { useMobileDetect, useModal } from '../../../../hooks';
 import TransactionModal from '../TransactionModal';
 
 const Deposit = observer(({ depositInfo }) => {
-  const { myStakeInAMB, active: isPoolActive } = depositInfo;
+  const { myStakeInAMB, active: isPoolActive, maxUserTotalStake } = depositInfo;
   const { account, library } = useWeb3React();
   const { pathname } = useLocation();
   const { isShowing, toggle } = useModal();
@@ -42,7 +42,10 @@ const Deposit = observer(({ depositInfo }) => {
   const [inputError, setInputError] = useState(false);
   const [balance, setBalance] = useState(ZERO);
   const [transaction, setTransaction] = useState(null);
-
+  const MAX_USER_STAKE =
+    maxUserTotalStake !== undefined || maxUserTotalStake !== null
+      ? maxUserTotalStake
+      : undefined;
   const checkoutPayment = async () => {
     if (!checkValidNumberString(inputValue)) {
       return false;
@@ -100,6 +103,18 @@ const Deposit = observer(({ depositInfo }) => {
           toggleNotificationModalShow={toggle}
         />
       )}
+
+      {!isDesktop && pathname === STAKING_PAGE && MAX_USER_STAKE && (
+        <p className="available-tokens">
+          <span>
+            Max Stake:{' '}
+            <span style={{ color: '#15D378' }}>
+              {formatRounded(MAX_USER_STAKE, 2)} AMB
+            </span>{' '}
+          </span>
+        </p>
+      )}
+
       {!isDesktop && pathname === STAKING_PAGE && (
         <p className="available-tokens">
           <span>
@@ -117,10 +132,22 @@ const Deposit = observer(({ depositInfo }) => {
         {' '}
         <span>Amount</span>
         {inputValue && inputError && (
-          <span
-            style={{ fontWeight: 'normal', fontSize: 12, color: '#FF6767' }}
-          >
-            &nbsp;&nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
+          <span>
+            {isDesktop ? (
+              <span
+                style={{ fontWeight: 'normal', fontSize: 12, color: '#A32626' }}
+              >
+                {' '}
+                &nbsp;&nbsp;&nbsp;&nbsp;Min amount for stake = 1000 AMB
+              </span>
+            ) : (
+              <span
+                style={{ fontWeight: 'normal', fontSize: 12, color: '#A32626' }}
+              >
+                {' '}
+                &nbsp;&nbsp;&nbsp;&nbsp;error information
+              </span>
+            )}
           </span>
         )}
       </div>
