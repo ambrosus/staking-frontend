@@ -20,7 +20,7 @@ import { Loader } from '../../../../components/Loader';
 import Paragraph from '../../../../components/Paragraph';
 import Button from '../../../../components/Button';
 import { useLogIn, useMedia, useMobileDetect, useModal } from 'hooks';
-import { debugLog, poolIcon } from 'utils/helpers';
+import { poolIcon } from 'utils/helpers';
 import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
 import appStore from 'store/app.store';
@@ -53,7 +53,6 @@ export default () => {
     if (inputRef.current !== null) {
       inputRef.current.style.background = `linear-gradient(to right, rgba(21, 211, 120),  ${value}%, transparent ${0}%, transparent 100%)`;
     }
-    debugLog('Home render useEffect');
     getPools();
   }, [value]);
 

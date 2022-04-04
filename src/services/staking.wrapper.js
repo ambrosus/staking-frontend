@@ -3,7 +3,12 @@
 import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
-import { network, transactionGasLimit, transactionGasPrice } from 'config';
+import {
+  abiPoolsWithLimit,
+  network,
+  transactionGasLimit,
+  transactionGasPrice,
+} from 'config';
 import { math, FIXED_POINT, parseFloatToBigNumber, ZERO } from './numbers';
 import { debugLog, formatDate } from 'utils/helpers';
 import moment from 'moment';
@@ -27,8 +32,6 @@ export default class StakingWrapper {
   static poolEventsEmitter = null;
 
   static privateStaticConstructorPromise = (async () => {
-    debugLog('StakingWrapper static constructor');
-
     this.privateProvider = new providers.JsonRpcProvider(
       process.env.REACT_APP_RPC_URL,
     );
@@ -98,13 +101,6 @@ export default class StakingWrapper {
       this.privateRewardEvents = this.privateRewardEvents
         .filter((event) => event.blockNumber > startBlockNumber)
         .concat(rewardEvents);
-      debugLog(
-        'getRewardEvents',
-        startBlockNumber,
-        this.privateLastBlock ? this.privateLastBlock + 1 : startBlockNumber,
-        currentBlockNumber,
-        this.privateRewardEvents.length,
-      );
     }
   }
 
@@ -116,7 +112,6 @@ export default class StakingWrapper {
   }
 
   static async getPoolsData(loggedIn, connector) {
-    debugLog('## getPoolsData');
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(connector).getSigner()
       : this.privateProvider;
@@ -140,7 +135,9 @@ export default class StakingWrapper {
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
       const poolContract = new ethers.Contract(
         poolAddr,
-        pool.abi,
+        poolAddr === '0x7fecce438b087a83E95C91DC168ad3D150225543'
+          ? abiPoolsWithLimit
+          : pool.abi,
         providerOrSigner,
       );
       const [
@@ -149,16 +146,18 @@ export default class StakingWrapper {
         totalStakeInAMB,
         tokenPriceAMB,
         myStakeInTokens,
-        // poolDPY,
-        // poolRewards,
+        maxPoolTotalStake,
+        maxUserTotalStake,
+        userStake,
       ] = await Promise.all([
-        poolContract.name(),
-        poolContract.active(),
-        poolContract.totalStake(),
-        poolContract.getTokenPrice(),
-        poolContract.viewStake(),
-        // this.privateGetDPY(poolAddr),
-        // this.privateGetRewards(poolAddr),
+        poolContract.name && poolContract.name(),
+        poolContract.active && poolContract.active(),
+        poolContract.totalStake && poolContract.totalStake(),
+        poolContract.getTokenPrice && poolContract.getTokenPrice(),
+        poolContract.viewStake && poolContract.viewStake(),
+        poolContract.maxTotalStake && poolContract.maxTotalStake(),
+        poolContract.maxUserTotalStake && poolContract.maxUserTotalStake(),
+        poolContract.getStake && poolContract.getStake(),
       ]);
 
       let days = [];
@@ -197,8 +196,6 @@ export default class StakingWrapper {
         .done()
         .toFixed(2);
 
-      console.log('rewardsArr', rewardsArr);
-      console.log('rewardsArr', rewardsArr.slice(0, rewardsArr.length - 1));
       return (
         rewardsArr && {
           index,
@@ -215,7 +212,10 @@ export default class StakingWrapper {
             polsApiData[contractName] &&
             polsApiData[contractName]?.apy,
           estAR,
-          poolRewards: rewardsArr.slice(0, rewardsArr.length - 1),
+          poolRewards: rewardsArr,
+          maxPoolTotalStake,
+          maxUserTotalStake,
+          userStake,
         }
       );
     });
@@ -298,8 +298,6 @@ export default class StakingWrapper {
       tokenPrice: event.args.tokenPrice,
     }));
 
-    debugLog('Rewards:', rewards);
-
     return rewards;
   }
 
@@ -311,12 +309,8 @@ export default class StakingWrapper {
     };
 
     const poolContract = poolInfo.contract;
-
-    debugLog('.stake', poolInfo.index, value);
-
     try {
       overrides.gasLimit = await poolContract.estimateGas.stake(overrides);
-      debugLog('gasLimit', overrides.gasLimit.toString());
       return poolContract.stake(overrides);
     } catch (err) {
       debugLog('stake error', err);
@@ -325,8 +319,6 @@ export default class StakingWrapper {
   }
 
   static async unstake(poolInfo, value, fullUnstake = false) {
-    debugLog('unstake', poolInfo.contractName, value, fullUnstake);
-
     const poolContract = poolInfo.contract;
     const [tokenPriceAMB, myStakeInTokens] = await Promise.all([
       poolContract.getTokenPrice(),
@@ -336,15 +328,6 @@ export default class StakingWrapper {
     const tokens = fullUnstake
       ? myStakeInTokens
       : parseFloatToBigNumber(value).mul(FIXED_POINT).div(tokenPriceAMB);
-
-    debugLog(
-      'unstake ##',
-      poolInfo.index,
-      value,
-      fullUnstake,
-      tokens.toString(),
-      tokenPriceAMB.toString(),
-    );
 
     const overrides = {
       gasPrice: transactionGasPrice,
@@ -356,7 +339,6 @@ export default class StakingWrapper {
         tokens,
         overrides,
       );
-      debugLog('gasLimit', overrides.gasLimit.toString());
       return poolContract.unstake(tokens, overrides);
     } catch (err) {
       debugLog('unstake error', err);

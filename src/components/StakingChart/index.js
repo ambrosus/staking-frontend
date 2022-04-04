@@ -61,11 +61,11 @@ const StakingChart = ({ poolsArr }) => {
       <div
         className="chart__pool-picker"
         style={{
-          height: !openDropDown ? 25 : 'auto',
+          height: !openDropDown ? 30 : 'auto',
           overflow: !openDropDown ? 'hidden' : 'auto',
         }}
       >
-        {poolsArr.map((pool) => pool.active).lenght > 0 && (
+        {poolsArr.map((pool) => pool.active).length > 0 && (
           <div
             role="presentation"
             onClick={openDropDownHandler}
