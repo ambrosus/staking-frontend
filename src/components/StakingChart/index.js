@@ -34,6 +34,7 @@ const StakingChart = ({ poolsArr }) => {
   };
 
   const chartDataHandler = (arr) => {
+    console.log('arr', arr);
     // const res = Array.from(
     //   arr.reduce(
     //     (m, { timestamp, reward }) =>
@@ -81,7 +82,9 @@ const StakingChart = ({ poolsArr }) => {
               src={poolIcon(pickedName.index)}
               wrapper="div"
             />
-            {pickedName?.contractName}
+            {pickedName?.contractName.length > 9
+              ? ` ${pickedName?.contractName.substr(0, 9)}...`
+              : ` ${pickedName?.contractName}`}
           </div>
         )}
 
@@ -103,7 +106,9 @@ const StakingChart = ({ poolsArr }) => {
                   src={poolIcon(pool.index)}
                   wrapper="div"
                 />
-                {pool.contractName}
+                {pool?.contractName.length > 9
+                  ? ` ${pool?.contractName.substr(0, 9)}...`
+                  : ` ${pool?.contractName}`}
               </div>
             ),
         )}

@@ -264,6 +264,9 @@ const StakingItem = ({
                 <DisplayValue
                   color={isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)'}
                   size="l-700"
+                  styles={{
+                    fontSize: 16,
+                  }}
                   symbol="%"
                   value={poolAPY}
                 />

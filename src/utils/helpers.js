@@ -102,7 +102,20 @@ export const formatThousand = (num) => {
   }
   return num.toFixed(2);
 };
-
+export const formatThousandNoLocale = (num) => {
+  // eslint-disable-next-line no-param-reassign
+  num = Number(num);
+  if (Math.abs(num) >= 1e9) {
+    return `${Math.abs(num / 1e9).toFixed(0)}B`;
+  }
+  if (Math.abs(num) >= 1e6) {
+    return `${Math.abs(num / 1e6).toFixed(0)}M`;
+  }
+  if (Math.abs(num) > 1e3) {
+    return `${Math.abs(num / 1e3).toFixed(0)}K`;
+  }
+  return num.toFixed(2);
+};
 /* eslint-disable-next-line no-console */
 export const debugLog = (...logs) => ENABLE_DEBUG_LOG && console.log(...logs);
 

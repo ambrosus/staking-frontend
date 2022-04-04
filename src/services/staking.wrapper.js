@@ -181,7 +181,6 @@ export default class StakingWrapper {
                 : null,
           };
         });
-
       const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
       const estAR = math
         .chain(
@@ -212,7 +211,7 @@ export default class StakingWrapper {
             polsApiData[contractName] &&
             polsApiData[contractName]?.apy,
           estAR,
-          poolRewards: rewardsArr,
+          poolRewards: rewardsArr.slice(1, rewardsArr.length - 1),
           maxPoolTotalStake,
           maxUserTotalStake,
           userStake,
