@@ -27,7 +27,7 @@ const useLogIn = () => {
           localStorage.setItem('connector', 'injected');
           if (window.location.pathname === '/') {
             window.location.href =
-              'https://metamask.app.link/dapp/pr-91.dm4e4sbc9589h.amplifyapp.com/staking';
+              'https://metamask.app.link/dapp/staking.ambrosus.io/staking';
           }
           appStore.setRefresh();
         }
