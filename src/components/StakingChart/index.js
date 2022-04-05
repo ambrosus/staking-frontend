@@ -66,7 +66,7 @@ const StakingChart = ({ poolsArr }) => {
           overflow: !openDropDown ? 'hidden' : 'auto',
         }}
       >
-        {poolsArr.map((pool) => pool.active).length > 0 && (
+        {poolsArr.filter((pool) => pool.active && pool).length > 1 && (
           <div
             role="presentation"
             onClick={openDropDownHandler}
