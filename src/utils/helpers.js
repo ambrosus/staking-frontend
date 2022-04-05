@@ -141,7 +141,7 @@ export const changeNetwork = async () => {
     });
   } else {
     window.location.href =
-      'https://metamask.app.link/dapp/pr-91.dm4e4sbc9589h.amplifyapp.com/staking';
+      'https://metamask.app.link/dapp/pr-93.dm4e4sbc9589h.amplifyapp.com/stakin';
   }
 };
 
