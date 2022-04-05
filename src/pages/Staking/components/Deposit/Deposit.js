@@ -20,6 +20,7 @@ import StakingWrapper from '../../../../services/staking.wrapper';
 import {
   debugLog,
   formatThousand,
+  formatThousandNoLocale,
   notificationMassage,
 } from '../../../../utils/helpers';
 import {
@@ -109,7 +110,7 @@ const Deposit = observer(({ depositInfo }) => {
           <span>
             Max Stake:{' '}
             <span style={{ color: '#15D378' }}>
-              {formatRounded(MAX_USER_STAKE, 2)} AMB
+              {formatThousandNoLocale(+formatRounded(MAX_USER_STAKE, 2))} AMB
             </span>{' '}
           </span>
         </p>
@@ -123,7 +124,13 @@ const Deposit = observer(({ depositInfo }) => {
         </p>
       )}
       <p className="available-tokens">
-        <span>
+        <span
+          style={{
+            fontWeight: 700,
+            fontSize: 14,
+            lineHeight: '17px',
+          }}
+        >
           Available for stake: {formatThousand(formatRounded(balance, 2))} AMB
         </span>
       </p>

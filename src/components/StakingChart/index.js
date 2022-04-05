@@ -7,17 +7,26 @@ import * as PropTypes from 'prop-types';
 import { poolIcon } from 'utils/helpers';
 import CustomScatterDo from './CustomScatterDo';
 import CustomTooltip from './CustomTooltip';
+import { useMobileDetect, useOnClickOutside } from 'hooks';
 
 const StakingChart = ({ poolsArr }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [pickedName, setPickedName] = useState({});
   const [chartWidth, setChartWidth] = useState(500);
+  const { isDesktop } = useMobileDetect();
   const chartRef = useRef(null);
+  const refPoolsListContainer = useRef(null);
 
-  const openDropDownHandler = () => {
-    setOpenDropDown(!openDropDown);
+  const openDropDownHandler = (action) => {
+    if (action === true) {
+      setOpenDropDown(action);
+    } else {
+      setOpenDropDown(false);
+    }
   };
+
+  useOnClickOutside(refPoolsListContainer, () => openDropDownHandler(false));
 
   useEffect(() => {
     if (poolsArr && chartData.length === 0) {
@@ -34,6 +43,7 @@ const StakingChart = ({ poolsArr }) => {
   };
 
   const chartDataHandler = (arr) => {
+    console.log('arr', arr);
     // const res = Array.from(
     //   arr.reduce(
     //     (m, { timestamp, reward }) =>
@@ -59,16 +69,17 @@ const StakingChart = ({ poolsArr }) => {
     <div className="chart">
       <div className="chart__heading">Pool Performance</div>
       <div
+        ref={refPoolsListContainer}
         className="chart__pool-picker"
         style={{
           height: !openDropDown ? 30 : 'auto',
           overflow: !openDropDown ? 'hidden' : 'auto',
         }}
       >
-        {poolsArr.map((pool) => pool.active).length > 0 && (
+        {poolsArr.filter((pool) => pool.active && pool).length > 1 && (
           <div
             role="presentation"
-            onClick={openDropDownHandler}
+            onClick={() => openDropDownHandler(true)}
             className="pool-picker-arrow"
           >
             <ReactSVG src={openDropDown ? chevronUp : chevronDown} />
@@ -81,7 +92,9 @@ const StakingChart = ({ poolsArr }) => {
               src={poolIcon(pickedName.index)}
               wrapper="div"
             />
-            {pickedName?.contractName}
+            {pickedName?.contractName.length > 7
+              ? ` ${pickedName?.contractName.substr(0, 7)}...`
+              : ` ${pickedName?.contractName}`}
           </div>
         )}
 
@@ -103,7 +116,9 @@ const StakingChart = ({ poolsArr }) => {
                   src={poolIcon(pool.index)}
                   wrapper="div"
                 />
-                {pool.contractName}
+                {pool?.contractName.length > 7
+                  ? ` ${pool?.contractName.substr(0, 7)}...`
+                  : ` ${pool?.contractName}`}
               </div>
             ),
         )}
@@ -115,17 +130,18 @@ const StakingChart = ({ poolsArr }) => {
           data={chartData}
           margin={{
             top: 10,
-            right: 40,
+            right: isDesktop ? 40 : -70,
             left: 25,
             bottom: 0,
           }}
         >
           <YAxis hide domain={['auto', 'auto']} />
           <XAxis
+            domain={['auto', 'auto', 'auto', 'auto']}
             dataKey={({ timestamp }) => timestamp}
             fontSize={12}
-            interval={2}
             axisLine={false}
+            interval={1}
             tickLine={false}
             style={{
               fontSize: 12,

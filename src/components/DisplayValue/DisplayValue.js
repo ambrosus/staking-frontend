@@ -6,6 +6,7 @@ import Paragraph from '../Paragraph';
 import { useTimeout } from 'hooks';
 
 const DisplayValue = ({
+  styles = {},
   symbol = 'AMB',
   value,
   size = 'l-400',
@@ -18,7 +19,7 @@ const DisplayValue = ({
   ) : (
     <span className="transitions">
       <Paragraph
-        style={{ color, whiteSpace: 'nowrap', minWidth: 50 }}
+        style={{ ...styles, color, whiteSpace: 'nowrap', minWidth: 50 }}
         size={size}
       >
         {value < 1 && !display ? (
@@ -36,5 +37,6 @@ DisplayValue.propTypes = {
   size: PropTypes.string,
   color: PropTypes.any,
   symbol: PropTypes.string,
+  styles: PropTypes.object,
 };
 export default DisplayValue;

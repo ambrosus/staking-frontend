@@ -4,7 +4,9 @@
   justify-content: space-between;
   height: 280px;
   position: relative !important;
-
+  @media (max-width: 600px) {
+    margin-bottom: 71px;
+  }
   tspan {
     font-family: Halvar Breitschrift, sans-serif !important;
     font-style: normal !important;
@@ -36,7 +38,7 @@
     flex-direction: column;
     right: -20px;
     height: 20px;
-    padding: 12px 34px 10px 24px;
+    padding: 5px 34px 10px 24px;
     min-width: 140px;
     gap: 7.5px;
 
@@ -46,7 +48,7 @@
       justify-content: center;
       position: absolute;
       right: 12px;
-      top: 15px;
+      top: 9px;
       width: 20px;
       height: 7px;
       cursor: pointer;
