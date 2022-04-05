@@ -219,7 +219,10 @@ const StakingItem = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="item--header__flex__vault-assets">
+                  <div
+                    className="item--header__flex__vault-assets"
+                    style={{ paddingLeft: !MAX_POOL_STAKE && isDesktop && 10 }}
+                  >
                     <div style={{ width: 150 }}>
                       <Paragraph
                         style={{
@@ -236,7 +239,10 @@ const StakingItem = ({
               ) : null
             }
             {isDesktop && (
-              <div className="item--header__flex__vault-assets">
+              <div
+                className="item--header__flex__vault-assets"
+                style={{ paddingLeft: !MAX_POOL_STAKE && isDesktop && 10 }}
+              >
                 <div style={{ width: 150 }}>
                   <DisplayValue
                     color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}

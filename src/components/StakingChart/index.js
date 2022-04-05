@@ -43,25 +43,6 @@ const StakingChart = ({ poolsArr }) => {
   };
 
   const chartDataHandler = (arr) => {
-    console.log('arr', arr);
-    // const res = Array.from(
-    //   arr.reduce(
-    //     (m, { timestamp, reward }) =>
-    //       m.set(formatDate(timestamp * 1000, true), [
-    //         ...(m.get(formatDate(timestamp * 1000, true)) || []),
-    //         reward,
-    //       ]),
-    //     new Map(),
-    //   ),
-    //   ([timestamp, newArr]) => ({
-    //     timestamp,
-    //     reward: formatRounded(
-    //       newArr.reduce((t, n) => t.add(n), ZERO),
-    //       2,
-    //     ),
-    //   }),
-    // );
-    // const result = res.slice(1, -1);
     setChartData(arr);
   };
 

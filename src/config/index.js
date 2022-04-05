@@ -50,7 +50,7 @@ export const PoolsContext = createContext([]);
 
 export const network = !process.env.REACT_APP_RPC_URL.includes('test');
 
-export const ENABLE_DEBUG_LOG = true;
+export const ENABLE_DEBUG_LOG = false;
 
 export const provider = ethereum ? new providers.Web3Provider(ethereum) : null;
 
