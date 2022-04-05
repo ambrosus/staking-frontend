@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -136,49 +135,44 @@ HeaderLayout.propTypes = {
   toggleMenu: PropTypes.func,
 };
 
-const Submenu = ({ name = '', data = [{}] }) => {
-  const { chainId } = useWeb3React();
+const Submenu = ({ name = '', data = [{}] }) => (
+  <div className="submenu">
+    <p className="submenu__name">
+      {name}
+      <svg viewBox="0 0 15 8" className="submenu__arrow" fill="none">
+        <path
+          d="M14.2031 1L7.53644 7L0.869791 0.999999"
+          stroke="currentColor"
+        />
+      </svg>
+    </p>
+    <div
+      className="submenu__items"
+      style={{
+        '--items-amount': name === 'COMMUNITY' ? data.length + 2 : data.length,
+      }}
+    >
+      {name === 'COMMUNITY' && ethereum && (
+        <button
+          type="button"
+          className="connect-metamask-btn submenu__item"
+          onClick={() => changeNetwork()}
+        >
+          <div>
+            <MetamaskIcon />
+          </div>
+          <p>Add Ambrosus Network to Metamask</p>
+        </button>
+      )}
 
-  return (
-    <div className="submenu">
-      <p className="submenu__name">
-        {name}
-        <svg viewBox="0 0 15 8" className="submenu__arrow" fill="none">
-          <path
-            d="M14.2031 1L7.53644 7L0.869791 0.999999"
-            stroke="currentColor"
-          />
-        </svg>
-      </p>
-      <div
-        className="submenu__items"
-        style={{
-          '--items-amount':
-            name === 'COMMUNITY' ? data.length + 2 : data.length,
-        }}
-      >
-        {name === 'COMMUNITY' && ethereum && (
-          <button
-            className="connect-metamask-btn submenu__item"
-            role="presentation"
-            onClick={() => changeNetwork()}
-          >
-            <div>
-              <MetamaskIcon />
-            </div>
-            <p>Add Ambrosus Network to Metamask</p>
-          </button>
-        )}
-
-        {data.map(({ name: itemName, link }) => (
-          <a href={link} key={link + itemName} className="submenu__item">
-            {itemName}
-          </a>
-        ))}
-      </div>
+      {data.map(({ name: itemName, link }) => (
+        <a href={link} key={link + itemName} className="submenu__item">
+          {itemName}
+        </a>
+      ))}
     </div>
-  );
-};
+  </div>
+);
 
 Submenu.propTypes = {
   name: PropTypes.string,
