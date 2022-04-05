@@ -7,7 +7,7 @@ import * as PropTypes from 'prop-types';
 import { poolIcon } from 'utils/helpers';
 import CustomScatterDo from './CustomScatterDo';
 import CustomTooltip from './CustomTooltip';
-import { useMobileDetect } from 'hooks';
+import { useMobileDetect, useOnClickOutside } from 'hooks';
 
 const StakingChart = ({ poolsArr }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -16,10 +16,17 @@ const StakingChart = ({ poolsArr }) => {
   const [chartWidth, setChartWidth] = useState(500);
   const { isDesktop } = useMobileDetect();
   const chartRef = useRef(null);
+  const refPoolsListContainer = useRef(null);
 
-  const openDropDownHandler = () => {
-    setOpenDropDown(!openDropDown);
+  const openDropDownHandler = (action) => {
+    if (action === true) {
+      setOpenDropDown(action);
+    } else {
+      setOpenDropDown(false);
+    }
   };
+
+  useOnClickOutside(refPoolsListContainer, () => openDropDownHandler(false));
 
   useEffect(() => {
     if (poolsArr && chartData.length === 0) {
@@ -62,6 +69,7 @@ const StakingChart = ({ poolsArr }) => {
     <div className="chart">
       <div className="chart__heading">Pool Performance</div>
       <div
+        ref={refPoolsListContainer}
         className="chart__pool-picker"
         style={{
           height: !openDropDown ? 30 : 'auto',
@@ -71,7 +79,7 @@ const StakingChart = ({ poolsArr }) => {
         {poolsArr.filter((pool) => pool.active && pool).length > 1 && (
           <div
             role="presentation"
-            onClick={openDropDownHandler}
+            onClick={() => openDropDownHandler(true)}
             className="pool-picker-arrow"
           >
             <ReactSVG src={openDropDown ? chevronUp : chevronDown} />
