@@ -7,12 +7,14 @@ import * as PropTypes from 'prop-types';
 import { poolIcon } from 'utils/helpers';
 import CustomScatterDo from './CustomScatterDo';
 import CustomTooltip from './CustomTooltip';
+import { useMobileDetect } from 'hooks';
 
 const StakingChart = ({ poolsArr }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [pickedName, setPickedName] = useState({});
   const [chartWidth, setChartWidth] = useState(500);
+  const { isDesktop } = useMobileDetect();
   const chartRef = useRef(null);
 
   const openDropDownHandler = () => {
@@ -120,7 +122,7 @@ const StakingChart = ({ poolsArr }) => {
           data={chartData}
           margin={{
             top: 10,
-            right: 40,
+            right: isDesktop ? 40 : -70,
             left: 25,
             bottom: 0,
           }}
