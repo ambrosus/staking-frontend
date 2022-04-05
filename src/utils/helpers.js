@@ -102,44 +102,79 @@ export const formatThousand = (num) => {
   }
   return num.toFixed(2);
 };
-
+export const formatThousandNoLocale = (num) => {
+  // eslint-disable-next-line no-param-reassign
+  num = Number(num);
+  if (Math.abs(num) >= 1e9) {
+    return `${Math.abs(num / 1e9).toFixed(0)}B`;
+  }
+  if (Math.abs(num) >= 1e6) {
+    return `${Math.abs(num / 1e6).toFixed(0)}M`;
+  }
+  if (Math.abs(num) > 1e3) {
+    return `${Math.abs(num / 1e3).toFixed(0)}K`;
+  }
+  return num.toFixed(2);
+};
 /* eslint-disable-next-line no-console */
 export const debugLog = (...logs) => ENABLE_DEBUG_LOG && console.log(...logs);
 
 export const changeNetwork = async () => {
-  if (localStorage.getItem('connector') !== 'walletconnect') {
-    try {
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [
-          {
-            chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+  if (ethereum) {
+    await ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
+          chainName: `${
+            network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'
+          }`,
+          nativeCurrency: {
+            name: 'AMB',
+            symbol: 'AMB',
+            decimals: 18,
           },
-        ],
-      });
-    } catch (switchError) {
-      if (switchError.code === 4902) {
-        await ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: `${utils.hexlify(+process.env.REACT_APP_CHAIN_ID)}`,
-              chainName: `${
-                network ? 'Ambrosus (Main net)' : 'Ambrosus (Test net)'
-              }`,
-              nativeCurrency: {
-                name: 'AMB',
-                symbol: 'AMB',
-                decimals: 18,
-              },
-              rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
-              blockExplorerUrls: [
-                `${process.env.REACT_APP_BLOCK_EXPLORER_URL}`,
-              ],
-            },
-          ],
-        });
-      }
-    }
+          rpcUrls: [`${process.env.REACT_APP_RPC_URL}`],
+          blockExplorerUrls: [`${process.env.REACT_APP_BLOCK_EXPLORER_URL}`],
+        },
+      ],
+    });
+  } else {
+    window.location.href =
+      'https://metamask.app.link/dapp/staking.ambrosus.io/staking';
   }
+};
+
+export const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export const months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+export const formatDate = (timestamp, showDate = false, showTime = false) => {
+  const date = new Date(timestamp);
+  const dayName = days[date.getDay()];
+  const day = `0${date.getDate()}`.slice(-2);
+  const month = date.getMonth();
+  // const year = date.getFullYear();
+  const hours = `0${date.getHours()}`.slice(-2);
+  const minutes = `0${date.getMinutes()}`.slice(-2);
+  const seconds = `0${date.getSeconds()}`.slice(-2);
+
+  if (showTime) {
+    return `${
+      showDate ? `${dayName}, ${day} ${months[month]}` : ''
+    }${hours}:${minutes}:${seconds}`;
+  }
+  return `${showDate ? `${day} ${months[month]}` : ''}`;
 };

@@ -2,18 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWeb3React } from '@web3-react/core';
 import { ToastContainer } from 'react-toastify';
-import Sidebar from '../../components/Sidebar';
-import Header from '../../components/layouts/Header';
 import { useMobileDetect, useTimeout } from 'hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, ethereum, PoolsContext } from 'config';
+import { bounce, ethereum, PoolsContext, tooltips } from 'config';
 import appStore from 'store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from 'utils/reducers';
 import { changeNetwork, debugLog } from 'utils/helpers';
 import StakingItem from '../../components/StakingItem';
 import InfoBlock from './components/InfoBlock';
+import ReactTooltip from 'react-tooltip';
+import { ReactSVG } from 'react-svg';
+import errorOutlineIcon from 'assets/svg/error_outline.svg';
+import { Header } from 'components/layouts/Header';
 
 const NotSupported = React.lazy(() =>
   import(/* webpackPrefetch: true */ '../../components/NotSupported'),
@@ -41,13 +43,20 @@ const Staking = observer(() => {
 
   return (
     <>
-      <Sidebar pageWrapId="root" outerContainerId="root" />
       {checkNetworkChain && chainId !== +process.env.REACT_APP_CHAIN_ID && (
         <React.Suspense fallback={<div />}>
           <NotSupported key={chainId} />
         </React.Suspense>
       )}
       <div className="layout">
+        <div
+          className="staking_top-left"
+          style={{ opacity: !isDesktop && 0.5 }}
+        />
+        <div
+          className="staking_top-right"
+          style={{ opacity: !isDesktop && 0.5 }}
+        />
         <Header />
         <div className="content" style={{ marginTop: 90 }}>
           <div className="page">
@@ -56,11 +65,46 @@ const Staking = observer(() => {
                 <InfoBlock account={account} poolsArr={pools} />
                 <div className="staking wrapper">
                   <>
+                    {!isDesktop && (
+                      <div className="staking__header__title">
+                        Choose your staking pool
+                      </div>
+                    )}
                     <div className="staking__header">
-                      <div>Pool</div>
-                      {isDesktop && <div>My Stake</div>}
-                      <div>Total pool stake</div>
-                      <div>APY</div>
+                      <div style={{ fontSize: 18 }}>Pool</div>
+                      {isDesktop ? (
+                        <div>My Stake/Max Stake</div>
+                      ) : (
+                        <div>My Stake</div>
+                      )}
+                      <ReactTooltip id="max-total-staked">
+                        {tooltips.totalMaxStaked}
+                      </ReactTooltip>
+                      {isDesktop && (
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          data-for="max-total-staked"
+                        >
+                          Total Max Stake&nbsp;
+                          <ReactSVG
+                            data-tip
+                            data-for="total-staked"
+                            src={errorOutlineIcon}
+                            wrapper="span"
+                          />
+                        </div>
+                      )}
+                      {isDesktop && (
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                          Total pool stake{' '}
+                        </div>
+                      )}
+                      <div style={{ fontSize: 18 }}>APY</div>
                       <div style={{ marginRight: -20 }} />
                     </div>
                     {pools

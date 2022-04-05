@@ -9,8 +9,10 @@ import useLogIn from './useLogIn';
 import useCopyToClipboard from './useCopyToClipboard';
 import useHover from './useHover';
 import useInterval from './useInterval';
+import { useOnClickOutside } from './useOnClickOutside';
 
 export {
+  useOnClickOutside,
   useHover,
   useSafeDispatch,
   useMobileDetect,

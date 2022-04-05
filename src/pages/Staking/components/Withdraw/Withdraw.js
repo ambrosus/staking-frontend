@@ -97,7 +97,13 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
         />
       )}
       <p className="available-tokens">
-        <span>
+        <span
+          style={{
+            fontWeight: 700,
+            fontSize: 14,
+            lineHeight: '17px',
+          }}
+        >
           Available for withdraw:{' '}
           {myStakeInAMB && myStakeInAMB.gte(MIN_SHOW_STAKE)
             ? formatThousand(formatRounded(myStakeInAMB, 2))

@@ -25,28 +25,51 @@
     max-height: 650px;
     overflow: hidden;
 
-    .gradient {
+    .gradiento {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 87px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), white 152%);
+      //pointer-events: none;
+
+      }
+    }
+    .molemp_monatu_sumendadan {
+      position: relative;
+    }
+    .molemp_monatu_sumendadan::after {
+      content: '';
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 180px;
-      opacity: 1;
-      transition: opacity 10s;
-      background: linear-gradient(0deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+      z-index: 10;
+      height: 100%;
+      background: linear-gradient( rgba(255, 255, 255, 0.8), white );
+      pointer-events: none;
+    }
+    .cegarckaba-onemenu-kaquiped {
+      overflow-y: scroll;
+      background: linear-gradient( rgba(255, 255, 255, 1), white );
+      width: 100%;
+      position: relative;
+      height: 100%;
+      line-height: 1.3;
+      z-index: 12;
+    }
+
+    .faq-list--expand {
+      position: relative;
+      z-index: 1;
+      max-height: 1400px;
+      overflow: hidden;
+      transition: max-height 700ms ease-in;
+      background: none;
     }
   }
 
-  .faq-list--expand {
-    position: relative;
-    z-index: 1;
-    max-height: 1400px;
-    overflow: hidden;
-    transition: max-height 700ms ease-in;
-    background: none;
-  }
-}
-
-/* Rectangle 454 */
+  /* Rectangle 454 */
 
 .block {
   margin-bottom: 10px;

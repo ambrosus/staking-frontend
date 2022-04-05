@@ -17,7 +17,8 @@ const TransactionModal = ({
   const isSmall = useMedia('(max-width: 699px)');
   const { value, hash } = transaction !== null && transaction;
   const amount = value && formatThousand(formatRounded(value));
-  const shortHash = hash && `${hash.substr(0, 25)}...`;
+  const shortHash =
+    hash && `${hash.substr(0, 9)}...${hash.substr(hash.length - 9, 9)}`;
 
   return (
     <Modal
@@ -51,7 +52,12 @@ const TransactionModal = ({
         {!withdraw && (
           <div className="transaction-modal__amount">Amount: {amount} AMB</div>
         )}
-        <div className="transaction-modal__hash">Txhash {shortHash}</div>
+        <div className="transaction-modal__hash">
+          Txhash &nbsp;:&nbsp;
+          <a target="_blank" href={`https://explorer.ambrosus.io/tx/${hash}`}>
+            {shortHash}
+          </a>
+        </div>
       </div>
     </Modal>
   );

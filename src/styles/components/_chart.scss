@@ -1,0 +1,110 @@
+.chart {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 280px;
+  position: relative !important;
+  @media (max-width: 600px) {
+    margin-bottom: 71px;
+  }
+  tspan {
+    font-family: Halvar Breitschrift, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+    line-height: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    fill: #FFFFFF !important;
+    color: #FFFFFF !important;
+  }
+
+  &__heading {
+    font-family: Halvar Breitschrift, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 25px;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    padding-bottom: 55px;
+  }
+
+  &__pool-picker {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    right: -20px;
+    height: 20px;
+    padding: 5px 34px 10px 24px;
+    min-width: 140px;
+    gap: 7.5px;
+
+    .pool-picker-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 12px;
+      top: 9px;
+      width: 20px;
+      height: 7px;
+      cursor: pointer;
+    }
+
+
+    &--name {
+      font-family: Halvar Breitschrift, sans-serif;
+      font-style: normal;
+      text-transform: uppercase;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+
+      &--icon {
+        div {
+          svg {
+            margin-right: 9px;
+            width: 14px;
+            height: 17px;
+          }
+        }
+      }
+    }
+
+  }
+
+  z-index: 1 !important;
+
+  &__charts {
+    position: relative;
+    z-index: 1;
+    height: 300px;
+  }
+
+
+}
+.recharts-tooltip-wrapper-left {
+  transform: translate(437.5px, 10px)!important;
+}
+.wrapper-chart{
+  position: absolute;
+  top: 30px;
+  left: -45px;
+  right: 0;
+  bottom: 0;
+  width: 67px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+  background: linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50.26%, rgba(255, 255, 255, 0) 100%);
+}
+

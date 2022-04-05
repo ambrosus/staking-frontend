@@ -6,8 +6,9 @@ import { useLogIn, useModal } from 'hooks';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
+import { changeNetwork } from 'utils/helpers';
 
-const NotSupported = ({ children, onclick = () => {} }) => {
+const NotSupported = ({ children }) => {
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
   const { logIn } = useLogIn();
@@ -27,7 +28,7 @@ const NotSupported = ({ children, onclick = () => {} }) => {
               <span
                 className="switch-text"
                 role="presentation"
-                onClick={() => onclick()}
+                onClick={() => changeNetwork()}
               >
                 switch to {net}
               </span>{' '}
@@ -40,6 +41,7 @@ const NotSupported = ({ children, onclick = () => {} }) => {
                 className="switch-text"
                 role="presentation"
                 style={{ cursor: 'auto' }}
+                onClick={() => changeNetwork()}
               >
                 switch to {net} on your mobile
               </span>{' '}
@@ -100,7 +102,6 @@ const NotSupported = ({ children, onclick = () => {} }) => {
   );
 };
 NotSupported.propTypes = {
-  onclick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

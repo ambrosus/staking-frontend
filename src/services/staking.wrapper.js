@@ -1,9 +1,18 @@
+/* eslint-disable */
+
 import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
-import { transactionGasLimit, transactionGasPrice } from 'config';
+import {
+  abiPoolsWithLimit,
+  network,
+  transactionGasLimit,
+  transactionGasPrice,
+} from 'config';
 import { math, FIXED_POINT, parseFloatToBigNumber, ZERO } from './numbers';
-import { debugLog } from 'utils/helpers';
+import { debugLog, formatDate } from 'utils/helpers';
+import moment from 'moment';
+import { object } from 'prop-types';
 
 const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
 
@@ -23,8 +32,6 @@ export default class StakingWrapper {
   static poolEventsEmitter = null;
 
   static privateStaticConstructorPromise = (async () => {
-    debugLog('StakingWrapper static constructor');
-
     this.privateProvider = new providers.JsonRpcProvider(
       process.env.REACT_APP_RPC_URL,
     );
@@ -94,13 +101,6 @@ export default class StakingWrapper {
       this.privateRewardEvents = this.privateRewardEvents
         .filter((event) => event.blockNumber > startBlockNumber)
         .concat(rewardEvents);
-      debugLog(
-        'getRewardEvents',
-        startBlockNumber,
-        this.privateLastBlock ? this.privateLastBlock + 1 : startBlockNumber,
-        currentBlockNumber,
-        this.privateRewardEvents.length,
-      );
     }
   }
 
@@ -112,7 +112,6 @@ export default class StakingWrapper {
   }
 
   static async getPoolsData(loggedIn, connector) {
-    debugLog('## getPoolsData');
     const providerOrSigner = loggedIn
       ? new providers.Web3Provider(connector).getSigner()
       : this.privateProvider;
@@ -125,11 +124,20 @@ export default class StakingWrapper {
     ]);
 
     if (!poolsAddrs || !poolsAddrs.length) return [];
+    const poolsApi = await fetch(
+      network
+        ? 'https://staking-api.ambrosus.io/pools/v2'
+        : 'https://staking-api.ambrosus-test.io/pools/v2',
+    );
+    const response = await poolsApi.json();
+    const polsApiData = response.data;
 
     const poolsDataPromises = poolsAddrs.map(async (poolAddr, index) => {
       const poolContract = new ethers.Contract(
         poolAddr,
-        pool.abi,
+        poolAddr === '0x7fecce438b087a83E95C91DC168ad3D150225543'
+          ? abiPoolsWithLimit
+          : pool.abi,
         providerOrSigner,
       );
       const [
@@ -138,29 +146,48 @@ export default class StakingWrapper {
         totalStakeInAMB,
         tokenPriceAMB,
         myStakeInTokens,
-        poolDPY,
+        maxPoolTotalStake,
+        maxUserTotalStake,
+        userStake,
       ] = await Promise.all([
-        poolContract.name(),
-        poolContract.active(),
-        poolContract.totalStake(),
-        poolContract.getTokenPrice(),
-        poolContract.viewStake(),
-        this.privateGetDPY(poolAddr),
+        poolContract.name && poolContract.name(),
+        poolContract.active && poolContract.active(),
+        poolContract.totalStake && poolContract.totalStake(),
+        poolContract.getTokenPrice && poolContract.getTokenPrice(),
+        poolContract.viewStake && poolContract.viewStake(),
+        poolContract.maxTotalStake && poolContract.maxTotalStake(),
+        poolContract.maxUserTotalStake && poolContract.maxUserTotalStake(),
+        poolContract.getStake && poolContract.getStake(),
       ]);
 
+      let days = [];
+      let day = moment();
+      let count = 0;
+      while (count <= 10) {
+        count++;
+        days.push(formatDate(day.valueOf(), true));
+        day = day.clone().add(-1, 'd');
+      }
+      const rewardsArr =
+        contractName &&
+        days.reverse().map((day, indexN) => {
+          return {
+            timestamp: day,
+            reward:
+              polsApiData &&
+              polsApiData[contractName] &&
+              polsApiData[contractName].rewards
+                ? polsApiData[contractName].rewards[10 - indexN]
+                : null,
+          };
+        });
       const myStakeInAMB = myStakeInTokens.mul(tokenPriceAMB).div(FIXED_POINT);
-
-      const poolAPY = math
-        .chain(poolDPY)
-        .add(1)
-        .pow(365)
-        .subtract(1)
-        .multiply(100)
-        .round(2)
-        .done()
-        .toFixed(2);
       const estAR = math
-        .chain(poolAPY)
+        .chain(
+          polsApiData[contractName] && polsApiData[contractName].apy
+            ? polsApiData[contractName].apy
+            : '0',
+        )
         .divide(100)
         .multiply(myStakeInAMB.toString())
         .divide(FIXED_POINT.toString())
@@ -168,61 +195,109 @@ export default class StakingWrapper {
         .done()
         .toFixed(2);
 
-      return {
-        index,
-        contractName,
-        address: poolAddr,
-        active,
-        contract: poolContract,
-        totalStakeInAMB,
-        tokenPriceAMB,
-        myStakeInTokens,
-        myStakeInAMB,
-        poolAPY,
-        estAR,
-      };
+      return (
+        rewardsArr && {
+          index,
+          contractName,
+          address: poolAddr,
+          active,
+          contract: poolContract,
+          totalStakeInAMB,
+          tokenPriceAMB,
+          myStakeInTokens,
+          myStakeInAMB,
+          poolAPY:
+            polsApiData &&
+            polsApiData[contractName] &&
+            polsApiData[contractName]?.apy,
+          estAR,
+          poolRewards: rewardsArr.slice(1, rewardsArr.length - 1),
+          maxPoolTotalStake,
+          maxUserTotalStake,
+          userStake,
+        }
+      );
     });
-
     return Promise.all(poolsDataPromises);
   }
 
-  static async privateGetDPY(poolAddr) {
+  static privateCompareRewards(a, b) {
+    if (a.args.tokenPrice.gt(b.args.tokenPrice)) {
+      return 1;
+    }
+    if (a.args.tokenPrice.lt(b.args.tokenPrice)) {
+      return -1;
+    }
+    return 0;
+  }
+
+  // static async privateGetDPY(poolAddr) {
+  //   const rewardEvents = this.privateRewardEvents;
+  //   if (!rewardEvents || rewardEvents.length < 2) return 0;
+  //
+  //   const sortedPoolRewards = rewardEvents
+  //     .filter((event) => event.args.pool === poolAddr)
+  //     .sort(this.privateCompareRewards);
+  //   if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
+  //
+  //   const [firstReward, lastReward] = await Promise.all(
+  //     sortedPoolRewards
+  //       .filter((_, idx, array) => idx === 0 || idx === array.length - 1)
+  //       .map(async (event) => ({
+  //         blockNumber: event.blockNumber,
+  //         timestamp: (await event.getBlock()).timestamp,
+  //         // pool: event.args.pool,
+  //         reward: event.args.reward,
+  //         tokenPrice: event.args.tokenPrice,
+  //       })),
+  //   );
+  //
+  //   if (lastReward.timestamp - firstReward.timestamp < 300) return 0;
+  //
+  //   return dailyPercentageYieldExpression.evaluate({
+  //     price1: math.bignumber(firstReward.tokenPrice.toString()),
+  //     price2: math.bignumber(lastReward.tokenPrice.toString()),
+  //     time1: firstReward.timestamp,
+  //     time2: lastReward.timestamp,
+  //   });
+  // }
+
+  static async privateGetRewards(poolAddr) {
     const rewardEvents = this.privateRewardEvents;
-    if (!rewardEvents || rewardEvents.length < 2) return 0;
+    if (!rewardEvents || rewardEvents.length < 2) return [];
 
     const sortedPoolRewards = rewardEvents
       .filter((event) => event.args.pool === poolAddr)
-      .sort((a, b) => {
-        if (a.args.tokenPrice.gt(b.args.tokenPrice)) {
-          return 1;
-        }
-        if (a.args.tokenPrice.lt(b.args.tokenPrice)) {
-          return -1;
-        }
-        return 0;
-      });
-    if (!sortedPoolRewards || sortedPoolRewards.length < 2) return 0;
+      .sort(this.privateCompareRewards);
+    if (!sortedPoolRewards || sortedPoolRewards.length < 2) return [];
 
-    const [firstReward, lastReward] = await Promise.all(
-      sortedPoolRewards
-        .filter((_, idx, array) => idx === 0 || idx === array.length - 1)
-        .map(async (event) => ({
-          blockNumber: event.blockNumber,
-          timestamp: (await event.getBlock()).timestamp,
-          pool: event.args.pool,
-          reward: event.args.reward,
-          tokenPrice: event.args.tokenPrice,
-        })),
+    const firstReward = sortedPoolRewards[0];
+    const lastReward = sortedPoolRewards[sortedPoolRewards.length - 1];
+
+    const [firstTimestamp, lastTimestamp] = await Promise.all(
+      [firstReward, lastReward].map(
+        async (event) => (await event.getBlock()).timestamp,
+      ),
     );
 
-    if (lastReward.timestamp - firstReward.timestamp < 300) return 0;
+    if (lastTimestamp - firstTimestamp < 300) return [];
 
-    return dailyPercentageYieldExpression.evaluate({
-      price1: math.bignumber(firstReward.tokenPrice.toString()),
-      price2: math.bignumber(lastReward.tokenPrice.toString()),
-      time1: firstReward.timestamp,
-      time2: lastReward.timestamp,
-    });
+    const avgBlockTime =
+      (lastTimestamp - firstTimestamp) /
+      (lastReward.blockNumber - firstReward.blockNumber);
+
+    const rewards = sortedPoolRewards.map((event) => ({
+      blockNumber: event.blockNumber,
+      timestamp:
+        firstTimestamp +
+        Math.floor(
+          avgBlockTime * (event.blockNumber - firstReward.blockNumber),
+        ),
+      reward: event.args.reward,
+      tokenPrice: event.args.tokenPrice,
+    }));
+
+    return rewards;
   }
 
   static async stake(poolInfo, value) {
@@ -233,12 +308,8 @@ export default class StakingWrapper {
     };
 
     const poolContract = poolInfo.contract;
-
-    debugLog('.stake', poolInfo.index, value);
-
     try {
       overrides.gasLimit = await poolContract.estimateGas.stake(overrides);
-      debugLog('gasLimit', overrides.gasLimit.toString());
       return poolContract.stake(overrides);
     } catch (err) {
       debugLog('stake error', err);
@@ -247,8 +318,6 @@ export default class StakingWrapper {
   }
 
   static async unstake(poolInfo, value, fullUnstake = false) {
-    debugLog('unstake', poolInfo.contractName, value, fullUnstake);
-
     const poolContract = poolInfo.contract;
     const [tokenPriceAMB, myStakeInTokens] = await Promise.all([
       poolContract.getTokenPrice(),
@@ -258,15 +327,6 @@ export default class StakingWrapper {
     const tokens = fullUnstake
       ? myStakeInTokens
       : parseFloatToBigNumber(value).mul(FIXED_POINT).div(tokenPriceAMB);
-
-    debugLog(
-      'unstake ##',
-      poolInfo.index,
-      value,
-      fullUnstake,
-      tokens.toString(),
-      tokenPriceAMB.toString(),
-    );
 
     const overrides = {
       gasPrice: transactionGasPrice,
@@ -278,7 +338,6 @@ export default class StakingWrapper {
         tokens,
         overrides,
       );
-      debugLog('gasLimit', overrides.gasLimit.toString());
       return poolContract.unstake(tokens, overrides);
     } catch (err) {
       debugLog('unstake error', err);

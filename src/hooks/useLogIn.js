@@ -4,7 +4,6 @@ import { useWeb3React } from '@web3-react/core';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { injected, MAIN_PAGE, STAKING_PAGE, walletconnect } from 'config';
 import useMobileDetect from './useMobileDetect';
-import { debugLog } from 'utils/helpers';
 import appStore from 'store/app.store';
 
 const useLogIn = () => {
@@ -14,7 +13,6 @@ const useLogIn = () => {
   const { isDesktop } = useMobileDetect();
 
   const logIn = async (appConnector) => {
-    debugLog('logIn');
     localStorage.removeItem('connector');
     localStorage.removeItem('walletconnect');
     try {
