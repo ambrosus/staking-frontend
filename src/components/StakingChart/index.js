@@ -84,8 +84,8 @@ const StakingChart = ({ poolsArr }) => {
               src={poolIcon(pickedName.index)}
               wrapper="div"
             />
-            {pickedName?.contractName.length > 9
-              ? ` ${pickedName?.contractName.substr(0, 9)}...`
+            {pickedName?.contractName.length > 7
+              ? ` ${pickedName?.contractName.substr(0, 7)}...`
               : ` ${pickedName?.contractName}`}
           </div>
         )}
@@ -108,8 +108,8 @@ const StakingChart = ({ poolsArr }) => {
                   src={poolIcon(pool.index)}
                   wrapper="div"
                 />
-                {pool?.contractName.length > 9
-                  ? ` ${pool?.contractName.substr(0, 9)}...`
+                {pool?.contractName.length > 7
+                  ? ` ${pool?.contractName.substr(0, 7)}...`
                   : ` ${pool?.contractName}`}
               </div>
             ),
