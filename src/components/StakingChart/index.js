@@ -127,10 +127,11 @@ const StakingChart = ({ poolsArr }) => {
         >
           <YAxis hide domain={['auto', 'auto']} />
           <XAxis
+            domain={['auto', 'auto', 'auto', 'auto']}
             dataKey={({ timestamp }) => timestamp}
             fontSize={12}
-            interval={2}
             axisLine={false}
+            interval={1}
             tickLine={false}
             style={{
               fontSize: 12,
