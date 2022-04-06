@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { useMobileDetect, useTimeout } from 'hooks';
 import RenderItems from '../../components/RenderItems';
 import { FIXED_POINT } from '../../services/numbers';
-import { bounce, ethereum, PoolsContext, tooltips } from 'config';
+import { bounce, ethereum, MAIN_PAGE, PoolsContext, tooltips } from 'config';
 import appStore from 'store/app.store';
 import { Loader } from '../../components/Loader';
 import { collapsedReducer } from 'utils/reducers';
@@ -16,6 +16,7 @@ import ReactTooltip from 'react-tooltip';
 import { ReactSVG } from 'react-svg';
 import errorOutlineIcon from 'assets/svg/error_outline.svg';
 import { Header } from 'components/layouts/Header';
+import { useLocation } from 'react-router-dom';
 
 const NotSupported = React.lazy(() =>
   import(/* webpackPrefetch: true */ '../../components/NotSupported'),
@@ -28,6 +29,8 @@ const Staking = observer(() => {
   const [checkNetworkChain, setCheckNetworkChain] = useState(false);
   const [pools, getPools] = useContext(PoolsContext);
   const { isDesktop } = useMobileDetect();
+  const { pathname } = useLocation();
+  const isMainPage = pathname === MAIN_PAGE;
 
   useTimeout(() => setCheckNetworkChain(true), 1500);
 
@@ -72,10 +75,16 @@ const Staking = observer(() => {
                     )}
                     <div className="staking__header">
                       <div style={{ fontSize: 18 }}>Pool</div>
-                      {isDesktop ? (
-                        <div>My Stake/Max Stake</div>
+                      {isMainPage ? (
+                        <div>Max Stake</div>
                       ) : (
-                        <div>My Stake</div>
+                        <div>
+                          {isDesktop ? (
+                            <div>My Stake/Max Stake</div>
+                          ) : (
+                            <div>My Stake</div>
+                          )}
+                        </div>
                       )}
                       <ReactTooltip id="max-total-staked">
                         {tooltips.totalMaxStaked}

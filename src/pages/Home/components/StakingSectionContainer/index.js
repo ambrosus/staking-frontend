@@ -12,6 +12,7 @@ import {
   MAIN_PAGE,
   PoolsContext,
   STAKE,
+  tooltips,
   walletconnect,
 } from 'config';
 import RenderItems from '../../../../components/RenderItems';
@@ -25,13 +26,15 @@ import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
 import appStore from 'store/app.store';
 import paragrapfIcon from 'assets/svg/paragrapf-icon.svg';
+import ReactTooltip from 'react-tooltip';
+import errorOutlineIcon from 'assets/svg/error_outline.svg';
 
 export default () => {
   const { pathname } = useLocation();
+  const isMainPage = pathname === MAIN_PAGE;
   const [pools, getPools] = useContext(PoolsContext);
   const [rangeValue, setRangeValue] = useState(50000);
   const inputRef = useRef(null);
-  const isMainPage = pathname === MAIN_PAGE;
   const { isDesktop } = useMobileDetect();
 
   const isSmall = useMedia('(max-width: 699px)');
@@ -64,24 +67,59 @@ export default () => {
         </div>
         {pools.length > 0 ? (
           <>
-            <div
-              className="staking__header"
-              style={{
-                color: isMainPage && '#FFFFFF',
-              }}
-            >
-              <div className="staking__header__clearfix-pool">Pool</div>
-              <div style={{ marginLeft: !isSmall ? 140 : -85 }}>
-                Total pool stake
-              </div>
+            <div className="staking__header">
               <div
-                className="staking__header__clearfix-apy"
-                style={{ marginLeft: !isSmall ? 146 : -75 }}
+                style={{
+                  fontSize: 18,
+                  paddingRight: isDesktop && isMainPage && 81,
+                }}
               >
-                APY
+                Pool
               </div>
-              <div style={{ maxWidth: 160, minWidth: 160 }} />
+              {isMainPage ? (
+                <div>Max Stake</div>
+              ) : (
+                <div>
+                  {isDesktop ? (
+                    <div>My Stake/Max Stake</div>
+                  ) : (
+                    <div>My Stake</div>
+                  )}
+                </div>
+              )}
+              <ReactTooltip id="max-total-staked">
+                {tooltips.totalMaxStaked}
+              </ReactTooltip>
+              {isDesktop && !isMainPage && (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  data-for="max-total-staked"
+                >
+                  Total Max Stake&nbsp;
+                  <ReactSVG
+                    data-tip
+                    data-for="total-staked"
+                    src={errorOutlineIcon}
+                    wrapper="span"
+                  />
+                </div>
+              )}
+              {isDesktop && (
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  Total pool stake{' '}
+                </div>
+              )}
+              <div style={{ fontSize: 18 }}>APY</div>
+              <div
+                style={{ marginRight: isDesktop && isMainPage ? -132 : -20 }}
+              />
             </div>
+
             <div className="staking__pools">
               <RenderItems>
                 <>
