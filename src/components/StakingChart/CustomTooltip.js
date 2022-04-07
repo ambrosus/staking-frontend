@@ -7,10 +7,7 @@ const CustomTooltip = ({ active, payload }) => {
     return (
       <div
         style={{
-          position: 'absolute',
-          top: 10,
           flexDirection: 'column',
-          zIndex: -1,
           border: '0px',
           background: '#262626',
           boxShadow:

@@ -7,14 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { ReactSVG } from 'react-svg';
 import { FIXED_POINT, formatRounded } from '../../services/numbers';
-import {
-  HIDE,
-  injected,
-  SHOW,
-  STAKE,
-  STAKING_PAGE,
-  walletconnect,
-} from 'config';
+import { HIDE, injected, MAIN_PAGE, SHOW, STAKE, walletconnect } from 'config';
 import { poolIcon } from 'utils/helpers';
 import Paragraph from '../Paragraph';
 import DisplayValue from '../DisplayValue';
@@ -50,6 +43,8 @@ const StakingItem = ({
   const { logIn } = useLogIn();
   const { isDesktop } = useMobileDetect();
   const h2ref = useRef(null);
+  const isMainPage = pathname === MAIN_PAGE;
+
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
   const MAX_POOL_STAKE =
@@ -93,12 +88,12 @@ const StakingItem = ({
           <div
             className="item--header__flex"
             style={{
-              paddingRight: pathname === STAKING_PAGE ? 40 : 130,
+              paddingRight: !isMainPage ? 40 : 130,
             }}
           >
             <div
               style={{
-                marginRight: pathname === STAKING_PAGE ? -50 : 0,
+                marginRight: !isMainPage ? -50 : 0,
                 color: !myStakeInAMB && !isPoolActive && 'rgb(191 201 224)',
               }}
               className="item--header__flex__pool"
@@ -117,93 +112,98 @@ const StakingItem = ({
                 {contractName && contractName.substring(0, 8)}
               </p>
             </div>
-            {isDesktop && pathname === STAKING_PAGE ? (
-              <div
-                style={{
-                  marginRight: pathname === STAKING_PAGE ? 10 : '',
-                }}
-                className="item--header__flex__my-stake"
-              >
-                <div
-                  style={{
-                    width: 'max-content',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    marginLeft: 10,
-                  }}
-                >
-                  {/* TODO maybe here is another condition */}
-                  {myStakeInAMB && MAX_POOL_STAKE && (
+            {!isMainPage && (
+              <>
+                {isDesktop ? (
+                  <div
+                    style={{
+                      marginRight: !isMainPage ? 10 : '',
+                    }}
+                    className="item--header__flex__my-stake"
+                  >
                     <div
                       style={{
-                        position: 'absolute',
-                        bottom: '-9px',
-                        width: '100%',
-                        height: '2.5px',
-                        border: '0.2px solid #15D378',
-                        overflow: 'hidden',
+                        width: 'max-content',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative',
+                        marginLeft: 10,
                       }}
                     >
-                      <div
-                        style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          top: 0,
-                          left: 0,
-                          height: 2.5,
-                          background: '#15D378',
-                          width: `${
-                            100 /
-                            (+formatRounded(MAX_USER_STAKE, 18) /
-                              +formatRounded(myStakeInAMB, 18))
-                          }%`,
-                        }}
+                      {/* TODO maybe here is another condition */}
+                      {myStakeInAMB && MAX_POOL_STAKE && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            bottom: '-9px',
+                            width: '100%',
+                            height: '2.5px',
+                            border: '0.2px solid #15D378',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: 0,
+                              top: 0,
+                              left: 0,
+                              height: 2.5,
+                              background: '#15D378',
+                              width: `${
+                                100 /
+                                (+formatRounded(MAX_USER_STAKE, 18) /
+                                  +formatRounded(myStakeInAMB, 18))
+                              }%`,
+                            }}
+                          />
+                        </div>
+                      )}
+                      <DisplayValue
+                        color={isPoolActive ? '#15D378' : 'rgb(191, 201, 224)'}
+                        value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
                       />
-                    </div>
-                  )}
-                  <DisplayValue
-                    color={isPoolActive ? '#15D378' : 'rgb(191, 201, 224)'}
-                    value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
-                  />
 
-                  {MAX_USER_STAKE && (
-                    <>
-                      <span style={{ color: '#fff' }}>&nbsp;/&nbsp;</span>
+                      {MAX_USER_STAKE && (
+                        <>
+                          <span style={{ color: '#fff' }}>&nbsp;/&nbsp;</span>
+                          <DisplayValue
+                            color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                            value={formatRounded(MAX_USER_STAKE, 2)}
+                          />
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      marginRight: !isMainPage ? 10 : '',
+                    }}
+                    className="item--header__flex__my-stake"
+                  >
+                    <div
+                      style={{
+                        width: 'max-content',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative',
+                        marginLeft: 0,
+                        paddingLeft: 11,
+                      }}
+                    >
                       <DisplayValue
                         color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
-                        value={formatRounded(MAX_USER_STAKE, 2)}
+                        value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
                       />
-                    </>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div
-                style={{
-                  marginRight: pathname === STAKING_PAGE ? 10 : '',
-                }}
-                className="item--header__flex__my-stake"
-              >
-                <div
-                  style={{
-                    width: 'max-content',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    marginLeft: 0,
-                    paddingLeft: 11,
-                  }}
-                >
-                  <DisplayValue
-                    color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
-                    value={myStakeInAMB && formatRounded(myStakeInAMB, 2)}
-                  />
-                </div>
-              </div>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
+
             {
               /* eslint-disable-next-line */
               isDesktop ? (
@@ -221,7 +221,47 @@ const StakingItem = ({
                 ) : (
                   <div
                     className="item--header__flex__vault-assets"
-                    style={{ paddingLeft: !MAX_POOL_STAKE && isDesktop && 10 }}
+                    style={{
+                      paddingLeft:
+                        !MAX_POOL_STAKE && isDesktop && !isMainPage ? 10 : 30,
+                    }}
+                  >
+                    <div style={{ width: 150 }}>
+                      <Paragraph
+                        style={{
+                          color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
+                          fontSize: 16,
+                        }}
+                        size="l-500"
+                      >
+                        Unlimited
+                      </Paragraph>
+                    </div>
+                  </div>
+                )
+              ) : null
+            }
+            {
+              /* eslint-disable-next-line */
+              !isDesktop && isMainPage ? (
+                MAX_POOL_STAKE ? (
+                  <div className="item--header__flex__vault-assets">
+                    <div style={{ width: 150, fontSize: 16 }}>
+                      <DisplayValue
+                        color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                        value={
+                          MAX_POOL_STAKE && formatRounded(MAX_POOL_STAKE, 2)
+                        }
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className="item--header__flex__vault-assets"
+                    style={{
+                      paddingLeft:
+                        !MAX_POOL_STAKE && isDesktop && !isMainPage ? 10 : 0,
+                    }}
                   >
                     <div style={{ width: 150 }}>
                       <Paragraph
@@ -241,7 +281,10 @@ const StakingItem = ({
             {isDesktop && (
               <div
                 className="item--header__flex__vault-assets"
-                style={{ paddingLeft: !MAX_POOL_STAKE && isDesktop && 10 }}
+                style={{
+                  paddingLeft:
+                    !MAX_POOL_STAKE && isDesktop && !isMainPage ? 10 : 43,
+                }}
               >
                 <div style={{ width: 150 }}>
                   <DisplayValue
@@ -255,6 +298,7 @@ const StakingItem = ({
               className="item--header__flex__apy"
               style={{
                 marginLeft: -20,
+                paddingLeft: isDesktop && isMainPage ? 100 : 10,
               }}
             >
               {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (
@@ -285,7 +329,7 @@ const StakingItem = ({
                 {expand &&
                   (state[index] && activeExpand === index ? HIDE : SHOW)}
                 {!expand && STAKE}
-                {pathname === STAKING_PAGE && (
+                {!isMainPage && (
                   <ReactSVG
                     style={{
                       marginLeft: 11,
@@ -302,7 +346,7 @@ const StakingItem = ({
             </Scroll>
           </span>
         </div>
-        {pathname === STAKING_PAGE && (
+        {!isMainPage && (
           <Collapse
             isOpen={state[index] ? activeExpand === index : state[index]}
           >
