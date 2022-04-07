@@ -70,7 +70,7 @@ export default () => {
             <div className="staking__header">
               <div
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   paddingRight: isDesktop && isMainPage && 81,
                 }}
               >
@@ -79,11 +79,27 @@ export default () => {
               {isDesktop && (
                 <>
                   {isMainPage ? (
-                    <div>Max Stake</div>
+                    <div
+                      style={{
+                        fontSize: 16,
+                      }}
+                    >
+                      Max Stake
+                    </div>
                   ) : (
-                    <div>
+                    <div
+                      style={{
+                        fontSize: 16,
+                      }}
+                    >
                       {isDesktop ? (
-                        <div>My Stake/Max Stake</div>
+                        <div
+                          style={{
+                            fontSize: 16,
+                          }}
+                        >
+                          My Stake/Max Stake
+                        </div>
                       ) : (
                         <div>My Stake</div>
                       )}
@@ -101,6 +117,7 @@ export default () => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    fontSize: 16,
                   }}
                   data-for="max-total-staked"
                 >
@@ -113,10 +130,12 @@ export default () => {
                   />
                 </div>
               )}
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div
+                style={{ display: 'flex', flexDirection: 'row', fontSize: 16 }}
+              >
                 Total pool stake{' '}
               </div>
-              <div style={{ fontSize: 18 }}>APY</div>
+              <div style={{ fontSize: 16 }}>APY</div>
               <div
                 style={{ marginRight: isDesktop && isMainPage ? -132 : -20 }}
               />

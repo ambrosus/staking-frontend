@@ -111,7 +111,7 @@ const StakingChart = ({ poolsArr }) => {
           data={chartData}
           margin={{
             top: 10,
-            right: isDesktop ? 25 : -70,
+            right: isDesktop ? 25 : 30,
             left: 25,
             bottom: 0,
           }}
