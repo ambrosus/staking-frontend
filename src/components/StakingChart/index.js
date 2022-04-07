@@ -13,7 +13,7 @@ const StakingChart = ({ poolsArr }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [pickedName, setPickedName] = useState({});
-  const [chartWidth, setChartWidth] = useState(500);
+  const [chartWidth, setChartWidth] = useState(580);
   const { isDesktop } = useMobileDetect();
   const chartRef = useRef(null);
   const refPoolsListContainer = useRef(null);
@@ -111,7 +111,7 @@ const StakingChart = ({ poolsArr }) => {
           data={chartData}
           margin={{
             top: 10,
-            right: isDesktop ? 40 : -70,
+            right: isDesktop ? 25 : 30,
             left: 25,
             bottom: 0,
           }}
@@ -135,21 +135,7 @@ const StakingChart = ({ poolsArr }) => {
             stopColor="#FFFFFF"
           />
 
-          <Tooltip
-            cursor={false}
-            content={<CustomTooltip />}
-            wrapperStyle={{
-              position: 'absolute',
-              top: -10,
-              left: -43,
-              right: 0,
-              bottom: 0,
-              width: 67,
-              height: '75%',
-              background:
-                'linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50.26%, rgba(255, 255, 255, 0) 100%)',
-            }}
-          />
+          <Tooltip cursor={false} content={<CustomTooltip />} />
           <Area
             dataKey="reward"
             stroke="#15D378"
