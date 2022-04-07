@@ -283,7 +283,9 @@ const StakingItem = ({
               className="item--header__flex__apy"
               style={{
                 marginLeft: -20,
-                paddingLeft: isDesktop && isMainPage ? 87 : 0,
+                paddingLeft:
+                  // eslint-disable-next-line
+                  isDesktop && isMainPage ? 87 : !isMainPage ? 2 : 20,
               }}
             >
               {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (
