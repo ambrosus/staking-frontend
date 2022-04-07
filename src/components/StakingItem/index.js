@@ -233,7 +233,7 @@ const StakingItem = ({
                       <Paragraph
                         style={{
                           color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
-                          fontSize: isMainPage && 20,
+                          fontSize: isMainPage ? 20 : 16,
                         }}
                         size="l-500"
                       >
