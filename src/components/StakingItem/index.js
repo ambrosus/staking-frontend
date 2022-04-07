@@ -241,49 +241,29 @@ const StakingItem = ({
                 )
               ) : null
             }
-            {
-              /* eslint-disable-next-line */
-              !isDesktop && isMainPage ? (
-                MAX_POOL_STAKE ? (
-                  <div className="item--header__flex__vault-assets">
-                    <div style={{ width: 150, fontSize: 16 }}>
-                      <DisplayValue
-                        color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
-                        value={
-                          MAX_POOL_STAKE && formatRounded(MAX_POOL_STAKE, 2)
-                        }
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className="item--header__flex__vault-assets"
-                    style={{
-                      paddingLeft:
-                        !MAX_POOL_STAKE && isDesktop && !isMainPage ? 10 : 0,
-                    }}
-                  >
-                    <div style={{ width: 150 }}>
-                      <Paragraph
-                        style={{
-                          color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
-                          fontSize: 16,
-                        }}
-                        size="l-500"
-                      >
-                        Unlimited
-                      </Paragraph>
-                    </div>
-                  </div>
-                )
-              ) : null
-            }
+
             {isDesktop && (
               <div
                 className="item--header__flex__vault-assets"
                 style={{
                   paddingLeft:
                     !MAX_POOL_STAKE && isDesktop && !isMainPage ? 10 : 43,
+                }}
+              >
+                <div style={{ width: 150 }}>
+                  <DisplayValue
+                    color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
+                    value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
+                  />
+                </div>
+              </div>
+            )}
+            {!isDesktop && isMainPage && (
+              <div
+                className="item--header__flex__vault-assets"
+                style={{
+                  paddingLeft:
+                    !MAX_POOL_STAKE && isDesktop && !isMainPage ? 10 : 3,
                 }}
               >
                 <div style={{ width: 150 }}>

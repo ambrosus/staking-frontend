@@ -76,16 +76,20 @@ export default () => {
               >
                 Pool
               </div>
-              {isMainPage ? (
-                <div>Max Stake</div>
-              ) : (
-                <div>
-                  {isDesktop ? (
-                    <div>My Stake/Max Stake</div>
+              {isDesktop && (
+                <>
+                  {isMainPage ? (
+                    <div>Max Stake</div>
                   ) : (
-                    <div>My Stake</div>
+                    <div>
+                      {isDesktop ? (
+                        <div>My Stake/Max Stake</div>
+                      ) : (
+                        <div>My Stake</div>
+                      )}
+                    </div>
                   )}
-                </div>
+                </>
               )}
               <ReactTooltip id="max-total-staked">
                 {tooltips.totalMaxStaked}
@@ -109,11 +113,9 @@ export default () => {
                   />
                 </div>
               )}
-              {isDesktop && (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  Total pool stake{' '}
-                </div>
-              )}
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                Total pool stake{' '}
+              </div>
               <div style={{ fontSize: 18 }}>APY</div>
               <div
                 style={{ marginRight: isDesktop && isMainPage ? -132 : -20 }}
