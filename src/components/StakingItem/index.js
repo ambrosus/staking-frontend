@@ -255,7 +255,7 @@ const StakingItem = ({
               >
                 <div style={{ width: 150 }}>
                   <DisplayValue
-                    styles={{ fontSize: isMainPage && 20 }}
+                    styles={{ fontSize: isMainPage ? 20 : 16 }}
                     color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                     value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
                   />
@@ -272,7 +272,7 @@ const StakingItem = ({
               >
                 <div style={{ width: 150 }}>
                   <DisplayValue
-                    styles={{ fontSize: isMainPage && 20 }}
+                    styles={{ fontSize: isMainPage ? 20 : 16 }}
                     color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                     value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
                   />
