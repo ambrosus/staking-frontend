@@ -135,7 +135,14 @@ export default () => {
               >
                 Total pool stake{' '}
               </div>
-              <div style={{ fontSize: 16 }}>APY</div>
+              <div
+                style={{
+                  fontSize: 16,
+                  paddingLeft: isMainPage && isDesktop ? 0 : 12,
+                }}
+              >
+                APY
+              </div>
               <div
                 style={{ marginRight: isDesktop && isMainPage ? -132 : -20 }}
               />
