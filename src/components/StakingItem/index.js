@@ -106,7 +106,7 @@ const StakingItem = ({
               <p
                 className="pool-title"
                 style={{
-                  fontSize: isMainPage && 26,
+                  fontSize: isMainPage && isDesktop ? 26 : 18,
                   color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
                 }}
               >
@@ -213,7 +213,7 @@ const StakingItem = ({
                   <div className="item--header__flex__vault-assets">
                     <div style={{ width: 150, fontSize: 16 }}>
                       <DisplayValue
-                        styles={{ fontSize: isMainPage && 16 }}
+                        styles={{ fontSize: isMainPage && 20 }}
                         color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                         value={
                           MAX_POOL_STAKE && formatRounded(MAX_POOL_STAKE, 2)
@@ -233,7 +233,7 @@ const StakingItem = ({
                       <Paragraph
                         style={{
                           color: isPoolActive ? '#FFF' : 'rgb(191, 201, 224)',
-                          fontSize: 16,
+                          fontSize: isMainPage && 20,
                         }}
                         size="l-500"
                       >
@@ -255,7 +255,7 @@ const StakingItem = ({
               >
                 <div style={{ width: 150 }}>
                   <DisplayValue
-                    styles={{ fontSize: isMainPage && 16 }}
+                    styles={{ fontSize: isMainPage && 20 }}
                     color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                     value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
                   />
@@ -272,7 +272,7 @@ const StakingItem = ({
               >
                 <div style={{ width: 150 }}>
                   <DisplayValue
-                    styles={{ fontSize: isMainPage && 16 }}
+                    styles={{ fontSize: isMainPage && 20 }}
                     color={isPoolActive ? '#FFF' : 'rgb(191, 201, 224)'}
                     value={totalStakeInAMB && formatRounded(totalStakeInAMB, 2)}
                   />
@@ -283,13 +283,13 @@ const StakingItem = ({
               className="item--header__flex__apy"
               style={{
                 marginLeft: -20,
-                paddingLeft: isDesktop && isMainPage ? 100 : 20,
+                paddingLeft: isDesktop && isMainPage ? 85 : 20,
               }}
             >
               {isPoolActive === false && totalStakeInAMB.gte(FIXED_POINT) ? (
                 <Paragraph
                   style={{
-                    fontSize: isMainPage && 16,
+                    fontSize: isMainPage && 20,
                     color: isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)',
                   }}
                   size="l-700"
@@ -301,7 +301,7 @@ const StakingItem = ({
                   color={isPoolActive ? '#1ACD8C' : 'rgb(191, 201, 224)'}
                   size="l-700"
                   styles={{
-                    fontSize: 16,
+                    fontSize: isMainPage && 20,
                   }}
                   symbol="%"
                   value={poolAPY}
@@ -311,7 +311,12 @@ const StakingItem = ({
           </div>
           <span role="presentation" onClick={stakeBtnHandler}>
             <Scroll type="id" element="stack-item">
-              <p className="item--header__collapse-btn">
+              <p
+                className="item--header__collapse-btn"
+                style={{
+                  fontSize: isMainPage && isDesktop && 16,
+                }}
+              >
                 {expand &&
                   (state[index] && activeExpand === index ? HIDE : SHOW)}
                 {!expand && STAKE}
