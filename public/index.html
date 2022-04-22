@@ -1,68 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.png" type="image/png">
-    <link rel="prefetch" href="https://token.ambrosus.io"/>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Bd.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Blk.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Hl.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Hl_1.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Lt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Md.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Rg.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Th.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-XBd.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-XTh.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Black.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Light.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Medium.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Ultrabold.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Ultralight.woff2" as="font" type="font/woff2" crossorigin>
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WSD9HSM');</script>
+  <!-- End Google Tag Manager -->
 
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Black.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-BlackIt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-BoldIt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Extrabld.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-ExtrabldIt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Light.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-LightIt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-RegularIt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Semibold.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-SemiboldIt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-ThinIt.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNovaT-Thin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="%PUBLIC_URL%/../src/styles/Main.scss" as="style">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.png" type="image/png">
+  <link rel="prefetch" href="https://token.ambrosus.io"/>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Bd.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Blk.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Hl.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Hl_1.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Lt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Md.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Rg.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-Th.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-XBd.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/HalvarBreitschrift/HalvarBreit-XTh.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Light.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Ultrabold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/NeueMachina/NeueMachina-Ultralight.woff2" as="font" type="font/woff2" crossorigin>
 
-    <title>Ambrosus Arcadia Staking</title>
-    <meta property="og:title" content="Ambrosus Arcadia Staking" />
-    <meta name="twitter:title" content="Ambrosus Arcadia Staking" />
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-BlackIt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-BoldIt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Extrabld.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-ExtrabldIt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Light.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-LightIt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-RegularIt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-SemiboldIt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNova-ThinIt.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%PUBLIC_URL%/../src/assets/fonts/ProximaNova/ProximaNovaT-Thin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="%PUBLIC_URL%/../src/styles/Main.scss" as="style">
 
-    <meta name="description" content="Stake your AMB and receive up to 35% APY in a few clicks." />
-    <meta property="og:description" content="Stake your AMB and receive up to 35% APY in a few clicks." />
-    <meta name="twitter:description" content="Stake your AMB and receive up to 35% APY in a few clicks." />
+  <title>Ambrosus Arcadia Staking</title>
+  <meta property="og:title" content="Ambrosus Arcadia Staking" />
+  <meta name="twitter:title" content="Ambrosus Arcadia Staking" />
 
-    <meta property="og:image" content="%PUBLIC_URL%/og.png" />
-    <meta name="twitter:image" content="%PUBLIC_URL%/og.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="600" />
+  <meta name="description" content="Stake your AMB and receive up to 35% APY in a few clicks." />
+  <meta property="og:description" content="Stake your AMB and receive up to 35% APY in a few clicks." />
+  <meta name="twitter:description" content="Stake your AMB and receive up to 35% APY in a few clicks." />
 
-    <meta name="twitter:site" content="@Amb_Ecosystem" />
-    <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:image" content="%PUBLIC_URL%/og.png" />
+  <meta name="twitter:image" content="%PUBLIC_URL%/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="600" />
 
-  </head>
-  <body>
+  <meta name="twitter:site" content="@Amb_Ecosystem" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSD9HSM"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+</body>
 </html>
