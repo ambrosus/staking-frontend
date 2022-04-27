@@ -26,7 +26,6 @@ import {
 import appStore from '../../../../store/app.store';
 import { useModal } from 'hooks';
 import TransactionModal from 'pages/Staking/components/TransactionModal';
-import TagManager from 'react-gtm-module';
 
 const Withdraw = observer(({ withdrawContractInfo }) => {
   const { myStakeInAMB } = withdrawContractInfo;
@@ -42,11 +41,6 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
     if (!checkValidNumberString(inputValue)) {
       return false;
     }
-    const args = {
-      event: 'Withdraw',
-      event_category: 'Button',
-    };
-    TagManager.dataLayer(args);
     const tx = await StakingWrapper.unstake(
       withdrawContractInfo,
       inputValue,
@@ -72,7 +66,9 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
       notificationMassage('ERROR', `Transaction ${shortHash} failed!`);
       return false;
     }
-
+    window.dataLayer.push({
+      event: 'Withdraw',
+    });
     return appStore.setRefresh();
   };
 
@@ -225,6 +221,29 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
             }
             onclick={withdrawPayment}
           >
+            <noscript>
+              {/* eslint-disable-next-line */}
+              <iframe
+                // eslint-disable-next-line
+                title="Withdraw"
+                // eslint-disable-next-line
+                src="https://www.googletagmanager.com/ns.html?id=GTM-WSD9HSM"
+                height="0"
+                // eslint-disable-next-line
+                width="0"
+                // eslint-disable-next-line
+                style="display:none;visibility:hidden"
+              >
+                {/* eslint-disable-next-line */}
+                <script>
+                  {/* eslint-disable-next-line */}
+                  gtag("event", "Withdraw"); gtag('event', 'Withdraw);
+                </script>
+                {/* eslint-disable-next-line */}
+              </iframe>
+              {/* eslint-disable-next-line */}
+            </noscript>
+            <script type="text/javascript"></script>
             <p className="deposit-stake-btn__text">Withdraw</p>
           </Button>
         </div>
