@@ -32,6 +32,7 @@ import {
 } from '../../../../config';
 import { useMobileDetect, useModal } from '../../../../hooks';
 import TransactionModal from '../TransactionModal';
+import TagManager from 'react-gtm-module';
 
 const Deposit = observer(({ depositInfo }) => {
   const { myStakeInAMB, active: isPoolActive, maxUserTotalStake } = depositInfo;
@@ -51,6 +52,11 @@ const Deposit = observer(({ depositInfo }) => {
     if (!checkValidNumberString(inputValue)) {
       return false;
     }
+    const args = {
+      event: 'Stake',
+      event_category: 'Button',
+    };
+    TagManager.dataLayer(args);
 
     const tx = await StakingWrapper.stake(depositInfo, inputValue);
     debugLog('stake', tx);

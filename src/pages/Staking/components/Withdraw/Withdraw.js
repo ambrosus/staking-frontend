@@ -26,6 +26,7 @@ import {
 import appStore from '../../../../store/app.store';
 import { useModal } from 'hooks';
 import TransactionModal from 'pages/Staking/components/TransactionModal';
+import TagManager from 'react-gtm-module';
 
 const Withdraw = observer(({ withdrawContractInfo }) => {
   const { myStakeInAMB } = withdrawContractInfo;
@@ -41,7 +42,11 @@ const Withdraw = observer(({ withdrawContractInfo }) => {
     if (!checkValidNumberString(inputValue)) {
       return false;
     }
-
+    const args = {
+      event: 'Withdraw',
+      event_category: 'Button',
+    };
+    TagManager.dataLayer(args);
     const tx = await StakingWrapper.unstake(
       withdrawContractInfo,
       inputValue,
