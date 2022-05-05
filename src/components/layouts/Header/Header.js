@@ -149,10 +149,12 @@ const Submenu = ({ name = '', data = [{}] }) => (
     <div
       className="submenu__items"
       style={{
-        '--items-amount': name === 'COMMUNITY' ? data.length + 2 : data.length,
+        '--items-amount': name === 'Use AMB' ? data.length + 2 : data.length,
+        right: name === 'Use AMB' ? 0 : 'auto',
+        left: name === 'Use AMB' ? 'auto' : '-1rem',
       }}
     >
-      {name === 'COMMUNITY' && ethereum && (
+      {name === 'Use AMB' && ethereum && (
         <button
           type="button"
           className="connect-metamask-btn submenu__item"
@@ -185,8 +187,12 @@ const HEADER_DATA = [
     name: 'ABOUT',
     data: [
       {
-        name: 'About AMB',
+        name: 'Company',
         link: 'https://ambrosus.io/about',
+      },
+      {
+        name: 'Team (Coming soon)',
+        link: '#',
       },
       {
         name: 'Roadmap',
@@ -195,9 +201,18 @@ const HEADER_DATA = [
     ],
   },
   {
-    type: 'link',
+    type: 'submenu',
     name: 'BUSINESS',
-    link: 'https://ambrosus.io/business',
+    data: [
+      {
+        name: 'Enterprise',
+        link: 'https://ambrosus.io/business',
+      },
+      {
+        name: 'DeFi (Coming soon)',
+        link: '#',
+      },
+    ],
   },
   {
     type: 'submenu',
@@ -206,18 +221,6 @@ const HEADER_DATA = [
       {
         name: 'GET INVOLVED',
         link: 'https://ambrosus.io/community/',
-      },
-      {
-        name: 'USE AMB',
-        link: 'https://ambrosus.io/amb/',
-      },
-      {
-        name: 'WALLET',
-        link: 'https://ambrosus.io/wallet/',
-      },
-      {
-        name: 'STAKING',
-        link: 'https://staking.ambrosus.io/',
       },
       {
         name: 'FORUM',
@@ -231,8 +234,37 @@ const HEADER_DATA = [
     link: 'https://ambrosus.io/developers',
   },
   {
-    type: 'link',
-    name: 'EXPLORER',
-    link: 'https://explorer.ambrosus.io/',
+    type: 'submenu',
+    name: 'Use AMB',
+    data: [
+      {
+        name: 'USE AMB',
+        link: 'https://ambrosus.io/amb/',
+      },
+      {
+        name: 'WALLET',
+        link: 'https://ambrosus.io/wallet/',
+      },
+      {
+        name: 'STAKING',
+        link: 'https://staking.ambrosus.io/',
+      },
+      {
+        name: 'Network Explorer',
+        link: 'https://explorer.ambrosus.io/',
+      },
+      {
+        name: 'AMB.TO (Asset Exploer)',
+        link: 'https://amb.to/',
+      },
+      {
+        name: 'AMB.Money (ROI Calculator)',
+        link: 'https://amb.money/',
+      },
+      {
+        name: 'Network Explorer Beta (Coming soon)',
+        link: '#',
+      },
+    ],
   },
 ];

@@ -152,10 +152,10 @@ const MobileSubmenu = ({
         right: -40,
         width: 310,
         '--items-amount':
-          name === 'COMMUNITY' ? data.length + 1 + 0.5 : data.length,
+          name === 'Use AMB' ? data.length + 1 + 0.5 : data.length,
       }}
     >
-      {name === 'COMMUNITY' && isOpen && (
+      {name === 'Use AMB' && isOpen && (
         <button
           className="connect-metamask-btn"
           type="button"

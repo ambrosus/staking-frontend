@@ -109,13 +109,10 @@
 
 .submenu__items {
   width: 27rem;
-
   position: absolute;
+
   top: 6.25rem;
-  left: -1rem;
-
   overflow: hidden;
-
   background: $black;
   box-shadow: 0 6px 10px rgba(37, 37, 37, 0.25), 0 4px 4px rgba(0, 0, 0, 0.15);
 
@@ -131,7 +128,10 @@
   // where 2.875rem = height + margins + some gap
   // and 1.5rem is additional space at top and bottom
   // this needed for equal animation speed for any amount of items inside
+  //need for last-child  right: 0; with scss
+
 }
+
 
 .submenu:hover .submenu__items {
   //see explanation at .submenu__items ^^^
