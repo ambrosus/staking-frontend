@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Web3ReactProvider } from '@web3-react/core';
+import ReactNotifications from 'react-notifications-component';
 import RenderRoutes from './components/RenderRoutes';
 import { getLibrary } from './utils/helpers';
 import { ethereum } from './config';
@@ -36,6 +37,7 @@ const Main = () => {
   return (
     <BrowserRouter>
       <Web3ReactProvider getLibrary={getLibrary}>
+        <ReactNotifications />
         <RenderRoutes />
       </Web3ReactProvider>
     </BrowserRouter>
