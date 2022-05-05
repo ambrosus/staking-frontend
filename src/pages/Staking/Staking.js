@@ -18,9 +18,6 @@ import errorOutlineIcon from 'assets/svg/error_outline.svg';
 import { Header } from 'components/layouts/Header';
 import { useLocation } from 'react-router-dom';
 
-const NotSupported = React.lazy(() =>
-  import(/* webpackPrefetch: true */ '../../components/NotSupported'),
-);
 
 const Staking = observer(() => {
   const { account, chainId } = useWeb3React();
