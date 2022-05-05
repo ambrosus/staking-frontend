@@ -7,6 +7,7 @@ import Home from '../../pages/Home';
 import Staking from '../../pages/Staking';
 import { MAIN_PAGE, STAKING_PAGE } from 'config';
 import PoolsContextProvider from '../../context/poolsContext';
+// eslint-disable-next-line
 const Footer = React.lazy(() => import('../layouts/Footer'));
 
 const RenderRoutes = observer(() => (
