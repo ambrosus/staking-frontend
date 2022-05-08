@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 import { ethers, providers } from 'ethers';
 import { contractJsons, pool } from 'ambrosus-node-contracts';
 import { headContractAddress } from 'ambrosus-node-contracts/config/config';
@@ -12,13 +11,12 @@ import {
 import { math, FIXED_POINT, parseFloatToBigNumber, ZERO } from './numbers';
 import { debugLog, formatDate } from 'utils/helpers';
 import moment from 'moment';
-import { object } from 'prop-types';
 
 const AVERAGING_PERIOD = 10 * 24 * 60 * 60; // 10 days
-
-const dailyPercentageYieldExpression = math.compile(
-  '(price2 / price1) ^ (86400 / (time2 - time1)) - 1',
-);
+//
+// const dailyPercentageYieldExpression = math.compile(
+//   '(price2 / price1) ^ (86400 / (time2 - time1)) - 1',
+// );
 
 export default class StakingWrapper {
   static privateProvider = null;
