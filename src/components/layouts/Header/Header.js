@@ -192,8 +192,8 @@ const HEADER_DATA = [
         link: "https://ambrosus.io/about",
       },
       {
-        name: "Team (Coming soon)",
-        link: "#",
+        name: "Team",
+        link: "https://ambrosus.io/team",
       },
       {
         name: "Roadmap",
@@ -210,8 +210,8 @@ const HEADER_DATA = [
         link: "https://ambrosus.io/business",
       },
       {
-        name: "DeFi (Coming soon)",
-        link: "#",
+        name: "DeFi",
+        link: "https://ambrosus.io/defi",
       },
     ],
   },
