@@ -282,7 +282,7 @@ const StakingItem = ({
             <div
               className="item--header__flex__apy"
               style={{
-                marginLeft: -20,
+                marginLeft: -10,
                 paddingLeft:
                   // eslint-disable-next-line
                   isDesktop && isMainPage ? 87 : !isMainPage ? 2 : 20,
