@@ -4,21 +4,6 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { cssTransition } from 'react-toastify';
 import { utils, providers } from 'ethers';
 
-import secondSectionIcon1 from 'assets/svg/home/second-section/Icon1-66x85.svg';
-import secondSectionIcon2 from 'assets/svg/home/second-section/Icon2-66x85.svg';
-import secondSectionIcon3 from 'assets/svg/home/second-section/Icon3-66x85.svg';
-import secondSectionIcon4 from 'assets/svg/home/second-section/Icon4-66x85.svg';
-
-import BinanceIcon from 'assets/svg/home/whereToByAmb/Binance.svg';
-import KuCoinIcon from 'assets/svg/home/whereToByAmb/KuCoin.svg';
-import WhiteBITIcon from 'assets/svg/home/whereToByAmb/WhiteBIT.svg';
-import probitIcon from 'assets/svg/home/whereToByAmb/probit.svg';
-
-import HoverBinanceIcon from 'assets/svg/home/whereToByAmb/hover-binance.svg';
-import HoverKuCoinIcon from 'assets/svg/home/whereToByAmb/hover-kukoin.svg';
-import HoverWhiteBITIcon from 'assets/svg/home/whereToByAmb/hover-wb.svg';
-import HoverprobitIcon from 'assets/svg/home/whereToByAmb/hover-probit.svg';
-
 import githubIcon from 'assets/svg/github-icon.svg';
 import mediumIcon from 'assets/svg/medium-icon.svg';
 import redditIcon from 'assets/svg/reddit-icon.svg';
@@ -238,50 +223,6 @@ export const homePageStatic = {
       title: 'Run a Node',
       text: 'Add to the speed, stability, and security of Ambrosus! Validate or store transactions on AMB-NET with greater rewards than staking.',
       btnText: '↖ Learn more',
-    },
-  ],
-  arcadiaStaking: [
-    {
-      src: secondSectionIcon1,
-      text: 'Staking starts from 1000 AMB',
-    },
-    {
-      src: secondSectionIcon2,
-      text: 'Secure the network and earn rewards.',
-    },
-    {
-      src: secondSectionIcon3,
-      text: 'Rewards are distributed every 6 hours',
-    },
-    {
-      src: secondSectionIcon4,
-      text: 'Unstake at any time',
-    },
-  ],
-  whereToByAmb: [
-    {
-      src: BinanceIcon,
-      hoverSrc: HoverBinanceIcon,
-      text: 'Binance',
-      url: 'https://accounts.binance.com/en/register?ref=E8NGKMF8',
-    },
-    {
-      src: KuCoinIcon,
-      hoverSrc: HoverKuCoinIcon,
-      text: 'KuCoin',
-      url: 'https://www.kucoin.com/',
-    },
-    {
-      src: WhiteBITIcon,
-      hoverSrc: HoverWhiteBITIcon,
-      text: 'WhiteBIT',
-      url: 'https://whitebit.com/',
-    },
-    {
-      src: probitIcon,
-      hoverSrc: HoverprobitIcon,
-      text: 'ProBit',
-      url: 'https://www.probit.com/',
     },
   ],
 };

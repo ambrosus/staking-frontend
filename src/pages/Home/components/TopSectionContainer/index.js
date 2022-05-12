@@ -1,110 +1,111 @@
 import React from 'react';
 import Paragraph from '../../../../components/Paragraph';
-import { CONNECT_TEXT, injected, walletconnect } from 'config';
+import {CONNECT_TEXT, injected, walletconnect} from 'config';
 import Modal from '../../../../components/Modal';
-import { useModal, useLogIn } from 'hooks';
+import {useModal, useLogIn} from 'hooks';
 import ButtonGroup from '../../../../components/ButtonGroup';
 import Button from '../../../../components/Button';
-import { Header } from 'components/layouts/Header';
+import {Header} from 'components/layouts/Header';
 
-export default () => {
-  const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
-    useModal();
-  const { logIn } = useLogIn();
+export default ({PData, connectBtn}) => {
 
-  return (
-    <>
-      {' '}
-      <Header />
-      <div className="home__top--info" id="home__top--info">
-        <div className="back-figure1" />
-        <div className="back-figure2" />
-        <div className="info-text">
-          <Paragraph
-            size="xxxl-500"
-            style={{
-              paddingBottom: 10,
-              fontFamily: 'Halvar Breitschrift,sans-serif',
-            }}
-          >
-            Get AMB rewards. No node needed.
-          </Paragraph>
-          <Paragraph size="l-500-white">
-            Stake your AMB and receive up to
-            <span style={{ color: '#1ACD8C', fontWeight: 600 }}>
+    const {isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow} =
+        useModal();
+    const {logIn} = useLogIn();
+
+    return (
+        <>
+            {' '}
+            <Header/>
+            <div className="home__top--info" id="home__top--info">
+                <div className="back-figure1"/>
+                <div className="back-figure2"/>
+                <div className="info-text">
+                    <Paragraph
+                        size="xxxl-500"
+                        style={{
+                            paddingBottom: 10,
+                            fontFamily: 'Halvar Breitschrift,sans-serif',
+                        }}
+                    >
+                        {PData.title}
+                    </Paragraph>
+                    <Paragraph size="l-500-white">
+                        {PData.subheading.slug1}
+                        <span style={{color: '#1ACD8C', fontWeight: 600}}>
               {' '}
-              35% APY
+                            {PData.subheading.slug2}
             </span>{' '}
-            in a few clicks.
-          </Paragraph>
-        </div>
-        <Button
-          buttonStyles={{
-            marginTop: 50,
-            background: '#212121',
-          }}
-          type="black"
-          onclick={toggleLogInMethodShow}
-        >
-          <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+                        {PData.subheading.slug3}
+                    </Paragraph>
+                </div>
+                <Button
+                    buttonStyles={{
+                        marginTop: 50,
+                        background: '#212121',
+                    }}
+                    type="black"
+                    onclick={toggleLogInMethodShow}
+                >
+                    <Paragraph style={{fontFamily: ' Neue Machina'}} size="m-500">
             <span
-              style={{
-                paddingLeft: 5,
-                fontFamily: ' Neue Machina',
-                whiteSpace: 'nowrap',
-              }}
+                style={{
+                    paddingLeft: 5,
+                    fontFamily: ' Neue Machina',
+                    whiteSpace: 'nowrap',
+                }}
             >
-              {CONNECT_TEXT}
+              {connectBtn.connect}
             </span>
-          </Paragraph>
-        </Button>
-        <Modal
-          isShowing={isLogInMethodShow}
-          hide={toggleLogInMethodShow}
-          modalStyles={{ maxWidth: 500 }}
-        >
-          <ButtonGroup>
-            <Button
-              buttonStyles={{
-                background: '#212121',
-              }}
-              type="black"
-              onclick={() => logIn(injected)}
-            >
-              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
-                <span
-                  style={{
-                    paddingLeft: 5,
-                    fontFamily: ' Neue Machina',
-                    whiteSpace: 'nowrap',
-                  }}
+                    </Paragraph>
+                </Button>
+                <Modal
+                    isShowing={isLogInMethodShow}
+                    hide={toggleLogInMethodShow}
+                    modalStyles={{maxWidth: 500}}
                 >
-                  Metamask
-                </span>
-              </Paragraph>
-            </Button>
-            <Button
-              buttonStyles={{
-                background: '#212121',
-              }}
-              type="black"
-              onclick={() => logIn(walletconnect)}
-            >
-              <Paragraph style={{ fontFamily: ' Neue Machina' }} size="m-500">
+                    <ButtonGroup>
+                        <Button
+                            buttonStyles={{
+                                background: '#212121',
+                            }}
+                            type="black"
+                            onclick={() => logIn(injected)}
+                        >
+                            <Paragraph style={{fontFamily: ' Neue Machina'}} size="m-500">
                 <span
-                  style={{
-                    paddingLeft: 5,
-                    fontFamily: ' Neue Machina',
-                    whiteSpace: 'nowrap',
-                  }}
+                    style={{
+                        paddingLeft: 5,
+                        fontFamily: ' Neue Machina',
+                        whiteSpace: 'nowrap',
+                    }}
                 >
-                  WalletConnect
+                                  {connectBtn.metamask}
                 </span>
-              </Paragraph>
-            </Button>
-          </ButtonGroup>
-        </Modal>
-      </div>
-    </>
-  );
+                            </Paragraph>
+                        </Button>
+                        <Button
+                            buttonStyles={{
+                                background: '#212121',
+                            }}
+                            type="black"
+                            onclick={() => logIn(walletconnect)}
+                        >
+                            <Paragraph style={{fontFamily: ' Neue Machina'}} size="m-500">
+                <span
+                    style={{
+                        paddingLeft: 5,
+                        fontFamily: ' Neue Machina',
+                        whiteSpace: 'nowrap',
+                    }}
+                >
+                                                    {connectBtn.walletconnect}
+                </span>
+                            </Paragraph>
+                        </Button>
+                    </ButtonGroup>
+                </Modal>
+            </div>
+        </>
+    );
 };
