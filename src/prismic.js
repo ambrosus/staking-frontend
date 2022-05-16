@@ -14,5 +14,9 @@ export const client = prismic.createClient(endpoint, {
             type: "header-type",
             path: "/header-type",
         },
+        {
+            type: "footer-type",
+            path: "/footer-type",
+        },
     ],
 });
