@@ -19,96 +19,7 @@ import {useSinglePrismicDocument} from "@prismicio/react";
 export const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const toggleMenu = () => setIsOpen(!isOpen);
-    const [headerDoc] = useSinglePrismicDocument("header-type");
-    const HEADER_DATA = headerDoc && [
-        {
-            type: "submenu",
-            name: headerDoc.data.name1[0].text,
-            data: [
-                {
-                  name: headerDoc.data.company[0].text,
-                    link: headerDoc.data.company_link.url,
-                },
-                {
-                  name: headerDoc.data.team[0].text,
-                    link: headerDoc.data.team_link.url,
-                },
-                {
-                  name: headerDoc.data.roadmap[0].text,
-                    link: headerDoc.data.roadmap_link.url,
-                },
-            ],
-        },
-        {
-            type: "submenu",
-            name: headerDoc.data.name2[0].text,
-            data: [
-                {
-                  name: headerDoc.data.enterprise[0].text,
-                    link: headerDoc.data.enterprise_link.url,
-                },
-                {
-                  name: headerDoc.data.defi[0].text,
-                    link: headerDoc.data.defi_link.url,
-                },
-            ],
-        },
-        {
-            type: "submenu",
-            name: headerDoc.data.name3[0].text,
-            data: [
-                {
-                  name: headerDoc.data.get_involvedt[0].text,
-                    link: headerDoc.data.get_involved_link.url,
-                },
-                {
-                  name: headerDoc.data.forum_s[0].text,
-                    link: headerDoc.data.forum_link.url,
-                },
-            ],
-        },
-        {
-            type: "link",
-            name: headerDoc.data.developers_s[0].text,
-            link: headerDoc.data.developers_link.url,
-        },
-        {
-            type: "submenu",
-            name: headerDoc.data.name5[0].text,
-            data: [
-                {
-                  name: headerDoc.data.use_amb_s[0].text,
-                    link: headerDoc.data.use_amb.url,
-                },
-                {
-                  name: headerDoc.data.wallet_s[0].text,
-                    link: headerDoc.data.wallet.url,
-                },
-                {
-                  name: headerDoc.data.staking_s[0].text,
-                    link: headerDoc.data.staking.url,
-                },
-                {
-                  name: headerDoc.data.network_explorer_s[0].text,
-                    link: headerDoc.data.network_explorer.url,
-                },
-                {
-                  name: headerDoc.data.amb_asset_exploer[0].text,
-                    link: headerDoc.data.amb_to.url,
-                },
-                {
-                  name: headerDoc.data.amb_money_s[0].text,
-                    link: headerDoc.data.amb_money.url,
-                },
-                {
-                  name: headerDoc.data.network_explorer_beta_s[0].text,
-                    link: "#",
-                },
-            ],
-        },
-    ];
-const addText = headerDoc && headerDoc.data.add_ambrosus[0].text;
-const addTextMobile = headerDoc && headerDoc.data.add_ambrosus_mobile[0].text;
+
     return (
         <>
             <HeaderLayout
@@ -116,34 +27,116 @@ const addTextMobile = headerDoc && headerDoc.data.add_ambrosus_mobile[0].text;
                     toggleMenu,
                     isOpen,
                 }}
-                data={HEADER_DATA}
-                addText={addText}
             />
             <MobileMenu
                 {...{
                     isOpen,
                     toggleMenu,
                 }}
-                data={HEADER_DATA}
-                addText={addTextMobile}
             />
         </>
     );
 };
 
 const HeaderLayout = ({
-                          data = [{}],
                           isOpen = false,
                           toggleMenu = () => {
                           },
-                          addText,
                       }) => {
     const {account, deactivate} = useWeb3React();
     const isSmall = useMedia("(max-width: 899px)");
     const history = useHistory();
     const location = useLocation();
     const [isMainPage, setIsMainPage] = useState(location.pathname !== "/");
+    const [headerDoc] = useSinglePrismicDocument("header-type");
+    const data = headerDoc?.data && [
+        {
+            type: "submenu",
+            name: headerDoc?.data.first_submenu_name,
+            data: [
+                {
+                    name: headerDoc?.data.first_submenu_items[0].name[0].text,
+                    link: headerDoc?.data.first_submenu_items[0].link.url
+                },
+                {
+                    name: headerDoc?.data.first_submenu_items[1].name[0].text,
+                    link: headerDoc?.data.first_submenu_items[1].link.url
+                },
+                {
+                    name: headerDoc?.data.first_submenu_items[2].name[0].text,
+                    link: headerDoc?.data.first_submenu_items[2].link.url
+                },
+            ],
+        },
+        {
+            type: "submenu",
+            name: headerDoc?.data.second_item_name,
+            data: [
 
+                {
+                    name: headerDoc?.data.second_submenu_items[0].name[0].text,
+                    link: headerDoc?.data.second_submenu_items[0].link.url
+                },
+                {
+                    name: headerDoc?.data.second_submenu_items[1].name[0].text,
+                    link: headerDoc?.data.second_submenu_items[1].link.url
+                },
+            ],
+        },
+        {
+            type: "submenu",
+            name: headerDoc?.data.third_submenu_name,
+            data: [
+                {
+                    name: headerDoc?.data.third_submenu_items[0].name[0].text,
+                    link: headerDoc?.data.third_submenu_items[0].link.url
+                },
+                {
+                    name: headerDoc?.data.third_submenu_items[1].name[0].text,
+                    link: headerDoc?.data.third_submenu_items[1].link.url
+                },
+            ],
+        },
+        {
+            type: "link",
+            name: headerDoc?.data.fourth_item_name,
+            link: headerDoc?.data.fourth_item_link.url
+        },
+        {
+            type: "submenu",
+            name: headerDoc?.data.fifth_submenu_name,
+            data: [
+                {
+                    name: headerDoc?.data.fifth_submenu_items[0].name[0].text,
+                    link: headerDoc?.data.fifth_submenu_items[0].link.url
+                },
+                {
+                    name: headerDoc?.data.fifth_submenu_items[1].name[0].text,
+                    link: headerDoc?.data.fifth_submenu_items[1].link.url
+                },
+                {
+                    name: headerDoc?.data.fifth_submenu_items[2].name[0].text,
+                    link: headerDoc?.data.fifth_submenu_items[2].link.url
+                },
+                {
+                    name: headerDoc?.data.fifth_submenu_items[3].name[0].text,
+                    link: headerDoc?.data.fifth_submenu_items[3].link.url
+                },
+                {
+                    name: headerDoc?.data.fifth_submenu_items[4].name[0].text,
+                    link: headerDoc?.data.fifth_submenu_items[4].link.url
+                },
+                {
+                    name: headerDoc?.data.fifth_submenu_items[5].name[0].text,
+                    link: headerDoc?.data.fifth_submenu_items[5].link.url
+                },
+                {
+                    name: headerDoc?.data.fifth_submenu_items[6].name[0].text,
+                    link:'#'
+                },
+            ],
+        },
+    ];
     useEffect(() => {
         if (location.pathname !== "/") {
             setIsMainPage(location.pathname !== "/");
@@ -161,19 +154,19 @@ const HeaderLayout = ({
                 <Link to="/" className="header__logo-wrapper">
                     <img src={Logo} alt="logo" className="header__logo"/>
                 </Link>
-                {!isMainPage &&
-                data.map((menuItem) => {
+                {!isMainPage  && data !== undefined &&
+                data.map((menuItem,i) => {
                     if (menuItem.type === "submenu") {
                         return (
-                            <div key={menuItem.link + menuItem.name}>
-                                <Submenu addText={addText} name={menuItem.name} data={menuItem.data}/>
+                            <div key={menuItem.link + menuItem.name + i}>
+                                <Submenu name={menuItem.name} data={menuItem.data}/>
                             </div>
                         );
                     }
                     if (menuItem.type === "link") {
                         return (
                             <a
-                                key={menuItem.link + menuItem.name}
+                                key={menuItem.link + menuItem.name + i}
                                 href={menuItem.link}
                                 className="header__link"
                             >
@@ -231,7 +224,7 @@ HeaderLayout.propTypes = {
     toggleMenu: PropTypes.func,
 };
 
-const Submenu = ({name = "", data = [{}],addText}) => (
+const Submenu = ({name = "", data = [{}]}) => (
     <div className="submenu">
         <p className="submenu__name">
             {name}
@@ -259,7 +252,7 @@ const Submenu = ({name = "", data = [{}],addText}) => (
                     <div>
                         <MetamaskIcon/>
                     </div>
-                    <p>{addText}</p>
+                    <p>Add Ambrosus Network to Metamask</p>
                 </button>
             )}
 

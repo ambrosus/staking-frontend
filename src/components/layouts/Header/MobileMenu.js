@@ -13,12 +13,11 @@ import { changeNetwork } from "utils/helpers";
 import { ReactComponent as MetamaskIcon } from "assets/svg/metamask-menu-icon.svg";
 import { MAIN_PAGE } from "config";
 import { useLocation } from "react-router-dom";
+import {useSinglePrismicDocument} from "@prismicio/react";
 
 export const MobileMenu = ({
-  data = [{}],
   isOpen = false,
-  toggleMenu = () => {},
-                             addText
+  toggleMenu = () => {}
 }) => {
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState(-1);
   const { account } = useWeb3React();
@@ -27,6 +26,95 @@ export const MobileMenu = ({
   const { pathname } = useLocation();
 
   const isMainPage = pathname === MAIN_PAGE;
+  const [headerDoc] = useSinglePrismicDocument("header-type");
+  const data = headerDoc?.data && [
+    {
+      type: "submenu",
+      name: headerDoc?.data.first_submenu_name,
+      data: [
+        {
+          name: headerDoc?.data.first_submenu_items[0].name[0].text,
+          link: headerDoc?.data.first_submenu_items[0].link.url
+        },
+        {
+          name: headerDoc?.data.first_submenu_items[1].name[0].text,
+          link: headerDoc?.data.first_submenu_items[1].link.url
+        },
+        {
+          name: headerDoc?.data.first_submenu_items[2].name[0].text,
+          link: headerDoc?.data.first_submenu_items[2].link.url
+        },
+      ],
+    },
+    {
+      type: "submenu",
+      name: headerDoc?.data.second_item_name,
+      data: [
+
+        {
+          name: headerDoc?.data.second_submenu_items[0].name[0].text,
+          link: headerDoc?.data.second_submenu_items[0].link.url
+        },
+        {
+          name: headerDoc?.data.second_submenu_items[1].name[0].text,
+          link: headerDoc?.data.second_submenu_items[1].link.url
+        },
+      ],
+    },
+    {
+      type: "submenu",
+      name: headerDoc?.data.third_submenu_name,
+      data: [
+        {
+          name: headerDoc?.data.third_submenu_items[0].name[0].text,
+          link: headerDoc?.data.third_submenu_items[0].link.url
+        },
+        {
+          name: headerDoc?.data.third_submenu_items[1].name[0].text,
+          link: headerDoc?.data.third_submenu_items[1].link.url
+        },
+      ],
+    },
+    {
+      type: "link",
+      name: headerDoc?.data.fourth_item_name,
+      link: headerDoc?.data.fourth_item_link.url
+    },
+    {
+      type: "submenu",
+      name: headerDoc?.data.fifth_submenu_name,
+      data: [
+        {
+          name: headerDoc?.data.fifth_submenu_items[0].name[0].text,
+          link: headerDoc?.data.fifth_submenu_items[0].link.url
+        },
+        {
+          name: headerDoc?.data.fifth_submenu_items[1].name[0].text,
+          link: headerDoc?.data.fifth_submenu_items[1].link.url
+        },
+        {
+          name: headerDoc?.data.fifth_submenu_items[2].name[0].text,
+          link: headerDoc?.data.fifth_submenu_items[2].link.url
+        },
+        {
+          name: headerDoc?.data.fifth_submenu_items[3].name[0].text,
+          link: headerDoc?.data.fifth_submenu_items[3].link.url
+        },
+        {
+          name: headerDoc?.data.fifth_submenu_items[4].name[0].text,
+          link: headerDoc?.data.fifth_submenu_items[4].link.url
+        },
+        {
+          name: headerDoc?.data.fifth_submenu_items[5].name[0].text,
+          link: headerDoc?.data.fifth_submenu_items[5].link.url
+        },
+        {
+          name: headerDoc?.data.fifth_submenu_items[6].name[0].text,
+          link:'#'
+        },
+      ],
+    },
+  ];
 
   const {
     data: courseData,
@@ -57,11 +145,11 @@ export const MobileMenu = ({
 
   return (
     <div className={`mobile-menu ${isOpen ? "mobile-menu_open" : ""}`}>
-      {isMainPage &&
+      {isMainPage && data !== undefined &&
         data.map((menuItem, i) => {
           if (menuItem.type === "submenu") {
             return (
-              <div key={menuItem.name}>
+              <div key={menuItem.name + i}>
                 <MobileSubmenu
                   name={menuItem.name}
                   data={menuItem.data}
@@ -171,7 +259,7 @@ const MobileSubmenu = ({
           <div>
             <MetamaskIcon width={32} height={30} />
           </div>
-          <p className="mobile-submenu__item">{addText}</p>
+          <p className="mobile-submenu__item">Add to Metamask</p>
         </button>
       )}
       {data.map(({ name: itemName, link }) => (
