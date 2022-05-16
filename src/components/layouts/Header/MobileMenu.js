@@ -24,9 +24,9 @@ export const MobileMenu = ({
   const isSmall = useMedia("(max-width: 899px)");
   const { logOut } = useLogIn();
   const { pathname } = useLocation();
-
   const isMainPage = pathname === MAIN_PAGE;
   const [headerDoc] = useSinglePrismicDocument("header-type");
+
   const data = headerDoc?.data && [
     {
       type: "submenu",
@@ -115,7 +115,6 @@ export const MobileMenu = ({
       ],
     },
   ];
-
   const {
     data: courseData,
     status: priceStatus,
