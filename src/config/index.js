@@ -76,157 +76,6 @@ export const connectorsByName = {
   [ConnectorNames.WalletConnect]: walletconnect,
 };
 
-export const faqsList = [
-  {
-    title: 'What is Ambrosus and what is the AMB coin?',
-    description: (
-      <>
-        Ambrosus is a decentralized network of over hundreds of masternodes,
-        each validating or storing data from assets and corresponding events
-        from supply chains, IoT devices, and more.
-        <br />
-        <br />
-        AMB is used to keep information on the Ambrosus network up to date as
-        tracked products and objects move across a supply chain. The coin
-        enables a transparent ecosystem with trustworthy information that can be
-        accessed by interested parties.
-      </>
-    ),
-    key: 0,
-  },
-  {
-    title: <>How does Arcadia Staking work?</>,
-    description: (
-      <>
-        {' '}
-        Arcadia allows users to stake AMB coins quickly, without having to set
-        up a node manually. Here is how the automation works—all coins that go
-        into one of the pools are distributed among running nodes. When there is
-        a sufficient amount in the pool to enable another node, it will be
-        automatically configured and launched.
-      </>
-    ),
-    key: 1,
-  },
-  {
-    title: <>Why stake AMB?</>,
-    description: (
-      <>
-        {' '}
-        The simplest answer—you earn great rewards while contributing to an
-        ecosystem that is constantly expanding through successful partnerships
-        and real, working solutions. What’s more, you have the flexibility to
-        unstake your coins at any time.
-      </>
-    ),
-    key: 2,
-  },
-  {
-    title: <>Can I trade AMB coins when they are staked?</>,
-    description: <> No, you cannot trade staked coins.</>,
-    key: 3,
-  },
-  {
-    title: <>How often are rewards distributed?</>,
-    description: (
-      <>
-        {' '}
-        Payments occur approximately every 6 hours, with your reward
-        automatically being added to your stake.
-      </>
-    ),
-    key: 4,
-  },
-  {
-    title: (
-      <>Does staking generate the same rewards as setting up a masternode?</>
-    ),
-    description: (
-      <>
-        No, as staking is a simplified way of setting up a node. Those who have
-        the required amount of AMB and set up a masternode receive greater
-        rewards.
-      </>
-    ),
-    key: 5,
-  },
-  {
-    title: <>When can I redeem my staked AMB?</>,
-    description: (
-      <>You can redeem staked AMB at any time and withdraw instantly.</>
-    ),
-    key: 6,
-  },
-  {
-    title: <>What is the minimum & maximum amount of AMB that can be staked?</>,
-    description: (
-      <>
-        {' '}
-        The minimum staking amount is 1000 AMB, and there is no upper limit to
-        the amount of AMB that can be staked.
-      </>
-    ),
-    key: 7,
-  },
-  {
-    title: <>Are there any staking fees?</>,
-    description: (
-      <>
-        The commission is set by the pool owner upon creation and cannot be
-        changed. We recommend setting the commission between 20% and 30%.
-        <br /> Importantly, commission is accrued from staked rewards only, not
-        the initial staked AMB.
-      </>
-    ),
-    key: 8,
-    last: true,
-  },
-];
-
-export const homePageStatic = {
-  lastSection: [
-    {
-      index: 0,
-      title: 'Stake AMB',
-      text: 'Unleash the power of your AMB and earn staking rewards. Click and start earning now!',
-      btnText: '↖ Stake Now',
-    },
-    {
-      index: 1,
-      title: 'Join Ambrosus',
-      text: 'You contribute to a decentralized network that is the backbone of the Ambrosus Ecosystem and its partners.',
-      links: [
-        {
-          url: 'https://t.me/Ambrosus',
-          title: 'Ambrosus Telegram',
-          icon: telegramIcon,
-        },
-        {
-          url: 'https://www.reddit.com/r/AmbrosusEcosystem',
-          title: 'Ambrosus Reddit',
-          icon: redditIcon,
-        },
-        {
-          url: 'https://blog.ambrosus.io',
-          title: 'Ambrosus Medium',
-          icon: mediumIcon,
-        },
-        {
-          url: 'https://twitter.com/AMB_Ecosystem',
-          title: 'Ambrosus Twitter',
-          icon: twitterIcon,
-        },
-      ],
-    },
-    {
-      index: 2,
-      title: 'Run a Node',
-      text: 'Add to the speed, stability, and security of Ambrosus! Validate or store transactions on AMB-NET with greater rewards than staking.',
-      btnText: '↖ Learn more',
-    },
-  ],
-};
-
 export const socialsLinks = [
   {
     url: 'https://github.com/ambrosus',
@@ -959,12 +808,10 @@ export default {
   bounce,
   network,
   transactionGasLimit,
-  homePageStatic,
   transactionGasPrice,
   injected,
   connectorsByName,
   socialsLinks,
-  faqsList,
   menuLinks,
   tooltips,
   STAKING_PAGE,

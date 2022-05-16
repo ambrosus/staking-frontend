@@ -18,6 +18,7 @@ export const MobileMenu = ({
   data = [{}],
   isOpen = false,
   toggleMenu = () => {},
+                             addText
 }) => {
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState(-1);
   const { account } = useWeb3React();
@@ -170,7 +171,7 @@ const MobileSubmenu = ({
           <div>
             <MetamaskIcon width={32} height={30} />
           </div>
-          <p className="mobile-submenu__item">Add to Metamask</p>
+          <p className="mobile-submenu__item">{addText}</p>
         </button>
       )}
       {data.map(({ name: itemName, link }) => (

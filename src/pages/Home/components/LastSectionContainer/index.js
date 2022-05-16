@@ -1,14 +1,14 @@
 import { ReactSVG } from 'react-svg';
 import cx from 'classnames';
 import React from 'react';
-import { homePageStatic, injected, walletconnect } from 'config';
+import { injected, walletconnect } from 'config';
 import { useLogIn, useModal } from 'hooks';
 import Button from '../../../../components/Button';
 import Modal from 'components/Modal';
 import ButtonGroup from 'components/ButtonGroup';
 import Paragraph from 'components/Paragraph';
 
-export default () => {
+export default ({PData}) => {
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
   const { logIn } = useLogIn();
@@ -16,14 +16,14 @@ export default () => {
     <div className="home__last-section">
       <div className="container">
         <div style={{ maxWidth: 660 }}>
-          <h2 className="section-heading">Stake AMB and join our community!</h2>
+          <h2 className="section-heading">{PData.title}</h2>
         </div>
         <div className="items-container">
-          {homePageStatic.lastSection.map((block, index) => {
+          {PData.lastSection.map((block, index) => {
             const socials =
               block.links &&
               block.links.map((social) => (
-                <li className="socials__list__link" key={social.url}>
+                <li className="socials__list__link" key={social.url + index}>
                   <a
                     href={social.url}
                     target="_blank"

@@ -10,6 +10,9 @@ export const client = prismic.createClient(endpoint, {
             type: "staking-homepage",
             path: "/staking-homepage",
         },
-
+        {
+            type: "header-type",
+            path: "/header-type",
+        },
     ],
 });
