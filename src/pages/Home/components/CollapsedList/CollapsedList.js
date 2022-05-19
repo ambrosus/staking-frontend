@@ -2,10 +2,9 @@ import React, { useCallback, useReducer, useState } from 'react';
 import cx from 'classnames';
 import Block from './Block';
 import { collapsedReducer } from 'utils/reducers';
-import { faqsList } from 'config';
 import { useSafeDispatch } from 'hooks';
 
-const CollapsedList = () => {
+const CollapsedList = ({PData}) => {
   const [activeExpand, setActiveExpand] = useState(-1);
   const [showMore, setShowMore] = useState(false);
   const [state, unsafeDispatch] = useReducer(collapsedReducer, false);
@@ -29,19 +28,19 @@ const CollapsedList = () => {
     setShowMore((prev) => !prev);
   };
 
-  return (
+    return (
     <div className="collapsed-list">
       <div className="back-figure6" />
 
       <div className="section-heading" style={{ color: '#212121' }}>
-        FAQ
+          {PData.faq_title}
       </div>
       <div
         className={cx(' faq-list', {
           'faq-list--expand': showMore,
         })}
       >
-        {faqsList.map((block) => (
+        {PData.faqsList.map((block) => (
           <Block
             lastElement={block.last}
             key={block.key}
@@ -60,7 +59,7 @@ const CollapsedList = () => {
       <div className="btn-group" style={{ paddingTop: 50 }}>
         {' '}
         <button type="button" className="btn white" onClick={showMoreHandler}>
-          {!showMore ? '↖ See more ' : '↖ Roll up'}
+          {!showMore ? PData.see_more : PData.roll_up}
         </button>
       </div>
     </div>

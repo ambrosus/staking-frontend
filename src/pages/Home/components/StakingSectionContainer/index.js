@@ -29,7 +29,8 @@ import paragrapfIcon from 'assets/svg/paragrapf-icon.svg';
 import ReactTooltip from 'react-tooltip';
 import errorOutlineIcon from 'assets/svg/error_outline.svg';
 
-export default () => {
+export default ({PData,
+                  connectBtn}) => {
   const { pathname } = useLocation();
   const isMainPage = pathname === MAIN_PAGE;
   const [pools, getPools] = useContext(PoolsContext);
@@ -63,7 +64,7 @@ export default () => {
     <>
       <div className="staking">
         <div>
-          <h2 className="section-heading">Choose your staking pool</h2>
+          <h2 className="section-heading">{PData['section-heading']}</h2>
         </div>
         {pools.length > 0 ? (
           <>
@@ -74,7 +75,7 @@ export default () => {
                   paddingRight: isDesktop && isMainPage && 81,
                 }}
               >
-                Pool
+                {PData['pool']}
               </div>
               {isDesktop && (
                 <>
@@ -84,7 +85,7 @@ export default () => {
                         fontSize: 16,
                       }}
                     >
-                      Max Stake
+                      {PData['max_stake']}
                     </div>
                   ) : (
                     <div
@@ -98,10 +99,10 @@ export default () => {
                             fontSize: 16,
                           }}
                         >
-                          My Stake/Max Stake
+                          {PData['my_stake_max_stake']}
                         </div>
                       ) : (
-                        <div>My Stake</div>
+                        <div> {PData['my_stake']}</div>
                       )}
                     </div>
                   )}
@@ -121,7 +122,7 @@ export default () => {
                   }}
                   data-for="max-total-staked"
                 >
-                  Total Max Stake&nbsp;
+                  {PData['total_max_stake']}&nbsp;
                   <ReactSVG
                     data-tip
                     data-for="total-staked"
@@ -133,7 +134,7 @@ export default () => {
               <div
                 style={{ display: 'flex', flexDirection: 'row', fontSize: 16 }}
               >
-                Total pool stake{' '}
+                {PData['total_pool_stake']}
               </div>
               <div
                 style={{
@@ -141,7 +142,7 @@ export default () => {
                   paddingLeft: isMainPage && isDesktop ? 0 : 12,
                 }}
               >
-                APY
+                {PData['apy']}
               </div>
               <div
                 style={{ marginRight: isDesktop && isMainPage ? -132 : -20 }}
@@ -174,7 +175,7 @@ export default () => {
                 type="white "
                 onclick={toggleLogInMethodShow}
               >
-                <Paragraph size="m-500">{STAKE}</Paragraph>
+                <Paragraph size="m-500">{PData['__stake']}</Paragraph>
               </Button>
             </div>
           </>
@@ -204,7 +205,7 @@ export default () => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Metamask
+                  {connectBtn.metamask}
                 </span>
               </Paragraph>
             </Button>
@@ -223,7 +224,7 @@ export default () => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  WalletConnect
+                                    {connectBtn.walletconnect}
                 </span>
               </Paragraph>
             </Button>
@@ -237,16 +238,15 @@ export default () => {
             <div className="after-icon">
               <ReactSVG src={paragrapfIcon} wrapper="span" />
             </div>
-            <div className="info__primary">Calculate your rewards</div>
+            <div className="info__primary">  {PData['calculate_your_rewards']}</div>
             <div className="info__secondary">
-              See what your AMB stake will be worth with our handy APY
-              calculator!
+              {PData['see_what_your_amb']}
             </div>
           </div>
           <div className="calculator">
             <div className="calculator__labels">
               <div className="left-value">
-                <div className="left-value__secondary">Initial stake</div>
+                <div className="left-value__secondary">{PData['initial_stake']}</div>
                 <div className="left-value__primary">
                   {new Intl.NumberFormat('en').format(rangeValue)}
                 </div>
@@ -273,15 +273,17 @@ export default () => {
                     flexBasis: !isDesktop && '130%',
                   }}
                 >
-                  Pool
+                  {PData['pool']}
                 </div>
                 {isDesktop && (
-                  <div style={{ justifyContent: 'flex-start' }}>APY %</div>
+                  <div style={{ justifyContent: 'flex-start' }}>
+                    {PData['apy__']}
+                  </div>
                 )}
                 <div style={{ paddingLeft: 25, justifyContent: 'flex-start' }}>
-                  APY AMB
+                  {PData['apy_amb']}
                 </div>
-                <div>APY $</div>
+                <div>{PData.apy__1}</div>
               </div>
             </div>
             <div className="calculator__results">
@@ -321,7 +323,7 @@ export default () => {
                           justifyContent: 'flex-start',
                         }}
                       >
-                        {((+rangeValue / 100) * pool.poolAPY).toFixed(0)} AMB
+                        {((+rangeValue / 100) * pool.poolAPY).toFixed(0)}   {PData['amb']}
                       </div>
                       <div>
                         $
@@ -348,7 +350,7 @@ export default () => {
                   toggleLogInMethodShow();
                 }}
               >
-                <span style={{ fontSize: 14 }}>↖ Stake Now</span>
+                <span style={{ fontSize: 14 }}>{connectBtn.stake_now}</span>
               </Button>
             </div>
           </div>
