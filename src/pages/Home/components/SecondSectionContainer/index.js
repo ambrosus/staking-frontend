@@ -8,7 +8,7 @@ import ButtonGroup from 'components/ButtonGroup';
 import Button from 'components/Button';
 import Paragraph from 'components/Paragraph';
 
-export default () => {
+export default ({PData,connectBtn}) => {
   const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
     useModal();
   const { logIn } = useLogIn();
@@ -16,13 +16,13 @@ export default () => {
     <div className="home__second-section">
       <div className="container">
         <div>
-          <h2 className="section-heading">Arcadia</h2>
+          <h2 className="section-heading">{PData.heading}</h2>
         </div>
         <p className="home__second-section--secondary">
-          Simplified staking on the Ambrosus network.
+            {PData.subheading}
         </p>
         <div className="items-container">
-          {homePageStatic.arcadiaStaking.map((block) => (
+          {PData.arcadiaStaking.map((block) => (
             <div className="items-container__item" key={block.src}>
               <ReactSVG src={block.src} wrapper="span" />
               <p>{block.text}</p>
@@ -37,7 +37,7 @@ export default () => {
           className="btn white "
           onClick={toggleLogInMethodShow}
         >
-          ↖ Start Staking
+            {connectBtn.startstaking}
         </button>
       </div>
       <Modal
@@ -61,7 +61,7 @@ export default () => {
                   whiteSpace: 'nowrap',
                 }}
               >
-                Metamask
+                            {connectBtn.metamask}
               </span>
             </Paragraph>
           </Button>
@@ -80,7 +80,8 @@ export default () => {
                   whiteSpace: 'nowrap',
                 }}
               >
-                WalletConnect
+                  {connectBtn.walletconnect}
+
               </span>
             </Paragraph>
           </Button>
