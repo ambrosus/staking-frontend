@@ -108,10 +108,6 @@ export const MobileMenu = ({
           name: headerDoc?.data.fifth_submenu_items[5].name[0].text,
           link: headerDoc?.data.fifth_submenu_items[5].link.url
         },
-        {
-          name: headerDoc?.data.fifth_submenu_items[6].name[0].text,
-          link:'#'
-        },
       ],
     },
   ];
