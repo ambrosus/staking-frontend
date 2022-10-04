@@ -32,7 +32,7 @@ const HomeStatic = () => {
               Arcadia Staking and Ambrosus Ecosystem have moved to AirDAO on 15
               September 2022. Your assets and rewards remain unaffected.
             </p>
-            <p className='home-static__rightside-'>
+            <p className='home-static__rightside-' style={{ marginTop: 20 }}>
               You can now access, stake and unstake your assets through the new
               website.
             </p>
