@@ -42,6 +42,7 @@ const HomeStatic = () => {
               href='https://airdao.io/staking/'
               target='_blank'
               className='home-static__rightside-btn'
+              rel='noreferrer'
             >
               Stake Now
             </a>
@@ -49,6 +50,7 @@ const HomeStatic = () => {
               href='https://blog.airdao.io/the-launch-of-airdao-b4785bd43021'
               target='_blank'
               className='home-static__rightside-url'
+              rel='noreferrer'
             >
               About the new brand →
             </a>
@@ -59,20 +61,32 @@ const HomeStatic = () => {
             href='https://twitter.com/AMB_Ecosystem'
             target='_blank'
             className=''
+            rel='noreferrer'
           >
             <Twitter />
           </a>
-          <a href='https://t.me/Ambrosus' target='_blank' className=''>
+          <a
+            href='https://t.me/Ambrosus'
+            target='_blank'
+            className=''
+            rel='noreferrer'
+          >
             <Telegram />
           </a>
           <a
             href='https://www.reddit.com/r/AmbrosusEcosystem/'
             target='_blank'
             className=''
+            rel='noreferrer'
           >
             <Reddit />
           </a>
-          <a href='https://blog.ambrosus.io/' target='_blank' className=''>
+          <a
+            href='https://blog.ambrosus.io/'
+            target='_blank'
+            className=''
+            rel='noreferrer'
+          >
             <Medium />
           </a>
         </div>
