@@ -10,7 +10,7 @@
   "version": "1.0.1",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts --max_old_space_size=4096 build ",
+    "build": "react-scripts build ",
     "serve": "react-scripts build && serve -s build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lint": "eslint ./ --ignore-path .gitignore",
@@ -20,6 +20,7 @@
     "stylelint:fix": "stylelint src/**/*.scss --fix"
   },
   "dependencies": {
+    "@inc4/eslint-config-react": "1.0.1",
     "@kunukn/react-collapse": "^2.2.9",
     "@prismicio/client": "^6.4.3",
     "@prismicio/react": "^2.3.0",
@@ -59,6 +60,7 @@
   "devDependencies": {
     "dotenv": "^10.0.0",
     "eslint": "^8.24.0",
+    "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
