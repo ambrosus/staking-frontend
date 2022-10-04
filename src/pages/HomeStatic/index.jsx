@@ -7,16 +7,8 @@ import Twitter from 'assets/images/SocialButtons/Twitter';
 import Telegram from 'assets/images/SocialButtons/Telegram';
 import Reddit from 'assets/images/SocialButtons/Reddit';
 import Medium from 'assets/images/SocialButtons/Medium';
-import { poolIcon } from 'utils/helpers';
-
-import Modal from 'components/Modal';
-
-import { useModal } from 'hooks';
 
 const HomeStatic = () => {
-  const { isShowing: isLogInMethodShow, toggle: toggleLogInMethodShow } =
-    useModal();
-
   return (
     <div className='home-static'>
       <div className='home-static__leftside'>
