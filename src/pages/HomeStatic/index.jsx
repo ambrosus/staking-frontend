@@ -58,7 +58,7 @@ const HomeStatic = () => {
         </div>
         <div className='home-static__rightside-socials'>
           <a
-            href='https://twitter.com/AMB_Ecosystem'
+            href='https://twitter.com/airdao_io'
             target='_blank'
             className=''
             rel='noreferrer'
@@ -66,7 +66,7 @@ const HomeStatic = () => {
             <Twitter />
           </a>
           <a
-            href='https://t.me/Ambrosus'
+            href='https://t.me/airDAO_official'
             target='_blank'
             className=''
             rel='noreferrer'
@@ -74,7 +74,7 @@ const HomeStatic = () => {
             <Telegram />
           </a>
           <a
-            href='https://www.reddit.com/r/AmbrosusEcosystem/'
+            href='https://www.reddit.com/r/AirDAO/'
             target='_blank'
             className=''
             rel='noreferrer'
@@ -82,7 +82,7 @@ const HomeStatic = () => {
             <Reddit />
           </a>
           <a
-            href='https://blog.ambrosus.io/'
+            href='https://blog.airdao.io/'
             target='_blank'
             className=''
             rel='noreferrer'
