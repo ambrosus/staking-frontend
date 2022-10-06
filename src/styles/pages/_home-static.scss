@@ -9,13 +9,18 @@ iframe {
   overflow: hidden;
   @include for_laptop {
     position: relative;
-    flex-direction: column;
-    width: 108vw;
     left: -4vw;
     overflow: auto;
+    width: 108vw;
   }
   &-wrapper {
+    display: flex;
+    align-items: center;
+
     @include for_laptop {
+      flex-direction: column;
+      height: 500px;
+
       background-color: #212121;
     }
   }
@@ -28,8 +33,8 @@ iframe {
 
   align-items: center;
   justify-content: center;
-  height: 108vh;
-  top: -4vh;
+  height: 106vh;
+
   column-gap: 30px;
   padding: 0 80px;
 
@@ -37,6 +42,8 @@ iframe {
   border-top-right-radius: 20% 100%;
 
   @include for_laptop {
+    width: 108vw;
+
     height: 26vw;
     flex-shrink: 0;
     top: 0vh;
@@ -77,6 +84,7 @@ iframe {
     border-top-left-radius: 100% 20%;
     border-top-right-radius: 100% 20%;
     background-color: #fff;
+    width: 108vw;
 
     align-items: flex-start;
     padding-left: 18vw;
