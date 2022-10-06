@@ -12,8 +12,10 @@ const HomeStatic = () => {
   return (
     <div className='home-static'>
       <div className='home-static__leftside'>
-        <AmbBigLog />
-        <div className=''>
+        <span className='home-static__leftside-logo'>
+          <AmbBigLog />
+        </span>
+        <div className='home-static__leftside-text'>
           <div className=''>
             <AmbLogoText1 />
           </div>
