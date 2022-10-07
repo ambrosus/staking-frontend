@@ -78,7 +78,7 @@ iframe {
 
   padding-left: 100px;
   padding-right: 80px;
-  //   justify-content: space-between;
+  height: 100%;
   @include for_laptop {
     position: relative;
     border-top-left-radius: 100% 20%;
@@ -120,6 +120,7 @@ iframe {
     column-gap: 40px;
     & > a {
       white-space: nowrap;
+      color: #0e0e0e;
       &:hover {
         color: #457eff;
       }
@@ -156,6 +157,7 @@ iframe {
     column-gap: 35px;
     align-items: center;
     margin: 60px 0;
+    margin-bottom: 100px;
     cursor: pointer;
   }
 }
