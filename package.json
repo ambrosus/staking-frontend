@@ -10,7 +10,7 @@
   "version": "1.0.1",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build ",
+    "build": "react-scripts --max_old_space_size=4096 build ",
     "serve": "react-scripts build && serve -s build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lint": "eslint ./ --ignore-path .gitignore",
@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "eslint": "^6.0.0",
+    "eslint": "^8.24.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.2",
