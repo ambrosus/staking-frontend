@@ -6,7 +6,7 @@
 }
 
 html {
-  font-family: Inter, Halvar Breitschrift, sans-serif !important;
+  font-family: Halvar Breitschrift, sans-serif;
 }
 li {
   list-style-type: none;
@@ -42,8 +42,8 @@ a {
   color: $color-gray;
 }
 
-.calc-stake {
-  min-width: auto !important;
+.calc-stake{
+  min-width: auto!important;
   width: 174px !important;
   height: 65px !important;
   margin-left: auto;

@@ -17,6 +17,10 @@
   box-sizing: border-box;
   cursor: pointer;
 
+  p {
+    font-family: Neue Machina, sans-serif;
+  }
+
   @media (max-width: 600px) {
     min-height: auto;
     font-size: 12px !important;
