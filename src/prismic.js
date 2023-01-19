@@ -1,6 +1,6 @@
 import * as prismic from "@prismicio/client";
 
-export const repositoryName = "ambrosus-staking";
+export const repositoryName = 'ambrosus-staking';
 const endpoint = prismic.getEndpoint(repositoryName);
 
 export const client = prismic.createClient(endpoint, {
