@@ -40,7 +40,7 @@ function PoolsContextProvider(props) {
               isMainPage,
               walletconnect.walletConnectProvider,
             );
-            // appStore.setRefresh();
+            appStore.setRefresh();
           });
           break;
         }
