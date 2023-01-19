@@ -1,8 +1,3 @@
-p {
-  margin: 0;
-  font-family: Halvar Breitschrift, sans-serif;
-}
-
 .xs-400 {
   font-style: normal;
   font-weight: normal;
@@ -18,7 +13,7 @@ p {
   align-items: center;
   text-align: center;
 
-  color: #9198BB;
+  color: #9198bb;
 }
 
 .s-400 {
@@ -36,7 +31,6 @@ p {
   text-decoration-line: underline;
   font-feature-settings: 'liga' off;
   color: $color-gray;
-
 }
 
 .s-500-gray {
@@ -48,19 +42,19 @@ p {
 
 .m-500 {
   font-style: normal;
-  font-weight: 500 ;
-  font-size: 16px ;
+  font-weight: 500;
+  font-size: 16px;
   text-align: center;
   color: $white !important;
   @media (max-width: 600px) {
-    font-family: Neue Machina, sans-serif ;
-    font-style: normal ;
-    font-weight: 500 ;
-    font-size: 12px ;
-    display: flex ;
-    align-items: center ;
-    text-align: center ;
-    color: #FFFFFF ;
+    font-family: Neue Machina, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
   }
 }
 
@@ -102,7 +96,7 @@ p {
   line-height: 32px;
   text-align: center;
   letter-spacing: 0.03em;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .l-700 {
@@ -127,11 +121,11 @@ p {
 
 .xxl-500 {
   font-style: normal;
-  font-weight: 500 ;
-  font-size: 24px ;
+  font-weight: 500;
+  font-size: 24px;
   display: flex;
   align-items: center;
-  color: $black ;
+  color: $black;
 }
 
 .xxxl-500 {

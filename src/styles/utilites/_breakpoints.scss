@@ -1,0 +1,29 @@
+@mixin for_laptop {
+  @media screen and (max-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin for_big_tablet {
+  @media screen and (max-width: 990px) {
+    @content;
+  }
+}
+
+@mixin for_tablet {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin for_phone {
+  @media screen and (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin for_small_phone {
+  @media screen and (max-width: 415px) {
+    @content;
+  }
+}
