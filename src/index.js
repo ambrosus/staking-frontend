@@ -1,17 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals';
-import ErrorBoundary from './components/ErrorBoundary';
-import Main from './Main';
-import { PrismicProvider } from '@prismicio/react'
-import { client } from 'prismic'
-
+import HomeStatic from "./pages/HomeStatic";
+import 'styles/Main.scss'
 ReactDOM.render(
-    <PrismicProvider client={client}>
-    <ErrorBoundary>
-    <Main />
-  </ErrorBoundary>
-    </PrismicProvider>
+  <HomeStatic />
     ,
   document.getElementById('root'),
 );
