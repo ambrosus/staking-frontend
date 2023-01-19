@@ -94,7 +94,7 @@ const HomeStatic = () => {
               <Medium />
             </a>
             <a
-              href='https://discord.gg/nsNvbCzP'
+              href='https://discord.gg/n3BveAVd'
               target='_blank'
               className=''
               rel='noreferrer'
